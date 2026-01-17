@@ -244,6 +244,7 @@ export function SearchCommand() {
           // Mobile - bottom sheet style
           "!top-auto !bottom-0 !translate-y-0 max-h-[85vh] w-full max-w-full rounded-t-xl rounded-b-none sm:!bottom-auto"
         )}
+        showCloseButton={false}
       >
         <DialogTitle className="sr-only">Search Geometries</DialogTitle>
         <Command shouldFilter={false} loop className="bg-transparent">
@@ -258,7 +259,7 @@ export function SearchCommand() {
             {searchQuery && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-4 p-1.5 rounded-md text-[var(--color-dim)] hover:text-[var(--color-warm-gray)] hover:bg-[var(--color-dark-bronze)] transition-colors"
+                className="absolute right-4 p-1.5 rounded-md text-[var(--color-dim)] hover:text-[var(--color-warm-gray)] hover:bg-[var(--color-dark-bronze)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -329,7 +330,8 @@ export function SearchCommand() {
                           "border border-transparent",
                           "hover:text-[var(--color-gold)]",
                           "hover:border-[var(--border-gold)]/50",
-                          "transition-[color,border-color] duration-200"
+                          "transition-[color,border-color] duration-200",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
                         )}
                       >
                         {term}
@@ -420,7 +422,8 @@ export function SearchCommand() {
                           "border border-[var(--border-gold)]/50",
                           "hover:bg-[var(--color-warm-charcoal)]",
                           "hover:border-[var(--color-gold)]/70",
-                          "transition-[background-color,border-color] duration-200"
+                          "transition-[background-color,border-color] duration-200",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
                         )}
                       >
                         {suggestion}
