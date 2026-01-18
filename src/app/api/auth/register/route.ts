@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { signUpSchema } from "@/lib/auth/schemas";
+import { sendVerificationEmail } from "@/lib/auth/verification-service";
 
 export async function POST(request: Request) {
   try {
@@ -39,6 +40,11 @@ export async function POST(request: Request) {
     await db.insert(users).values({
       email: normalizedEmail,
       passwordHash,
+    });
+
+    // Send verification email (fire-and-forget to not block response)
+    void sendVerificationEmail(normalizedEmail).catch((err) => {
+      console.error("Failed to send verification email:", err);
     });
 
     return NextResponse.json({ success: true }, { status: 201 });

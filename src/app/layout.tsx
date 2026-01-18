@@ -19,6 +19,7 @@ import {
 } from "@/components/structured-data";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { AuthModal } from "@/components/auth/auth-modal";
+import { EmailVerificationBanner } from "@/components/auth/email-verification-banner";
 import { isAuthEnabled } from "@/lib/auth/feature-flags";
 import { CartProvider } from "@/lib/shop/cart-context";
 import { isShopEnabled } from "@/lib/shop/feature-flags";
@@ -76,9 +77,11 @@ export default function RootLayout({
   const authEnabled = isAuthEnabled();
   const shopEnabled = isShopEnabled();
 
-  const content = (
+  // Base content without auth-dependent components
+  const baseContent = (hasAuth: boolean) => (
     <MotionProvider>
       <Header />
+      {hasAuth && <EmailVerificationBanner />}
       <main id="main-content">{children}</main>
       <Footer />
     </MotionProvider>
@@ -102,12 +105,16 @@ export default function RootLayout({
           {authEnabled ? (
             <AuthProvider>
               <AuthModal />
-              {shopEnabled ? <CartProvider>{content}</CartProvider> : content}
+              {shopEnabled ? (
+                <CartProvider>{baseContent(true)}</CartProvider>
+              ) : (
+                baseContent(true)
+              )}
             </AuthProvider>
           ) : shopEnabled ? (
-            <CartProvider>{content}</CartProvider>
+            <CartProvider>{baseContent(false)}</CartProvider>
           ) : (
-            content
+            baseContent(false)
           )}
         </Theme>
       </body>
