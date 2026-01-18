@@ -38,7 +38,6 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
@@ -73,29 +72,6 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-3">
-          {/* Name field */}
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
-                  Name
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Your name"
-                    autoComplete="name"
-                    disabled={form.formState.isSubmitting}
-                    className={inputClassName}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs text-red-400" />
-              </FormItem>
-            )}
-          />
-
           {/* Email field */}
           <FormField
             control={form.control}
@@ -174,7 +150,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
           <button
             type="button"
             onClick={() => onSwitchView("sign-in")}
-            className="text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
+            className="cursor-pointer text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
           >
             Sign in
           </button>

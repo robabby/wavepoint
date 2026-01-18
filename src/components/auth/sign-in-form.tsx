@@ -111,7 +111,7 @@ export function SignInForm({ onSwitchView }: SignInFormProps) {
           <button
             type="button"
             onClick={() => onSwitchView("forgot-password")}
-            className="text-sm text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
+            className="cursor-pointer text-sm text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
           >
             Forgot password?
           </button>
@@ -147,7 +147,7 @@ export function SignInForm({ onSwitchView }: SignInFormProps) {
           <button
             type="button"
             onClick={() => onSwitchView("sign-up")}
-            className="text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
+            className="cursor-pointer text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
           >
             Create one
           </button>

@@ -8,7 +8,6 @@ export const signInSchema = z.object({
 
 // Sign-up: stricter password requirements
 export const signUpSchema = z.object({
-  name: z.string().min(1, "Name is required").max(100, "Name too long"),
   email: z.string().min(1, "Email is required").email("Invalid email address"),
   password: z
     .string()

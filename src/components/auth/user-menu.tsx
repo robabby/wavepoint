@@ -1,0 +1,125 @@
+"use client";
+
+import { User, Settings, LogOut } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+interface UserMenuProps {
+  variant?: "desktop" | "mobile";
+  email: string;
+  onSignOut: () => void;
+  className?: string;
+}
+
+/**
+ * User menu for authenticated users.
+ * Desktop: Dropdown menu with user icon trigger.
+ * Mobile: Expanded section with user info and actions.
+ */
+export function UserMenu({
+  variant = "desktop",
+  email,
+  onSignOut,
+  className,
+}: UserMenuProps) {
+  if (variant === "mobile") {
+    return (
+      <div className={cn("flex flex-col gap-1", className)}>
+        {/* User info */}
+        <div className="flex items-center gap-3 px-3 py-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-gold)]/20">
+            <User className="h-4 w-4 text-[var(--color-gold)]" />
+          </div>
+          <span className="truncate text-sm text-[var(--color-warm-gray)]">
+            {email}
+          </span>
+        </div>
+
+        {/* Account Settings - Coming Soon */}
+        <button
+          disabled
+          className="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-3 text-[var(--color-dim)]"
+        >
+          <Settings className="ml-1 h-5 w-5" />
+          <span className="font-medium">Account Settings</span>
+          <span className="ml-auto rounded bg-[var(--color-dark-bronze)] px-1.5 py-0.5 text-xs text-[var(--color-gold)]/70">
+            Soon
+          </span>
+        </button>
+
+        {/* Sign Out */}
+        <button
+          onClick={onSignOut}
+          className={cn(
+            "flex items-center gap-3 rounded-lg px-3 py-3 font-medium",
+            "text-[var(--color-warm-gray)] transition-colors",
+            "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+          )}
+        >
+          <LogOut className="ml-1 h-5 w-5" />
+          <span>Sign Out</span>
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn(
+            "h-10 w-10 rounded-md",
+            "text-[var(--color-warm-gray)]",
+            "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]",
+            className
+          )}
+          aria-label="User menu"
+        >
+          <User className="h-5 w-5" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        className="w-56 border-[var(--border-gold)] bg-[var(--color-obsidian)]"
+      >
+        <DropdownMenuLabel className="font-normal">
+          <p className="truncate text-sm text-[var(--color-warm-gray)]">
+            {email}
+          </p>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator className="bg-[var(--border-gold)]/30" />
+        <DropdownMenuGroup>
+          <DropdownMenuItem
+            disabled
+            className="cursor-not-allowed text-[var(--color-dim)]"
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            Account Settings
+            <span className="ml-auto rounded bg-[var(--color-dark-bronze)] px-1.5 py-0.5 text-xs text-[var(--color-gold)]/70">
+              Soon
+            </span>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator className="bg-[var(--border-gold)]/30" />
+        <DropdownMenuItem
+          onClick={onSignOut}
+          className="text-[var(--color-warm-gray)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Sign Out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}

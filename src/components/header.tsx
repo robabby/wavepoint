@@ -19,6 +19,8 @@ import { EASE_STANDARD } from "@/lib/animation-constants";
 import { CartIcon } from "@/components/shop/cart-icon";
 import { CartDrawer } from "@/components/shop/cart-drawer";
 import { isShopEnabled } from "@/lib/shop/feature-flags";
+import { isAuthEnabled } from "@/lib/auth/feature-flags";
+import { AuthHeaderSection } from "@/components/auth/auth-header-section";
 
 type NavItem = {
   path: string;
@@ -137,6 +139,7 @@ export function Header() {
   );
 
   const shopEnabled = isShopEnabled();
+  const authEnabled = isAuthEnabled();
 
   const navItems = useMemo<NavItem[]>(() => {
     const items: NavItem[] = [
@@ -377,6 +380,9 @@ export function Header() {
 
             {/* Cart Icon - only when shop is enabled */}
             {shopEnabled && <CartIcon />}
+
+            {/* Auth Section - only when auth is enabled */}
+            {authEnabled && <AuthHeaderSection variant="desktop" />}
           </div>
         </div>
       </header>
@@ -477,6 +483,14 @@ export function Header() {
                     Soon
                   </span>
                 </div>
+
+                {/* Auth Section - only when auth is enabled */}
+                {authEnabled && (
+                  <>
+                    <div className="my-2 h-px bg-[var(--border-gold)]/30" />
+                    <AuthHeaderSection variant="mobile" />
+                  </>
+                )}
               </nav>
 
               {/* Decorative geometric accent */}
