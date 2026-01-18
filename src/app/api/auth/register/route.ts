@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { name, email, password } = parsed.data;
+    const { email, password } = parsed.data;
     const normalizedEmail = email.toLowerCase();
 
     // Check if user exists
@@ -39,7 +39,6 @@ export async function POST(request: Request) {
     await db.insert(users).values({
       email: normalizedEmail,
       passwordHash,
-      name: name.trim(),
     });
 
     return NextResponse.json({ success: true }, { status: 201 });

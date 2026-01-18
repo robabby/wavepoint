@@ -41,7 +41,6 @@ export async function registerUser(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: data.name.trim(),
         email: data.email.toLowerCase(),
         password: data.password,
       }),

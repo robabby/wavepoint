@@ -53,7 +53,7 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
         <button
           type="button"
           onClick={() => onSwitchView("sign-in")}
-          className="flex items-center gap-1 text-sm text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
+          className="flex cursor-pointer items-center gap-1 text-sm text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to sign in
@@ -84,7 +84,7 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
         <button
           type="button"
           onClick={() => onSwitchView("sign-in")}
-          className="flex items-center gap-1 text-sm text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
+          className="flex cursor-pointer items-center gap-1 text-sm text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to sign in
