@@ -14,6 +14,10 @@ export const env = createEnv({
     STRIPE_SECRET_KEY: z.string().startsWith("sk_"),
     STRIPE_WEBHOOK_SECRET: z.string().startsWith("whsec_"),
     APP_URL: z.string().url().default("http://localhost:3000"),
+    // Email (Brevo) - optional, email features disabled if not set
+    BREVO_API_KEY: z.string().min(1).optional(),
+    EMAIL_FROM_ADDRESS: z.string().email().default("noreply@sacredgeometry.site"),
+    EMAIL_FROM_NAME: z.string().default("Sacred Geometry"),
   },
 
   /**
@@ -49,6 +53,9 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     APP_URL: process.env.APP_URL,
+    BREVO_API_KEY: process.env.BREVO_API_KEY,
+    EMAIL_FROM_ADDRESS: process.env.EMAIL_FROM_ADDRESS,
+    EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -88,12 +88,25 @@ export const authConfig: NextAuthConfig = {
     error: "/auth/error",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       // On sign-in, add user data to token
       if (user) {
         token.id = user.id;
         token.emailVerified = user.emailVerified;
       }
+
+      // On session refresh or if email is not verified, check DB for fresh value
+      // This allows the session to update after email verification without re-login
+      if (trigger === "update" || !token.emailVerified) {
+        const dbUser = await db.query.users.findFirst({
+          where: eq(users.email, token.email as string),
+          columns: { emailVerified: true },
+        });
+        if (dbUser) {
+          token.emailVerified = dbUser.emailVerified;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {

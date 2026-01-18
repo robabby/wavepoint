@@ -17,25 +17,3 @@ export function generateToken(bytes = 32): string {
 export function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
-
-/**
- * Verify a token against its hash (constant-time comparison)
- * @param token - Plain text token to verify
- * @param hash - Expected hash
- * @returns True if token matches hash
- */
-export function verifyToken(token: string, hash: string): boolean {
-  const tokenHash = hashToken(token);
-
-  // Constant-time comparison to prevent timing attacks
-  if (tokenHash.length !== hash.length) {
-    return false;
-  }
-
-  let result = 0;
-  for (let i = 0; i < tokenHash.length; i++) {
-    result |= tokenHash.charCodeAt(i) ^ hash.charCodeAt(i);
-  }
-
-  return result === 0;
-}
