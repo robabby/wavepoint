@@ -26,6 +26,10 @@ export const env = createEnv({
       .string()
       .transform((val) => val === "true")
       .default("false"),
+    NEXT_PUBLIC_AUTH_ENABLED: z
+      .string()
+      .transform((val) => val === "true")
+      .default("false"),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_"),
   },
 
@@ -39,6 +43,7 @@ export const env = createEnv({
     AUTH_SECRET: process.env.AUTH_SECRET,
     PRINTFUL_API_KEY: process.env.PRINTFUL_API_KEY,
     NEXT_PUBLIC_SHOP_ENABLED: process.env.NEXT_PUBLIC_SHOP_ENABLED,
+    NEXT_PUBLIC_AUTH_ENABLED: process.env.NEXT_PUBLIC_AUTH_ENABLED,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:

@@ -17,6 +17,9 @@ import {
   StructuredData,
   createWebSiteSchema,
 } from "@/components/structured-data";
+import { AuthProvider } from "@/components/auth/auth-provider";
+import { AuthModal } from "@/components/auth/auth-modal";
+import { isAuthEnabled } from "@/lib/auth/feature-flags";
 import { CartProvider } from "@/lib/shop/cart-context";
 import { isShopEnabled } from "@/lib/shop/feature-flags";
 
@@ -70,6 +73,7 @@ const crimsonPro = Crimson_Pro({
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const authEnabled = isAuthEnabled();
   const shopEnabled = isShopEnabled();
 
   const content = (
@@ -95,7 +99,16 @@ export default function RootLayout({
         />
         <SkipToContent />
         <Theme appearance="dark">
-          {shopEnabled ? <CartProvider>{content}</CartProvider> : content}
+          {authEnabled ? (
+            <AuthProvider>
+              <AuthModal />
+              {shopEnabled ? <CartProvider>{content}</CartProvider> : content}
+            </AuthProvider>
+          ) : shopEnabled ? (
+            <CartProvider>{content}</CartProvider>
+          ) : (
+            content
+          )}
         </Theme>
       </body>
       <Analytics />
