@@ -17,6 +17,7 @@ export const users = pgTable("users", {
   emailVerified: timestamp("email_verified", { mode: "date" }),
   passwordHash: text("password_hash").notNull(),
   name: text("name"),
+  image: text("image"), // Required by Auth.js adapter (unused for credentials-only auth)
   failedLoginAttempts: integer("failed_login_attempts").notNull().default(0),
   lockedUntil: timestamp("locked_until", { mode: "date" }),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
@@ -43,6 +44,26 @@ export const verificationTokens = pgTable(
     ),
   ]
 );
+
+/**
+ * Accounts - OAuth provider accounts (required by Auth.js adapter, unused for credentials-only)
+ */
+export const accounts = pgTable("accounts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  type: text("type").notNull(),
+  provider: text("provider").notNull(),
+  providerAccountId: text("provider_account_id").notNull(),
+  refresh_token: text("refresh_token"),
+  access_token: text("access_token"),
+  expires_at: integer("expires_at"),
+  token_type: text("token_type"),
+  scope: text("scope"),
+  id_token: text("id_token"),
+  session_state: text("session_state"),
+});
 
 /**
  * Sessions - Auth.js session storage
@@ -99,6 +120,9 @@ export type NewUser = typeof users.$inferInsert;
 
 export type VerificationToken = typeof verificationTokens.$inferSelect;
 export type NewVerificationToken = typeof verificationTokens.$inferInsert;
+
+export type Account = typeof accounts.$inferSelect;
+export type NewAccount = typeof accounts.$inferInsert;
 
 export type Session = typeof sessions.$inferSelect;
 export type NewSession = typeof sessions.$inferInsert;
