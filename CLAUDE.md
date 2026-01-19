@@ -30,6 +30,7 @@ src/content/                # MDX files (platonic-solids/, sacred-patterns/)
 src/util/routes.ts          # Top-level routing only (NOT geometry links)
 src/env.js                  # Env validation (Zod)
 docs/plans/                 # Implementation plans (YYYY-MM-DD-<topic>.md)
+docs/prds/                  # Product Requirements Documents (scope, decisions, journeys)
 docs/ux/                    # UX guidelines (personas, patterns, voice & tone)
 ```
 
@@ -163,6 +164,29 @@ localImages: {
 - **Prefer agents**: For multi-step implementations, use the Task tool with specialized agents (`feature-dev:code-architect`, `feature-dev:code-explorer`, `feature-dev:code-reviewer`) to parallelize work and maintain focus
 - **Sub-agent model**: All sub-agents must use Claude Opus (`model: "opus"`)
 - **Code review**: After implementations, use `feature-dev:code-reviewer` agent to review for bugs, security issues, and adherence to project conventions
+
+## PRDs
+
+Product Requirements Documents live in `docs/prds/`. Reference when making product decisions during implementation.
+
+| Feature | PRD | Status |
+|---------|-----|--------|
+| Signal | `docs/prds/signal.md` | In Development |
+
+**PRD contents:** Scope boundaries, key decisions, user journeys (as flows), edge cases, success metrics. Implementation details live in `docs/plans/`.
+
+## Business Context
+
+Deeper product and business context lives in Obsidian (accessible via MCP):
+
+| Resource | Location | Use For |
+|----------|----------|---------|
+| Full PRDs | `Areas/Metatron Collective/PRDs/` | Product rationale, research, full user journeys |
+| KPIs & Metrics | `Areas/Metatron Collective/Metrics/` | Success definitions, weekly reviews |
+| Decisions | `Areas/Metatron Collective/Decisions/` | Historical context on why we chose X |
+| AI Methodology | `Areas/AI/Collaboration/Methodology.md` | How we work together |
+
+Reference when making strategic decisions or needing "why" context beyond implementation scope.
 
 ## UX Guidelines
 
