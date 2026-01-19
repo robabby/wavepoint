@@ -8,7 +8,7 @@ Reusable approaches for common UI moments. These ensure consistency across featu
 
 *Principle: Invitation over Instruction*
 
-Empty states are opportunities, not dead ends. They should feel spacious and inviting, not like something's broken or the user failed to do something.
+Empty states are opportunities, not dead ends. Make them spacious and inviting — never broken or accusatory.
 
 ### Pattern
 

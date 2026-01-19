@@ -41,7 +41,7 @@ Persistent UX resources for Sacred Geometry. Reference these when designing feat
 
 ## Updating These Docs
 
-These are living documents. Update them when:
+These documents evolve. Update them when:
 - A new pattern emerges that should be standardized
 - User feedback reveals a gap in our understanding
 - A design decision sets a precedent worth documenting
