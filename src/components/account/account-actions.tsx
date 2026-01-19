@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { Package, MapPin, KeyRound, Trash2, LogOut } from "lucide-react";
+import { Package, MapPin, KeyRound, Trash2, LogOut, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +12,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 
 interface ActionCardProps {
@@ -105,47 +116,141 @@ function ActionCard({
  * Displays action cards for orders, address, password, delete account, and sign out.
  */
 export function AccountActions() {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleteConfirmed, setDeleteConfirmed] = useState(false);
+
+  // Reset confirmation when dialog closes
+  const handleDialogChange = (open: boolean) => {
+    setDeleteDialogOpen(open);
+    if (!open) {
+      setDeleteConfirmed(false);
+      setDeleteError(null);
+    }
+  };
+
   const handleSignOut = () => {
     void signOut({ callbackUrl: "/" });
   };
 
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    setDeleteError(null);
+
+    try {
+      const response = await fetch("/api/account/delete", {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const data = (await response.json()) as { error?: string };
+        throw new Error(data.error ?? "Failed to delete account");
+      }
+
+      // Sign out and redirect to home
+      void signOut({ callbackUrl: "/" });
+    } catch (error) {
+      setDeleteError(
+        error instanceof Error ? error.message : "Failed to delete account"
+      );
+      setIsDeleting(false);
+    }
+  };
+
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <ActionCard
-        icon={Package}
-        title="Orders"
-        description="View your order history and track shipments"
-        href="/account/orders"
-      />
-      <ActionCard
-        icon={MapPin}
-        title="Shipping Address"
-        description="Manage your default shipping address"
-        href="/account/address"
-      />
-      <ActionCard
-        icon={KeyRound}
-        title="Change Password"
-        description="Update your account password"
-        disabled
-      />
-      <ActionCard
-        icon={Trash2}
-        title="Delete Account"
-        description="Permanently delete your account and data"
-        variant="destructive"
-        disabled
-      />
-      <div className="sm:col-span-2">
-        <Button
-          variant="outline"
-          className="w-full border-[var(--border-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--border-gold)] hover:text-[var(--color-cream)]"
-          onClick={handleSignOut}
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          Sign Out
-        </Button>
+    <>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <ActionCard
+          icon={Package}
+          title="Orders"
+          description="View your order history and track shipments"
+          href="/account/orders"
+        />
+        <ActionCard
+          icon={MapPin}
+          title="Shipping Address"
+          description="Manage your default shipping address"
+          href="/account/address"
+        />
+        <ActionCard
+          icon={KeyRound}
+          title="Change Password"
+          description="Update your account password"
+          disabled
+        />
+        <ActionCard
+          icon={Trash2}
+          title="Delete Account"
+          description="Permanently delete your account and data"
+          variant="destructive"
+          onClick={() => setDeleteDialogOpen(true)}
+        />
+        <div className="sm:col-span-2">
+          <Button
+            variant="outline"
+            className="w-full border-[var(--border-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--border-gold)] hover:text-[var(--color-cream)]"
+            onClick={handleSignOut}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign Out
+          </Button>
+        </div>
       </div>
-    </div>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={handleDialogChange}>
+        <AlertDialogContent className="border-red-500/30 bg-[var(--color-obsidian)]">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-[var(--color-cream)]">
+              Delete Account
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-[var(--color-warm-gray)]">
+              Are you sure you want to delete your account? This action cannot
+              be undone. All your data will be permanently removed, except for
+              anonymized order records.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={deleteConfirmed}
+              onChange={(e) => setDeleteConfirmed(e.target.checked)}
+              className="mt-0.5 h-4 w-4 cursor-pointer rounded border-[var(--border-gold)]/50 bg-transparent accent-red-600"
+            />
+            <span className="text-sm text-[var(--color-warm-gray)]">
+              I understand this will permanently delete my account and all
+              associated data
+            </span>
+          </label>
+          {deleteError && (
+            <div className="rounded-md border border-red-500/50 bg-red-500/10 px-3 py-2 text-sm text-red-400">
+              {deleteError}
+            </div>
+          )}
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              disabled={isDeleting}
+              className="border-[var(--border-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--border-gold)] hover:text-[var(--color-cream)]"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteAccount}
+              disabled={isDeleting || !deleteConfirmed}
+              className="bg-red-600 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete Account"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
