@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useState, Suspense, useRef } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { verifyEmail } from "@/lib/auth/verification-actions";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,6 @@ type VerifyState = "loading" | "success" | "error";
 
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const token = searchParams.get("token");
 
   // Derive initial state from token presence
@@ -39,14 +38,16 @@ function VerifyEmailContent() {
     verifyEmail(token).then((result) => {
       if (result.success) {
         setState("success");
-        // Redirect to home after 3 seconds
-        setTimeout(() => router.push("/"), 3000);
+        // Full page reload to ensure fresh session (dismisses verification banner)
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 3000);
       } else {
         setState("error");
         setError(result.error ?? "Verification failed");
       }
     });
-  }, [token, router]);
+  }, [token]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
@@ -73,10 +74,12 @@ function VerifyEmailContent() {
               Your email has been verified successfully. Redirecting to home...
             </p>
             <Button
-              asChild
+              onClick={() => {
+                window.location.href = "/";
+              }}
               className="mt-6 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
             >
-              <Link href="/">Continue to Home</Link>
+              Continue to Home
             </Button>
           </>
         )}
