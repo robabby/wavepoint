@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { User, Settings, LogOut } from "lucide-react";
 import {
   DropdownMenu,
@@ -44,17 +45,18 @@ export function UserMenu({
           </span>
         </div>
 
-        {/* Account Settings - Coming Soon */}
-        <button
-          disabled
-          className="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-3 text-[var(--color-dim)]"
+        {/* Account link */}
+        <Link
+          href="/account"
+          className={cn(
+            "flex items-center gap-3 rounded-lg px-3 py-3 font-medium",
+            "text-[var(--color-warm-gray)] transition-colors",
+            "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+          )}
         >
           <Settings className="ml-1 h-5 w-5" />
-          <span className="font-medium">Account Settings</span>
-          <span className="ml-auto rounded bg-[var(--color-dark-bronze)] px-1.5 py-0.5 text-xs text-[var(--color-gold)]/70">
-            Soon
-          </span>
-        </button>
+          <span>Account</span>
+        </Link>
 
         {/* Sign Out */}
         <button
@@ -100,15 +102,14 @@ export function UserMenu({
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-[var(--border-gold)]/30" />
         <DropdownMenuGroup>
-          <DropdownMenuItem
-            disabled
-            className="cursor-not-allowed text-[var(--color-dim)]"
-          >
-            <Settings className="mr-2 h-4 w-4" />
-            Account Settings
-            <span className="ml-auto rounded bg-[var(--color-dark-bronze)] px-1.5 py-0.5 text-xs text-[var(--color-gold)]/70">
-              Soon
-            </span>
+          <DropdownMenuItem asChild>
+            <Link
+              href="/account"
+              className="text-[var(--color-warm-gray)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+            >
+              <Settings className="mr-2 h-4 w-4" />
+              Account
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-[var(--border-gold)]/30" />
