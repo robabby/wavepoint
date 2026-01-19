@@ -1,13 +1,43 @@
 # Signal React Hooks
 
-SWR hooks for data fetching in Signal.
+React Query (TanStack Query) hooks for data fetching in Signal.
 
 > **Related:** [api.md](./api.md) | [components.md](./components.md) | [README.md](./README.md)
 
 ## Install
 
 ```bash
-pnpm add swr
+pnpm add @tanstack/react-query
+```
+
+## Provider Setup
+
+Add to root layout or Signal layout:
+
+```typescript
+// src/app/signal/providers.tsx
+"use client";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState, type ReactNode } from "react";
+
+export function SignalProviders({ children }: { children: ReactNode }) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 60 * 1000, // 1 minute
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
+
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+}
 ```
 
 ## Hooks Overview
@@ -20,20 +50,39 @@ pnpm add swr
 | `useStats` | Get user statistics |
 | `useRegenerateInterpretation` | Regenerate interpretation mutation |
 
+## Query Keys
+
+Centralized query keys for cache management:
+
+```typescript
+// src/hooks/signal/query-keys.ts
+export const signalKeys = {
+  all: ["signal"] as const,
+  sightings: () => [...signalKeys.all, "sightings"] as const,
+  sightingsList: (filters?: { number?: string }) =>
+    [...signalKeys.sightings(), filters] as const,
+  sighting: (id: string) => [...signalKeys.sightings(), id] as const,
+  stats: () => [...signalKeys.all, "stats"] as const,
+};
+```
+
 ## useSightings
 
 List sightings with optional number filter.
 
 ```typescript
 // src/hooks/signal/use-sightings.ts
-import useSWR from "swr";
-import useSWRMutation from "swr/mutation";
+import { useQuery } from "@tanstack/react-query";
 import type { SignalSighting, SignalInterpretation } from "@/lib/db/schema";
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { signalKeys } from "./query-keys";
 
 interface SightingWithInterpretation extends SignalSighting {
   interpretation: SignalInterpretation | null;
+}
+
+interface SightingsResponse {
+  sightings: SightingWithInterpretation[];
+  total: number;
 }
 
 interface UseSightingsOptions {
@@ -42,33 +91,41 @@ interface UseSightingsOptions {
   offset?: number;
 }
 
-export function useSightings(options?: UseSightingsOptions) {
+async function fetchSightings(options?: UseSightingsOptions): Promise<SightingsResponse> {
   const params = new URLSearchParams();
   if (options?.number) params.set("number", options.number);
   if (options?.limit) params.set("limit", String(options.limit));
   if (options?.offset) params.set("offset", String(options.offset));
 
-  const { data, error, isLoading, mutate } = useSWR<{
-    sightings: SightingWithInterpretation[];
-    total: number;
-  }>(`/api/signal/sightings?${params}`, fetcher);
+  const res = await fetch(`/api/signal/sightings?${params}`);
+  if (!res.ok) throw new Error("Failed to fetch sightings");
+  return res.json();
+}
+
+export function useSightings(options?: UseSightingsOptions) {
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: signalKeys.sightingsList({ number: options?.number }),
+    queryFn: () => fetchSightings(options),
+  });
 
   return {
     sightings: data?.sightings ?? [],
     total: data?.total ?? 0,
     isLoading,
     isError: !!error,
-    mutate,
+    error,
+    refetch,
   };
 }
 ```
 
 ## useCreateSighting
 
-Create a new sighting.
+Create a new sighting with cache invalidation.
 
 ```typescript
 // src/hooks/signal/use-sightings.ts (continued)
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CreateSightingInput } from "@/lib/signal/schemas";
 
 interface CreateSightingResponse {
@@ -78,55 +135,66 @@ interface CreateSightingResponse {
   count: number;
 }
 
+async function createSighting(input: CreateSightingInput): Promise<CreateSightingResponse> {
+  const res = await fetch("/api/signal/sightings", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.error || "Failed to create sighting");
+  }
+  return res.json();
+}
+
 export function useCreateSighting() {
-  const { trigger, isMutating, error } = useSWRMutation<
-    CreateSightingResponse,
-    Error,
-    string,
-    CreateSightingInput
-  >(
-    "/api/signal/sightings",
-    async (url, { arg }) => {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(arg),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to create sighting");
-      }
-      return res.json();
-    }
-  );
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: createSighting,
+    onSuccess: () => {
+      // Invalidate both sightings and stats caches
+      queryClient.invalidateQueries({ queryKey: signalKeys.sightings() });
+      queryClient.invalidateQueries({ queryKey: signalKeys.stats() });
+    },
+  });
 
   return {
-    createSighting: trigger,
-    isCreating: isMutating,
-    error,
+    createSighting: mutation.mutateAsync,
+    isCreating: mutation.isPending,
+    error: mutation.error,
+    reset: mutation.reset,
   };
 }
 ```
 
 ## useDeleteSighting
 
-Delete a sighting.
+Delete a sighting with cache invalidation.
 
 ```typescript
 // src/hooks/signal/use-sightings.ts (continued)
+async function deleteSighting(id: string): Promise<void> {
+  const res = await fetch(`/api/signal/sightings/${id}`, { method: "DELETE" });
+  if (!res.ok) throw new Error("Failed to delete sighting");
+}
+
 export function useDeleteSighting() {
-  const { trigger, isMutating } = useSWRMutation(
-    "/api/signal/sightings",
-    async (url, { arg: id }: { arg: string }) => {
-      const res = await fetch(`${url}/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed to delete sighting");
-      return res.json();
-    }
-  );
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: deleteSighting,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: signalKeys.sightings() });
+      queryClient.invalidateQueries({ queryKey: signalKeys.stats() });
+    },
+  });
 
   return {
-    deleteSighting: trigger,
-    isDeleting: isMutating,
+    deleteSighting: mutation.mutateAsync,
+    isDeleting: mutation.isPending,
+    error: mutation.error,
   };
 }
 ```
@@ -137,10 +205,9 @@ Get user statistics.
 
 ```typescript
 // src/hooks/signal/use-stats.ts
-import useSWR from "swr";
+import { useQuery } from "@tanstack/react-query";
 import type { SignalUserNumberStats } from "@/lib/db/schema";
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+import { signalKeys } from "./query-keys";
 
 interface StatsResponse {
   totalSightings: number;
@@ -148,11 +215,17 @@ interface StatsResponse {
   numberCounts: SignalUserNumberStats[];
 }
 
+async function fetchStats(): Promise<StatsResponse> {
+  const res = await fetch("/api/signal/stats");
+  if (!res.ok) throw new Error("Failed to fetch stats");
+  return res.json();
+}
+
 export function useStats() {
-  const { data, error, isLoading, mutate } = useSWR<StatsResponse>(
-    "/api/signal/stats",
-    fetcher
-  );
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: signalKeys.stats(),
+    queryFn: fetchStats,
+  });
 
   return {
     totalSightings: data?.totalSightings ?? 0,
@@ -160,7 +233,7 @@ export function useStats() {
     numberCounts: data?.numberCounts ?? [],
     isLoading,
     isError: !!error,
-    mutate,
+    refetch,
   };
 }
 ```
@@ -171,25 +244,39 @@ Regenerate interpretation for a sighting.
 
 ```typescript
 // src/hooks/signal/use-interpretation.ts
-import useSWRMutation from "swr/mutation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { signalKeys } from "./query-keys";
+
+interface RegenerateResponse {
+  interpretation: string;
+}
+
+async function regenerateInterpretation(sightingId: string): Promise<RegenerateResponse> {
+  const res = await fetch("/api/signal/interpret", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ sightingId }),
+  });
+  if (!res.ok) throw new Error("Failed to regenerate interpretation");
+  return res.json();
+}
 
 export function useRegenerateInterpretation() {
-  const { trigger, isMutating } = useSWRMutation(
-    "/api/signal/interpret",
-    async (url, { arg: sightingId }: { arg: string }) => {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sightingId }),
-      });
-      if (!res.ok) throw new Error("Failed to regenerate interpretation");
-      return res.json();
-    }
-  );
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: regenerateInterpretation,
+    onSuccess: (_, sightingId) => {
+      // Invalidate the specific sighting and the list
+      queryClient.invalidateQueries({ queryKey: signalKeys.sighting(sightingId) });
+      queryClient.invalidateQueries({ queryKey: signalKeys.sightings() });
+    },
+  });
 
   return {
-    regenerate: trigger,
-    isRegenerating: isMutating,
+    regenerate: mutation.mutateAsync,
+    isRegenerating: mutation.isPending,
+    error: mutation.error,
   };
 }
 ```
@@ -198,6 +285,7 @@ export function useRegenerateInterpretation() {
 
 ```typescript
 // src/hooks/signal/index.ts
+export { signalKeys } from "./query-keys";
 export { useSightings, useCreateSighting, useDeleteSighting } from "./use-sightings";
 export { useStats } from "./use-stats";
 export { useRegenerateInterpretation } from "./use-interpretation";
@@ -211,18 +299,24 @@ export { useRegenerateInterpretation } from "./use-interpretation";
 import { useSightings, useCreateSighting, useStats } from "@/hooks/signal";
 
 export function CaptureFlow() {
-  const { sightings, mutate: mutateSightings } = useSightings();
-  const { mutate: mutateStats } = useStats();
+  const { sightings } = useSightings();
+  const { totalSightings } = useStats();
   const { createSighting, isCreating } = useCreateSighting();
 
   const handleCapture = async (number: string, moodTags?: string[]) => {
-    const result = await createSighting({ number, moodTags });
+    try {
+      const result = await createSighting({ number, moodTags });
 
-    // Revalidate both sightings and stats
-    await Promise.all([mutateSightings(), mutateStats()]);
+      // Cache invalidation happens automatically via onSuccess
 
-    if (result.isFirstCatch) {
-      // Show celebration!
+      if (result.isFirstCatch) {
+        // Show celebration!
+      }
+
+      return result;
+    } catch (error) {
+      // Handle error
+      console.error("Failed to capture:", error);
     }
   };
 
@@ -231,3 +325,57 @@ export function CaptureFlow() {
   );
 }
 ```
+
+## Optimistic Updates (Optional)
+
+For instant UI feedback, add optimistic updates to mutations:
+
+```typescript
+export function useCreateSighting() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: createSighting,
+    onMutate: async (newSighting) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: signalKeys.sightings() });
+
+      // Snapshot previous value
+      const previousSightings = queryClient.getQueryData(signalKeys.sightingsList());
+
+      // Optimistically add the new sighting
+      // (implementation depends on desired UX)
+
+      return { previousSightings };
+    },
+    onError: (err, newSighting, context) => {
+      // Rollback on error
+      if (context?.previousSightings) {
+        queryClient.setQueryData(signalKeys.sightingsList(), context.previousSightings);
+      }
+    },
+    onSettled: () => {
+      // Always refetch after error or success
+      queryClient.invalidateQueries({ queryKey: signalKeys.sightings() });
+      queryClient.invalidateQueries({ queryKey: signalKeys.stats() });
+    },
+  });
+
+  return {
+    createSighting: mutation.mutateAsync,
+    isCreating: mutation.isPending,
+    error: mutation.error,
+    reset: mutation.reset,
+  };
+}
+```
+
+## Design Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| React Query over SWR | Better mutation handling, explicit cache invalidation, superior TypeScript DX |
+| Centralized query keys | Consistent cache management, easy invalidation patterns |
+| `mutateAsync` over `mutate` | Allows awaiting results in handlers, better error handling |
+| Automatic invalidation | Mutations invalidate related queries via `onSuccess` callbacks |
+| 1-minute stale time | Balance freshness with API efficiency |

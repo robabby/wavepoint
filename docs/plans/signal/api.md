@@ -312,37 +312,93 @@ export async function POST(request: Request) {
 
 ## Rate Limiting
 
-Consider adding rate limiting to prevent abuse:
+**Decision:** In-memory rate limiting per userId for v1. Sufficient for feature-flagged beta; upgrade to Redis when scaling.
+
+Create `src/lib/signal/rate-limit.ts`:
 
 ```typescript
-// Simple in-memory rate limit (use Redis for production)
+// In-memory rate limit - sufficient for beta, upgrade to Redis when scaling
 const rateLimits = new Map<string, { count: number; resetAt: number }>();
 
-function checkRateLimit(userId: string, limit = 30, windowMs = 60000): boolean {
+interface RateLimitOptions {
+  limit?: number;      // Max requests per window (default: 30)
+  windowMs?: number;   // Window duration in ms (default: 60000 = 1 minute)
+}
+
+export function checkRateLimit(
+  userId: string,
+  options: RateLimitOptions = {}
+): { allowed: boolean; remaining: number; resetAt: number } {
+  const { limit = 30, windowMs = 60000 } = options;
   const now = Date.now();
   const record = rateLimits.get(userId);
 
+  // First request or window expired
   if (!record || now > record.resetAt) {
-    rateLimits.set(userId, { count: 1, resetAt: now + windowMs });
-    return true;
+    const resetAt = now + windowMs;
+    rateLimits.set(userId, { count: 1, resetAt });
+    return { allowed: true, remaining: limit - 1, resetAt };
   }
 
+  // Within window
   if (record.count >= limit) {
-    return false;
+    return { allowed: false, remaining: 0, resetAt: record.resetAt };
   }
 
   record.count++;
-  return true;
+  return { allowed: true, remaining: limit - record.count, resetAt: record.resetAt };
 }
+
+// Cleanup old entries periodically (optional, prevents memory leak)
+setInterval(() => {
+  const now = Date.now();
+  for (const [userId, record] of rateLimits.entries()) {
+    if (now > record.resetAt) {
+      rateLimits.delete(userId);
+    }
+  }
+}, 60000); // Clean up every minute
 ```
 
-Apply in POST endpoints:
+Apply to mutation endpoints (POST, DELETE):
 
 ```typescript
-if (!checkRateLimit(session.user.id)) {
-  return NextResponse.json(
-    { error: "Too many requests" },
-    { status: 429 }
-  );
+import { checkRateLimit } from "@/lib/signal/rate-limit";
+
+export async function POST(request: Request) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Rate limit check
+  const rateLimit = checkRateLimit(session.user.id);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait a moment." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.ceil((rateLimit.resetAt - Date.now()) / 1000)),
+        },
+      }
+    );
+  }
+
+  // ... rest of handler
 }
 ```
+
+**Rate Limits by Endpoint:**
+
+| Endpoint | Limit | Window | Rationale |
+|----------|-------|--------|-----------|
+| POST `/sightings` | 30/min | 60s | Prevent spam capture |
+| DELETE `/sightings/[id]` | 30/min | 60s | Prevent mass deletion |
+| POST `/interpret` | 10/min | 60s | AI calls are expensive |
+
+**Future Scaling:**
+When moving to production at scale, replace with Redis-based rate limiting:
+- Use `@upstash/ratelimit` or similar
+- Distributed across serverless instances
+- Persistent across deployments

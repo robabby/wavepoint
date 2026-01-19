@@ -10,7 +10,7 @@
 
 ## Overview
 
-Create all UI components for Signal. This is the largest phase.
+Create core UI components for Signal. SacredNumberWheel and InputModeToggle are deferred to Phase 7.
 
 ## Tasks
 
@@ -20,80 +20,81 @@ Create `src/components/signal/number-pad.tsx`
 
 See [components.md](../components.md#numberpad) for implementation.
 
-### 2. SacredNumberWheel (Ritual Experience)
-
-Create `src/components/signal/sacred-number-wheel.tsx`
-
-See [components.md](../components.md#sacrednumberwheel) for implementation reference.
-
 Key features:
-- Circular digit arrangement
-- Sacred geometry SVG background
-- Glow effects on interaction
-- Motion animations
+- Traditional 3x3 + 0 grid layout
+- Quick-select buttons for common numbers (111, 222, 333, etc.)
+- Display area showing entered number
+- Clear and backspace controls
+- Submit button
 
-### 3. InputModeToggle
-
-Create `src/components/signal/input-mode-toggle.tsx`
-
-Toggle between NumberPad and SacredNumberWheel with localStorage persistence.
-
-### 4. MoodSelector
+### 2. MoodSelector
 
 Create `src/components/signal/mood-selector.tsx`
 
 See [components.md](../components.md#moodselector) for implementation.
 
-### 5. InterpretationCard
+Key features:
+- 6 mood options with emoji icons
+- Multi-select (up to 3)
+- Visual feedback for selection
+- Optional (can skip)
+
+### 3. InterpretationCard
 
 Create `src/components/signal/interpretation-card.tsx`
 
 Display AI interpretation with:
-- Typing animation effect
-- Regenerate button
-- Model indicator (for debugging)
+- Interpretation text
+- Regenerate button with loading state
+- "Receiving..." state during generation
+- Fallback indicator (if AI failed)
 
-### 6. SightingCard
+### 4. SightingCard
 
 Create `src/components/signal/sighting-card.tsx`
 
 Collection item card showing:
-- Number (prominent)
-- Count badge
-- Timestamp
+- Number (prominent, gold accent)
+- Count badge (e.g., "3rd sighting")
+- Timestamp (relative: "2 hours ago")
 - Mood tags (if present)
+- Click to view detail
 
-### 7. CollectionGrid
+### 5. CollectionGrid
 
 Create `src/components/signal/collection-grid.tsx`
 
 Grid of SightingCards with:
-- Stats summary header
+- Stats summary header (total sightings, unique numbers)
 - Empty state (see UX guidelines)
-- Filter by number
+- Filter by number (dropdown or chips)
+- Responsive grid layout
 
-### 8. FirstCatchCelebration
+### 6. FirstCatchCelebration
 
 Create `src/components/signal/first-catch-celebration.tsx`
 
-Particle animation for first-time number catches:
-- Gold particles
-- Confetti effect
-- Auto-dismiss after animation
+Celebration overlay for first-time number catches:
+- Full-screen dismissible overlay
+- Gold particle burst animation
+- "First Catch" badge with the number
+- Brief pause before revealing interpretation
+- Tap anywhere to continue
 
-### 9. SacredSpinner
+### 7. SacredSpinner
 
 Create `src/components/signal/sacred-spinner.tsx`
 
-Loading indicator with sacred geometry styling.
+Loading indicator with sacred geometry styling:
+- Rotating geometric form (e.g., Seed of Life)
+- Optional "Receiving..." text
+- Sized variants (sm, md, lg)
 
 ## Component Checklist
 
 | Component | File | Status |
 |-----------|------|--------|
 | NumberPad | `number-pad.tsx` | ☐ |
-| SacredNumberWheel | `sacred-number-wheel.tsx` | ☐ |
-| InputModeToggle | `input-mode-toggle.tsx` | ☐ |
 | MoodSelector | `mood-selector.tsx` | ☐ |
 | InterpretationCard | `interpretation-card.tsx` | ☐ |
 | SightingCard | `sighting-card.tsx` | ☐ |
@@ -101,15 +102,22 @@ Loading indicator with sacred geometry styling.
 | FirstCatchCelebration | `first-catch-celebration.tsx` | ☐ |
 | SacredSpinner | `sacred-spinner.tsx` | ☐ |
 
+**Deferred to Phase 7:**
+- SacredNumberWheel
+- InputModeToggle
+
 ## Verification
 
 - [ ] All components render without errors
 - [ ] NumberPad accepts digit input correctly
-- [ ] SacredNumberWheel has proper circular layout
-- [ ] Input mode toggle persists to localStorage
+- [ ] NumberPad quick-select buttons work
 - [ ] MoodSelector limits to 3 selections
+- [ ] InterpretationCard shows loading and content states
+- [ ] SightingCard displays all required info
 - [ ] CollectionGrid shows empty state when no sightings
+- [ ] CollectionGrid filter works correctly
 - [ ] FirstCatchCelebration animates smoothly
+- [ ] SacredSpinner renders at all sizes
 - [ ] Components follow UX guidelines
 - [ ] `pnpm check` passes
 
@@ -121,4 +129,4 @@ Loading indicator with sacred geometry styling.
 
 ## Next Phase
 
-[Phase 5: Pages](./5-pages.md) — Create Signal pages
+[Phase 5: Pages](./5-pages.md) — Create Signal pages (capture, collection, detail)
