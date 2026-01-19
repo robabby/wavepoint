@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, CheckCircle, Loader2, Mail } from "lucide-react";
+import { ArrowLeft, Loader2, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { forgotPasswordSchema, type ForgotPasswordFormData } from "@/lib/auth/schemas";
+import { requestPasswordReset } from "@/lib/auth/password-reset-actions";
 import { type AuthView } from "./auth-provider";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,8 @@ const inputClassName = cn(
 
 export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [cooldownSeconds, setCooldownSeconds] = useState(0);
 
   const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -39,13 +42,32 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
     },
   });
 
-  const onSubmit = async (_data: ForgotPasswordFormData) => {
-    // Simulate network delay for UX
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  const onSubmit = async (data: ForgotPasswordFormData) => {
+    setError(null);
+    const result = await requestPasswordReset(data.email);
+
+    if (!result.success) {
+      if (result.cooldownSeconds) {
+        setCooldownSeconds(result.cooldownSeconds);
+        // Start countdown timer
+        const interval = setInterval(() => {
+          setCooldownSeconds((prev) => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+      }
+      setError(result.error);
+      return;
+    }
+
     setIsSubmitted(true);
   };
 
-  // Success state - "Coming Soon" placeholder
+  // Success state
   if (isSubmitted) {
     return (
       <div className="space-y-4">
@@ -61,15 +83,15 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
 
         <div className="flex flex-col items-center gap-4 py-6 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-gold)]/10">
-            <CheckCircle className="h-6 w-6 text-[var(--color-gold)]" />
+            <Mail className="h-6 w-6 text-[var(--color-gold)]" />
           </div>
           <div className="space-y-2">
             <h3 className="font-heading text-lg text-[var(--color-cream)]">
-              Coming Soon
+              Check Your Email
             </h3>
             <p className="text-sm text-[var(--color-warm-gray)]">
-              Password reset functionality is not yet available.
-              Please contact support if you need to recover your account.
+              If an account exists with that email, we&apos;ve sent a password
+              reset link. The link expires in 1 hour.
             </p>
           </div>
         </div>
@@ -116,10 +138,18 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
           />
         </div>
 
+        {/* Error message */}
+        {error && (
+          <p className="text-sm text-red-400 text-center">
+            {error}
+            {cooldownSeconds > 0 && ` (${cooldownSeconds}s)`}
+          </p>
+        )}
+
         {/* Submit button */}
         <Button
           type="submit"
-          disabled={form.formState.isSubmitting}
+          disabled={form.formState.isSubmitting || cooldownSeconds > 0}
           className="w-full h-11 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
         >
           {form.formState.isSubmitting ? (

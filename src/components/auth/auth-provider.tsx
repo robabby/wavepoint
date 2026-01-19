@@ -4,10 +4,12 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
 
 /**
@@ -57,9 +59,39 @@ interface AuthProviderProps {
  * </AuthProvider>
  * ```
  */
+/** Valid auth URL param values */
+const AUTH_VIEWS: AuthView[] = ["sign-in", "sign-up", "forgot-password"];
+
+function isAuthView(value: string | null): value is AuthView {
+  return value !== null && AUTH_VIEWS.includes(value as AuthView);
+}
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<AuthView>("sign-in");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Detect ?auth=sign-in (or sign-up, forgot-password) URL param and open modal
+  useEffect(() => {
+    const authParam = searchParams.get("auth");
+    if (isAuthView(authParam)) {
+      // Defer state update to avoid cascading render warning
+      // This is intentional: we're syncing URL state to React state
+      requestAnimationFrame(() => {
+        setView(authParam);
+        setIsOpen(true);
+      });
+      // Clean up URL by removing the auth param
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete("auth");
+      const newUrl = newParams.toString()
+        ? `${pathname}?${newParams.toString()}`
+        : pathname;
+      router.replace(newUrl, { scroll: false });
+    }
+  }, [searchParams, router, pathname]);
 
   const openModal = useCallback((initialView: AuthView = "sign-in") => {
     setView(initialView);
