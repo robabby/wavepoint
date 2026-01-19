@@ -9,6 +9,7 @@
 
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { verifyEmail } from "@/lib/auth/verification-actions";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ type VerifyState = "loading" | "success" | "error";
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { update: updateSession } = useSession();
   const token = searchParams.get("token");
 
   // Derive initial state from token presence
@@ -39,6 +41,8 @@ function VerifyEmailContent() {
     verifyEmail(token).then((result) => {
       if (result.success) {
         setState("success");
+        // Refresh session so emailVerified is updated (dismisses verification banner)
+        void updateSession();
         // Redirect to home after 3 seconds
         setTimeout(() => router.push("/"), 3000);
       } else {
@@ -46,7 +50,7 @@ function VerifyEmailContent() {
         setError(result.error ?? "Verification failed");
       }
     });
-  }, [token, router]);
+  }, [token, router, updateSession]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
