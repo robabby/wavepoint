@@ -28,30 +28,6 @@ type NavItem = {
   mobileLabel: string;
 };
 
-// Coming soon nav item with tooltip
-function ComingSoonNavItem({
-  desktopLabel,
-  mobileLabel,
-}: {
-  desktopLabel: string;
-  mobileLabel: string;
-}) {
-  return (
-    <span
-      className="group relative cursor-default text-xs font-medium text-[var(--color-dim)] sm:text-sm"
-      title="Coming Soon"
-    >
-      <span className="hidden sm:inline">{desktopLabel}</span>
-      <span className="sm:hidden">{mobileLabel}</span>
-
-      {/* Coming Soon tooltip */}
-      <span className="pointer-events-none absolute -bottom-8 left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded bg-[var(--color-dark-bronze)] px-2 py-1 text-xs text-[var(--color-warm-gray)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
-        Coming Soon
-      </span>
-    </span>
-  );
-}
-
 // Animated nav link with underline draw effect
 function AnimatedNavLink({
   href,
@@ -373,9 +349,6 @@ export function Header() {
                   }}
                 />
               ))}
-
-              {/* Coming Soon items */}
-              <ComingSoonNavItem desktopLabel="Journal" mobileLabel="Journal" />
             </nav>
 
             {/* Cart Icon - only when shop is enabled */}
@@ -472,17 +445,6 @@ export function Header() {
                     </span>
                   </Link>
                 ))}
-
-                {/* Divider */}
-                <div className="my-2 h-px bg-[var(--border-gold)]/30" />
-
-                {/* Coming Soon items */}
-                <div className="flex items-center gap-3 rounded-lg px-3 py-3 text-[var(--color-dim)]">
-                  <span className="ml-4 font-medium">Journal</span>
-                  <span className="rounded bg-[var(--color-dark-bronze)] px-1.5 py-0.5 text-xs text-[var(--color-gold)]/70">
-                    Soon
-                  </span>
-                </div>
 
                 {/* Auth Section - only when auth is enabled */}
                 {authEnabled && (

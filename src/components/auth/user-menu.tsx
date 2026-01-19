@@ -88,7 +88,7 @@ export function UserMenu({
           )}
           aria-label="User menu"
         >
-          <User className="h-5 w-5" />
+          <User className="h-[22px] w-[22px]" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
