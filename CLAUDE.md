@@ -30,6 +30,7 @@ src/content/                # MDX files (platonic-solids/, sacred-patterns/)
 src/util/routes.ts          # Top-level routing only (NOT geometry links)
 src/env.js                  # Env validation (Zod)
 docs/plans/                 # Implementation plans (YYYY-MM-DD-<topic>.md)
+docs/ux/                    # UX guidelines (personas, patterns, voice & tone)
 ```
 
 ## Key Patterns
@@ -162,6 +163,23 @@ localImages: {
 - **Prefer agents**: For multi-step implementations, use the Task tool with specialized agents (`feature-dev:code-architect`, `feature-dev:code-explorer`, `feature-dev:code-reviewer`) to parallelize work and maintain focus
 - **Sub-agent model**: All sub-agents must use Claude Opus (`model: "opus"`)
 - **Code review**: After implementations, use `feature-dev:code-reviewer` agent to review for bugs, security issues, and adherence to project conventions
+
+## UX Guidelines
+
+UX resources live in `docs/ux/`. Reference these when designing features, writing UI copy, or making decisions about user experience.
+
+**Brand positioning:** "Modern mystic" — sophisticated spirituality for people who meditate but also read design blogs.
+
+| Document | Use For |
+|----------|---------|
+| `docs/ux/personas.md` | Understanding who we design for |
+| `docs/ux/design-principles.md` | Decision-making guardrails |
+| `docs/ux/voice-and-tone.md` | Writing copy (pair with `elements-of-style:writing-clearly-and-concisely`) |
+| `docs/ux/user-journeys.md` | Designing flows, understanding emotional arcs |
+| `docs/ux/interaction-patterns.md` | Reusable UI patterns (empty states, loading, errors) |
+| `docs/ux/content-guidelines.md` | Writing about geometry and spirituality |
+
+**Key principles:** Grounded over Grandiose, Invitation over Instruction, Quiet Confidence, Respect the Intelligence, Private by Default, Craft over Content.
 
 ## Linear Integration
 
