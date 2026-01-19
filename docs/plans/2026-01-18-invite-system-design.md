@@ -933,6 +933,27 @@ Admin will manually copy and share invite links for v1.
 4. Modify `/api/auth/register` to validate invites
 5. Create `/invite/[code]` landing page
 
+## Relationship to Feature Flags
+
+The invite system gates **account creation**, not feature access. Once a user has an account, their access to specific features is controlled by separate feature flags:
+
+| System | What It Controls |
+|--------|------------------|
+| Invite System | Who can create an account |
+| `NEXT_PUBLIC_SHOP_ENABLED` | Shop visibility for all users |
+| `NEXT_PUBLIC_SIGNAL_ENABLED` | Signal visibility for all users |
+
+This means:
+- All registered users are in the "beta cohort"
+- Feature rollout is controlled independently via flags
+- No per-user feature access needed for v1
+
+**Future consideration:** If per-user feature access is needed (e.g., Signal beta for subset of users), add a `feature_access` table or user flags. This is explicitly out of scope for v1.
+
+### Related Plans
+
+- [Signal Feature Plan](./2026-01-18-signal-angel-number-tracking.md) — First feature using this access model
+
 ## Future Additions (Out of Scope)
 
 - Anonymous codes (no email attached)
@@ -940,3 +961,4 @@ Admin will manually copy and share invite links for v1.
 - Invite expiration
 - Referral tracking and rewards
 - Multiple invites per email (re-invite flow)
+- Per-user feature access control

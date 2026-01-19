@@ -38,6 +38,160 @@ Signal is an angel number logging feature that lets authenticated users capture 
 
 ---
 
+## User Access & Navigation
+
+### Access Model
+
+Signal uses the site's invite-gated registration (see [Invite System Design](./2026-01-18-invite-system-design.md)). All authenticated users have Signal access when `NEXT_PUBLIC_SIGNAL_ENABLED=true`.
+
+| User State | Signal Visibility | `/signal` Behavior |
+|------------|-------------------|---------------------|
+| Not authenticated | Hidden from nav | Redirect to `/login?redirect=/signal` |
+| Authenticated, flag off | Hidden from nav | 404 (feature not available) |
+| Authenticated, flag on | Visible in user menu | Full access to dashboard |
+
+### Relationship to Invite System
+
+The invite system gates **account creation**, not feature access. Once a user has an account (obtained via invite code), they receive access to all enabled features including Signal.
+
+```
+Invite Code → Account Creation → All Enabled Features (including Signal)
+```
+
+This means:
+- Signal beta users = all registered users (when flag is on)
+- No per-user Signal access control needed for v1
+- Rollout is controlled by the global `NEXT_PUBLIC_SIGNAL_ENABLED` flag
+
+### User Journeys
+
+#### Journey 1: New invited user discovers Signal
+
+```
+1. User receives invite link (email, DM, etc.)
+2. Visits /invite/SG-X7K9M2
+3. Creates account via auth modal
+4. Redirected to home, sees "Signal" in user dropdown
+5. Clicks Signal → /signal dashboard
+```
+
+#### Journey 2: Existing user when Signal launches
+
+```
+1. User already has account (from earlier invite)
+2. Admin sets NEXT_PUBLIC_SIGNAL_ENABLED=true, deploys
+3. User visits site, sees "Signal" in user dropdown
+4. Clicks Signal → /signal dashboard
+```
+
+**Optional enhancement:** In-app announcement banner for feature launch (deferred to v2).
+
+#### Journey 3: Direct URL without authentication
+
+```
+1. User visits /signal directly (shared link, bookmark, etc.)
+2. Signal layout checks auth → not authenticated
+3. Redirect to /login?redirect=/signal
+4. User signs in
+5. Redirect back to /signal dashboard
+```
+
+#### Journey 4: Direct URL when feature is disabled
+
+```
+1. Authenticated user visits /signal
+2. Signal layout checks feature flag → disabled
+3. Return 404 (feature doesn't exist yet)
+```
+
+**Note:** Using 404 rather than a "coming soon" page keeps the feature hidden until launch.
+
+#### Journey 5: Non-authenticated user, feature disabled
+
+```
+1. User visits /signal directly
+2. Signal layout checks auth → not authenticated
+3. Redirect to /login?redirect=/signal
+4. User signs in
+5. Feature flag check → disabled
+6. Return 404
+```
+
+### Navigation Integration
+
+Signal link appears in the user dropdown menu (same location as account settings, sign out):
+
+```
+┌─────────────────────┐
+│  rob@example.com    │
+├─────────────────────┤
+│  Signal        ✨   │  ← New item (only when flag=true)
+│  Account Settings   │
+│  ───────────────    │
+│  Sign Out           │
+└─────────────────────┘
+```
+
+**Implementation:** Update user menu component in Phase 6 (Integration) to conditionally render Signal link based on `isSignalEnabled()`.
+
+### Layout Guard Implementation
+
+```typescript
+// src/app/signal/layout.tsx
+import { redirect, notFound } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { isSignalEnabled } from "@/lib/signal/feature-flags";
+
+export default async function SignalLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Check authentication
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/login?redirect=/signal");
+  }
+
+  // Check feature flag
+  if (!isSignalEnabled()) {
+    notFound();
+  }
+
+  return <>{children}</>;
+}
+```
+
+### Deep Link Handling (Sighting URLs)
+
+When users share sighting URLs (`/signal/sighting/[id]`), the same auth + feature flag guards apply via the layout. Additional considerations:
+
+| Scenario | Behavior |
+|----------|----------|
+| Valid sighting, owner viewing | Show full sighting detail |
+| Valid sighting, other user viewing | 404 (sightings are private) |
+| Invalid sighting ID | 404 |
+| Not authenticated | Redirect to login, then 404 (can't see others' sightings) |
+
+**v1 Decision:** Sightings are private—users can only view their own. This simplifies auth logic and avoids building sharing/privacy controls.
+
+**Future consideration:** If public sharing is added later, introduce a `shared` boolean or `visibility` enum on sightings.
+
+### First-Use Experience
+
+When a user accesses Signal for the first time, consider:
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| **No onboarding** (v1) | Ship faster, users explore naturally | May miss feature value |
+| **Inline hints** | Non-intrusive, contextual | Requires tooltip system |
+| **Welcome modal** | Sets expectations, explains value | Interrupts flow |
+| **Empty state CTA** | Natural discovery when collection is empty | Only works initially |
+
+**v1 Decision:** Use compelling empty state with clear CTA. The `/signal` dashboard empty state already includes guidance text. Defer modal/hints to v2.
+
+---
+
 ## Architecture Integration
 
 ### File Structure
@@ -1098,12 +1252,44 @@ describe("POST /api/signal/sightings", () => {
 
 ## Dependencies
 
-**Blocking:**
-- Auth system must be complete (users table exists) ✅
+### Blocking Dependencies
 
-**Required:**
-- `@anthropic-ai/sdk` package (to install)
-- Drizzle migrations run
+| Dependency | Status | Notes |
+|------------|--------|-------|
+| Auth system | ✅ Complete | Users table, session management |
+| Invite system | Optional | Signal works without invites; invites gate account creation |
+
+**Implementation order:** Signal can be built independently of the invite system. Both depend on auth, but not on each other.
+
+```
+Auth System (complete)
+    ├── Invite System (gates registration)
+    └── Signal (gates feature access via flag)
+```
+
+### Required for Implementation
+
+| Requirement | Phase | Notes |
+|-------------|-------|-------|
+| `@anthropic-ai/sdk` | Phase 2 | `pnpm add @anthropic-ai/sdk` |
+| Drizzle migration | Phase 1 | Run after adding schema |
+| `ANTHROPIC_API_KEY` | Phase 2 | Required for interpretations |
+
+### Development Without Invites
+
+To develop/test Signal without the invite system:
+
+```bash
+# .env.local
+NEXT_PUBLIC_INVITES_REQUIRED="false"  # Open registration
+NEXT_PUBLIC_SIGNAL_ENABLED="true"     # Enable Signal
+```
+
+This allows creating test accounts directly without invite codes.
+
+### Related Plans
+
+- [Invite System Design](./2026-01-18-invite-system-design.md) — Gates account creation (separate from Signal access)
 
 ---
 
@@ -1125,6 +1311,8 @@ describe("POST /api/signal/sightings", () => {
 - Voice capture
 - Push notifications
 - PWA offline support
+- Public sighting sharing (requires visibility controls)
+- Per-user Signal access control (if needed for staged rollout)
 
 ---
 
