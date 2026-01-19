@@ -6,7 +6,9 @@ import {
   integer,
   jsonb,
   unique,
+  index,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 /**
  * Users table - stores account information
@@ -114,6 +116,93 @@ export const orders = pgTable("orders", {
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
 });
 
+// =============================================================================
+// Signal - Angel number tracking
+// =============================================================================
+
+/**
+ * Signal sightings - captured angel numbers with optional context
+ */
+export const signalSightings = pgTable(
+  "signal_sightings",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    number: text("number").notNull(), // "1111", "444", etc.
+    note: text("note"),
+    moodTags: text("mood_tags").array(),
+    timestamp: timestamp("timestamp", { mode: "date" }).notNull().defaultNow(),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("signal_sightings_user_id_idx").on(table.userId),
+    index("signal_sightings_number_idx").on(table.number),
+    index("signal_sightings_timestamp_idx").on(table.timestamp),
+  ]
+);
+
+/**
+ * Signal interpretations - AI-generated meanings (1:1 with sightings)
+ */
+export const signalInterpretations = pgTable(
+  "signal_interpretations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    sightingId: uuid("sighting_id")
+      .notNull()
+      .unique() // 1:1 relationship
+      .references(() => signalSightings.id, { onDelete: "cascade" }),
+    content: text("content").notNull(),
+    model: text("model").notNull(), // "claude-3-haiku", "fallback", etc.
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [index("signal_interpretations_sighting_id_idx").on(table.sightingId)]
+);
+
+/**
+ * Signal user number stats - denormalized stats for performance
+ */
+export const signalUserNumberStats = pgTable(
+  "signal_user_number_stats",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    number: text("number").notNull(),
+    count: integer("count").notNull().default(0),
+    firstSeen: timestamp("first_seen", { mode: "date" }).notNull(),
+    lastSeen: timestamp("last_seen", { mode: "date" }).notNull(),
+  },
+  (table) => [
+    unique("signal_user_number_stats_user_number_unique").on(
+      table.userId,
+      table.number
+    ),
+    index("signal_user_number_stats_user_id_idx").on(table.userId),
+  ]
+);
+
+// Signal relations for Drizzle's relational queries
+export const signalSightingsRelations = relations(signalSightings, ({ one }) => ({
+  interpretation: one(signalInterpretations, {
+    fields: [signalSightings.id],
+    references: [signalInterpretations.sightingId],
+  }),
+}));
+
+export const signalInterpretationsRelations = relations(
+  signalInterpretations,
+  ({ one }) => ({
+    sighting: one(signalSightings, {
+      fields: [signalInterpretations.sightingId],
+      references: [signalSightings.id],
+    }),
+  })
+);
+
 // Type exports for use in application code
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -132,3 +221,12 @@ export type NewAddress = typeof addresses.$inferInsert;
 
 export type Order = typeof orders.$inferSelect;
 export type NewOrder = typeof orders.$inferInsert;
+
+export type SignalSighting = typeof signalSightings.$inferSelect;
+export type NewSignalSighting = typeof signalSightings.$inferInsert;
+
+export type SignalInterpretation = typeof signalInterpretations.$inferSelect;
+export type NewSignalInterpretation = typeof signalInterpretations.$inferInsert;
+
+export type SignalUserNumberStats = typeof signalUserNumberStats.$inferSelect;
+export type NewSignalUserNumberStats = typeof signalUserNumberStats.$inferInsert;

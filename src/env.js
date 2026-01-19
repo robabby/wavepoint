@@ -18,6 +18,8 @@ export const env = createEnv({
     BREVO_API_KEY: z.string().min(1).optional(),
     EMAIL_FROM_ADDRESS: z.string().email().default("noreply@sacredgeometry.site"),
     EMAIL_FROM_NAME: z.string().default("Sacred Geometry"),
+    // Signal (AI interpretations) - optional, AI features disabled if not set
+    ANTHROPIC_API_KEY: z.string().min(1).optional(),
   },
 
   /**
@@ -31,6 +33,10 @@ export const env = createEnv({
       .transform((val) => val === "true")
       .default("false"),
     NEXT_PUBLIC_AUTH_ENABLED: z
+      .string()
+      .transform((val) => val === "true")
+      .default("false"),
+    NEXT_PUBLIC_SIGNAL_ENABLED: z
       .string()
       .transform((val) => val === "true")
       .default("false"),
@@ -48,6 +54,7 @@ export const env = createEnv({
     PRINTFUL_API_KEY: process.env.PRINTFUL_API_KEY,
     NEXT_PUBLIC_SHOP_ENABLED: process.env.NEXT_PUBLIC_SHOP_ENABLED,
     NEXT_PUBLIC_AUTH_ENABLED: process.env.NEXT_PUBLIC_AUTH_ENABLED,
+    NEXT_PUBLIC_SIGNAL_ENABLED: process.env.NEXT_PUBLIC_SIGNAL_ENABLED,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
@@ -56,6 +63,7 @@ export const env = createEnv({
     BREVO_API_KEY: process.env.BREVO_API_KEY,
     EMAIL_FROM_ADDRESS: process.env.EMAIL_FROM_ADDRESS,
     EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
