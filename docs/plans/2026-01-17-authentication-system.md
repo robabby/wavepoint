@@ -29,6 +29,26 @@ Add email/password authentication to enable:
 
 **Dependency chain:** SG-267 → SG-268 → SG-269 → SG-270 → SG-271 → SG-272 → SG-273 → SG-274 → SG-275 → SG-276 → SG-277 → SG-278 → SG-279 → SG-280 → SG-281
 
+## Progress
+
+| Issue | Status | PR | Notes |
+|-------|--------|-----|-------|
+| SG-267 | ✅ Done | — | Neon + Drizzle setup |
+| SG-268 | ✅ Done | — | Auth.js v5 configured |
+| SG-269 | ✅ Done | #114 | AuthProvider + AuthModal |
+| SG-270 | ✅ Done | #115 | Sign-in/sign-up/forgot-password forms |
+| SG-271 | ✅ Done | #116 | UserMenu + header integration |
+| SG-272 | ✅ Done | #117 | Email verification flow |
+| SG-273 | ✅ Done | #118 | Password reset flow |
+| SG-274 | ✅ Done | #119 | Account layout, overview, orders pages |
+| SG-275 | 🔲 Todo | — | Address management |
+| SG-276 | 🔲 Todo | — | Account deletion (GDPR) |
+| SG-277 | 🔲 Todo | — | CheckoutGate component |
+| SG-278 | 🔲 Todo | — | Checkout auth requirement |
+| SG-279 | 🔲 Todo | — | Shipping estimates |
+| SG-280 | 🔲 Todo | — | Rate limiting + lockout |
+| SG-281 | 🔲 Todo | — | Security headers |
+
 ## Tech Stack
 
 | Component | Choice | Free Tier |
