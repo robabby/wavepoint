@@ -348,6 +348,315 @@ Create work items from the detailed implementation plan:
 2. Create first batch of invites
 3. Send to initial circle
 
+## UI Specifications
+
+### Design System Reference
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--color-obsidian` | `#0c0c0c` | Page backgrounds |
+| `--color-warm-charcoal` | `#1a1714` | Card backgrounds, input backgrounds |
+| `--color-gold` | `#d4a84b` | Primary accent, CTAs, status highlights |
+| `--color-gold-bright` | `#e8c068` | Hover states |
+| `--color-cream` | `#f5f0e6` | Primary text |
+| `--color-warm-gray` | `#b8a99a` | Secondary text |
+| `--color-dim` | `#7a6b5a` | Tertiary text, placeholders |
+| `--border-gold` | `rgba(212, 168, 75, 0.3)` | Card borders, dividers |
+| `--glow-gold` | `rgba(212, 168, 75, 0.2)` | Hover glows |
+
+**Typography:**
+- Display: Cinzel Decorative (`font-display`)
+- Headings: Cormorant Garamond (`font-heading`)
+- Body: Crimson Pro (`font-body`)
+
+---
+
+### Admin Invites Page (`/admin/invites`)
+
+**Purpose:** Manage beta invitations—create, track, and resend.
+
+**Layout:**
+```
+┌────────────────────────────────────────────────────────────────┐
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  INVITES                            [+ Create Invite]    │  │
+│  │  ───────                                                 │  │
+│  │  Manage beta access to the inner circle                  │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                                                │
+│  Stats bar: 12 total · 8 pending · 4 joined                   │
+│                                                                │
+│  ┌────────────────────────────────────────────────────────────┐│
+│  │ ◈ sarah@example.com                           [Pending]   ││
+│  │   SG-X7K9M2 · Invited Jan 15                              ││
+│  │   [Copy Link]  [Resend Email]                             ││
+│  └────────────────────────────────────────────────────────────┘│
+│                                                                │
+│  ┌────────────────────────────────────────────────────────────┐│
+│  │ ◈ mike@example.com                            [Joined]    ││
+│  │   SG-R4T8N1 · Joined Jan 13                               ││
+│  │   [Copy Link]                                             ││
+│  └────────────────────────────────────────────────────────────┘│
+└────────────────────────────────────────────────────────────────┘
+```
+
+**Component Styles:**
+
+| Element | Classes |
+|---------|---------|
+| Page title | `font-display text-page-title text-[var(--color-cream)]` |
+| Subtitle | `text-[var(--color-warm-gray)]` |
+| Create button | `bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)] hover:glow-gold` |
+| Invite card | `border-[var(--border-gold)]/30 bg-[var(--color-obsidian)] rounded-lg p-4` |
+| Email display | `font-medium text-[var(--color-cream)]` |
+| Code display | `font-mono text-sm text-[var(--color-gold)] tracking-wider` |
+| Pending badge | `bg-[var(--color-gold)]/10 text-[var(--color-gold)] border-[var(--color-gold)]/30 text-xs px-2 py-0.5 rounded` |
+| Joined badge | `bg-emerald-500/10 text-emerald-400 border-emerald-500/30 text-xs px-2 py-0.5 rounded` |
+| Action buttons | `text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] text-sm` |
+
+**Create Invite Modal:**
+```
+┌──────────────────────────────────────────┐
+│  CREATE INVITE                     [×]   │
+│  ─────────────────                       │
+│  Grant access to the inner circle        │
+│                                          │
+│  Email Address                           │
+│  ┌────────────────────────────────────┐  │
+│  │ someone@example.com                │  │
+│  └────────────────────────────────────┘  │
+│                                          │
+│  ☐ Send invite email immediately         │
+│                                          │
+│  ┌────────────────────────────────────┐  │
+│  │         Create Invite              │  │
+│  └────────────────────────────────────┘  │
+└──────────────────────────────────────────┘
+```
+
+**Empty State:**
+```
+┌────────────────────────────────────────────────────────────────┐
+│                          ◇                                     │
+│                                                                │
+│               No invites yet                                   │
+│     Create your first invite to begin building                 │
+│               the inner circle.                                │
+│                                                                │
+│          ┌─────────────────────────────┐                       │
+│          │       Create Invite         │                       │
+│          └─────────────────────────────┘                       │
+└────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Invite Landing Page (`/invite/[code]`)
+
+**Purpose:** Welcome invited users and guide them to registration.
+
+**Design Direction:** Ceremonial, welcoming. This is the user's first impression—make it feel like they're being welcomed into something special.
+
+**Valid Invite Layout:**
+```
+┌────────────────────────────────────────────────────────────────┐
+│                                                                │
+│                      ◇ ◇ ◇ ◇ ◇                                │
+│                                                                │
+│                   YOU'VE BEEN INVITED                          │
+│                                                                │
+│              Welcome to Sacred Geometry                        │
+│                                                                │
+│          Your unique access code: SG-X7K9M2                    │
+│                                                                │
+│          ┌─────────────────────────────────┐                   │
+│          │       Accept Invitation         │                   │
+│          └─────────────────────────────────┘                   │
+│                                                                │
+│          This invitation was sent to                           │
+│          sarah@example.com                                     │
+│                                                                │
+│                      ◇ ◇ ◇ ◇ ◇                                │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**Component Styles:**
+
+| Element | Classes |
+|---------|---------|
+| Decorative pattern | `text-[var(--color-gold)]/40` SVG diamonds, spaced evenly |
+| Main heading | `font-display text-hero text-[var(--color-cream)] tracking-wide text-center` |
+| Subtitle | `font-heading text-section text-[var(--color-warm-gray)] text-center` |
+| Code display | `font-mono text-2xl text-[var(--color-gold)] tracking-[0.3em] glow-gold` |
+| CTA button | `bg-[var(--color-gold)] text-[var(--color-obsidian)] px-8 py-4 text-lg hover:glow-gold` |
+| Email hint | `text-sm text-[var(--color-dim)] text-center` |
+
+**Animation:**
+- Page entrance: `animate-in fade-in duration-500` with slight scale (0.98 → 1.0)
+- Code display: Subtle gold pulse animation (opacity 0.8 → 1.0 → 0.8)
+- CTA button: Gentle glow intensity increase on hover
+
+**Invalid Code State:**
+```
+┌────────────────────────────────────────────────────────────────┐
+│                                                                │
+│                   INVITATION NOT FOUND                         │
+│                                                                │
+│           This code doesn't exist or has expired               │
+│                                                                │
+│          ┌─────────────────────────────────┐                   │
+│          │       Return Home               │                   │
+│          └─────────────────────────────────┘                   │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**Already Redeemed State:**
+```
+┌────────────────────────────────────────────────────────────────┐
+│                                                                │
+│                  INVITATION ALREADY USED                       │
+│                                                                │
+│             This code has already been redeemed                │
+│                                                                │
+│          ┌─────────────────────────────────┐                   │
+│          │          Sign In                │                   │
+│          └─────────────────────────────────┘                   │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Sign-up Form Updates
+
+**Purpose:** Integrate invite code validation into existing auth modal.
+
+**Conditional Display:** Show invite code field only when `NEXT_PUBLIC_INVITES_REQUIRED=true`.
+
+**With Pre-filled Code (from `/invite/[code]`):**
+```
+┌──────────────────────────────────────────┐
+│  CREATE ACCOUNT                    [×]   │
+│  ─────────────────                       │
+│  Join to save addresses and track orders │
+│                                          │
+│  Invite Code                             │
+│  ┌────────────────────────────────────┐  │
+│  │ SG-X7K9M2                      ✓   │  │  ← Pre-filled, readonly, validated
+│  └────────────────────────────────────┘  │
+│                                          │
+│  Email                                   │
+│  ┌────────────────────────────────────┐  │
+│  │ sarah@example.com                  │  │
+│  └────────────────────────────────────┘  │
+│                                          │
+│  Password                                │
+│  ┌────────────────────────────────────┐  │
+│  │ ••••••••                       👁  │  │
+│  └────────────────────────────────────┘  │
+│                                          │
+│  ┌────────────────────────────────────┐  │
+│  │          Create Account            │  │
+│  └────────────────────────────────────┘  │
+│                                          │
+│  Already have an account? Sign in        │
+└──────────────────────────────────────────┘
+```
+
+**Without Code (direct signup attempt):**
+```
+┌──────────────────────────────────────────┐
+│  CREATE ACCOUNT                    [×]   │
+│  ─────────────────                       │
+│                                          │
+│  ┌────────────────────────────────────┐  │
+│  │ ⚠ Registration is invite-only     │  │
+│  │                                    │  │
+│  │ You need an invite code to join.  │  │
+│  │ Already have one? Enter it below. │  │
+│  └────────────────────────────────────┘  │
+│                                          │
+│  Invite Code                             │
+│  ┌────────────────────────────────────┐  │
+│  │                                    │  │
+│  └────────────────────────────────────┘  │
+│  Format: SG-XXXXXX                       │
+│                                          │
+│  Email                                   │
+│  ┌────────────────────────────────────┐  │
+│  │                                    │  │
+│  └────────────────────────────────────┘  │
+│                                          │
+│  Password                                │
+│  ┌────────────────────────────────────┐  │
+│  │                                    │  │
+│  └────────────────────────────────────┘  │
+│                                          │
+│  ┌────────────────────────────────────┐  │
+│  │          Create Account            │  │
+│  └────────────────────────────────────┘  │
+└──────────────────────────────────────────┘
+```
+
+**Component Styles:**
+
+| Element | Classes |
+|---------|---------|
+| Invite code input | Same as other inputs + `font-mono tracking-wider uppercase` |
+| Pre-filled state | `bg-[var(--color-warm-charcoal)]/30 cursor-not-allowed` |
+| Valid indicator | `text-emerald-400` checkmark icon |
+| Format hint | `text-xs text-[var(--color-dim)]` |
+| Warning banner | `bg-[var(--color-gold)]/10 border-[var(--color-gold)]/30 rounded-md p-3` |
+
+**Validation Error Messages:**
+
+| Scenario | Message | Display |
+|----------|---------|---------|
+| Invalid format | "Invalid invite code format" | Below input, red text |
+| Code not found | "Invalid invite code" | Below input, red text |
+| Already redeemed | "This invite has already been used" | Below input, red text |
+| Email mismatch | "This invite was sent to a different email" | Below input, red text |
+
+**AuthProvider Updates:**
+
+Add `inviteCode` to auth modal state for passing from landing page:
+
+```typescript
+interface AuthModalState {
+  isOpen: boolean;
+  view: AuthView;
+  inviteCode?: string;  // Pre-filled from /invite/[code]
+}
+```
+
+---
+
+### Responsive Behavior
+
+**Admin Invites Page:**
+- Desktop: Cards in single column with comfortable padding
+- Mobile: Full-width cards, stacked actions below metadata
+
+**Invite Landing Page:**
+- Desktop: Centered content with generous vertical spacing
+- Mobile: Reduced vertical spacing, full-width CTA button
+
+**Sign-up Form:**
+- Uses existing mobile bottom sheet pattern from AuthModal
+- Invite code field appears at top of form fields
+
+---
+
+### Accessibility
+
+- All interactive elements have visible focus states (gold ring)
+- Status badges include `aria-label` for screen readers
+- Form fields have proper `aria-describedby` for hints and errors
+- Color is not the only indicator of status (icons accompany badges)
+- Reduced motion: Disable animations via `prefers-reduced-motion`
+
 ## Future Additions (Out of Scope)
 
 - Anonymous codes (no email attached)
