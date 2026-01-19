@@ -1,7 +1,7 @@
 # Phase 7: SacredNumberWheel
 
-**Linear:** *NEW — Create issue SG-XXX*
-**Branch:** `sg-XXX-signal-phase-7-sacred-number-wheel`
+**Linear:** [SG-302](https://linear.app/sherpagg/issue/SG-302)
+**Branch:** `sg-302-signal-phase-7-sacrednumberwheel`
 
 > **UX Guidelines:**
 > - [`docs/ux/design-principles.md`](../../../ux/design-principles.md) — "Quiet Confidence" principle
