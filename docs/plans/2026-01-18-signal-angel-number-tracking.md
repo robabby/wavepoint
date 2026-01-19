@@ -1,5 +1,16 @@
 # Signal - Angel Number Tracking Feature
 
+> **📁 This document has been restructured.**
+>
+> For implementation, use the modular docs at [`docs/plans/signal/`](./signal/README.md):
+> - **Overview & Navigation:** [`signal/README.md`](./signal/README.md)
+> - **By Domain:** `schema.md`, `api.md`, `components.md`, `hooks.md`, `claude.md`
+> - **By Phase:** `phases/1-foundation.md` through `phases/7-testing-polish.md`
+>
+> This file is preserved for historical reference.
+
+---
+
 ## Plan Status: Ready for Implementation
 
 ## Linear Issues
