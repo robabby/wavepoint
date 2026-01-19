@@ -121,7 +121,7 @@ export function AccountActions() {
         icon={MapPin}
         title="Shipping Address"
         description="Manage your default shipping address"
-        disabled
+        href="/account/address"
       />
       <ActionCard
         icon={KeyRound}

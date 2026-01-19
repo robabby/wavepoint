@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { User, Package } from "lucide-react";
+import { User, Package, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
   { name: "Overview", href: "/account", icon: User },
   { name: "Orders", href: "/account/orders", icon: Package },
+  { name: "Address", href: "/account/address", icon: MapPin },
 ];
 
 interface AccountSidebarProps {
