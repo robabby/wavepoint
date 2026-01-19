@@ -15,3 +15,16 @@ export type {
   UserStats,
   NumberCount,
 } from "./types";
+
+// Base meanings
+export { getBaseMeaning } from "./meanings";
+
+// Claude API integration
+export {
+  generateInterpretation,
+  type InterpretationContext,
+  type InterpretationResult,
+} from "./claude";
+
+// Rate limiting
+export { checkRateLimit } from "./rate-limit";
