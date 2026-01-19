@@ -124,21 +124,22 @@ The `/admin` layout checks logged-in user's email against this list. Returns 404
 
 Form fields:
 - Email address (required)
-- Checkbox: "Send invite email now" (optional)
 
 On submit:
 1. Generate unique code
 2. Insert into `invites` table
-3. Create Brevo contact with `INVITE_STATUS = "invited"`
-4. Send invite email if checkbox selected
+3. Create Brevo contact with `INVITE_STATUS = "invited"` (fire-and-forget)
+4. Return success with invite code and link for admin to copy
+
+**v1 Note:** Email sending is deferred. Admin manually copies and shares the invite link.
 
 ### API Routes
 
-| Route | Method | Purpose |
-|-------|--------|---------|
-| `/api/admin/invites` | GET | List all invites |
-| `/api/admin/invites` | POST | Create new invite |
-| `/api/admin/invites/[id]/resend` | POST | Resend invite email |
+| Route | Method | Purpose | v1 Status |
+|-------|--------|---------|-----------|
+| `/api/admin/invites` | GET | List all invites | ✓ |
+| `/api/admin/invites` | POST | Create new invite | ✓ |
+| `/api/admin/invites/[id]/resend` | POST | Resend invite email | Deferred |
 
 ## Brevo Integration
 
@@ -200,23 +201,28 @@ Brevo API failures don't block invites. If sync fails:
 ```
 src/lib/invites/
   index.ts              # Export public functions
-  schema.ts             # Zod validation (email, code format)
+  schemas.ts            # Zod validation (email, code format)
   codes.ts              # generateInviteCode() utility
+  service.ts            # Database CRUD operations
   brevo.ts              # Brevo contact sync functions
 
+src/lib/auth/
+  admin.ts              # isAdmin(), requireAdmin() helpers
+
 src/app/invite/
-  [code]/page.tsx       # Invite landing page
+  [code]/
+    page.tsx            # Invite landing page (RSC)
+    _components/        # Page-specific client components
 
 src/app/admin/
-  layout.tsx            # Admin access check (email allowlist)
+  layout.tsx            # Admin access check (email allowlist, 404 for non-admins)
   invites/
-    page.tsx            # Invite management UI
+    page.tsx            # Invite management UI (RSC)
+    _components/        # Admin client components (list, card, modal)
 
 src/app/api/admin/
   invites/
     route.ts            # GET (list) + POST (create)
-    [id]/
-      resend/route.ts   # POST resend email
 ```
 
 ### Modified Files
@@ -389,7 +395,7 @@ Create work items from the detailed implementation plan:
 │  ┌────────────────────────────────────────────────────────────┐│
 │  │ ◈ sarah@example.com                           [Pending]   ││
 │  │   SG-X7K9M2 · Invited Jan 15                              ││
-│  │   [Copy Link]  [Resend Email]                             ││
+│  │   [Copy Link]                                             ││
 │  └────────────────────────────────────────────────────────────┘│
 │                                                                │
 │  ┌────────────────────────────────────────────────────────────┐│
@@ -426,10 +432,27 @@ Create work items from the detailed implementation plan:
 │  │ someone@example.com                │  │
 │  └────────────────────────────────────┘  │
 │                                          │
-│  ☐ Send invite email immediately         │
-│                                          │
 │  ┌────────────────────────────────────┐  │
 │  │         Create Invite              │  │
+│  └────────────────────────────────────┘  │
+└──────────────────────────────────────────┘
+```
+
+**Success State (after creation):**
+```
+┌──────────────────────────────────────────┐
+│  INVITE CREATED                    [×]   │
+│  ─────────────────                       │
+│                                          │
+│  Invite link ready to share:             │
+│                                          │
+│  ┌────────────────────────────────────┐  │
+│  │ sacredgeometry.site/invite/SG-X7K9│  │
+│  └────────────────────────────────────┘  │
+│           [Copy Link]                    │
+│                                          │
+│  ┌────────────────────────────────────┐  │
+│  │            Done                    │  │
 │  └────────────────────────────────────┘  │
 └──────────────────────────────────────────┘
 ```
@@ -656,6 +679,259 @@ interface AuthModalState {
 - Form fields have proper `aria-describedby` for hints and errors
 - Color is not the only indicator of status (icons accompany badges)
 - Reduced motion: Disable animations via `prefers-reduced-motion`
+
+## Implementation Notes
+
+This section contains refined technical details from codebase analysis, to guide implementation.
+
+### Clarified Decisions
+
+| Question | Decision |
+|----------|----------|
+| Email field behavior on invite landing | Pre-fill AND lock (readonly) — user cannot change email |
+| Invite email sending for v1 | **Deferred** — admin manually shares links |
+| Already logged-in user visits invite link | Show contextual message with sign-out option |
+| Resend email API for v1 | **Deferred** — remove from v1 scope |
+| ADMIN_EMAILS env var scope | Server-only (not NEXT_PUBLIC) |
+
+### Schema Refinements
+
+The proposed schema needs these additions to match codebase patterns:
+
+```typescript
+// src/lib/db/schema.ts
+export const invites = pgTable("invites", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  code: text("code").notNull().unique(),
+  email: text("email").notNull().unique(),
+  status: text("status").notNull().default("pending"),
+  brevoContactId: text("brevo_contact_id"),
+  redeemedBy: uuid("redeemed_by")
+    .references(() => users.id, { onDelete: "set null" }),  // Added onDelete
+  redeemedAt: timestamp("redeemed_at", { mode: "date" }),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),  // Added
+});
+
+export type Invite = typeof invites.$inferSelect;
+export type NewInvite = typeof invites.$inferInsert;
+```
+
+**Changes from original:**
+- Added `updatedAt` column (consistency with other tables)
+- Added `onDelete: "set null"` to `redeemedBy` foreign key
+- Use camelCase variable names mapping to snake_case SQL columns
+
+### Revised File Structure
+
+```
+src/lib/invites/
+  index.ts              # Export public functions
+  schemas.ts            # Zod validation (renamed from schema.ts for consistency)
+  codes.ts              # generateInviteCode() utility
+  service.ts            # Database CRUD operations (NEW - follows token-service pattern)
+  brevo.ts              # Brevo contact sync functions
+
+src/lib/auth/
+  admin.ts              # NEW: isAdmin(), requireAdmin() helpers
+
+src/app/invite/
+  [code]/
+    page.tsx            # Invite landing page (RSC)
+    _components/
+      invite-welcome.tsx      # Valid invite welcome UI
+      invalid-invite.tsx      # Invalid code state
+      already-redeemed.tsx    # Code already used state
+      already-logged-in.tsx   # User already authenticated state
+
+src/app/admin/
+  layout.tsx            # Admin access check (email allowlist, returns 404)
+  invites/
+    page.tsx            # Invite management UI (RSC)
+    _components/
+      invite-list.tsx         # Client component for list
+      invite-card.tsx         # Individual invite display
+      create-invite-modal.tsx # Create new invite dialog
+```
+
+### Invite Code Flow (URL Parameters)
+
+The invite code flows through the system via URL parameters:
+
+```
+/invite/SG-X7K9M2 (Server Component validates code, fetches invite)
+    │
+    ├─► Invalid code → Render InvalidInvite component
+    ├─► Already redeemed → Render AlreadyRedeemed component
+    ├─► User logged in → Render AlreadyLoggedIn component
+    │
+    └─► Valid + not logged in → Render InviteWelcome
+            │
+            User clicks "Accept Invitation"
+            │
+            └─► Redirect to /?auth=sign-up&invite=SG-X7K9M2&email=sarah@example.com
+                    │
+                    AuthProvider reads params, stores in context
+                    │
+                    SignUpForm receives inviteData from context
+                    │
+                    └─► Email + code fields are readonly/pre-filled
+```
+
+### AuthProvider Context Extension
+
+```typescript
+// src/components/auth/auth-provider.tsx
+
+interface InviteData {
+  code: string;
+  email: string;
+}
+
+interface AuthModalContextValue {
+  isOpen: boolean;
+  view: AuthView;
+  inviteData: InviteData | null;  // NEW
+  openModal: (view?: AuthView, invite?: InviteData) => void;  // MODIFIED
+  closeModal: () => void;
+  setView: (view: AuthView) => void;
+  clearInviteData: () => void;  // NEW
+}
+```
+
+**URL params to parse:** `auth`, `invite`, `email` (cleaned after reading)
+
+### Admin Authorization Pattern
+
+```typescript
+// src/lib/auth/admin.ts
+import { env } from "@/env";
+import type { Session } from "next-auth";
+
+export function isAdmin(session: Session | null): boolean {
+  if (!session?.user?.email) return false;
+  const adminEmails = (env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map(e => e.trim().toLowerCase())
+    .filter(Boolean);
+  return adminEmails.includes(session.user.email.toLowerCase());
+}
+
+// Usage in admin layout - return 404 to hide admin routes
+if (!isAdmin(session)) {
+  notFound();
+}
+
+// Usage in API routes - also return 404
+if (!isAdmin(session)) {
+  return NextResponse.json({ error: "Not found" }, { status: 404 });
+}
+```
+
+### Registration Route Integration
+
+Insert invite validation **after email normalization, before user existence check**:
+
+```typescript
+// src/app/api/auth/register/route.ts (modified flow)
+
+1. Parse input (add optional inviteCode to schema)
+2. Normalize email
+3. IF env.NEXT_PUBLIC_INVITES_REQUIRED === "true":
+   a. Validate invite code exists + status='pending'
+   b. Validate email matches invite.email (case-insensitive)
+   c. Return 400 with specific error if validation fails
+4. Check if user exists (existing 409 logic)
+5. Hash password
+6. Create user
+7. IF invite was validated:
+   a. Mark invite as redeemed (set status, redeemed_by, redeemed_at)
+   b. Sync Brevo status to "joined" (fire-and-forget)
+8. Send verification email (existing fire-and-forget)
+9. Return 201
+```
+
+**Note:** Neon HTTP driver doesn't support transactions. Accept sequential operations — the email constraint provides sufficient safety.
+
+### Brevo Integration Pattern
+
+Follow existing fire-and-forget pattern from verification emails:
+
+```typescript
+// On invite creation (admin route)
+void syncInviteToBrevo(email, code, 'invited').catch((err) => {
+  console.error("Failed to sync invite to Brevo:", err);
+});
+
+// On invite redemption (registration route)
+void updateBrevoInviteStatus(email, 'joined').catch((err) => {
+  console.error("Failed to update Brevo status:", err);
+});
+```
+
+**Graceful degradation:** DB is source of truth. Brevo failures are logged but don't block operations.
+
+### Environment Variables (Revised)
+
+```bash
+# Invite System
+NEXT_PUBLIC_INVITES_REQUIRED="false"  # Gate registration (default: false)
+ADMIN_EMAILS=""                       # Server-only, comma-separated admin emails
+
+# Brevo (optional - features disabled if not set)
+BREVO_BETA_LIST_ID=""                 # Beta Users list ID (optional for v1)
+# BREVO_INVITE_TEMPLATE_ID=""         # Deferred - not needed for v1
+```
+
+### v1 Deferred Scope
+
+These items are explicitly out of scope for v1:
+
+- [ ] `POST /api/admin/invites/[id]/resend` — Resend email API
+- [ ] "Send invite email now" checkbox in create modal
+- [ ] `BREVO_INVITE_TEMPLATE_ID` env var
+- [ ] Brevo transactional template for invite emails
+
+Admin will manually copy and share invite links for v1.
+
+### Error Messages
+
+| Scenario | HTTP Status | Response |
+|----------|-------------|----------|
+| Missing invite code (when required) | 400 | `{ error: "Invite code is required" }` |
+| Invalid code format | 400 | `{ error: "Invalid invite code" }` |
+| Code not found | 400 | `{ error: "Invalid invite code" }` |
+| Code already redeemed | 400 | `{ error: "This invite has already been used" }` |
+| Email mismatch | 400 | `{ error: "This invite was sent to a different email address" }` |
+| Admin: email already invited | 409 | `{ error: "This email has already been invited" }` |
+
+**Security note:** Use identical messages for "not found" and "invalid format" to prevent enumeration.
+
+### Build Sequence
+
+**Phase 1: Foundation**
+1. Add env vars to `src/env.js`
+2. Add `invites` table to `src/lib/db/schema.ts`
+3. Run `pnpm drizzle-kit push`
+4. Create `src/lib/invites/` module (schemas, codes, service)
+5. Create `src/lib/auth/admin.ts` helper
+
+**Phase 2: Brevo Integration**
+1. Create `src/lib/invites/brevo.ts` with contact sync functions
+2. Add graceful degradation (log errors, don't block)
+
+**Phase 3: Admin UI**
+1. Create `src/app/admin/layout.tsx` with access control
+2. Create `src/app/admin/invites/page.tsx` (RSC)
+3. Create admin client components (list, card, modal)
+4. Implement `POST /api/admin/invites` route
+
+**Phase 4: Registration Gating**
+1. Extend `AuthProvider` with `inviteData` state
+2. Update `SignUpForm` with conditional invite code field
+3. Update `signUpSchema` with optional `inviteCode`
+4. Modify `/api/auth/register` to validate invites
+5. Create `/invite/[code]` landing page
 
 ## Future Additions (Out of Scope)
 
