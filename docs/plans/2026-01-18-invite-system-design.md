@@ -257,7 +257,78 @@ BREVO_INVITE_TEMPLATE_ID="456"        # Invite email template ID
 | Email mismatch | "This invite was sent to a different email address" |
 | No code (when required) | "Registration is currently invite-only" |
 
-## Implementation Phases
+## Implementation Workflow
+
+This feature will be implemented in three distinct sessions, clearing context between each to maintain quality.
+
+### Session 1: Frontend Design (`/frontend-design`)
+
+Design UI components following project design system. Run parallel sub-agents for independent screens:
+
+| Sub-agent | Focus | Output |
+|-----------|-------|--------|
+| Admin Invites Page | `/admin/invites` layout, invite cards, new invite modal | Component specs, responsive behavior |
+| Invite Landing Page | `/invite/[code]` welcome screen, CTA to auth modal | Component specs, empty/error states |
+| Sign-up Form Updates | Invite code field integration, validation UX | Field placement, error display |
+
+**Deliverable:** UI specifications added to this document, mockup references if applicable.
+
+**Then:** Run `/pickup` to capture context, clear session.
+
+---
+
+### Session 2: Feature Development (`/feature-dev`)
+
+Implement backend and frontend with architecture focus. Sequential phases due to dependencies:
+
+**Phase 1: Foundation**
+1. Add `invites` table to Drizzle schema
+2. Run database migration
+3. Create `src/lib/invites/` utilities (code generation, validation)
+4. Add environment variables to `src/env.js`
+
+**Phase 2: Brevo Integration**
+1. Create Brevo contact sync functions
+2. Add error handling with graceful degradation
+3. Test contact creation and status updates
+
+**Phase 3: Admin UI**
+1. Create admin layout with email allowlist check
+2. Build `/admin/invites` page
+3. Implement admin API routes (list, create, resend)
+
+**Phase 4: Registration Gating**
+1. Add invite code field to sign-up form
+2. Update `/api/auth/register` to validate invites
+3. Create `/invite/[code]` landing page
+4. Wire up Brevo status update on redemption
+
+**Deliverable:** Working invite system behind feature flag.
+
+**Then:** Run `/pickup` to capture context, clear session.
+
+---
+
+### Session 3: Linear Issues
+
+Create work items from the detailed implementation plan:
+
+| Issue | Title | Dependencies |
+|-------|-------|--------------|
+| SG-TBD | Add invites table schema | Auth system complete |
+| SG-TBD | Create invite code utilities | Schema |
+| SG-TBD | Implement Brevo contact sync | Utilities |
+| SG-TBD | Create admin layout and access control | — |
+| SG-TBD | Build admin invites page and API | Admin layout, Brevo sync |
+| SG-TBD | Add invite code to sign-up form | Utilities |
+| SG-TBD | Gate registration with invite validation | Sign-up form |
+| SG-TBD | Create invite landing page | Registration gating |
+
+**Deliverable:** Linear issues created, linked, ready for scheduling.
+
+---
+
+## Implementation Phases (Execution Order)
 
 ### Phase 1: Build Foundation
 1. Add `invites` table schema
