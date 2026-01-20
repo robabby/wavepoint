@@ -224,6 +224,35 @@ export const invites = pgTable("invites", {
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
 });
 
+// =============================================================================
+// Contact - Contact form submissions
+// =============================================================================
+
+/**
+ * Contact submissions - public contact form entries
+ * Rate limited by IP (5/hour)
+ */
+export const contactSubmissions = pgTable(
+  "contact_submissions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    subject: text("subject").notNull(), // general, press, partnership, feedback, other
+    message: text("message").notNull(),
+    ipAddress: text("ip_address").notNull(), // For rate limiting
+    brevoContactId: text("brevo_contact_id"), // Brevo contact ID for CRM tracking
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("contact_submissions_email_idx").on(table.email),
+    index("contact_submissions_ip_address_created_at_idx").on(
+      table.ipAddress,
+      table.createdAt
+    ),
+  ]
+);
+
 // Type exports for use in application code
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -254,3 +283,6 @@ export type NewSignalUserNumberStats = typeof signalUserNumberStats.$inferInsert
 
 export type Invite = typeof invites.$inferSelect;
 export type NewInvite = typeof invites.$inferInsert;
+
+export type ContactSubmission = typeof contactSubmissions.$inferSelect;
+export type NewContactSubmission = typeof contactSubmissions.$inferInsert;
