@@ -5,7 +5,7 @@ import { Heading, Text } from "@radix-ui/themes";
 import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import type { Invite } from "@/lib/invites";
+import type { Invite } from "@/lib/db/schema";
 import { InviteCard } from "./invite-card";
 import { CreateInviteModal } from "./create-invite-modal";
 

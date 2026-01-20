@@ -24,7 +24,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { createInviteSchema, type CreateInviteInput } from "@/lib/invites";
+import { createInviteSchema, type CreateInviteInput } from "@/lib/invites/schemas";
 
 interface CreateInviteModalProps {
   open: boolean;

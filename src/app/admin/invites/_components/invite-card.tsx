@@ -5,7 +5,7 @@ import { Check, Copy } from "lucide-react";
 import { Card } from "@radix-ui/themes";
 
 import { cn } from "@/lib/utils";
-import type { Invite } from "@/lib/invites";
+import type { Invite } from "@/lib/db/schema";
 
 interface InviteCardProps {
   invite: Invite;
