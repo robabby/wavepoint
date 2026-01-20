@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User, Settings, LogOut, Sparkles, Shield } from "lucide-react";
+import { User, CircleUser, Settings, LogOut, Sparkles, Shield } from "lucide-react";
 import { useCanAccessSignal } from "@/lib/features/access";
 import {
   DropdownMenu,
@@ -123,7 +123,7 @@ export function UserMenu({
           )}
           aria-label="User menu"
         >
-          <User className="h-[22px] w-[22px]" />
+          <CircleUser className="size-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
