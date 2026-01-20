@@ -203,6 +203,27 @@ export const signalInterpretationsRelations = relations(
   })
 );
 
+// =============================================================================
+// Invites - Closed beta access gating
+// =============================================================================
+
+/**
+ * Invites table - controls who can register during closed beta
+ */
+export const invites = pgTable("invites", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  code: text("code").notNull().unique(), // 'SG-X7K9M2'
+  email: text("email").notNull().unique(), // One active invite per email
+  status: text("status").notNull().default("pending"), // 'pending' | 'redeemed'
+  brevoContactId: text("brevo_contact_id"), // Brevo contact ID for CRM updates
+  redeemedBy: uuid("redeemed_by").references(() => users.id, {
+    onDelete: "set null",
+  }),
+  redeemedAt: timestamp("redeemed_at", { mode: "date" }),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
+});
+
 // Type exports for use in application code
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -230,3 +251,6 @@ export type NewSignalInterpretation = typeof signalInterpretations.$inferInsert;
 
 export type SignalUserNumberStats = typeof signalUserNumberStats.$inferSelect;
 export type NewSignalUserNumberStats = typeof signalUserNumberStats.$inferInsert;
+
+export type Invite = typeof invites.$inferSelect;
+export type NewInvite = typeof invites.$inferInsert;
