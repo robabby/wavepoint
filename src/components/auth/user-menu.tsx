@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User, Settings, LogOut, Sparkles } from "lucide-react";
+import { User, Settings, LogOut, Sparkles, Shield } from "lucide-react";
 import { isSignalEnabled } from "@/lib/signal/feature-flags";
 import {
   DropdownMenu,
@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 interface UserMenuProps {
   variant?: "desktop" | "mobile";
   email: string;
+  isAdmin?: boolean;
   onSignOut: () => void;
   className?: string;
 }
@@ -30,6 +31,7 @@ interface UserMenuProps {
 export function UserMenu({
   variant = "desktop",
   email,
+  isAdmin,
   onSignOut,
   className,
 }: UserMenuProps) {
@@ -71,6 +73,21 @@ export function UserMenu({
           >
             <Sparkles className="ml-1 h-5 w-5" />
             <span>Signal</span>
+          </Link>
+        )}
+
+        {/* Admin link - only for admins */}
+        {isAdmin && (
+          <Link
+            href="/admin"
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-3 font-medium",
+              "text-[var(--color-warm-gray)] transition-colors",
+              "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+            )}
+          >
+            <Shield className="ml-1 h-5 w-5" />
+            <span>Admin</span>
           </Link>
         )}
 
@@ -135,6 +152,17 @@ export function UserMenu({
               >
                 <Sparkles className="mr-2 h-4 w-4" />
                 Signal
+              </Link>
+            </DropdownMenuItem>
+          )}
+          {isAdmin && (
+            <DropdownMenuItem asChild>
+              <Link
+                href="/admin"
+                className="text-[var(--color-warm-gray)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+              >
+                <Shield className="mr-2 h-4 w-4" />
+                Admin
               </Link>
             </DropdownMenuItem>
           )}

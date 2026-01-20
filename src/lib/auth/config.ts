@@ -7,6 +7,7 @@ import Credentials from "next-auth/providers/credentials";
 import { env } from "@/env";
 import { db } from "@/lib/db";
 import { accounts, sessions, users } from "@/lib/db/schema";
+import { isAdmin } from "./admin";
 
 /**
  * Auth.js v5 configuration with Credentials provider
@@ -114,6 +115,8 @@ export const authConfig: NextAuthConfig = {
       if (session.user && token) {
         session.user.id = token.id as string;
         session.user.emailVerified = token.emailVerified as Date | null;
+        // Check admin status (computed server-side, available on client)
+        session.user.isAdmin = isAdmin(session);
       }
       return session;
     },
@@ -131,6 +134,7 @@ declare module "next-auth" {
       email: string;
       name?: string | null;
       emailVerified?: Date | null;
+      isAdmin?: boolean;
     };
   }
 

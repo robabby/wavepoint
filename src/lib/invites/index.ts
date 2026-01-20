@@ -35,5 +35,14 @@ export {
   getInviteStats,
 } from "./service";
 
+// Brevo sync
+export {
+  isBrevoSyncConfigured,
+  syncInviteToBrevo,
+  updateBrevoInviteStatus,
+  syncInviteToBrevoAsync,
+  updateBrevoInviteStatusAsync,
+} from "./brevo";
+
 // Re-export database types for convenience
 export type { Invite, NewInvite } from "@/lib/db/schema";

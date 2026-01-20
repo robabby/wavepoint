@@ -40,6 +40,7 @@ export function AuthHeaderSection({
       <UserMenu
         variant={variant}
         email={session.user.email}
+        isAdmin={session.user.isAdmin}
         onSignOut={() => signOut()}
         className={className}
       />
