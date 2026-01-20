@@ -49,6 +49,13 @@
   --glow-copper: rgba(184, 115, 51, 0.15);
   --border-gold: rgba(212, 168, 75, 0.3);
   --border-copper: rgba(184, 115, 51, 0.2);
+
+  /* Glassmorphism effects */
+  --glass-bg: rgba(12, 12, 12, 0.85);
+  --glass-bg-elevated: rgba(26, 23, 20, 0.6);
+  --glass-border: rgba(212, 168, 75, 0.2);
+  --glass-glow: 0 0 40px rgba(212, 168, 75, 0.15), 0 0 80px rgba(212, 168, 75, 0.05);
+  --glass-inner-shadow: inset 0 1px 1px rgba(245, 240, 230, 0.05);
 }
 
 @theme inline {

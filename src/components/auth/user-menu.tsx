@@ -41,11 +41,11 @@ export function UserMenu({
     return (
       <div className={cn("flex flex-col gap-1", className)}>
         {/* User info */}
-        <div className="flex items-center gap-3 px-3 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--color-gold)]/20">
-            <User className="h-4 w-4 text-[var(--color-gold)]" />
+        <div className="flex items-center gap-4 px-4 py-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-gold)]/20 border border-[var(--glass-border)]/50">
+            <User className="h-5 w-5 text-[var(--color-gold)]" />
           </div>
-          <span className="truncate text-sm text-[var(--color-warm-gray)]">
+          <span className="truncate text-base text-[var(--color-warm-gray)]">
             {email}
           </span>
         </div>
@@ -54,12 +54,12 @@ export function UserMenu({
         <Link
           href="/account"
           className={cn(
-            "flex items-center gap-3 rounded-lg px-3 py-3 font-medium",
-            "text-[var(--color-warm-gray)] transition-colors",
-            "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+            "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
+            "text-[var(--color-cream)] transition-all duration-200 ease-out",
+            "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
           )}
         >
-          <Settings className="ml-1 h-5 w-5" />
+          <Settings className="h-5 w-5" />
           <span>Account</span>
         </Link>
 
@@ -68,12 +68,12 @@ export function UserMenu({
           <Link
             href="/signal"
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-3 font-medium",
-              "text-[var(--color-warm-gray)] transition-colors",
-              "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+              "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
+              "text-[var(--color-cream)] transition-all duration-200 ease-out",
+              "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
             )}
           >
-            <Sparkles className="ml-1 h-5 w-5" />
+            <Sparkles className="h-5 w-5" />
             <span>Signal</span>
           </Link>
         )}
@@ -83,12 +83,12 @@ export function UserMenu({
           <Link
             href="/admin"
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-3 font-medium",
-              "text-[var(--color-warm-gray)] transition-colors",
-              "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+              "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
+              "text-[var(--color-cream)] transition-all duration-200 ease-out",
+              "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
             )}
           >
-            <Shield className="ml-1 h-5 w-5" />
+            <Shield className="h-5 w-5" />
             <span>Admin</span>
           </Link>
         )}
@@ -97,12 +97,12 @@ export function UserMenu({
         <button
           onClick={onSignOut}
           className={cn(
-            "flex items-center gap-3 rounded-lg px-3 py-3 font-medium",
-            "text-[var(--color-warm-gray)] transition-colors",
-            "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+            "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium text-left",
+            "text-[var(--color-cream)] transition-all duration-200 ease-out",
+            "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
           )}
         >
-          <LogOut className="ml-1 h-5 w-5" />
+          <LogOut className="h-5 w-5" />
           <span>Sign Out</span>
         </button>
       </div>

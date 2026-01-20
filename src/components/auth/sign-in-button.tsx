@@ -25,9 +25,9 @@ export function SignInButton({
       <button
         onClick={() => openModal("sign-in")}
         className={cn(
-          "flex w-full items-center gap-3 rounded-lg px-3 py-3 font-medium",
-          "text-[var(--color-warm-gray)] transition-colors",
-          "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]",
+          "flex w-full items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium text-left",
+          "text-[var(--color-cream)] transition-all duration-200 ease-out",
+          "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]",
           className
         )}
       >
