@@ -6,12 +6,13 @@ export const signInSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
-// Sign-up: stricter password requirements
+// Sign-up: stricter password requirements, optional invite code
 export const signUpSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters"),
+  inviteCode: z.string().optional(),
 });
 
 // Forgot password: just email
