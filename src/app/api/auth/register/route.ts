@@ -9,9 +9,24 @@ import { signUpSchema } from "@/lib/auth/schemas";
 import { sendVerificationEmail } from "@/lib/auth/verification-service";
 import { validateInvite, redeemInvite } from "@/lib/invites/service";
 import { updateBrevoInviteStatusAsync } from "@/lib/invites/brevo";
+import { checkRateLimit } from "@/lib/signal/rate-limit";
 
 export async function POST(request: Request) {
   try {
+    // Rate limit by IP: 5 attempts per hour
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown";
+    const rateLimitResult = checkRateLimit(`register:${ip}`, {
+      limit: 5,
+      windowMs: 60 * 60 * 1000, // 1 hour
+    });
+
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { error: "Too many registration attempts. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     let body: unknown;
     try {
       body = await request.json();
