@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { User, Settings, LogOut, Sparkles, Shield } from "lucide-react";
-import { isSignalEnabled } from "@/lib/signal/feature-flags";
+import { useCanAccessSignal } from "@/lib/features/access";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,6 +35,8 @@ export function UserMenu({
   onSignOut,
   className,
 }: UserMenuProps) {
+  const signalEnabled = useCanAccessSignal();
+
   if (variant === "mobile") {
     return (
       <div className={cn("flex flex-col gap-1", className)}>
@@ -62,7 +64,7 @@ export function UserMenu({
         </Link>
 
         {/* Signal link - only when feature is enabled */}
-        {isSignalEnabled() && (
+        {signalEnabled && (
           <Link
             href="/signal"
             className={cn(
@@ -144,7 +146,7 @@ export function UserMenu({
               Account
             </Link>
           </DropdownMenuItem>
-          {isSignalEnabled() && (
+          {signalEnabled && (
             <DropdownMenuItem asChild>
               <Link
                 href="/signal"

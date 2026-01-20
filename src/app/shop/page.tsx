@@ -8,7 +8,8 @@ import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard } from "@/components/animated-card";
 import { ProductCard } from "@/components/shop/product-card";
 import { ShopComingSoon } from "@/components/shop/shop-coming-soon";
-import { isShopEnabled } from "@/lib/shop/feature-flags";
+import { auth } from "@/lib/auth";
+import { canAccessShop } from "@/lib/features/access";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -22,7 +23,9 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  if (!isShopEnabled()) {
+  const session = await auth();
+
+  if (!canAccessShop(session)) {
     return <ShopComingSoon />;
   }
 
