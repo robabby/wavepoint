@@ -54,7 +54,7 @@ export async function generateMetadata({
     title: geometry.name,
     description: geometry.description,
     openGraph: {
-      title: `${geometry.name} | Sacred Geometry`,
+      title: `${geometry.name} | WavePoint`,
       description: element
         ? `${geometry.description} Associated with the element of ${element}.`
         : geometry.description,
@@ -86,7 +86,7 @@ export default async function PlatonicSolidPage({
   } = geometry;
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://sacredgeometry.site";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
 
   return (
     <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">

@@ -4,7 +4,7 @@ import { DashboardContent } from "./dashboard-content";
 import { SacredSpinner } from "@/components/signal";
 
 export const metadata: Metadata = {
-  title: "Signal | Sacred Geometry",
+  title: "Signal",
   description: "Your angel number collection and insights.",
 };
 

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Sacred Geometry - Explore Timeless Patterns and Platonic Solids";
+export const alt = "WavePoint - Explore Sacred Geometry and Timeless Patterns";
 export const size = {
   width: 1200,
   height: 630,
@@ -240,7 +240,7 @@ export default async function Image() {
               textShadow: "0 0 60px rgba(212, 168, 75, 0.6)",
             }}
           >
-            SACRED GEOMETRY
+            WAVEPOINT
           </div>
 
           {/* Tagline */}

@@ -43,7 +43,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${geometry.name} | Sacred Geometry`,
+    title: `${geometry.name} | WavePoint`,
     description: geometry.description,
   };
 }
@@ -71,7 +71,7 @@ export default async function SacredPatternPage({
   const { title, description, images, name } = geometry;
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://sacredgeometry.site";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
 
   return (
     <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">

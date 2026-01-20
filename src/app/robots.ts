@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://sacredgeometry.site";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -42,7 +42,7 @@ export async function generateMetadata({
     title: product.name,
     description: product.description,
     openGraph: {
-      title: `${product.name} | Sacred Geometry Shop`,
+      title: `${product.name} | WavePoint Shop`,
       description: product.description,
     },
   };
@@ -68,7 +68,7 @@ export default async function ProductPage({
   const { variants, thumbnail } = await getProductWithVariants(product);
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://sacredgeometry.site";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
 
   // Get price range for structured data
   const { min: minPrice, max: maxPrice } = getPriceRange(variants);

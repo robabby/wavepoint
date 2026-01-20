@@ -284,7 +284,7 @@ export function Header() {
               <CircleDot className="h-5 w-5 text-[var(--color-gold)] sm:h-6 sm:w-6" />
             </motion.div>
             <span className="font-heading text-lg font-semibold text-[var(--color-cream)] sm:text-xl">
-              Sacred Geometry
+              WavePoint
             </span>
           </Link>
 

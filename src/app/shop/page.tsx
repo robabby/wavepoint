@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Sacred geometry merchandise featuring Metatron's Cube. Hoodies, mugs, and more with meaningful designs.",
   openGraph: {
-    title: "Shop | Sacred Geometry",
+    title: "Shop | WavePoint",
     description:
       "Wear and use sacred geometry daily. Premium merchandise featuring Metatron's Cube and other sacred patterns.",
   },

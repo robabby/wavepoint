@@ -6,7 +6,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Privacy Policy for Sacred Geometry Shop. Learn how we collect, use, and protect your personal information.",
+    "Privacy Policy for WavePoint Shop. Learn how we collect, use, and protect your personal information.",
 };
 
 function Section({
