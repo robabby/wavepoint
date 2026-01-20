@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { User, Settings, LogOut } from "lucide-react";
+import { User, Settings, LogOut, Sparkles } from "lucide-react";
+import { isSignalEnabled } from "@/lib/signal/feature-flags";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,6 +59,21 @@ export function UserMenu({
           <span>Account</span>
         </Link>
 
+        {/* Signal link - only when feature is enabled */}
+        {isSignalEnabled() && (
+          <Link
+            href="/signal"
+            className={cn(
+              "flex items-center gap-3 rounded-lg px-3 py-3 font-medium",
+              "text-[var(--color-warm-gray)] transition-colors",
+              "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+            )}
+          >
+            <Sparkles className="ml-1 h-5 w-5" />
+            <span>Signal</span>
+          </Link>
+        )}
+
         {/* Sign Out */}
         <button
           onClick={onSignOut}
@@ -111,6 +127,17 @@ export function UserMenu({
               Account
             </Link>
           </DropdownMenuItem>
+          {isSignalEnabled() && (
+            <DropdownMenuItem asChild>
+              <Link
+                href="/signal"
+                className="text-[var(--color-warm-gray)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+              >
+                <Sparkles className="mr-2 h-4 w-4" />
+                Signal
+              </Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="bg-[var(--border-gold)]/30" />
         <DropdownMenuItem

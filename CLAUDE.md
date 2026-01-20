@@ -23,8 +23,13 @@ src/app/api/                # API routes (checkout, webhooks)
 src/components/ui/          # shadcn/ui components
 src/components/geometry/    # Geometry-specific components
 src/components/shop/        # Shop UI components (cart, product cards, etc.)
+src/components/signal/      # Signal UI components (NumberPad, cards, etc.)
 src/lib/data/               # Data model (geometries + products)
 src/lib/shop/               # Shop: Printful API, Stripe, cart, feature flags
+src/lib/signal/             # Signal: Claude API, meanings, feature flags
+src/hooks/signal/           # Signal React Query hooks
+src/app/signal/             # Signal pages (dashboard, capture, sighting)
+src/app/api/signal/         # Signal API routes (sightings, interpret, stats)
 src/lib/content/            # MDX content loaders
 src/content/                # MDX files (platonic-solids/, sacred-patterns/)
 src/util/routes.ts          # Top-level routing only (NOT geometry links)
@@ -156,7 +161,32 @@ localImages: {
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook verification (`whsec_*`) |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe client key (`pk_*`) |
 | `NEXT_PUBLIC_SHOP_ENABLED` | Feature flag (`true`/`false`, default: `false`) |
+| `NEXT_PUBLIC_SIGNAL_ENABLED` | Signal feature flag (`true`/`false`, default: `false`) |
+| `ANTHROPIC_API_KEY` | Claude API key for Signal interpretations |
 | `APP_URL` | Base URL for Stripe redirects (default: `http://localhost:3000`) |
+
+## Signal Integration (`src/lib/signal/`)
+
+| File | Purpose |
+|------|---------|
+| `index.ts` | Main exports |
+| `feature-flags.ts` | `isSignalEnabled()` for feature gating |
+| `schemas.ts` | Zod validation schemas |
+| `claude.ts` | Claude API client with timeout/fallback |
+| `meanings.ts` | Base angel number meanings |
+| `rate-limit.ts` | Rate limiting for API routes |
+| `types.ts` | TypeScript interfaces |
+
+**Key Functions:**
+- `isSignalEnabled()` - Feature flag check
+- `getBaseMeaning(sequence)` - Get angel number meaning
+- `generateInterpretation(...)` - Generate Claude interpretation with fallback
+
+**Hooks** (`src/hooks/signal/`):
+- `useSightings()` - List/create/delete sightings
+- `useSighting(id)` - Single sighting query
+- `useInterpretation()` - AI interpretation mutation
+- `useStats()` - User statistics query
 
 ## Development Workflow
 
