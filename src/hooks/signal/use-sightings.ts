@@ -111,3 +111,31 @@ export function useDeleteSighting() {
     error: mutation.error,
   };
 }
+
+// Single sighting fetch
+
+async function fetchSighting(id: string): Promise<SightingWithInterpretation> {
+  const res = await fetch(`/api/signal/sightings/${id}`);
+  if (!res.ok) {
+    if (res.status === 404) throw new Error("Sighting not found");
+    throw new Error("Failed to fetch sighting");
+  }
+  const data = (await res.json()) as { sighting: SightingWithInterpretation };
+  return data.sighting;
+}
+
+export function useSighting(id: string) {
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: signalKeys.sighting(id),
+    queryFn: () => fetchSighting(id),
+    enabled: !!id,
+  });
+
+  return {
+    sighting: data,
+    isLoading,
+    isError: !!error,
+    error,
+    refetch,
+  };
+}

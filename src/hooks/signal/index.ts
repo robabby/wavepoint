@@ -1,6 +1,7 @@
 export { signalKeys } from "./query-keys";
 export {
   useSightings,
+  useSighting,
   useCreateSighting,
   useDeleteSighting,
 } from "./use-sightings";
