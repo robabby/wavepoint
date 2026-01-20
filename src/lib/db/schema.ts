@@ -214,12 +214,13 @@ export const invites = pgTable("invites", {
   id: uuid("id").primaryKey().defaultRandom(),
   code: text("code").notNull().unique(), // 'SG-X7K9M2'
   email: text("email").notNull().unique(), // One active invite per email
-  status: text("status").notNull().default("pending"), // 'pending' | 'redeemed'
+  status: text("status").notNull().default("pending"), // 'pending' | 'redeemed' | 'cancelled'
   brevoContactId: text("brevo_contact_id"), // Brevo contact ID for CRM updates
   redeemedBy: uuid("redeemed_by").references(() => users.id, {
     onDelete: "set null",
   }),
   redeemedAt: timestamp("redeemed_at", { mode: "date" }),
+  cancelledAt: timestamp("cancelled_at", { mode: "date" }),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
 });

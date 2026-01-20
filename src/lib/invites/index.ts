@@ -26,11 +26,16 @@ export {
   type GetInviteResult,
   type ValidateInviteResult,
   type RedeemInviteResult,
+  type CancelInviteResult,
+  type DeleteInviteResult,
   createInvite,
   getInviteByCode,
   getInviteByEmail,
+  getInviteById,
   validateInvite,
   redeemInvite,
+  cancelInvite,
+  deleteInvite,
   listInvites,
   getInviteStats,
 } from "./service";
@@ -42,6 +47,8 @@ export {
   updateBrevoInviteStatus,
   syncInviteToBrevoAsync,
   updateBrevoInviteStatusAsync,
+  removeContactFromBrevo,
+  removeContactFromBrevoAsync,
 } from "./brevo";
 
 // Re-export database types for convenience

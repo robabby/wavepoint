@@ -1,21 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, MoreHorizontal, XCircle, Trash2 } from "lucide-react";
 import { Card } from "@radix-ui/themes";
 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { Invite } from "@/lib/db/schema";
 
 interface InviteCardProps {
   invite: Invite;
   inviteUrl: string;
+  onCancelClick?: (invite: Invite) => void;
+  onDeleteClick?: (invite: Invite) => void;
 }
 
 /**
  * Individual invite card with status badge and copy link functionality.
  */
-export function InviteCard({ invite, inviteUrl }: InviteCardProps) {
+export function InviteCard({
+  invite,
+  inviteUrl,
+  onCancelClick,
+  onDeleteClick,
+}: InviteCardProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -29,9 +43,17 @@ export function InviteCard({ invite, inviteUrl }: InviteCardProps) {
   };
 
   const isRedeemed = invite.status === "redeemed";
+  const isCancelled = invite.status === "cancelled";
+  const isPending = invite.status === "pending";
+
   const dateLabel = isRedeemed
     ? `Joined ${formatDate(invite.redeemedAt)}`
-    : `Invited ${formatDate(invite.createdAt)}`;
+    : isCancelled
+      ? `Cancelled ${formatDate(invite.cancelledAt)}`
+      : `Invited ${formatDate(invite.createdAt)}`;
+
+  // Show action menu for pending (cancel) and cancelled (delete) invites
+  const showActionMenu = isPending || isCancelled;
 
   return (
     <Card className="border border-[var(--border-gold)]/30 bg-[var(--color-obsidian)] p-4">
@@ -53,35 +75,77 @@ export function InviteCard({ invite, inviteUrl }: InviteCardProps) {
           </div>
         </div>
 
-        {/* Right: Status badge and copy button */}
+        {/* Right: Status badge, copy button, and action menu */}
         <div className="flex items-center gap-3">
           <span
             className={cn(
               "rounded px-2 py-0.5 text-xs",
               isRedeemed
                 ? "border border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
-                : "border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 text-[var(--color-gold)]"
+                : isCancelled
+                  ? "border border-red-400/30 bg-red-400/10 text-red-400"
+                  : "border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 text-[var(--color-gold)]"
             )}
           >
-            {isRedeemed ? "Joined" : "Pending"}
+            {isRedeemed ? "Joined" : isCancelled ? "Cancelled" : "Pending"}
           </span>
-          <button
-            onClick={handleCopy}
-            className="flex items-center gap-1.5 text-sm text-[var(--color-gold)] transition-colors hover:text-[var(--color-gold-bright)]"
-            aria-label={copied ? "Copied" : "Copy invite link"}
-          >
-            {copied ? (
-              <>
-                <Check className="h-4 w-4" />
-                <span>Copied</span>
-              </>
-            ) : (
-              <>
-                <Copy className="h-4 w-4" />
-                <span>Copy Link</span>
-              </>
-            )}
-          </button>
+          {!isCancelled && (
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-1.5 text-sm text-[var(--color-gold)] transition-colors hover:text-[var(--color-gold-bright)]"
+              aria-label={copied ? "Copied" : "Copy invite link"}
+            >
+              {copied ? (
+                <>
+                  <Check className="h-4 w-4" />
+                  <span>Copied</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4" />
+                  <span>Copy Link</span>
+                </>
+              )}
+            </button>
+          )}
+          {showActionMenu && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-[var(--color-warm-gray)] hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)]"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]"
+              >
+                {isPending && onCancelClick && (
+                  <DropdownMenuItem
+                    onClick={() => onCancelClick(invite)}
+                    className="cursor-pointer text-[var(--color-warm-gray)] focus:bg-[var(--color-gold)]/10 focus:text-[var(--color-gold)]"
+                  >
+                    <XCircle className="h-4 w-4" />
+                    Cancel Invite
+                  </DropdownMenuItem>
+                )}
+                {isCancelled && onDeleteClick && (
+                  <DropdownMenuItem
+                    onClick={() => onDeleteClick(invite)}
+                    variant="destructive"
+                    className="cursor-pointer"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete Permanently
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </Card>

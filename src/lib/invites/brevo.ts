@@ -146,3 +146,58 @@ export function updateBrevoInviteStatusAsync(email: string): void {
     console.error(`Failed to update Brevo invite status for ${email}:`, err);
   });
 }
+
+/**
+ * Remove a contact from Brevo (delete entirely)
+ * Used when cancelling or deleting invites
+ */
+export async function removeContactFromBrevo(
+  email: string
+): Promise<{ success: boolean; error?: string }> {
+  if (!env.BREVO_API_KEY) {
+    console.warn("Brevo sync not configured: missing BREVO_API_KEY");
+    return { success: false, error: "Brevo sync not configured" };
+  }
+
+  try {
+    // Brevo deleteContact API - delete by email identifier
+    const response = await fetch(
+      `${BREVO_API_BASE}/contacts/${encodeURIComponent(email.toLowerCase().trim())}`,
+      {
+        method: "DELETE",
+        headers: {
+          "api-key": env.BREVO_API_KEY,
+          Accept: "application/json",
+        },
+      }
+    );
+
+    // 404 means contact doesn't exist - treat as success
+    if (response.status === 404) {
+      return { success: true };
+    }
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Brevo delete contact error:", response.status, errorText);
+      return { success: false, error: "Failed to remove Brevo contact" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Brevo delete error:", error);
+    return { success: false, error: "Brevo service unavailable" };
+  }
+}
+
+/**
+ * Fire-and-forget wrapper for contact removal
+ * Logs errors but doesn't propagate them
+ */
+export function removeContactFromBrevoAsync(email: string): void {
+  if (!env.BREVO_API_KEY) return;
+
+  void removeContactFromBrevo(email).catch((err) => {
+    console.error(`Failed to remove Brevo contact for ${email}:`, err);
+  });
+}
