@@ -32,7 +32,7 @@ export function GeometryBackground({ className }: GeometryBackgroundProps) {
         }}
       >
         <Image
-          src="/images/geometries/sacred-patterns/flower-of-life/flower-of-life-primary.svg"
+          src="/images/geometries/patterns/flower-of-life/flower-of-life-primary.svg"
           alt=""
           fill
           className="object-contain opacity-[0.08]"

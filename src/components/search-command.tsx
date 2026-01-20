@@ -20,7 +20,7 @@ import {
   getGeometryPath,
   getAllGeometries,
   getPlatonicSolids,
-  getSacredPatterns,
+  getPatterns,
 } from "@/lib/data";
 import type { Geometry } from "@/lib/data/geometries.types";
 import { cn } from "@/lib/utils";
@@ -231,7 +231,7 @@ export function SearchCommand() {
 
   // Get counts for discovery state
   const platonicCount = getPlatonicSolids().length;
-  const patternCount = getSacredPatterns().length;
+  const patternCount = getPatterns().length;
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -316,7 +316,7 @@ export function SearchCommand() {
                   </Link>
 
                   <Link
-                    href="/sacred-patterns"
+                    href="/patterns"
                     className={cn(
                       "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-lg",
                       "bg-[var(--glass-bg-elevated)]",
@@ -332,7 +332,7 @@ export function SearchCommand() {
                       <span className="text-[var(--color-gold)] font-heading text-xl sm:text-2xl">{patternCount}</span>
                     </div>
                     <div>
-                      <p className="text-base sm:text-lg font-medium text-[var(--color-cream)]">Sacred Patterns</p>
+                      <p className="text-base sm:text-lg font-medium text-[var(--color-cream)]">Patterns</p>
                       <p className="text-sm sm:text-base text-[var(--color-dim)]">Universal geometry</p>
                     </div>
                   </Link>
@@ -468,11 +468,11 @@ export function SearchCommand() {
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
-                      href="/sacred-patterns"
+                      href="/patterns"
                       className="text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-colors flex items-center gap-1.5"
                       onClick={() => setOpen(false)}
                     >
-                      <span>Sacred Patterns</span>
+                      <span>Patterns</span>
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
@@ -555,10 +555,10 @@ export function SearchCommand() {
               </CommandGroup>
             )}
 
-            {/* Sacred Patterns Group */}
+            {/* Patterns Group */}
             {patternResults.length > 0 && (
               <CommandGroup
-                heading="Sacred Patterns"
+                heading="Patterns"
                 className={cn(
                   "[&_[cmdk-group-heading]]:text-[var(--color-gold)]",
                   "[&_[cmdk-group-heading]]:font-heading",

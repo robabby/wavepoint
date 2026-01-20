@@ -95,7 +95,7 @@ sacred-geometry/
 ├── src/
 │   ├── app/                    # Next.js App Router pages
 │   │   ├── platonic-solids/    # Platonic solids pages
-│   │   └── sacred-patterns/    # Sacred patterns pages
+│   │   └── patterns/           # Patterns pages
 │   ├── components/
 │   │   ├── geometry/           # Sacred geometry components
 │   │   └── ui/                 # shadcn/ui components

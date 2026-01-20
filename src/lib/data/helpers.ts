@@ -145,7 +145,7 @@ export function getGeometryById(
 /**
  * Get a geometry by its slug
  * This is useful for dynamic routing where the slug is used in the URL
- * e.g., /platonic-solids/tetrahedron or /sacred-patterns/flower-of-life
+ * e.g., /platonic-solids/tetrahedron or /patterns/flower-of-life
  */
 export function getGeometryBySlug(
   geometries: Record<string, Geometry>,
@@ -246,9 +246,9 @@ export function getPlatonicSolids(
 }
 
 /**
- * Get all Sacred Patterns
+ * Get all Patterns
  */
-export function getSacredPatterns(
+export function getPatterns(
   geometries: Record<string, Geometry>
 ): Geometry[] {
   return getGeometriesByCategory(geometries, "pattern");
@@ -293,7 +293,7 @@ export function getGeometryPath(geometry: Geometry): string {
   if (geometry.category === "platonic") {
     return `/platonic-solids/${geometry.slug}`;
   } else if (geometry.category === "pattern") {
-    return `/sacred-patterns/${geometry.slug}`;
+    return `/patterns/${geometry.slug}`;
   }
   return "/";
 }
@@ -303,7 +303,7 @@ export function getGeometryPath(geometry: Geometry): string {
  */
 export function getGeometryListPath(category: GeometryCategory): string {
   if (category === "platonic") return "/platonic-solids";
-  if (category === "pattern") return "/sacred-patterns";
+  if (category === "pattern") return "/patterns";
   return "/";
 }
 

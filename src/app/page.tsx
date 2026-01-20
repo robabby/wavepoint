@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   getPlatonicSolids,
-  getSacredPatterns,
+  getPatterns,
   getGeometryPath,
 } from "@/lib/data";
 import { AnimatedHero, AnimatedHeroItem } from "@/components/animated-hero";
@@ -138,7 +138,7 @@ export default function HomePage() {
                   variant="outline"
                   className="w-full border-[var(--color-gold)]/50 text-[var(--color-gold)] transition-[border-color,background-color] hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 sm:w-auto"
                 >
-                  <Link href={ROUTES.sacredPatterns.path}>Sacred Patterns →</Link>
+                  <Link href={ROUTES.patterns.path}>Sacred Patterns →</Link>
                 </Button>
               </AnimatedButton>
             </div>
@@ -274,7 +274,7 @@ export default function HomePage() {
                 { slug: "metatrons-cube", badge: "Sacred Blueprint" },
                 { slug: "golden-ratio", badge: "Divine Proportion" },
               ].map(({ slug, badge }) => {
-                const pattern = getSacredPatterns().find((p) => p.slug === slug);
+                const pattern = getPatterns().find((p) => p.slug === slug);
                 if (!pattern) return null;
                 return (
                   <StaggerItem key={pattern.slug}>
@@ -325,7 +325,7 @@ export default function HomePage() {
                   size={{ initial: "2", sm: "3" }}
                   className="w-full border-[var(--border-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 sm:w-auto"
                 >
-                  <Link href={ROUTES.sacredPatterns.path}>
+                  <Link href={ROUTES.patterns.path}>
                     Explore All Patterns →
                   </Link>
                 </Button>

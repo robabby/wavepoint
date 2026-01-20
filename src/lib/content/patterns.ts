@@ -6,39 +6,39 @@ import { getMDXComponents } from "@/components/mdx-components";
 import { extractSectionsFromMDX, type SectionInfo } from "./types";
 
 /**
- * Sacred Pattern MDX Content Interface
+ * Pattern MDX Content Interface
  */
-export interface SacredPatternContent {
+export interface PatternContent {
   slug: string;
   sections: SectionInfo[];
   content: React.ReactElement;
 }
 
 /**
- * Get the path to a Sacred Pattern MDX file
+ * Get the path to a Pattern MDX file
  */
 function getContentPath(slug: string): string {
   return path.join(
     process.cwd(),
-    "src/content/sacred-patterns",
+    "src/content/patterns",
     `${slug}.mdx`
   );
 }
 
 /**
- * Check if a Sacred Pattern MDX file exists
+ * Check if a Pattern MDX file exists
  */
-export function sacredPatternContentExists(slug: string): boolean {
+export function patternContentExists(slug: string): boolean {
   const filePath = getContentPath(slug);
   return fs.existsSync(filePath);
 }
 
 /**
- * Load and compile Sacred Pattern MDX content
+ * Load and compile Pattern MDX content
  */
-export async function getSacredPatternContent(
+export async function getPatternContent(
   slug: string
-): Promise<SacredPatternContent | null> {
+): Promise<PatternContent | null> {
   const filePath = getContentPath(slug);
 
   if (!fs.existsSync(filePath)) {
@@ -73,12 +73,12 @@ export async function getSacredPatternContent(
 }
 
 /**
- * Get all available Sacred Pattern content slugs
+ * Get all available Pattern content slugs
  */
-export function getAllSacredPatternContentSlugs(): string[] {
+export function getAllPatternContentSlugs(): string[] {
   const contentDir = path.join(
     process.cwd(),
-    "src/content/sacred-patterns"
+    "src/content/patterns"
   );
 
   if (!fs.existsSync(contentDir)) {

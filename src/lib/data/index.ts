@@ -6,7 +6,7 @@
  */
 
 import { PLATONIC_SOLIDS } from "./platonic-solids";
-import { SACRED_PATTERNS } from "./sacred-patterns";
+import { PATTERNS } from "./patterns";
 import type { RelationshipType } from "./geometries.types";
 import {
   enhanceGeometries,
@@ -20,7 +20,7 @@ import {
   getRelatedGeometries as _getRelatedGeometries,
   getGeometriesByElement as _getGeometriesByElement,
   getPlatonicSolids as _getPlatonicSolids,
-  getSacredPatterns as _getSacredPatterns,
+  getPatterns as _getPatterns,
   getAllGeometries as _getAllGeometries,
   searchGeometries as _searchGeometries,
   getGeometryPath,
@@ -48,7 +48,7 @@ export { getGeometryThumbnailPath } from "./image-paths";
 // Combine all geometries
 const RAW_GEOMETRIES = {
   ...PLATONIC_SOLIDS,
-  ...SACRED_PATTERNS,
+  ...PATTERNS,
 };
 
 // Enhance with computed relationships
@@ -138,10 +138,10 @@ export function getPlatonicSolids() {
 }
 
 /**
- * Get all Sacred Patterns
+ * Get all Patterns
  */
-export function getSacredPatterns() {
-  return _getSacredPatterns(GEOMETRIES);
+export function getPatterns() {
+  return _getPatterns(GEOMETRIES);
 }
 
 /**

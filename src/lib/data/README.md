@@ -42,7 +42,7 @@ import {
   getGeometryById,
   getGeometryBySlug,
   getPlatonicSolids,
-  getSacredPatterns
+  getPatterns
 } from "@/lib/data";
 
 // Get a specific geometry by ID
@@ -55,7 +55,7 @@ const geometry = getGeometryBySlug('flower-of-life');
 const solids = getPlatonicSolids();
 
 // Get all Sacred Patterns
-const patterns = getSacredPatterns();
+const patterns = getPatterns();
 ```
 
 ### Relationship Queries
@@ -162,7 +162,7 @@ Platonic solids are associated with classical elements:
 | `getRelatedGeometries(geometryId)` | Get all relationships | `{ dual?, contains, appearsIn }` |
 | `getGeometriesByElement(element)` | Get geometries by element | `Geometry[]` |
 | `getPlatonicSolids()` | Get all Platonic solids | `Geometry[]` |
-| `getSacredPatterns()` | Get all sacred patterns | `Geometry[]` |
+| `getPatterns()` | Get all sacred patterns | `Geometry[]` |
 | `getAllGeometries()` | Get all geometries | `Geometry[]` |
 | `searchGeometries(query)` | Search by name/description/properties | `Geometry[]` |
 
@@ -213,7 +213,7 @@ export default function GeometryPage({ params }: PageProps) {
           <ul>
             {contains.map(g => (
               <li key={g.id}>
-                <a href={`/${g.category === 'platonic' ? 'platonic-solids' : 'sacred-patterns'}/${g.slug}`}>
+                <a href={`/${g.category === 'platonic' ? 'platonic-solids' : 'patterns'}/${g.slug}`}>
                   {g.name}
                 </a>
               </li>

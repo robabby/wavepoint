@@ -50,7 +50,7 @@ function EmptyCollection() {
       {/* Faint sacred geometry icon */}
       <div className="mb-6 opacity-20">
         <Image
-          src="/images/geometries/sacred-patterns/seed-of-life/seed-of-life-primary.svg"
+          src="/images/geometries/patterns/seed-of-life/seed-of-life-primary.svg"
           alt=""
           width={80}
           height={80}

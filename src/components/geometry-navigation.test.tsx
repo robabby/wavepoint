@@ -81,7 +81,7 @@ describe("GeometryNavigation", () => {
     });
   });
 
-  describe("Sacred Patterns Navigation", () => {
+  describe("Patterns Navigation", () => {
     it("should render navigation for middle geometry (Seed of Life)", () => {
       render(
         <GeometryNavigation currentSlug="seed-of-life" category="pattern" />
@@ -95,8 +95,8 @@ describe("GeometryNavigation", () => {
       expect(screen.getByText(/Egg of Life/i)).toBeInTheDocument();
       expect(screen.getAllByText(/Next/i).length).toBeGreaterThan(0);
 
-      // Should have "All Sacred Patterns" link
-      expect(screen.getByText(/All Sacred Patterns/i)).toBeInTheDocument();
+      // Should have "All Patterns" link (mobile and desktop variants)
+      expect(screen.getAllByText(/All Patterns/i).length).toBeGreaterThan(0);
     });
 
     it("should not render Previous button for first pattern (Circle Dot)", () => {
@@ -122,7 +122,7 @@ describe("GeometryNavigation", () => {
       expect(screen.queryAllByText(/Next/i)).toHaveLength(0);
     });
 
-    it("should render correct links for Sacred Patterns", () => {
+    it("should render correct links for Patterns", () => {
       const { container } = render(
         <GeometryNavigation currentSlug="star-tetrahedron" category="pattern" />
       );
@@ -134,7 +134,7 @@ describe("GeometryNavigation", () => {
         link.textContent?.includes("Sri Yantra")
       );
       expect(prevLink).toBeDefined();
-      expect(prevLink?.getAttribute("href")).toBe("/sacred-patterns/sri-yantra");
+      expect(prevLink?.getAttribute("href")).toBe("/patterns/sri-yantra");
 
       // Next link (Golden Ratio)
       const nextLink = links.find((link) =>
@@ -142,15 +142,15 @@ describe("GeometryNavigation", () => {
       );
       expect(nextLink).toBeDefined();
       expect(nextLink?.getAttribute("href")).toBe(
-        "/sacred-patterns/golden-ratio"
+        "/patterns/golden-ratio"
       );
 
       // All link
       const allLink = links.find((link) =>
-        link.textContent?.includes("All Sacred Patterns")
+        link.textContent?.includes("All Patterns")
       );
       expect(allLink).toBeDefined();
-      expect(allLink?.getAttribute("href")).toBe("/sacred-patterns");
+      expect(allLink?.getAttribute("href")).toBe("/patterns");
     });
   });
 

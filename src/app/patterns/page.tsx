@@ -5,12 +5,12 @@ import Image from "next/image";
 import { Sparkles, Hexagon, Star, Triangle, Circle } from "lucide-react";
 import { ROUTES } from "@/util/routes";
 import { Badge } from "@/components/ui/badge";
-import { getSacredPatterns, getGeometryPath } from "@/lib/data";
+import { getPatterns, getGeometryPath } from "@/lib/data";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard, GeometryImage } from "@/components/animated-card";
 
-// Icon mapping for Sacred Patterns
+// Icon mapping for Patterns
 const iconMap: Record<string, typeof Hexagon> = {
   "circle-dot": Circle,
   "flower-of-life": Hexagon,
@@ -25,7 +25,7 @@ const iconMap: Record<string, typeof Hexagon> = {
   "pentagram": Star,
 };
 
-// Color mapping for Sacred Patterns
+// Color mapping for Patterns
 const colorMap: Record<string, string> = {
   "circle-dot": "text-white",
   "flower-of-life": "text-amber-400",
@@ -40,7 +40,7 @@ const colorMap: Record<string, string> = {
   "pentagram": "text-emerald-400",
 };
 
-// Category mapping for Sacred Patterns
+// Category mapping for Patterns
 const categoryMap: Record<string, string> = {
   "circle-dot": "Divine Source",
   "flower-of-life": "Universal Pattern",
@@ -56,17 +56,17 @@ const categoryMap: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: "Sacred Patterns",
+  title: "Patterns",
   description:
     "Explore sacred geometric patterns including the Flower of Life, Metatron's Cube, Sri Yantra, Golden Ratio, and more. Discover the mathematical principles and divine patterns underlying the universe.",
   openGraph: {
-    title: "Sacred Patterns | WavePoint",
+    title: "Patterns | WavePoint",
     description:
       "Timeless geometric patterns that appear across cultures and throughout history, representing the fundamental organizing principles of creation.",
   },
 };
 
-const sacredPatterns = getSacredPatterns()
+const patterns = getPatterns()
   .filter((p) => p.featured)
   .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   .map((pattern) => ({
@@ -76,22 +76,22 @@ const sacredPatterns = getSacredPatterns()
     path: getGeometryPath(pattern),
     icon: iconMap[pattern.slug] ?? Hexagon,
     color: colorMap[pattern.slug] ?? "text-amber-400",
-    category: categoryMap[pattern.slug] ?? "Sacred Pattern",
+    category: categoryMap[pattern.slug] ?? "Pattern",
     image: pattern.images?.heroImage ?? "",
   }));
 
-export default function SacredPatternsPage() {
+export default function PatternsPage() {
   return (
     <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
       <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* Header */}
         <AnimateOnScroll className="mx-auto mb-8 max-w-4xl text-center sm:mb-12 lg:mb-16">
           <Heading size="9" className="font-display text-[var(--color-cream)]" mb="4">
-            {ROUTES.sacredPatterns.name}
+            {ROUTES.patterns.name}
           </Heading>
           <Box mb="2">
             <Text size="5" className="mb-4 text-[var(--color-gold)]">
-              {ROUTES.sacredPatterns.description}
+              {ROUTES.patterns.description}
             </Text>
           </Box>
           <Text size="3" className="mx-auto max-w-3xl text-[var(--color-warm-gray)]">
@@ -107,7 +107,7 @@ export default function SacredPatternsPage() {
           className="mx-auto mb-8 grid max-w-6xl grid-cols-1 gap-4 sm:mb-12 sm:gap-6 md:grid-cols-2 lg:mb-16 lg:grid-cols-3 lg:gap-8"
           staggerDelay={0.08}
         >
-          {sacredPatterns.map((pattern) => {
+          {patterns.map((pattern) => {
             const Icon = pattern.icon;
             return (
               <StaggerItem key={pattern.path}>
@@ -168,7 +168,7 @@ export default function SacredPatternsPage() {
             <div className="mb-4 flex items-center gap-4">
               <GeometryImage className="relative h-12 w-12 shrink-0">
                 <Image
-                  src="/images/geometries/sacred-patterns/flower-of-life/flower-of-life-primary.svg"
+                  src="/images/geometries/patterns/flower-of-life/flower-of-life-primary.svg"
                   alt="Flower of Life"
                   fill
                   sizes="48px"

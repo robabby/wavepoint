@@ -1,5 +1,5 @@
 /**
- * Sacred Patterns Data
+ * Patterns Data
  *
  * Sacred geometric patterns found throughout nature, art, and spiritual traditions.
  * These patterns represent fundamental principles of creation and universal structure.
@@ -8,7 +8,7 @@
 import type { Geometry } from "./geometries.types";
 import { getPatternHeroImage } from "./image-paths";
 
-export const SACRED_PATTERNS: Record<string, Geometry> = {
+export const PATTERNS: Record<string, Geometry> = {
   "circle-dot": {
     id: "circle-dot",
     name: "Circle Dot",
@@ -241,7 +241,7 @@ export const SACRED_PATTERNS: Record<string, Geometry> = {
       ],
     },
     images: {
-      heroImage: `/images/geometries/sacred-patterns/golden-ratio/golden-ratio-spiral.svg`,
+      heroImage: `/images/geometries/patterns/golden-ratio/golden-ratio-spiral.svg`,
     },
     featured: true,
     order: 9,
@@ -361,7 +361,7 @@ export const SACRED_PATTERNS: Record<string, Geometry> = {
       ],
     },
     images: {
-      heroImage: `/images/geometries/sacred-patterns/vector-equilibrum/vector-equilibrum-primary.svg`,
+      heroImage: `/images/geometries/patterns/vector-equilibrum/vector-equilibrum-primary.svg`,
     },
     featured: true,
     order: 14,

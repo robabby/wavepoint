@@ -18,6 +18,21 @@ const config = {
       },
     ],
   },
+  // SEO redirects for URL rebranding
+  async redirects() {
+    return [
+      {
+        source: "/sacred-patterns",
+        destination: "/patterns",
+        permanent: true,
+      },
+      {
+        source: "/sacred-patterns/:slug",
+        destination: "/patterns/:slug",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 // MDX configuration

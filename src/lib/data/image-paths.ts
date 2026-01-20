@@ -15,13 +15,13 @@ export function getPlatonicImagePath(
 }
 
 /**
- * Get image path for a Sacred Pattern
+ * Get image path for a Pattern
  */
 export function getPatternImagePath(
   slug: string,
   variant: "primary" | "wireframe" | "net" | "with-flower" = "primary"
 ): string {
-  return `/images/geometries/sacred-patterns/${slug}/${slug}-${variant}.svg`;
+  return `/images/geometries/patterns/${slug}/${slug}-${variant}.svg`;
 }
 
 /**
@@ -37,7 +37,7 @@ export function getPlatonicImages(slug: string) {
 }
 
 /**
- * Get hero image path for a Sacred Pattern
+ * Get hero image path for a Pattern
  */
 export function getPatternHeroImage(slug: string) {
   return {
