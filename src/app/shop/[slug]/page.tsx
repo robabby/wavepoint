@@ -10,7 +10,8 @@ import {
   createProductSchema,
 } from "@/components/structured-data";
 import { ShopComingSoon } from "@/components/shop/shop-coming-soon";
-import { isShopEnabled } from "@/lib/shop/feature-flags";
+import { auth } from "@/lib/auth";
+import { canAccessShop } from "@/lib/features/access";
 
 /**
  * Generate static params for all products
@@ -53,7 +54,9 @@ export default async function ProductPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  if (!isShopEnabled()) {
+  const session = await auth();
+
+  if (!canAccessShop(session)) {
     return <ShopComingSoon />;
   }
 

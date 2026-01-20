@@ -20,9 +20,9 @@ import {
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { EmailVerificationBanner } from "@/components/auth/email-verification-banner";
-import { isAuthEnabled } from "@/lib/auth/feature-flags";
 import { CartProvider } from "@/lib/shop/cart-context";
-import { isShopEnabled } from "@/lib/shop/feature-flags";
+import { auth } from "@/lib/auth";
+import { isAuthEnabled, canAccessShop } from "@/lib/features/access";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
@@ -71,17 +71,22 @@ const crimsonPro = Crimson_Pro({
   display: "swap",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const authEnabled = isAuthEnabled();
-  const shopEnabled = isShopEnabled();
+  // Get session for access checks
+  const session = await auth();
 
-  // Base content without auth-dependent components
-  const baseContent = (hasAuth: boolean) => (
+  // Check if public auth UI should be shown (env flags)
+  // AuthProvider is always included so useSession() works for admin access checks
+  const authUiEnabled = isAuthEnabled();
+  const shopAccessible = canAccessShop(session);
+
+  // Core content - always wrapped with AuthProvider for session access
+  const coreContent = (
     <MotionProvider>
       <Header />
-      {hasAuth && <EmailVerificationBanner />}
+      {authUiEnabled && <EmailVerificationBanner />}
       <main id="main-content">{children}</main>
       <Footer />
     </MotionProvider>
@@ -102,20 +107,17 @@ export default function RootLayout({
         />
         <SkipToContent />
         <Theme appearance="dark">
-          {authEnabled ? (
-            <AuthProvider>
-              <AuthModal />
-              {shopEnabled ? (
-                <CartProvider>{baseContent(true)}</CartProvider>
-              ) : (
-                baseContent(true)
-              )}
-            </AuthProvider>
-          ) : shopEnabled ? (
-            <CartProvider>{baseContent(false)}</CartProvider>
-          ) : (
-            baseContent(false)
-          )}
+          {/* AuthProvider always included for session access (admin checks, etc.) */}
+          <AuthProvider>
+            {/* Auth UI (modal) only shown when auth feature is enabled for public */}
+            {authUiEnabled && <AuthModal />}
+            {/* CartProvider only when shop is accessible (flag or admin) */}
+            {shopAccessible ? (
+              <CartProvider>{coreContent}</CartProvider>
+            ) : (
+              coreContent
+            )}
+          </AuthProvider>
         </Theme>
       </body>
       <Analytics />

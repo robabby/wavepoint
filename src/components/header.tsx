@@ -18,8 +18,7 @@ import { SearchCommand } from "@/components/search-command";
 import { EASE_STANDARD } from "@/lib/animation-constants";
 import { CartIcon } from "@/components/shop/cart-icon";
 import { CartDrawer } from "@/components/shop/cart-drawer";
-import { isShopEnabled } from "@/lib/shop/feature-flags";
-import { isAuthEnabled } from "@/lib/auth/feature-flags";
+import { useCanAccessShop, useCanAccessAuth } from "@/lib/features/access";
 import { AuthHeaderSection } from "@/components/auth/auth-header-section";
 
 type NavItem = {
@@ -114,8 +113,8 @@ export function Header() {
     [pathname]
   );
 
-  const shopEnabled = isShopEnabled();
-  const authEnabled = isAuthEnabled();
+  const shopEnabled = useCanAccessShop();
+  const authEnabled = useCanAccessAuth();
 
   const navItems = useMemo<NavItem[]>(() => {
     const items: NavItem[] = [
