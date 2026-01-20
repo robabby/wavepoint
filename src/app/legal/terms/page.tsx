@@ -6,7 +6,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "Terms of Service for Sacred Geometry Shop. Read our terms and conditions for using our website and purchasing products.",
+    "Terms of Service for WavePoint Shop. Read our terms and conditions for using our website and purchasing products.",
 };
 
 function Section({
@@ -49,7 +49,7 @@ export default function TermsOfServicePage() {
           <div className="rounded-lg border border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)] p-6 sm:p-8">
             <Section title="1. Acceptance of Terms">
               <Text as="p">
-                By accessing and using Sacred Geometry (sacredgeometry.site), you
+                By accessing and using WavePoint (wavepoint.space), you
                 accept and agree to be bound by these Terms of Service. If you do
                 not agree to these terms, please do not use our website or
                 services.
@@ -109,7 +109,7 @@ export default function TermsOfServicePage() {
             <Section title="5. Intellectual Property">
               <Text as="p">
                 All content on this website, including sacred geometry designs,
-                text, graphics, and software, is the property of Sacred Geometry
+                text, graphics, and software, is the property of WavePoint
                 or its content suppliers and is protected by copyright and
                 intellectual property laws.
               </Text>
@@ -122,7 +122,7 @@ export default function TermsOfServicePage() {
 
             <Section title="6. Limitation of Liability">
               <Text as="p">
-                Sacred Geometry shall not be liable for any indirect, incidental,
+                WavePoint shall not be liable for any indirect, incidental,
                 special, consequential, or punitive damages arising from your use
                 of the website or purchase of products. Our liability is limited
                 to the amount you paid for the specific product in question.

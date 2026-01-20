@@ -6,7 +6,7 @@ import { AccountSidebar } from "@/components/account/account-sidebar";
 
 export const metadata: Metadata = {
   title: "Account",
-  description: "Manage your Sacred Geometry account settings and orders.",
+  description: "Manage your WavePoint account settings and orders.",
 };
 
 export default async function AccountLayout({

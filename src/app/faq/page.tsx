@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   description:
     "Common questions about sacred geometry, Platonic Solids, sacred patterns, and how to practice geometric meditation. Learn about the Flower of Life, Metatron's Cube, the Golden Ratio, and more.",
   openGraph: {
-    title: "FAQ | Sacred Geometry",
+    title: "FAQ | WavePoint",
     description:
       "Answers to common questions about sacred geometry, the five Platonic Solids, sacred patterns like the Flower of Life, and practical applications.",
   },

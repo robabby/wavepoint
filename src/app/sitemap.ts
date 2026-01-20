@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllGeometries, getGeometryPath } from "@/lib/data";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://sacredgeometry.site";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const geometries = getAllGeometries();

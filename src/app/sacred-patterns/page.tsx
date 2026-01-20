@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   description:
     "Explore sacred geometric patterns including the Flower of Life, Metatron's Cube, Sri Yantra, Golden Ratio, and more. Discover the mathematical principles and divine patterns underlying the universe.",
   openGraph: {
-    title: "Sacred Patterns | Sacred Geometry",
+    title: "Sacred Patterns | WavePoint",
     description:
       "Timeless geometric patterns that appear across cultures and throughout history, representing the fundamental organizing principles of creation.",
   },

@@ -16,8 +16,8 @@ export const env = createEnv({
     APP_URL: z.string().url().default("http://localhost:3000"),
     // Email (Brevo) - optional, email features disabled if not set
     BREVO_API_KEY: z.string().min(1).optional(),
-    EMAIL_FROM_ADDRESS: z.string().email().default("noreply@sacredgeometry.site"),
-    EMAIL_FROM_NAME: z.string().default("Sacred Geometry"),
+    EMAIL_FROM_ADDRESS: z.string().email().default("noreply@wavepoint.space"),
+    EMAIL_FROM_NAME: z.string().default("WavePoint"),
     // Signal (AI interpretations) - optional, AI features disabled if not set
     ANTHROPIC_API_KEY: z.string().min(1).optional(),
   },

@@ -58,8 +58,8 @@ export function createArticleSchema({
     ...(dateModified && { dateModified }),
     publisher: {
       "@type": "Organization",
-      name: "Sacred Geometry",
-      url: "https://sacredgeometry.site",
+      name: "WavePoint",
+      url: "https://wavepoint.space",
     },
   };
 }
@@ -137,7 +137,7 @@ export function createProductSchema({
     offers,
     brand: {
       "@type": "Brand",
-      name: "Sacred Geometry",
+      name: "WavePoint",
     },
   };
 }

@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   description:
     "Explore the five Platonic solids: Tetrahedron, Hexahedron, Octahedron, Dodecahedron, and Icosahedron. Discover their mathematical properties, elemental associations, and sacred significance.",
   openGraph: {
-    title: "Platonic Solids | Sacred Geometry",
+    title: "Platonic Solids | WavePoint",
     description:
       "The five perfect three-dimensional forms: Tetrahedron (Fire), Hexahedron (Earth), Octahedron (Air), Dodecahedron (Ether), and Icosahedron (Water).",
   },

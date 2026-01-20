@@ -1,4 +1,4 @@
-# Sacred Geometry Web App
+# WavePoint
 
 An interactive educational web application for exploring and learning about sacred geometry, its mathematical properties, and symbolic significance.
 
@@ -6,7 +6,7 @@ An interactive educational web application for exploring and learning about sacr
 
 ## Overview
 
-Sacred Geometry Web App bridges ancient wisdom with modern web technology, making sacred geometry accessible and interactive for students, seekers, and enthusiasts. Explore the fundamental patterns that underlie creation through detailed information pages.
+WavePoint bridges ancient wisdom with modern web technology, making sacred geometry accessible and interactive for students, seekers, and enthusiasts. Explore the fundamental patterns that underlie creation through detailed information pages.
 
 ## Features
 
@@ -170,6 +170,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-**Sacred Geometry Web App** - Exploring the fundamental patterns of creation.
+**WavePoint** - Exploring the fundamental patterns of creation.
 
 Built with 💜 by [Rob Abby](https://github.com/robabby)

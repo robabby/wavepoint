@@ -6,7 +6,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 export const metadata: Metadata = {
   title: "Shipping Policy",
   description:
-    "Shipping Policy for Sacred Geometry Shop. Learn about delivery times, shipping costs, and international shipping.",
+    "Shipping Policy for WavePoint Shop. Learn about delivery times, shipping costs, and international shipping.",
 };
 
 function Section({

@@ -6,7 +6,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 export const metadata: Metadata = {
   title: "Return & Refund Policy",
   description:
-    "Return and Refund Policy for Sacred Geometry Shop. Learn about our print-on-demand return process and refund eligibility.",
+    "Return and Refund Policy for WavePoint Shop. Learn about our print-on-demand return process and refund eligibility.",
 };
 
 function Section({

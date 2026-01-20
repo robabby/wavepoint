@@ -2,7 +2,7 @@
  * Email Verification Template
  *
  * HTML email template for account email verification.
- * Styled to match the Sacred Geometry brand.
+ * Styled to match the WavePoint brand.
  */
 
 export interface VerificationEmailVars {
@@ -11,7 +11,7 @@ export interface VerificationEmailVars {
 }
 
 export const verificationEmailTemplate = {
-  subject: "Verify your email - Sacred Geometry",
+  subject: "Verify your email - WavePoint",
 
   html: ({ verificationUrl, expiresInHours }: VerificationEmailVars) => `
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ export const verificationEmailTemplate = {
           <tr>
             <td style="padding: 32px 40px 24px; text-align: center; border-bottom: 1px solid rgba(201, 162, 39, 0.2);">
               <h1 style="margin: 0; color: #c9a227; font-size: 24px; font-weight: normal; letter-spacing: 1px;">
-                Sacred Geometry
+                WavePoint
               </h1>
             </td>
           </tr>
@@ -42,7 +42,7 @@ export const verificationEmailTemplate = {
                 Verify Your Email Address
               </h2>
               <p style="margin: 0 0 24px; color: #a8a29e; font-size: 16px; line-height: 1.6;">
-                Thank you for creating an account with Sacred Geometry. Please click the button below to verify your email address and complete your registration.
+                Thank you for creating an account with WavePoint. Please click the button below to verify your email address and complete your registration.
               </p>
 
               <!-- Button -->
@@ -58,7 +58,7 @@ export const verificationEmailTemplate = {
               </table>
 
               <p style="margin: 0 0 16px; color: #78716c; font-size: 14px; line-height: 1.5;">
-                This link will expire in ${expiresInHours} hours. If you didn't create an account with Sacred Geometry, you can safely ignore this email.
+                This link will expire in ${expiresInHours} hours. If you didn't create an account with WavePoint, you can safely ignore this email.
               </p>
 
               <!-- Fallback URL -->
@@ -73,7 +73,7 @@ export const verificationEmailTemplate = {
           <tr>
             <td style="padding: 24px 40px; text-align: center; border-top: 1px solid rgba(201, 162, 39, 0.2);">
               <p style="margin: 0; color: #57534e; font-size: 12px;">
-                &copy; ${new Date().getFullYear()} Sacred Geometry. All rights reserved.
+                &copy; ${new Date().getFullYear()} WavePoint. All rights reserved.
               </p>
             </td>
           </tr>
@@ -85,18 +85,18 @@ export const verificationEmailTemplate = {
 </html>`,
 
   text: ({ verificationUrl, expiresInHours }: VerificationEmailVars) =>
-    `Sacred Geometry - Email Verification
+    `WavePoint - Email Verification
 
 Verify Your Email Address
 
-Thank you for creating an account with Sacred Geometry. Please visit the link below to verify your email address:
+Thank you for creating an account with WavePoint. Please visit the link below to verify your email address:
 
 ${verificationUrl}
 
 This link will expire in ${expiresInHours} hours.
 
-If you didn't create an account with Sacred Geometry, you can safely ignore this email.
+If you didn't create an account with WavePoint, you can safely ignore this email.
 
 ---
-Sacred Geometry`,
+WavePoint`,
 };

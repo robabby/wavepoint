@@ -2,7 +2,7 @@
  * Password Reset Email Template
  *
  * HTML email template for password reset requests.
- * Styled to match the Sacred Geometry brand.
+ * Styled to match the WavePoint brand.
  */
 
 export interface PasswordResetEmailVars {
@@ -11,7 +11,7 @@ export interface PasswordResetEmailVars {
 }
 
 export const passwordResetEmailTemplate = {
-  subject: "Reset your password - Sacred Geometry",
+  subject: "Reset your password - WavePoint",
 
   html: ({ resetUrl, expiresInHours }: PasswordResetEmailVars) => `
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ export const passwordResetEmailTemplate = {
           <tr>
             <td style="padding: 32px 40px 24px; text-align: center; border-bottom: 1px solid rgba(201, 162, 39, 0.2);">
               <h1 style="margin: 0; color: #c9a227; font-size: 24px; font-weight: normal; letter-spacing: 1px;">
-                Sacred Geometry
+                WavePoint
               </h1>
             </td>
           </tr>
@@ -73,7 +73,7 @@ export const passwordResetEmailTemplate = {
           <tr>
             <td style="padding: 24px 40px; text-align: center; border-top: 1px solid rgba(201, 162, 39, 0.2);">
               <p style="margin: 0; color: #57534e; font-size: 12px;">
-                &copy; ${new Date().getFullYear()} Sacred Geometry. All rights reserved.
+                &copy; ${new Date().getFullYear()} WavePoint. All rights reserved.
               </p>
             </td>
           </tr>
@@ -85,7 +85,7 @@ export const passwordResetEmailTemplate = {
 </html>`,
 
   text: ({ resetUrl, expiresInHours }: PasswordResetEmailVars) =>
-    `Sacred Geometry - Password Reset
+    `WavePoint - Password Reset
 
 Reset Your Password
 
@@ -98,5 +98,5 @@ This link will expire in ${expiresInHours} hour${expiresInHours === 1 ? "" : "s"
 If you didn't request a password reset, you can safely ignore this email—your password will remain unchanged.
 
 ---
-Sacred Geometry`,
+WavePoint`,
 };
