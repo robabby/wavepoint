@@ -21,8 +21,7 @@ import { AuthProvider } from "@/components/auth/auth-provider";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { EmailVerificationBanner } from "@/components/auth/email-verification-banner";
 import { CartProvider } from "@/lib/shop/cart-context";
-import { auth } from "@/lib/auth";
-import { isAuthEnabled, canAccessShop } from "@/lib/features/access";
+import { isAuthEnabled } from "@/lib/features/access";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
@@ -71,16 +70,12 @@ const crimsonPro = Crimson_Pro({
   display: "swap",
 });
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // Get session for access checks
-  const session = await auth();
-
   // Check if public auth UI should be shown (env flags)
   // AuthProvider is always included so useSession() works for admin access checks
   const authUiEnabled = isAuthEnabled();
-  const shopAccessible = canAccessShop(session);
 
   // Core content - always wrapped with AuthProvider for session access
   const coreContent = (
@@ -113,12 +108,9 @@ export default async function RootLayout({
                 This allows invite flows to work even when auth is disabled for public.
                 The modal opens via URL params (?auth=sign-up&invite=...) */}
             <AuthModal />
-            {/* CartProvider only when shop is accessible (flag or admin) */}
-            {shopAccessible ? (
-              <CartProvider>{coreContent}</CartProvider>
-            ) : (
-              coreContent
-            )}
+            {/* CartProvider always included so useCart() works after session changes.
+                Components use useCanAccessShop() client-side for visibility control. */}
+            <CartProvider>{coreContent}</CartProvider>
           </AuthProvider>
         </Theme>
       </body>
