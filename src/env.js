@@ -23,6 +23,8 @@ export const env = createEnv({
     // Invite system - server-only admin settings
     ADMIN_EMAILS: z.string().optional(), // Comma-separated admin emails
     BREVO_BETA_LIST_ID: z.string().optional(), // Beta Users list ID for invite sync
+    BREVO_CONTACT_LIST_ID: z.string().optional(), // Contact form submissions list ID
+    CONTACT_NOTIFICATION_EMAIL: z.string().email().optional(), // Email to receive contact form notifications
   },
 
   /**
@@ -73,6 +75,8 @@ export const env = createEnv({
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
     ADMIN_EMAILS: process.env.ADMIN_EMAILS,
     BREVO_BETA_LIST_ID: process.env.BREVO_BETA_LIST_ID,
+    BREVO_CONTACT_LIST_ID: process.env.BREVO_CONTACT_LIST_ID,
+    CONTACT_NOTIFICATION_EMAIL: process.env.CONTACT_NOTIFICATION_EMAIL,
     NEXT_PUBLIC_INVITES_REQUIRED: process.env.NEXT_PUBLIC_INVITES_REQUIRED,
   },
   /**

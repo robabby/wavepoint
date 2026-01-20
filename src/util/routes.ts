@@ -136,4 +136,10 @@ export const ROUTES = {
     description: "Frequently asked questions about sacred geometry",
     order: 3,
   },
+  contact: {
+    name: "Contact",
+    path: "/contact",
+    description: "Get in touch with the WavePoint team",
+    order: 4,
+  },
 };

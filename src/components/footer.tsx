@@ -130,6 +130,7 @@ export function Footer() {
               Connect
             </h3>
             <div className="flex flex-col gap-2">
+              <FooterLink href={ROUTES.contact.path}>Contact</FooterLink>
               <a
                 href="https://github.com/robabby/sacred-geometry"
                 target="_blank"
