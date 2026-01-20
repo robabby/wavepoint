@@ -125,7 +125,7 @@ export function Header() {
       },
       {
         path: ROUTES.sacredPatterns.path,
-        desktopLabel: "Sacred Patterns",
+        desktopLabel: "Patterns",
         mobileLabel: "Patterns",
       },
     ];
@@ -305,29 +305,8 @@ export function Header() {
             </button>
           </div>
 
-          {/* Desktop: Search + Navigation */}
-          <div className="hidden items-center gap-4 sm:flex">
-            {/* Search Button */}
-            <button
-              onClick={() => {
-                // Trigger the ⌘K keyboard event
-                const event = new KeyboardEvent("keydown", {
-                  key: "k",
-                  metaKey: true,
-                  bubbles: true,
-                });
-                document.dispatchEvent(event);
-              }}
-              className="flex items-center gap-2 rounded-md border border-[var(--border-gold)] bg-[var(--color-warm-charcoal)] px-3 py-1.5 text-sm font-medium text-[var(--color-warm-gray)] transition-colors hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-dark-bronze)] hover:text-[var(--color-gold)]"
-              aria-label="Search geometries"
-            >
-              <Search className="h-4 w-4 text-[var(--color-gold)]/70" />
-              <span>Search</span>
-              <kbd className="hidden rounded border border-[var(--border-gold)] bg-[var(--color-dark-bronze)] px-1.5 py-0.5 text-xs text-[var(--color-gold)]/70 md:inline">
-                ⌘K
-              </kbd>
-            </button>
-
+          {/* Desktop: Navigation + Utility Actions */}
+          <div className="hidden items-center gap-6 sm:flex">
             {/* Navigation */}
             <nav
               aria-label="Primary"
@@ -350,11 +329,33 @@ export function Header() {
               ))}
             </nav>
 
-            {/* Cart Icon - only when shop is enabled */}
-            {shopEnabled && <CartIcon />}
+            {/* Separator between nav and utility actions */}
+            <div className="h-6 w-px bg-[var(--border-gold)]/30" />
 
-            {/* Auth Section - only when auth is enabled */}
-            {authEnabled && <AuthHeaderSection variant="desktop" />}
+            {/* Utility Actions: Search, Cart, Auth */}
+            <div className="flex items-center gap-1">
+              {/* Search - icon only, matches utility action style */}
+              <button
+                onClick={() => {
+                  const event = new KeyboardEvent("keydown", {
+                    key: "k",
+                    metaKey: true,
+                    bubbles: true,
+                  });
+                  document.dispatchEvent(event);
+                }}
+                className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+                aria-label="Search (⌘K)"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+
+              {/* Cart Icon - only when shop is enabled */}
+              {shopEnabled && <CartIcon />}
+
+              {/* Auth Section - only when auth is enabled */}
+              {authEnabled && <AuthHeaderSection variant="desktop" />}
+            </div>
           </div>
         </div>
       </header>
