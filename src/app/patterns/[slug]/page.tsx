@@ -43,7 +43,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${geometry.name} | WavePoint`,
+    title: geometry.name,
     description: geometry.description,
   };
 }

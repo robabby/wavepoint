@@ -7,7 +7,7 @@ import { AlreadyRedeemed } from "./_components/already-redeemed";
 import { AlreadyLoggedIn } from "./_components/already-logged-in";
 
 export const metadata: Metadata = {
-  title: "Invitation | WavePoint",
+  title: "Invitation",
   robots: "noindex, nofollow",
 };
 
