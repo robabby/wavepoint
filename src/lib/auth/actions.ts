@@ -43,6 +43,7 @@ export async function registerUser(
       body: JSON.stringify({
         email: data.email.toLowerCase(),
         password: data.password,
+        inviteCode: data.inviteCode,
       }),
     });
 
