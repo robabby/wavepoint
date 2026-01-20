@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  Suspense,
   useCallback,
   useContext,
   useEffect,
@@ -56,19 +57,6 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-/**
- * AuthProvider wraps the application with:
- * - SessionProvider from next-auth for session management
- * - AuthModalContext for modal state (open/close, view state)
- *
- * Usage:
- * ```tsx
- * <AuthProvider>
- *   <App />
- *   <AuthModal />
- * </AuthProvider>
- * ```
- */
 /** Valid auth URL param values */
 const AUTH_VIEWS: AuthView[] = ["sign-in", "sign-up", "forgot-password"];
 
@@ -76,10 +64,19 @@ function isAuthView(value: string | null): value is AuthView {
   return value !== null && AUTH_VIEWS.includes(value as AuthView);
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [view, setView] = useState<AuthView>("sign-in");
-  const [inviteData, setInviteData] = useState<InviteData | null>(null);
+/**
+ * Handles URL param detection for auth modal.
+ * Separated from AuthProvider to allow Suspense boundary around useSearchParams.
+ */
+function AuthUrlParamHandler({
+  setView,
+  setIsOpen,
+  setInviteData,
+}: {
+  setView: (view: AuthView) => void;
+  setIsOpen: (isOpen: boolean) => void;
+  setInviteData: (data: InviteData | null) => void;
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -113,7 +110,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
         : pathname;
       router.replace(newUrl, { scroll: false });
     }
-  }, [searchParams, router, pathname]);
+  }, [searchParams, router, pathname, setView, setIsOpen, setInviteData]);
+
+  return null;
+}
+
+/**
+ * AuthProvider wraps the application with:
+ * - SessionProvider from next-auth for session management
+ * - AuthModalContext for modal state (open/close, view state)
+ *
+ * Usage:
+ * ```tsx
+ * <AuthProvider>
+ *   <App />
+ *   <AuthModal />
+ * </AuthProvider>
+ * ```
+ */
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [view, setView] = useState<AuthView>("sign-in");
+  const [inviteData, setInviteData] = useState<InviteData | null>(null);
 
   const openModal = useCallback(
     (initialView: AuthView = "sign-in", invite?: InviteData) => {
@@ -158,6 +176,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   return (
     <SessionProvider>
       <AuthModalContext.Provider value={modalValue}>
+        {/* URL param handler wrapped in Suspense for static generation compatibility */}
+        <Suspense fallback={null}>
+          <AuthUrlParamHandler
+            setView={setView}
+            setIsOpen={setIsOpen}
+            setInviteData={setInviteData}
+          />
+        </Suspense>
         {children}
       </AuthModalContext.Provider>
     </SessionProvider>
