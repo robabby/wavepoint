@@ -109,8 +109,10 @@ export default async function RootLayout({
         <Theme appearance="dark">
           {/* AuthProvider always included for session access (admin checks, etc.) */}
           <AuthProvider>
-            {/* Auth UI (modal) only shown when auth feature is enabled for public */}
-            {authUiEnabled && <AuthModal />}
+            {/* AuthModal always rendered - it only displays when isOpen is true.
+                This allows invite flows to work even when auth is disabled for public.
+                The modal opens via URL params (?auth=sign-up&invite=...) */}
+            <AuthModal />
             {/* CartProvider only when shop is accessible (flag or admin) */}
             {shopAccessible ? (
               <CartProvider>{coreContent}</CartProvider>
