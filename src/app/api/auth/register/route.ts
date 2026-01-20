@@ -68,9 +68,11 @@ export async function POST(request: Request) {
     const passwordHash = await bcrypt.hash(password, 12);
 
     // Create user
+    // If registering with a valid invite, mark email as verified (admin pre-verified)
     const [user] = await db.insert(users).values({
       email: normalizedEmail,
       passwordHash,
+      emailVerified: validatedInvite?.data ? new Date() : null,
     }).returning();
 
     if (!user) {
@@ -87,10 +89,13 @@ export async function POST(request: Request) {
       updateBrevoInviteStatusAsync(normalizedEmail);
     }
 
-    // Send verification email (fire-and-forget to not block response)
-    void sendVerificationEmail(normalizedEmail).catch((err) => {
-      console.error("Failed to send verification email:", err);
-    });
+    // Send verification email only for non-invite registrations
+    // Invite-based registrations are pre-verified by admin
+    if (!validatedInvite?.data) {
+      void sendVerificationEmail(normalizedEmail).catch((err) => {
+        console.error("Failed to send verification email:", err);
+      });
+    }
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
