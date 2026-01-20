@@ -85,10 +85,22 @@ export function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <GeometricDivider />
 
-        {/* Three-column layout */}
+        {/* Footer sections - reordered on mobile: About, Explore, Connect, Legal */}
         <div className="grid grid-cols-1 gap-4 pb-4 sm:grid-cols-3 sm:gap-6 sm:pb-6 lg:gap-8 lg:pb-8">
-          {/* Navigation + Legal */}
-          <div className="text-center sm:text-left">
+          {/* About - first on mobile, center on desktop */}
+          <div className="order-1 text-center sm:order-2">
+            <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)]">
+              About
+            </h3>
+            <p className="text-sm leading-relaxed text-[var(--color-warm-gray)]">
+              An exploration of the geometric patterns that underlie reality.
+              From Platonic solids to sacred symbols, discover the mathematics
+              of creation.
+            </p>
+          </div>
+
+          {/* Explore - second on mobile, first column on desktop */}
+          <div className="order-2 text-center sm:order-1 sm:row-span-2 sm:text-left">
             <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)]">
               Explore
             </h3>
@@ -103,29 +115,20 @@ export function Footer() {
               <FooterLink href={ROUTES.faq.path}>FAQ</FooterLink>
             </nav>
 
-            <h3 className="mb-4 mt-6 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)]">
-              Legal
-            </h3>
-            <nav className="flex flex-col gap-2">
-              <FooterLink href="/legal/terms">Terms of Service</FooterLink>
-              <FooterLink href="/legal/privacy">Privacy Policy</FooterLink>
-            </nav>
+            {/* Legal - stays with Explore on desktop, but hidden on mobile (shown separately) */}
+            <div className="hidden sm:block">
+              <h3 className="mb-4 mt-6 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)]">
+                Legal
+              </h3>
+              <nav className="flex flex-col gap-2">
+                <FooterLink href="/legal/terms">Terms of Service</FooterLink>
+                <FooterLink href="/legal/privacy">Privacy Policy</FooterLink>
+              </nav>
+            </div>
           </div>
 
-          {/* About */}
-          <div className="text-center">
-            <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)]">
-              About
-            </h3>
-            <p className="text-sm leading-relaxed text-[var(--color-warm-gray)]">
-              An exploration of the geometric patterns that underlie reality.
-              From Platonic solids to sacred symbols, discover the mathematics
-              of creation.
-            </p>
-          </div>
-
-          {/* Connect */}
-          <div className="text-center sm:text-right">
+          {/* Connect - third on mobile, right column on desktop */}
+          <div className="order-3 text-center sm:row-span-2 sm:text-right">
             <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)]">
               Connect
             </h3>
@@ -148,6 +151,17 @@ export function Footer() {
                 Rob Abby
               </a>
             </div>
+          </div>
+
+          {/* Legal - fourth on mobile only (hidden on desktop, shown in Explore column) */}
+          <div className="order-4 text-center sm:hidden">
+            <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)]">
+              Legal
+            </h3>
+            <nav className="flex flex-col gap-2">
+              <FooterLink href="/legal/terms">Terms of Service</FooterLink>
+              <FooterLink href="/legal/privacy">Privacy Policy</FooterLink>
+            </nav>
           </div>
         </div>
 

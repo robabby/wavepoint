@@ -238,9 +238,14 @@ export function SearchCommand() {
       <DialogContent
         className={cn(
           "overflow-hidden p-0",
-          "bg-[var(--color-obsidian)] border-[var(--border-gold)]",
-          // Desktop positioning
-          "sm:!top-[15vh] sm:!translate-y-0 sm:max-h-[70vh] sm:rounded-lg sm:max-w-lg",
+          // Glassmorphic background
+          "bg-[var(--glass-bg)] backdrop-blur-xl",
+          // Luminous gold border
+          "border border-[var(--glass-border)]",
+          // Multi-layered shadow for outer glow and inner depth
+          "[box-shadow:var(--glass-glow),var(--glass-inner-shadow)]",
+          // Desktop positioning - larger modal
+          "sm:!top-[12vh] sm:!translate-y-0 sm:max-h-[76vh] sm:rounded-xl sm:max-w-2xl",
           // Mobile - bottom sheet style
           "!top-auto !bottom-0 !translate-y-0 max-h-[85vh] w-full max-w-full rounded-t-xl rounded-b-none sm:!bottom-auto"
         )}
@@ -249,88 +254,107 @@ export function SearchCommand() {
         <DialogTitle className="sr-only">Search Geometries</DialogTitle>
         <Command shouldFilter={false} loop className="bg-transparent">
           {/* Search Input with Clear Button */}
-          <div className="relative flex items-center bg-[var(--color-warm-charcoal)]/30">
+          <div className={cn(
+            "relative flex items-center",
+            "bg-[var(--glass-bg-elevated)]",
+            "border-b border-[var(--glass-border)]",
+            "[box-shadow:inset_0_-1px_0_rgba(212,168,75,0.1)]"
+          )}>
             <CommandInput
               placeholder="Search geometries..."
               value={query}
               onValueChange={handleQueryChange}
-              className="text-[var(--color-cream)] placeholder:text-[var(--color-dim)] text-base h-12 sm:h-14 pr-10"
+              className={cn(
+                "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+                "text-base sm:text-lg h-14 sm:h-16 pr-12",
+                // Enhanced gold tint on the search icon
+                "[&_svg]:text-[var(--color-gold)]/60 [&_svg]:drop-shadow-[0_0_3px_rgba(212,168,75,0.3)] [&_svg]:h-5 [&_svg]:w-5 sm:[&_svg]:h-6 sm:[&_svg]:w-6"
+              )}
             />
             {searchQuery && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-4 p-1.5 rounded-md text-[var(--color-dim)] hover:text-[var(--color-warm-gray)] hover:bg-[var(--color-dark-bronze)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
+                className={cn(
+                  "absolute right-4 p-1.5 rounded-md",
+                  "text-[var(--color-dim)] hover:text-[var(--color-warm-gray)]",
+                  "hover:bg-[var(--color-dark-bronze)]/50",
+                  "transition-all duration-200",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
+                )}
               >
                 <X className="h-4 w-4" />
               </button>
             )}
           </div>
 
-          <CommandList className="max-h-[50vh] sm:max-h-[400px]">
+          <CommandList className="max-h-[50vh] sm:max-h-[480px]">
             {/* Discovery State - show when no query and no recent searches */}
             {!searchQuery && recentSearches.length === 0 && (
-              <div className="py-6 px-4">
+              <div className="py-6 sm:py-8 px-4 sm:px-6">
                 {/* Quick access categories */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   <Link
                     href="/platonic-solids"
                     className={cn(
-                      "flex items-center gap-3 p-3 sm:p-4 rounded-lg",
-                      "bg-[var(--color-warm-charcoal)]/40",
-                      "border border-[var(--border-gold)]/30",
+                      "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-lg",
+                      "bg-[var(--glass-bg-elevated)]",
+                      "border border-[var(--glass-border)]/50",
                       "hover:bg-[var(--color-dark-bronze)]/50",
-                      "hover:border-[var(--color-gold)]/50",
-                      "transition-[background-color,border-color] duration-200"
+                      "hover:border-[var(--color-gold)]/40",
+                      "hover:[box-shadow:0_0_20px_rgba(212,168,75,0.08)]",
+                      "transition-all duration-200 ease-out"
                     )}
                     onClick={() => setOpen(false)}
                   >
-                    <div className="h-8 w-8 sm:h-10 sm:w-10 rounded bg-[var(--color-dark-bronze)] flex items-center justify-center">
-                      <span className="text-[var(--color-gold)] font-heading text-lg sm:text-xl">{platonicCount}</span>
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded bg-[var(--color-obsidian)]/60 border border-[var(--glass-border)]/30 flex items-center justify-center">
+                      <span className="text-[var(--color-gold)] font-heading text-xl sm:text-2xl">{platonicCount}</span>
                     </div>
                     <div>
-                      <p className="text-sm sm:text-base font-medium text-[var(--color-cream)]">Platonic Solids</p>
-                      <p className="text-xs sm:text-sm text-[var(--color-dim)]">Perfect forms</p>
+                      <p className="text-base sm:text-lg font-medium text-[var(--color-cream)]">Platonic Solids</p>
+                      <p className="text-sm sm:text-base text-[var(--color-dim)]">Perfect forms</p>
                     </div>
                   </Link>
 
                   <Link
                     href="/sacred-patterns"
                     className={cn(
-                      "flex items-center gap-3 p-3 sm:p-4 rounded-lg",
-                      "bg-[var(--color-warm-charcoal)]/40",
-                      "border border-[var(--border-gold)]/30",
+                      "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-lg",
+                      "bg-[var(--glass-bg-elevated)]",
+                      "border border-[var(--glass-border)]/50",
                       "hover:bg-[var(--color-dark-bronze)]/50",
-                      "hover:border-[var(--color-gold)]/50",
-                      "transition-[background-color,border-color] duration-200"
+                      "hover:border-[var(--color-gold)]/40",
+                      "hover:[box-shadow:0_0_20px_rgba(212,168,75,0.08)]",
+                      "transition-all duration-200 ease-out"
                     )}
                     onClick={() => setOpen(false)}
                   >
-                    <div className="h-8 w-8 sm:h-10 sm:w-10 rounded bg-[var(--color-dark-bronze)] flex items-center justify-center">
-                      <span className="text-[var(--color-gold)] font-heading text-lg sm:text-xl">{patternCount}</span>
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded bg-[var(--color-obsidian)]/60 border border-[var(--glass-border)]/30 flex items-center justify-center">
+                      <span className="text-[var(--color-gold)] font-heading text-xl sm:text-2xl">{patternCount}</span>
                     </div>
                     <div>
-                      <p className="text-sm sm:text-base font-medium text-[var(--color-cream)]">Sacred Patterns</p>
-                      <p className="text-xs sm:text-sm text-[var(--color-dim)]">Universal geometry</p>
+                      <p className="text-base sm:text-lg font-medium text-[var(--color-cream)]">Sacred Patterns</p>
+                      <p className="text-sm sm:text-base text-[var(--color-dim)]">Universal geometry</p>
                     </div>
                   </Link>
                 </div>
 
                 {/* Popular searches */}
-                <div className="mt-4 pt-4 border-t border-[var(--border-gold)]/20">
-                  <p className="text-xs sm:text-sm text-[var(--color-dim)] mb-3 px-1">Popular searches</p>
-                  <div className="flex flex-wrap gap-2">
+                <div className="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-[var(--glass-border)]/30">
+                  <p className="text-sm sm:text-base text-[var(--color-dim)] mb-3 sm:mb-4 px-1">Popular searches</p>
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     {["Flower of Life", "Metatron", "Golden Ratio", "Vesica Piscis"].map((term) => (
                       <button
                         key={term}
                         onClick={() => setQuery(term)}
                         className={cn(
-                          "px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-full",
-                          "bg-[var(--color-dark-bronze)]/50",
+                          "px-4 py-2 sm:px-5 sm:py-2.5 text-sm sm:text-base rounded-full",
+                          "bg-[var(--color-obsidian)]/60",
                           "text-[var(--color-warm-gray)]",
-                          "border border-transparent",
+                          "border border-[var(--glass-border)]/30",
                           "hover:text-[var(--color-gold)]",
-                          "hover:border-[var(--border-gold)]/50",
-                          "transition-[color,border-color] duration-200",
+                          "hover:border-[var(--color-gold)]/40",
+                          "hover:bg-[var(--glass-bg-elevated)]",
+                          "transition-all duration-200 ease-out",
                           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
                         )}
                       >
@@ -349,12 +373,13 @@ export function SearchCommand() {
                 className={cn(
                   "[&_[cmdk-group-heading]]:text-[var(--color-gold)]",
                   "[&_[cmdk-group-heading]]:font-heading",
-                  "[&_[cmdk-group-heading]]:text-xs",
-                  "[&_[cmdk-group-heading]]:sm:text-sm",
+                  "[&_[cmdk-group-heading]]:text-sm",
+                  "[&_[cmdk-group-heading]]:sm:text-base",
                   "[&_[cmdk-group-heading]]:uppercase",
                   "[&_[cmdk-group-heading]]:tracking-wider",
-                  "[&_[cmdk-group-heading]]:px-3",
-                  "[&_[cmdk-group-heading]]:py-2"
+                  "[&_[cmdk-group-heading]]:px-4",
+                  "[&_[cmdk-group-heading]]:sm:px-5",
+                  "[&_[cmdk-group-heading]]:py-3"
                 )}
               >
                 {recentSearches.map((recentQuery, index) => (
@@ -363,31 +388,32 @@ export function SearchCommand() {
                     value={recentQuery}
                     onSelect={() => handleRecentSearch(recentQuery)}
                     className={cn(
-                      "cursor-pointer rounded-md mx-2 my-0.5 py-3 px-3",
-                      "transition-[background-color] duration-200",
+                      "cursor-pointer rounded-md mx-2 sm:mx-3 my-0.5 py-3 sm:py-4 px-3 sm:px-4",
+                      "transition-all duration-200 ease-out",
                       "data-[selected=true]:bg-[var(--color-dark-bronze)]/60",
                       "data-[selected=true]:border-l-2 data-[selected=true]:border-[var(--color-gold)]",
-                      "hover:bg-[var(--color-warm-charcoal)]/50"
+                      "data-[selected=true]:[box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]",
+                      "hover:bg-[var(--glass-bg-elevated)]"
                     )}
                   >
-                    <div className="flex items-center gap-3 w-full">
-                      <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-gold)]/50" />
-                      <span className="flex-1 text-sm sm:text-base text-[var(--color-cream)]">{recentQuery}</span>
+                    <div className="flex items-center gap-3 sm:gap-4 w-full">
+                      <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-[var(--color-gold)]/50" />
+                      <span className="flex-1 text-base sm:text-lg text-[var(--color-cream)]">{recentQuery}</span>
                     </div>
                   </CommandItem>
                 ))}
                 <CommandItem
                   onSelect={handleClearRecent}
                   className={cn(
-                    "cursor-pointer mx-2 mt-2 py-2 px-3 rounded-md",
+                    "cursor-pointer mx-2 sm:mx-3 mt-2 py-2.5 px-3 sm:px-4 rounded-md",
                     "text-[var(--color-dim)]",
                     "hover:text-[var(--color-gold)]",
-                    "hover:bg-[var(--color-dark-bronze)]/30",
-                    "transition-colors",
-                    "border-t border-[var(--border-gold)]/20"
+                    "hover:bg-[var(--glass-bg-elevated)]",
+                    "transition-all duration-200 ease-out",
+                    "border-t border-[var(--glass-border)]/30"
                   )}
                 >
-                  <span className="text-xs">Clear recent searches</span>
+                  <span className="text-sm">Clear recent searches</span>
                 </CommandItem>
               </CommandGroup>
             )}
@@ -395,28 +421,28 @@ export function SearchCommand() {
             {/* Empty State - no results found (only show when there's a search query) */}
             <CommandEmpty>
               {searchQuery && (
-                <div className="py-8 px-6 text-center">
+                <div className="py-10 sm:py-12 px-6 sm:px-8 text-center">
                   {/* Visual indicator */}
-                  <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-[var(--color-dark-bronze)] flex items-center justify-center">
-                    <Search className="h-5 w-5 text-[var(--color-dim)]" />
+                  <div className="mx-auto mb-5 h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-[var(--color-dark-bronze)] flex items-center justify-center">
+                    <Search className="h-6 w-6 sm:h-7 sm:w-7 text-[var(--color-dim)]" />
                   </div>
 
                   {/* Message */}
-                  <p className="text-[var(--color-warm-gray)] text-sm font-medium mb-2">
+                  <p className="text-[var(--color-warm-gray)] text-base sm:text-lg font-medium mb-2">
                     No results for &ldquo;{searchQuery}&rdquo;
                   </p>
-                  <p className="text-[var(--color-dim)] text-xs mb-6">
+                  <p className="text-[var(--color-dim)] text-sm sm:text-base mb-8">
                     Try a different term or explore suggestions below
                   </p>
 
                   {/* Suggestion pills */}
-                  <div className="flex flex-wrap justify-center gap-2 mb-6">
+                  <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8">
                     {["flower", "tetrahedron", "golden", "circle", "life"].map((suggestion) => (
                       <button
                         key={suggestion}
                         onClick={() => setQuery(suggestion)}
                         className={cn(
-                          "px-3 py-1.5 text-xs rounded-full",
+                          "px-4 py-2 sm:px-5 sm:py-2.5 text-sm sm:text-base rounded-full",
                           "bg-[var(--color-dark-bronze)]",
                           "text-[var(--color-gold)]",
                           "border border-[var(--border-gold)]/50",
@@ -432,22 +458,22 @@ export function SearchCommand() {
                   </div>
 
                   {/* Browse links */}
-                  <div className="flex justify-center gap-6 text-xs">
+                  <div className="flex justify-center gap-8 text-sm sm:text-base">
                     <Link
                       href="/platonic-solids"
-                      className="text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-colors flex items-center gap-1"
+                      className="text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-colors flex items-center gap-1.5"
                       onClick={() => setOpen(false)}
                     >
                       <span>Platonic Solids</span>
-                      <ArrowRight className="h-3 w-3" />
+                      <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
                       href="/sacred-patterns"
-                      className="text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-colors flex items-center gap-1"
+                      className="text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-colors flex items-center gap-1.5"
                       onClick={() => setOpen(false)}
                     >
                       <span>Sacred Patterns</span>
-                      <ArrowRight className="h-3 w-3" />
+                      <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
                 </div>
@@ -461,12 +487,13 @@ export function SearchCommand() {
                 className={cn(
                   "[&_[cmdk-group-heading]]:text-[var(--color-gold)]",
                   "[&_[cmdk-group-heading]]:font-heading",
-                  "[&_[cmdk-group-heading]]:text-xs",
-                  "[&_[cmdk-group-heading]]:sm:text-sm",
+                  "[&_[cmdk-group-heading]]:text-sm",
+                  "[&_[cmdk-group-heading]]:sm:text-base",
                   "[&_[cmdk-group-heading]]:uppercase",
                   "[&_[cmdk-group-heading]]:tracking-wider",
-                  "[&_[cmdk-group-heading]]:px-3",
-                  "[&_[cmdk-group-heading]]:py-2"
+                  "[&_[cmdk-group-heading]]:px-4",
+                  "[&_[cmdk-group-heading]]:sm:px-5",
+                  "[&_[cmdk-group-heading]]:py-3"
                 )}
               >
                 {platonicResults.map((geometry) => (
@@ -475,22 +502,23 @@ export function SearchCommand() {
                     value={`${geometry.name} ${geometry.aliases?.join(" ") ?? ""}`}
                     onSelect={() => handleSelect(geometry)}
                     className={cn(
-                      "cursor-pointer rounded-md mx-2 my-0.5 py-3 px-3",
-                      "transition-[background-color] duration-200",
+                      "cursor-pointer rounded-md mx-2 sm:mx-3 my-0.5 py-3 sm:py-4 px-3 sm:px-4",
+                      "transition-all duration-200 ease-out",
                       "data-[selected=true]:bg-[var(--color-dark-bronze)]/60",
                       "data-[selected=true]:border-l-2 data-[selected=true]:border-[var(--color-gold)]",
-                      "hover:bg-[var(--color-warm-charcoal)]/50"
+                      "data-[selected=true]:[box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]",
+                      "hover:bg-[var(--glass-bg-elevated)]"
                     )}
                   >
-                    <div className="flex items-center gap-3 w-full">
+                    <div className="flex items-center gap-3 sm:gap-4 w-full">
                       {/* Geometry Image */}
                       {geometry.images?.heroImage && (
-                        <div className="relative h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-md overflow-hidden bg-[var(--color-dark-bronze)]/30">
+                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md overflow-hidden bg-[var(--color-dark-bronze)]/30">
                           <Image
                             src={geometry.images.heroImage}
                             alt={geometry.name}
                             fill
-                            sizes="40px"
+                            sizes="48px"
                             className="object-contain p-1"
                             style={{
                               filter:
@@ -502,11 +530,11 @@ export function SearchCommand() {
 
                       {/* Geometry Details */}
                       <div className="flex flex-col flex-1 min-w-0">
-                        <span className="font-medium text-sm sm:text-base truncate text-[var(--color-cream)]">
+                        <span className="font-medium text-base sm:text-lg truncate text-[var(--color-cream)]">
                           {highlightText(geometry.name, searchQuery)}
                         </span>
                         {geometry.description && (
-                          <span className="text-[var(--color-warm-gray)] text-xs sm:text-sm truncate">
+                          <span className="text-[var(--color-warm-gray)] text-sm sm:text-base truncate">
                             {highlightText(geometry.description, searchQuery)}
                           </span>
                         )}
@@ -516,7 +544,7 @@ export function SearchCommand() {
                       {geometry.relatedBy?.element && (
                         <Badge
                           variant="outline"
-                          className="shrink-0 capitalize text-xs sm:text-sm bg-transparent border-[var(--border-copper)] text-[var(--color-copper)]"
+                          className="shrink-0 capitalize text-sm sm:text-base bg-transparent border-[var(--border-copper)] text-[var(--color-copper)]"
                         >
                           {geometry.relatedBy.element}
                         </Badge>
@@ -534,12 +562,13 @@ export function SearchCommand() {
                 className={cn(
                   "[&_[cmdk-group-heading]]:text-[var(--color-gold)]",
                   "[&_[cmdk-group-heading]]:font-heading",
-                  "[&_[cmdk-group-heading]]:text-xs",
-                  "[&_[cmdk-group-heading]]:sm:text-sm",
+                  "[&_[cmdk-group-heading]]:text-sm",
+                  "[&_[cmdk-group-heading]]:sm:text-base",
                   "[&_[cmdk-group-heading]]:uppercase",
                   "[&_[cmdk-group-heading]]:tracking-wider",
-                  "[&_[cmdk-group-heading]]:px-3",
-                  "[&_[cmdk-group-heading]]:py-2"
+                  "[&_[cmdk-group-heading]]:px-4",
+                  "[&_[cmdk-group-heading]]:sm:px-5",
+                  "[&_[cmdk-group-heading]]:py-3"
                 )}
               >
                 {patternResults.map((geometry) => (
@@ -548,22 +577,23 @@ export function SearchCommand() {
                     value={`${geometry.name} ${geometry.aliases?.join(" ") ?? ""}`}
                     onSelect={() => handleSelect(geometry)}
                     className={cn(
-                      "cursor-pointer rounded-md mx-2 my-0.5 py-3 px-3",
-                      "transition-[background-color] duration-200",
+                      "cursor-pointer rounded-md mx-2 sm:mx-3 my-0.5 py-3 sm:py-4 px-3 sm:px-4",
+                      "transition-all duration-200 ease-out",
                       "data-[selected=true]:bg-[var(--color-dark-bronze)]/60",
                       "data-[selected=true]:border-l-2 data-[selected=true]:border-[var(--color-gold)]",
-                      "hover:bg-[var(--color-warm-charcoal)]/50"
+                      "data-[selected=true]:[box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]",
+                      "hover:bg-[var(--glass-bg-elevated)]"
                     )}
                   >
-                    <div className="flex items-center gap-3 w-full">
+                    <div className="flex items-center gap-3 sm:gap-4 w-full">
                       {/* Geometry Image */}
                       {geometry.images?.heroImage && (
-                        <div className="relative h-9 w-9 sm:h-10 sm:w-10 shrink-0 rounded-md overflow-hidden bg-[var(--color-dark-bronze)]/30">
+                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md overflow-hidden bg-[var(--color-dark-bronze)]/30">
                           <Image
                             src={geometry.images.heroImage}
                             alt={geometry.name}
                             fill
-                            sizes="40px"
+                            sizes="48px"
                             className="object-contain p-1"
                             style={{
                               filter:
@@ -575,11 +605,11 @@ export function SearchCommand() {
 
                       {/* Geometry Details */}
                       <div className="flex flex-col flex-1 min-w-0">
-                        <span className="font-medium text-sm sm:text-base truncate text-[var(--color-cream)]">
+                        <span className="font-medium text-base sm:text-lg truncate text-[var(--color-cream)]">
                           {highlightText(geometry.name, searchQuery)}
                         </span>
                         {geometry.description && (
-                          <span className="text-[var(--color-warm-gray)] text-xs sm:text-sm truncate">
+                          <span className="text-[var(--color-warm-gray)] text-sm sm:text-base truncate">
                             {highlightText(geometry.description, searchQuery)}
                           </span>
                         )}
@@ -589,7 +619,7 @@ export function SearchCommand() {
                       {geometry.relatedBy?.element && (
                         <Badge
                           variant="outline"
-                          className="shrink-0 capitalize text-xs sm:text-sm bg-transparent border-[var(--border-copper)] text-[var(--color-copper)]"
+                          className="shrink-0 capitalize text-sm sm:text-base bg-transparent border-[var(--border-copper)] text-[var(--color-copper)]"
                         >
                           {geometry.relatedBy.element}
                         </Badge>
@@ -604,32 +634,48 @@ export function SearchCommand() {
           {/* Keyboard hints footer */}
           <div
             className={cn(
-              "flex items-center justify-between px-4 py-2",
-              "border-t border-[var(--border-gold)]/20",
-              "bg-[var(--color-warm-charcoal)]/30"
+              "flex items-center justify-between px-4 sm:px-5 py-3",
+              "border-t border-[var(--glass-border)]",
+              "bg-[var(--glass-bg-elevated)]",
+              "[box-shadow:inset_0_1px_0_rgba(245,240,230,0.03)]"
             )}
           >
-            <div className="hidden sm:flex items-center gap-4 text-xs text-[var(--color-dim)]">
-              <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-dark-bronze)] text-[var(--color-warm-gray)] font-mono text-[10px]">
+            <div className="hidden sm:flex items-center gap-5 text-sm text-[var(--color-dim)]">
+              <span className="flex items-center gap-2">
+                <kbd className={cn(
+                  "px-2 py-1 rounded",
+                  "bg-[var(--color-obsidian)]/60 backdrop-blur-sm",
+                  "border border-[var(--glass-border)]/50",
+                  "text-[var(--color-warm-gray)] font-mono text-xs"
+                )}>
                   ↑↓
                 </kbd>
                 <span>navigate</span>
               </span>
-              <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-dark-bronze)] text-[var(--color-warm-gray)] font-mono text-[10px]">
+              <span className="flex items-center gap-2">
+                <kbd className={cn(
+                  "px-2 py-1 rounded",
+                  "bg-[var(--color-obsidian)]/60 backdrop-blur-sm",
+                  "border border-[var(--glass-border)]/50",
+                  "text-[var(--color-warm-gray)] font-mono text-xs"
+                )}>
                   ↵
                 </kbd>
                 <span>select</span>
               </span>
-              <span className="flex items-center gap-1.5">
-                <kbd className="px-1.5 py-0.5 rounded bg-[var(--color-dark-bronze)] text-[var(--color-warm-gray)] font-mono text-[10px]">
+              <span className="flex items-center gap-2">
+                <kbd className={cn(
+                  "px-2 py-1 rounded",
+                  "bg-[var(--color-obsidian)]/60 backdrop-blur-sm",
+                  "border border-[var(--glass-border)]/50",
+                  "text-[var(--color-warm-gray)] font-mono text-xs"
+                )}>
                   esc
                 </kbd>
                 <span>close</span>
               </span>
             </div>
-            <span className="text-xs text-[var(--color-dim)]">
+            <span className="text-sm text-[var(--color-dim)]">
               {results.length > 0 ? `${results.length} result${results.length === 1 ? "" : "s"}` : ""}
             </span>
           </div>

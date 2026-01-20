@@ -287,14 +287,28 @@ export function Header() {
             </span>
           </Link>
 
-          {/* Mobile Actions: Cart + Menu */}
+          {/* Mobile Actions: Search + Cart + Menu */}
           <div className="flex items-center gap-1 sm:hidden">
-            {shopEnabled && (
-              <>
-                <CartIcon />
-                <div className="h-6 w-px bg-[var(--border-gold)]/30" />
-              </>
-            )}
+            {/* Search Icon */}
+            <button
+              onClick={() => {
+                const event = new KeyboardEvent("keydown", {
+                  key: "k",
+                  metaKey: true,
+                  bubbles: true,
+                });
+                document.dispatchEvent(event);
+              }}
+              className="flex h-10 w-10 items-center justify-center rounded-md text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+              aria-label="Search"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+
+            {shopEnabled && <CartIcon />}
+
+            <div className="h-6 w-px bg-[var(--border-gold)]/30" />
+
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="flex h-10 w-10 items-center justify-center rounded-md text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
@@ -372,28 +386,45 @@ export function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.25 }}
               className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm sm:hidden"
               onClick={() => setMobileMenuOpen(false)}
               aria-hidden="true"
             />
 
-            {/* Drawer */}
+            {/* Glassmorphic Drawer */}
             <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2, ease: EASE_STANDARD }}
-              className="fixed right-0 top-0 z-50 h-full w-72 border-l border-[var(--border-gold)] bg-[var(--color-obsidian)] shadow-2xl sm:hidden"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.25, ease: EASE_STANDARD }}
+              className={cn(
+                "fixed right-0 top-0 z-50 h-full w-80 sm:hidden",
+                // Glassmorphic background
+                "bg-[var(--glass-bg)] backdrop-blur-xl",
+                // Luminous gold border
+                "border-l border-[var(--glass-border)]",
+                // Multi-layered shadow for outer glow and depth
+                "[box-shadow:var(--glass-glow),-8px_0_32px_rgba(0,0,0,0.4)]"
+              )}
             >
               {/* Drawer Header */}
-              <div className="flex h-16 items-center justify-between border-b border-[var(--border-gold)]/50 px-4">
-                <span className="font-heading text-sm font-medium text-[var(--color-gold)]">
+              <div className={cn(
+                "flex h-16 items-center justify-between px-5",
+                "border-b border-[var(--glass-border)]",
+                "bg-[var(--glass-bg-elevated)]"
+              )}>
+                <span className="font-heading text-base font-medium text-[var(--color-gold)]">
                   Menu
                 </span>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex h-10 w-10 items-center justify-center rounded-md text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-lg",
+                    "text-[var(--color-warm-gray)]",
+                    "transition-all duration-200",
+                    "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
+                  )}
                   aria-label="Close menu"
                 >
                   <X className="h-5 w-5" />
@@ -401,46 +432,24 @@ export function Header() {
               </div>
 
               {/* Drawer Content */}
-              <nav className="flex flex-col gap-1 p-4" aria-label="Mobile navigation">
-                {/* Search Button */}
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    // Small delay to allow drawer to close before opening search
-                    setTimeout(() => {
-                      const event = new KeyboardEvent("keydown", {
-                        key: "k",
-                        metaKey: true,
-                        bubbles: true,
-                      });
-                      document.dispatchEvent(event);
-                    }, 150);
-                  }}
-                  className="flex items-center gap-3 rounded-lg px-3 py-3 text-left text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
-                >
-                  <Search className="h-5 w-5 text-[var(--color-gold)]/70" />
-                  <span className="font-medium">Search</span>
-                </button>
-
-                {/* Divider */}
-                <div className="my-2 h-px bg-[var(--border-gold)]/30" />
-
+              <nav className="flex flex-col gap-1 p-5" aria-label="Mobile navigation">
                 {/* Navigation Links */}
                 {navItems.map((item) => (
                   <Link
                     key={item.path}
                     href={item.path}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-3 font-medium transition-colors hover:bg-[var(--color-warm-charcoal)]",
+                      "flex items-center gap-3 rounded-lg px-4 py-4 text-lg font-medium",
+                      "transition-all duration-200 ease-out",
                       isActive(item.path)
-                        ? "text-[var(--color-gold)]"
-                        : "text-[var(--color-warm-gray)] hover:text-[var(--color-gold)]"
+                        ? "bg-[var(--color-dark-bronze)]/50 text-[var(--color-gold)] border-l-2 border-[var(--color-gold)] [box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]"
+                        : "text-[var(--color-cream)] hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
                     )}
                   >
                     {isActive(item.path) && (
-                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      <span className="h-2 w-2 rounded-full bg-[var(--color-gold)] shadow-[0_0_8px_var(--glow-gold)]" />
                     )}
-                    <span className={isActive(item.path) ? "" : "ml-4"}>
+                    <span className={isActive(item.path) ? "" : "ml-5"}>
                       {item.desktopLabel}
                     </span>
                   </Link>
@@ -449,15 +458,15 @@ export function Header() {
                 {/* Auth Section - only when auth is enabled */}
                 {authEnabled && (
                   <>
-                    <div className="my-2 h-px bg-[var(--border-gold)]/30" />
+                    <div className="my-3 h-px bg-[var(--glass-border)]/50" />
                     <AuthHeaderSection variant="mobile" />
                   </>
                 )}
               </nav>
 
               {/* Decorative geometric accent */}
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-10">
-                <CircleDot className="h-24 w-24 text-[var(--color-gold)]" />
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-[0.07]">
+                <CircleDot className="h-28 w-28 text-[var(--color-gold)]" />
               </div>
             </motion.div>
           </>
