@@ -38,6 +38,17 @@ export interface RedeemInviteResult {
   error?: string;
 }
 
+export interface CancelInviteResult {
+  success: boolean;
+  data?: Invite;
+  error?: string;
+}
+
+export interface DeleteInviteResult {
+  success: boolean;
+  error?: string;
+}
+
 // =============================================================================
 // Service Functions
 // =============================================================================
@@ -237,6 +248,7 @@ export async function getInviteStats(): Promise<{
   total: number;
   pending: number;
   redeemed: number;
+  cancelled: number;
 }> {
   const all = await db.query.invites.findMany();
 
@@ -244,5 +256,112 @@ export async function getInviteStats(): Promise<{
     total: all.length,
     pending: all.filter((i) => i.status === "pending").length,
     redeemed: all.filter((i) => i.status === "redeemed").length,
+    cancelled: all.filter((i) => i.status === "cancelled").length,
+  };
+}
+
+/**
+ * Get an invite by ID
+ */
+export async function getInviteById(id: string): Promise<GetInviteResult> {
+  const invite = await db.query.invites.findFirst({
+    where: eq(invites.id, id),
+  });
+
+  if (!invite) {
+    return {
+      success: false,
+      error: "Invite not found",
+    };
+  }
+
+  return {
+    success: true,
+    data: invite,
+  };
+}
+
+/**
+ * Cancel a pending invite (soft delete)
+ * Only pending invites can be cancelled
+ */
+export async function cancelInvite(inviteId: string): Promise<CancelInviteResult> {
+  // First get the invite to check status
+  const existing = await db.query.invites.findFirst({
+    where: eq(invites.id, inviteId),
+  });
+
+  if (!existing) {
+    return {
+      success: false,
+      error: "Invite not found",
+    };
+  }
+
+  if (existing.status === "redeemed") {
+    return {
+      success: false,
+      error: "Cannot cancel a redeemed invite",
+    };
+  }
+
+  if (existing.status === "cancelled") {
+    return {
+      success: false,
+      error: "Invite is already cancelled",
+    };
+  }
+
+  const [updated] = await db
+    .update(invites)
+    .set({
+      status: "cancelled",
+      cancelledAt: new Date(),
+      updatedAt: new Date(),
+    })
+    .where(eq(invites.id, inviteId))
+    .returning();
+
+  if (!updated) {
+    return {
+      success: false,
+      error: "Failed to cancel invite",
+    };
+  }
+
+  return {
+    success: true,
+    data: updated,
+  };
+}
+
+/**
+ * Permanently delete a cancelled invite (hard delete)
+ * Only cancelled invites can be deleted
+ */
+export async function deleteInvite(inviteId: string): Promise<DeleteInviteResult> {
+  // First get the invite to check status
+  const existing = await db.query.invites.findFirst({
+    where: eq(invites.id, inviteId),
+  });
+
+  if (!existing) {
+    return {
+      success: false,
+      error: "Invite not found",
+    };
+  }
+
+  if (existing.status !== "cancelled") {
+    return {
+      success: false,
+      error: "Only cancelled invites can be deleted",
+    };
+  }
+
+  await db.delete(invites).where(eq(invites.id, inviteId));
+
+  return {
+    success: true,
   };
 }

@@ -9,7 +9,7 @@ export const INVITE_CODE_PATTERN = /^SG-[A-HJ-NP-Z2-9]{6}$/;
 /**
  * Invite status values
  */
-export const INVITE_STATUSES = ["pending", "redeemed"] as const;
+export const INVITE_STATUSES = ["pending", "redeemed", "cancelled"] as const;
 export type InviteStatus = (typeof INVITE_STATUSES)[number];
 
 /**
