@@ -32,6 +32,12 @@ export {
   type FirstCatchCelebrationProps,
 } from "./first-catch-celebration";
 
+// Page-level components
+export { NoteInput, type NoteInputProps } from "./note-input";
+export { StatsSummary, type StatsSummaryProps } from "./stats-summary";
+export { RecentSightings, type RecentSightingsProps } from "./recent-sightings";
+export { DeleteDialog, type DeleteDialogProps } from "./delete-dialog";
+
 // Animation config (for page-level transitions)
 export {
   SIGNAL_TIMING,
