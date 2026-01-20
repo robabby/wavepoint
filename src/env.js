@@ -20,6 +20,9 @@ export const env = createEnv({
     EMAIL_FROM_NAME: z.string().default("WavePoint"),
     // Signal (AI interpretations) - optional, AI features disabled if not set
     ANTHROPIC_API_KEY: z.string().min(1).optional(),
+    // Invite system - server-only admin settings
+    ADMIN_EMAILS: z.string().optional(), // Comma-separated admin emails
+    BREVO_BETA_LIST_ID: z.string().optional(), // Beta Users list ID for invite sync
   },
 
   /**
@@ -37,6 +40,10 @@ export const env = createEnv({
       .transform((val) => val === "true")
       .default("false"),
     NEXT_PUBLIC_SIGNAL_ENABLED: z
+      .string()
+      .transform((val) => val === "true")
+      .default("false"),
+    NEXT_PUBLIC_INVITES_REQUIRED: z
       .string()
       .transform((val) => val === "true")
       .default("false"),
@@ -64,6 +71,9 @@ export const env = createEnv({
     EMAIL_FROM_ADDRESS: process.env.EMAIL_FROM_ADDRESS,
     EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    ADMIN_EMAILS: process.env.ADMIN_EMAILS,
+    BREVO_BETA_LIST_ID: process.env.BREVO_BETA_LIST_ID,
+    NEXT_PUBLIC_INVITES_REQUIRED: process.env.NEXT_PUBLIC_INVITES_REQUIRED,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

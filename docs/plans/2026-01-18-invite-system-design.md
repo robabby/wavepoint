@@ -149,14 +149,18 @@ Create in Brevo dashboard:
 
 | Attribute | Type | Values |
 |-----------|------|--------|
-| `INVITE_STATUS` | Text | `invited`, `joined` |
+| `INVITE_STATUS` | Category | `invited`, `joined` |
 | `INVITE_CODE` | Text | `SG-X7K9M2` |
 | `INVITED_AT` | Date | Timestamp |
 | `JOINED_AT` | Date | Timestamp |
 
+**Status:** ✅ Attributes created in Brevo dashboard.
+
 ### Contact List
 
 Create list: "Beta Users" — all invitees added here.
+
+**Status:** ✅ List created in Brevo dashboard.
 
 ### API Integration
 
@@ -550,6 +554,45 @@ Create work items from the detailed implementation plan:
 └────────────────────────────────────────────────────────────────┘
 ```
 
+**Already Logged In (Email Matches) State:**
+```
+┌────────────────────────────────────────────────────────────────┐
+│                                                                │
+│                      ◇ ◇ ◇ ◇ ◇                                │
+│                                                                │
+│                   YOU ALREADY HAVE ACCESS                      │
+│                                                                │
+│          You're signed in as sarah@example.com                 │
+│                                                                │
+│          ┌─────────────────────────────────────┐               │
+│          │       Continue to Dashboard        │               │
+│          └─────────────────────────────────────┘               │
+│                                                                │
+│                      ◇ ◇ ◇ ◇ ◇                                │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
+**Already Logged In (Email Mismatch) State:**
+```
+┌────────────────────────────────────────────────────────────────┐
+│                                                                │
+│                  SIGNED IN AS DIFFERENT USER                   │
+│                                                                │
+│          This invite was sent to sarah@example.com             │
+│          You're signed in as other@example.com                 │
+│                                                                │
+│          ┌─────────────────────────────────────┐               │
+│          │    Sign Out to Use This Invite     │               │
+│          └─────────────────────────────────────┘               │
+│                                                                │
+│          ┌─────────────────────────────────────┐               │
+│          │       Continue as other@...        │               │
+│          └─────────────────────────────────────┘               │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+```
+
 ---
 
 ### Sign-up Form Updates
@@ -690,7 +733,7 @@ This section contains refined technical details from codebase analysis, to guide
 |----------|----------|
 | Email field behavior on invite landing | Pre-fill AND lock (readonly) — user cannot change email |
 | Invite email sending for v1 | **Deferred** — admin manually shares links |
-| Already logged-in user visits invite link | Show contextual message with sign-out option |
+| Already logged-in user visits invite link | **Smart check**: If logged-in email matches invite email → "You already have access." If mismatch → show sign-out option to use invite. |
 | Resend email API for v1 | **Deferred** — remove from v1 scope |
 | ADMIN_EMAILS env var scope | Server-only (not NEXT_PUBLIC) |
 
@@ -742,7 +785,7 @@ src/app/invite/
       invite-welcome.tsx      # Valid invite welcome UI
       invalid-invite.tsx      # Invalid code state
       already-redeemed.tsx    # Code already used state
-      already-logged-in.tsx   # User already authenticated state
+      already-logged-in.tsx   # User authenticated (handles email match → "already have access" OR mismatch → sign-out option)
 
 src/app/admin/
   layout.tsx            # Admin access check (email allowlist, returns 404)
@@ -953,6 +996,22 @@ This means:
 ### Related Plans
 
 - [Signal Feature Plan](./2026-01-18-signal-angel-number-tracking.md) — First feature using this access model
+
+## Linear Issues
+
+Implementation tracked in Linear (all in Backlog):
+
+| Issue | Title | Dependencies |
+|-------|-------|--------------|
+| [SG-293](https://linear.app/sherpagg/issue/SG-293) | Add invites table schema and environment variables | — |
+| [SG-294](https://linear.app/sherpagg/issue/SG-294) | Create invite code utilities module | SG-293 |
+| [SG-295](https://linear.app/sherpagg/issue/SG-295) | Create admin authorization helper | — |
+| [SG-296](https://linear.app/sherpagg/issue/SG-296) | Implement Brevo contact sync for invites | SG-294 |
+| [SG-297](https://linear.app/sherpagg/issue/SG-297) | Build admin layout and access control | SG-295 |
+| [SG-298](https://linear.app/sherpagg/issue/SG-298) | Build admin invites page and API | SG-297, SG-296 |
+| [SG-299](https://linear.app/sherpagg/issue/SG-299) | Add invite code support to sign-up form | SG-294 |
+| [SG-300](https://linear.app/sherpagg/issue/SG-300) | Gate registration with invite validation | SG-299 |
+| [SG-301](https://linear.app/sherpagg/issue/SG-301) | Create invite landing page | SG-300 |
 
 ## Future Additions (Out of Scope)
 
