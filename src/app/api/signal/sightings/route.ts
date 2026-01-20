@@ -57,34 +57,34 @@ export async function POST(request: Request) {
     const userId = session.user.id;
     const now = new Date();
 
-    // Transaction: create sighting + upsert stats atomically
-    const result = await db.transaction(async (tx) => {
-      const [sighting] = await tx
-        .insert(signalSightings)
-        .values({ userId, number, note, moodTags })
-        .returning();
+    // Create sighting first
+    const [sighting] = await db
+      .insert(signalSightings)
+      .values({ userId, number, note, moodTags })
+      .returning();
 
-      const [stats] = await tx
-        .insert(signalUserNumberStats)
-        .values({
-          userId,
-          number,
-          count: 1,
-          firstSeen: now,
+    // Upsert stats (neon-http doesn't support transactions, but stats are
+    // denormalized and recoverable if this fails)
+    const [stats] = await db
+      .insert(signalUserNumberStats)
+      .values({
+        userId,
+        number,
+        count: 1,
+        firstSeen: now,
+        lastSeen: now,
+      })
+      .onConflictDoUpdate({
+        target: [signalUserNumberStats.userId, signalUserNumberStats.number],
+        set: {
+          count: sql`${signalUserNumberStats.count} + 1`,
           lastSeen: now,
-        })
-        .onConflictDoUpdate({
-          target: [signalUserNumberStats.userId, signalUserNumberStats.number],
-          set: {
-            count: sql`${signalUserNumberStats.count} + 1`,
-            lastSeen: now,
-          },
-        })
-        .returning();
+        },
+      })
+      .returning();
 
-      const isFirstCatch = stats!.count === 1;
-      return { sighting: sighting!, stats: stats!, isFirstCatch };
-    });
+    const isFirstCatch = stats!.count === 1;
+    const result = { sighting: sighting!, stats: stats!, isFirstCatch };
 
     // Generate interpretation (outside transaction - can retry independently)
     const { content: interpretation } = await generateInterpretation({
