@@ -67,7 +67,7 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
             }}
           >
             <Image
-              src="/images/geometries/sacred-patterns/seed-of-life/seed-of-life-primary.svg"
+              src="/images/geometries/patterns/seed-of-life/seed-of-life-primary.svg"
               alt=""
               fill
               className="object-contain opacity-[0.06]"

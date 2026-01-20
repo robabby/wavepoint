@@ -1,6 +1,6 @@
 /**
  * Content loading and formatting utilities
- * Loads MDX content files for both Platonic Solids and Sacred Patterns
+ * Loads MDX content files for both Platonic Solids and Patterns
  */
 
 // Shared types
@@ -14,10 +14,10 @@ export {
   type PlatonicSolidContent,
 } from "./platonic-solids";
 
-// Sacred Patterns (MDX)
+// Patterns (MDX)
 export {
-  getSacredPatternContent,
-  getAllSacredPatternContentSlugs,
-  sacredPatternContentExists,
-  type SacredPatternContent,
-} from "./sacred-patterns";
+  getPatternContent,
+  getAllPatternContentSlugs,
+  patternContentExists,
+  type PatternContent,
+} from "./patterns";

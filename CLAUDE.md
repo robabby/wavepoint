@@ -31,7 +31,7 @@ src/hooks/signal/           # Signal React Query hooks
 src/app/signal/             # Signal pages (dashboard, capture, sighting)
 src/app/api/signal/         # Signal API routes (sightings, interpret, stats)
 src/lib/content/            # MDX content loaders
-src/content/                # MDX files (platonic-solids/, sacred-patterns/)
+src/content/                # MDX files (platonic-solids/, patterns/)
 src/util/routes.ts          # Top-level routing only (NOT geometry links)
 src/env.js                  # Env validation (Zod)
 docs/plans/                 # Implementation plans (YYYY-MM-DD-<topic>.md)
@@ -55,28 +55,28 @@ Modular architecture with auto-computed relationships:
 | `index.ts` | Main exports |
 | `geometries.types.ts` | TypeScript interfaces |
 | `platonic-solids.ts` | 5 Platonic solids |
-| `sacred-patterns.ts` | 17+ sacred patterns |
+| `patterns.ts` | 17+ patterns |
 | `relationships.ts` | `CONTAINS_GRAPH` & `DUAL_GRAPH` (single source of truth) |
 | `helpers.ts` | Query functions |
 
 **Key Functions:**
 - `getGeometryBySlug(slug)` - Primary for dynamic routes
 - `getRelatedGeometries(id)` - Returns `{ dual, contains, appearsIn }`
-- `getPlatonicSolids()` / `getSacredPatterns()` - Sorted lists
+- `getPlatonicSolids()` / `getPatterns()` - Sorted lists
 - `getGeometryPath(geometry)` - Generate URL path
 - `getNextGeometry(id, category)` / `getPreviousGeometry(id, category)`
 
-**Adding Geometries:** Add to `platonic-solids.ts` or `sacred-patterns.ts`, then add relationships to `relationships.ts`. Inverse relationships auto-compute.
+**Adding Geometries:** Add to `platonic-solids.ts` or `patterns.ts`, then add relationships to `relationships.ts`. Inverse relationships auto-compute.
 
 ## Dynamic Routes
 
 Both use same pattern:
 - `app/platonic-solids/[slug]/page.tsx` - Uses `getGeometryBySlug()` + `getPlatonicSolidContent()`
-- `app/sacred-patterns/[slug]/page.tsx` - Uses `getGeometryBySlug()` + `getSacredPatternContent()`
+- `app/patterns/[slug]/page.tsx` - Uses `getGeometryBySlug()` + `getPatternContent()`
 
 ## MDX Content
 
-Content in `src/content/{platonic-solids,sacred-patterns}/`. Uses `<Section>` component for styling.
+Content in `src/content/{platonic-solids,patterns}/`. Uses `<Section>` component for styling.
 
 ```mdx
 ---

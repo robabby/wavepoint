@@ -124,7 +124,7 @@ export function Header() {
         mobileLabel: "Solids",
       },
       {
-        path: ROUTES.sacredPatterns.path,
+        path: ROUTES.patterns.path,
         desktopLabel: "Patterns",
         mobileLabel: "Patterns",
       },

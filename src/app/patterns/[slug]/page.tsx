@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { GeometryNavigation } from "@/components/geometry-navigation";
 import {
   getGeometryBySlug,
-  getSacredPatterns,
+  getPatterns,
   getGeometryPath,
 } from "@/lib/data";
-import { getSacredPatternContent } from "@/lib/content";
+import { getPatternContent } from "@/lib/content";
 import { DetailHero, HeroText, HeroGeometry } from "@/components/detail-hero";
 import { PulsingGeometry } from "@/components/pulsing-geometry";
 import { ContentLayout } from "@/components/content-layout";
@@ -17,16 +17,16 @@ import {
 } from "@/components/structured-data";
 
 /**
- * Generate static params for all Sacred Patterns
+ * Generate static params for all Patterns
  */
 export async function generateStaticParams() {
-  return getSacredPatterns().map((pattern) => ({
+  return getPatterns().map((pattern) => ({
     slug: pattern.slug,
   }));
 }
 
 /**
- * Generate metadata for Sacred Pattern pages
+ * Generate metadata for Pattern pages
  */
 export async function generateMetadata({
   params,
@@ -38,7 +38,7 @@ export async function generateMetadata({
 
   if (!geometry) {
     return {
-      title: "Sacred Pattern Not Found",
+      title: "Pattern Not Found",
     };
   }
 
@@ -49,9 +49,9 @@ export async function generateMetadata({
 }
 
 /**
- * Sacred Pattern Detail Page (Dynamic Route)
+ * Pattern Detail Page (Dynamic Route)
  */
-export default async function SacredPatternPage({
+export default async function PatternPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
@@ -62,7 +62,7 @@ export default async function SacredPatternPage({
   const geometry = getGeometryBySlug(slug);
 
   // Load MDX content
-  const mdxContent = await getSacredPatternContent(slug);
+  const mdxContent = await getPatternContent(slug);
 
   if (!geometry) {
     notFound();

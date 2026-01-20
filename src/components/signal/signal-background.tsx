@@ -31,7 +31,7 @@ export function SignalBackground({ pulse, className }: SignalBackgroundProps) {
       )}
     >
       <Image
-        src="/images/geometries/sacred-patterns/seed-of-life/seed-of-life-primary.svg"
+        src="/images/geometries/patterns/seed-of-life/seed-of-life-primary.svg"
         alt=""
         width={500}
         height={500}

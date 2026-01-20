@@ -14,7 +14,7 @@ src/content/
 │   ├── octahedron.mdx
 │   ├── dodecahedron.mdx
 │   └── icosahedron.mdx
-└── sacred-patterns/   # MDX content for 17+ Sacred Patterns
+└── patterns/   # MDX content for 17+ Patterns
     ├── circle-dot.mdx
     ├── vesica-piscis.mdx
     ├── flower-of-life.mdx
@@ -147,10 +147,10 @@ const content = await getPlatonicSolidContent('tetrahedron');
 ### Sacred Patterns
 
 ```typescript
-import { getSacredPatternContent } from '@/lib/content';
+import { getPatternContent } from '@/lib/content';
 
 // Load MDX content for a Sacred Pattern
-const content = await getSacredPatternContent('flower-of-life');
+const content = await getPatternContent('flower-of-life');
 // Returns: { slug: string, sections?: Array, content: React.ReactElement }
 ```
 
@@ -162,7 +162,7 @@ Both content types are rendered the same way:
 export default async function Page({ params }: { params: { slug: string } }) {
   const geometry = getGeometryBySlug(params.slug);
   const mdxContent = await getPlatonicSolidContent(params.slug);
-  // or: await getSacredPatternContent(params.slug)
+  // or: await getPatternContent(params.slug)
 
   if (!geometry) notFound();
 
@@ -245,7 +245,7 @@ This separation allows:
 # Create file matching slug
 touch src/content/platonic-solids/new-geometry.mdx
 # or
-touch src/content/sacred-patterns/new-geometry.mdx
+touch src/content/patterns/new-geometry.mdx
 ```
 
 ### 3. Write content
@@ -254,7 +254,7 @@ Follow the schema and guidelines above for your content type.
 ### 4. Test
 ```bash
 pnpm dev
-# Navigate to /platonic-solids/new-geometry or /sacred-patterns/new-geometry
+# Navigate to /platonic-solids/new-geometry or /patterns/new-geometry
 ```
 
 ## Additional Resources

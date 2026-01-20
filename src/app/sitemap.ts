@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
     },
     {
-      url: `${BASE_URL}/sacred-patterns`,
+      url: `${BASE_URL}/patterns`,
       priority: 0.8,
       changeFrequency: "monthly",
     },
