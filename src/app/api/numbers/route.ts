@@ -16,11 +16,14 @@ import {
 } from "@/lib/numbers";
 
 const VALID_CATEGORIES: NumberCategory[] = [
+  "double",
   "triple",
   "quad",
   "sequential",
   "mirrored",
-  "double",
+  "clock",
+  "sandwich",
+  "compound",
 ];
 
 export async function GET(request: Request) {
