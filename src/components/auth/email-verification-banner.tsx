@@ -70,11 +70,11 @@ export function EmailVerificationBanner() {
   }
 
   return (
-    <div className="border-b border-[var(--color-gold)]/30 bg-[var(--color-dark-bronze)]">
+    <div className="border-b border-[var(--color-gold)]/30 bg-muted">
       <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex flex-1 items-center gap-3">
           <Mail className="h-5 w-5 flex-shrink-0 text-[var(--color-gold)]" />
-          <p className="text-sm text-[var(--color-cream)]">
+          <p className="text-sm text-foreground">
             <span className="hidden sm:inline">
               Please verify your email address to access all features.
             </span>
@@ -94,7 +94,7 @@ export function EmailVerificationBanner() {
               disabled={sending || cooldown > 0}
               className={cn(
                 "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-                "bg-[var(--color-gold)] text-[var(--color-obsidian)]",
+                "bg-[var(--color-gold)] text-primary-foreground",
                 "hover:bg-[var(--color-gold-bright)]",
                 "disabled:cursor-not-allowed disabled:opacity-50"
               )}
@@ -123,7 +123,7 @@ export function EmailVerificationBanner() {
 
           <button
             onClick={() => setDismissed(true)}
-            className="rounded-md p-1.5 text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+            className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-card hover:text-[var(--color-gold)]"
             aria-label="Dismiss"
           >
             <X className="h-4 w-4" />

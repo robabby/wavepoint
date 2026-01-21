@@ -61,7 +61,7 @@ export function DashboardContent() {
           <h1 className="font-display text-4xl text-[var(--color-gold)]">
             Signal
           </h1>
-          <p className="mt-2 text-[var(--color-dim)]">
+          <p className="mt-2 text-muted-foreground">
             Your angel number collection
           </p>
         </header>
@@ -76,12 +76,12 @@ export function DashboardContent() {
         {isEmpty ? (
           // Empty state - first time user
           <div className="py-12 text-center">
-            <p className="mb-6 text-[var(--color-dim)]">
+            <p className="mb-6 text-muted-foreground">
               You haven&apos;t captured any signals yet.
             </p>
             <Link
               href="/signal/capture"
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)] px-6 py-3 font-heading text-sm uppercase tracking-wide text-[var(--color-obsidian)] transition-colors hover:bg-[var(--color-gold-bright)]"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)] px-6 py-3 font-heading text-sm uppercase tracking-wide text-primary-foreground transition-colors hover:bg-[var(--color-gold-bright)]"
             >
               <Plus className="h-4 w-4" />
               Capture Your First Signal
@@ -92,7 +92,7 @@ export function DashboardContent() {
             {/* Filter indicator */}
             {numberFilter && (
               <div className="mb-4 flex items-center justify-between">
-                <span className="text-[var(--color-cream)]">
+                <span className="text-foreground">
                   Showing sightings of{" "}
                   <span className="font-display text-[var(--color-gold)]">
                     {numberFilter}
@@ -100,7 +100,7 @@ export function DashboardContent() {
                 </span>
                 <button
                   onClick={handleClearFilter}
-                  className="text-sm text-[var(--color-dim)] transition-colors hover:text-[var(--color-cream)]"
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Clear filter
                 </button>
@@ -109,7 +109,7 @@ export function DashboardContent() {
 
             {/* Recent Sightings */}
             <section className="mb-8">
-              <h2 className="mb-4 font-heading text-xl text-[var(--color-cream)]">
+              <h2 className="mb-4 font-heading text-xl text-foreground">
                 {numberFilter ? `Sightings of ${numberFilter}` : "Recent Sightings"}
               </h2>
               <RecentSightings
@@ -121,7 +121,7 @@ export function DashboardContent() {
             {/* Collection Grid - only show when not filtered */}
             {!numberFilter && (
               <section className="mb-24">
-                <h2 className="mb-4 font-heading text-xl text-[var(--color-cream)]">
+                <h2 className="mb-4 font-heading text-xl text-foreground">
                   Your Collection
                 </h2>
                 <CollectionGrid
@@ -138,7 +138,7 @@ export function DashboardContent() {
           <div className="fixed bottom-8 left-0 right-0 flex justify-center">
             <Link
               href="/signal/capture"
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)] px-6 py-3 font-heading text-sm uppercase tracking-wide text-[var(--color-obsidian)] shadow-lg transition-all hover:bg-[var(--color-gold-bright)] hover:shadow-xl"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)] px-6 py-3 font-heading text-sm uppercase tracking-wide text-primary-foreground shadow-lg transition-all hover:bg-[var(--color-gold-bright)] hover:shadow-xl"
             >
               <Plus className="h-4 w-4" />
               Capture Signal

@@ -85,7 +85,7 @@ export default async function ProductPage({
     : undefined;
 
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <StructuredData
         data={createProductSchema({
           url: `${baseUrl}${getProductPath(product)}`,

@@ -32,8 +32,8 @@ export function SightingCard({
       className={cn(
         "w-full p-4 rounded-xl text-left",
         "border border-[var(--border-gold)]/20",
-        "bg-[var(--color-warm-charcoal)]/30",
-        "hover:border-[var(--color-gold)]/40 hover:bg-[var(--color-warm-charcoal)]/50",
+        "bg-card/30",
+        "hover:border-[var(--color-gold)]/40 hover:bg-card/50",
         "transition-all duration-200"
       )}
     >
@@ -42,7 +42,7 @@ export function SightingCard({
           <span className="font-display text-2xl text-[var(--color-gold)]">
             {number}
           </span>
-          <p className="mt-1 text-xs text-[var(--color-dim)]">
+          <p className="mt-1 text-xs text-muted-foreground">
             {count}
             {ordinal} sighting ·{" "}
             {formatDistanceToNow(lastSeenAt, { addSuffix: true })}

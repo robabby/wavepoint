@@ -45,7 +45,7 @@ export function UserMenu({
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-gold)]/20 border border-[var(--glass-border)]/50">
             <User className="h-5 w-5 text-[var(--color-gold)]" />
           </div>
-          <span className="truncate text-base text-[var(--color-warm-gray)]">
+          <span className="truncate text-base text-muted-foreground">
             {email}
           </span>
         </div>
@@ -55,7 +55,7 @@ export function UserMenu({
           href="/account"
           className={cn(
             "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
-            "text-[var(--color-cream)] transition-all duration-200 ease-out",
+            "text-foreground transition-all duration-200 ease-out",
             "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
           )}
         >
@@ -69,7 +69,7 @@ export function UserMenu({
             href="/signal"
             className={cn(
               "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
-              "text-[var(--color-cream)] transition-all duration-200 ease-out",
+              "text-foreground transition-all duration-200 ease-out",
               "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
             )}
           >
@@ -84,7 +84,7 @@ export function UserMenu({
             href="/admin"
             className={cn(
               "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
-              "text-[var(--color-cream)] transition-all duration-200 ease-out",
+              "text-foreground transition-all duration-200 ease-out",
               "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
             )}
           >
@@ -98,7 +98,7 @@ export function UserMenu({
           onClick={onSignOut}
           className={cn(
             "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium text-left",
-            "text-[var(--color-cream)] transition-all duration-200 ease-out",
+            "text-foreground transition-all duration-200 ease-out",
             "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
           )}
         >
@@ -117,8 +117,8 @@ export function UserMenu({
           size="icon"
           className={cn(
             "h-10 w-10 rounded-md",
-            "text-[var(--color-warm-gray)]",
-            "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]",
+            "text-muted-foreground",
+            "hover:bg-card hover:text-[var(--color-gold)]",
             className
           )}
           aria-label="User menu"
@@ -128,10 +128,10 @@ export function UserMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-56 border-[var(--border-gold)] bg-[var(--color-obsidian)]"
+        className="w-56 border-[var(--border-gold)] bg-background"
       >
         <DropdownMenuLabel className="font-normal">
-          <p className="truncate text-sm text-[var(--color-warm-gray)]">
+          <p className="truncate text-sm text-muted-foreground">
             {email}
           </p>
         </DropdownMenuLabel>
@@ -140,7 +140,7 @@ export function UserMenu({
           <DropdownMenuItem asChild>
             <Link
               href="/account"
-              className="text-[var(--color-warm-gray)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+              className="text-muted-foreground focus:bg-card focus:text-[var(--color-gold)]"
             >
               <Settings className="mr-2 h-4 w-4" />
               Account
@@ -150,7 +150,7 @@ export function UserMenu({
             <DropdownMenuItem asChild>
               <Link
                 href="/signal"
-                className="text-[var(--color-warm-gray)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+                className="text-muted-foreground focus:bg-card focus:text-[var(--color-gold)]"
               >
                 <Sparkles className="mr-2 h-4 w-4" />
                 Signal
@@ -161,7 +161,7 @@ export function UserMenu({
             <DropdownMenuItem asChild>
               <Link
                 href="/admin"
-                className="text-[var(--color-warm-gray)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+                className="text-muted-foreground focus:bg-card focus:text-[var(--color-gold)]"
               >
                 <Shield className="mr-2 h-4 w-4" />
                 Admin
@@ -172,7 +172,7 @@ export function UserMenu({
         <DropdownMenuSeparator className="bg-[var(--border-gold)]/30" />
         <DropdownMenuItem
           onClick={onSignOut}
-          className="text-[var(--color-warm-gray)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+          className="text-muted-foreground focus:bg-card focus:text-[var(--color-gold)]"
         >
           <LogOut className="mr-2 h-4 w-4" />
           Sign Out

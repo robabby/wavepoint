@@ -49,7 +49,7 @@ export function AuthModal() {
         className={cn(
           // Base styling
           "overflow-hidden p-0",
-          "bg-[var(--color-obsidian)] border-[var(--border-gold)]",
+          "bg-background border-[var(--border-gold)]",
           // Desktop: centered with offset from top
           "sm:!top-[20vh] sm:!translate-y-0 sm:max-w-md sm:rounded-lg",
           // Mobile: bottom sheet
@@ -58,10 +58,10 @@ export function AuthModal() {
       >
         {/* Header */}
         <DialogHeader className="px-6 pt-6 pb-2">
-          <DialogTitle className="font-heading text-xl text-[var(--color-cream)]">
+          <DialogTitle className="font-heading text-xl text-foreground">
             {config.title}
           </DialogTitle>
-          <DialogDescription className="text-[var(--color-warm-gray)]">
+          <DialogDescription className="text-muted-foreground">
             {config.description}
           </DialogDescription>
         </DialogHeader>

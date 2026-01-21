@@ -131,16 +131,16 @@ export default function CapturePage() {
       <SignalBackground pulse={isCreating} />
 
       {/* Header */}
-      <header className="sticky top-0 z-20 border-b border-[var(--border-gold)]/20 bg-[var(--color-obsidian)]/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-20 border-b border-[var(--border-gold)]/20 bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex items-center gap-4 px-4 py-4">
           <Link
             href="/signal"
             aria-label="Back to Signal dashboard"
-            className="text-[var(--color-dim)] transition-colors hover:text-[var(--color-cream)]"
+            className="text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="h-5 w-5" aria-hidden="true" />
           </Link>
-          <h1 className="font-heading text-lg text-[var(--color-cream)]">
+          <h1 className="font-heading text-lg text-foreground">
             Capture Signal
           </h1>
         </div>
@@ -225,7 +225,7 @@ export default function CapturePage() {
                 >
                   {state.number}
                 </span>
-                <p className="mt-2 text-sm text-[var(--color-dim)]">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {result.count > 1
                     ? `This is your ${result.count}${getOrdinal(result.count)} time seeing this number`
                     : "Your first encounter with this number"}
@@ -246,7 +246,7 @@ export default function CapturePage() {
                 </SubmitButton>
                 <button
                   onClick={handleViewSighting}
-                  className="w-full text-center text-sm text-[var(--color-dim)] transition-colors hover:text-[var(--color-cream)]"
+                  className="w-full text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
                   View this sighting
                 </button>

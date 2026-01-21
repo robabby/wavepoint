@@ -28,7 +28,7 @@ export function InterpretationCard({
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <SacredSpinner size="lg" />
-        <p className="mt-4 text-[var(--color-dim)]">Receiving...</p>
+        <p className="mt-4 text-muted-foreground">Receiving...</p>
       </div>
     );
   }
@@ -48,7 +48,7 @@ export function InterpretationCard({
         {content.split("\n\n").map((paragraph, i) => (
           <p
             key={i}
-            className="text-[var(--color-cream)] leading-relaxed mb-4 last:mb-0"
+            className="text-foreground leading-relaxed mb-4 last:mb-0"
           >
             {paragraph}
           </p>
@@ -56,7 +56,7 @@ export function InterpretationCard({
       </div>
 
       {isFallback && (
-        <p className="text-xs text-[var(--color-dim)]">
+        <p className="text-xs text-muted-foreground">
           Using base interpretation
         </p>
       )}
@@ -64,7 +64,7 @@ export function InterpretationCard({
       {canRegenerate && onRegenerate && (
         <button
           onClick={onRegenerate}
-          className="text-sm text-[var(--color-dim)] hover:text-[var(--color-gold)] transition-colors"
+          className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
         >
           Regenerate interpretation
         </button>

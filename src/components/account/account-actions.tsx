@@ -46,7 +46,7 @@ function ActionCard({
   const content = (
     <Card
       className={cn(
-        "border-[var(--border-gold)]/30 bg-[var(--color-obsidian)] transition-colors",
+        "border-[var(--border-gold)]/30 bg-background transition-colors",
         disabled
           ? "cursor-not-allowed opacity-50"
           : "cursor-pointer hover:border-[var(--border-gold)]",
@@ -77,7 +77,7 @@ function ActionCard({
               "text-base",
               variant === "destructive"
                 ? "text-red-400"
-                : "text-[var(--color-cream)]"
+                : "text-foreground"
             )}
           >
             {title}
@@ -85,7 +85,7 @@ function ActionCard({
         </div>
       </CardHeader>
       <CardContent>
-        <CardDescription className="text-[var(--color-warm-gray)]">
+        <CardDescription className="text-muted-foreground">
           {description}
         </CardDescription>
       </CardContent>
@@ -189,7 +189,7 @@ export function AccountActions() {
         <div className="sm:col-span-2">
           <Button
             variant="outline"
-            className="w-full border-[var(--border-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--border-gold)] hover:text-[var(--color-cream)]"
+            className="w-full border-[var(--border-gold)]/30 text-muted-foreground hover:border-[var(--border-gold)] hover:text-foreground"
             onClick={handleSignOut}
           >
             <LogOut className="mr-2 h-4 w-4" />
@@ -199,12 +199,12 @@ export function AccountActions() {
       </div>
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={handleDialogChange}>
-        <AlertDialogContent className="border-red-500/30 bg-[var(--color-obsidian)]">
+        <AlertDialogContent className="border-red-500/30 bg-background">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-[var(--color-cream)]">
+            <AlertDialogTitle className="text-foreground">
               Delete Account
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-[var(--color-warm-gray)]">
+            <AlertDialogDescription className="text-muted-foreground">
               Are you sure you want to delete your account? This action cannot
               be undone. All your data will be permanently removed, except for
               anonymized order records.
@@ -217,7 +217,7 @@ export function AccountActions() {
               onChange={(e) => setDeleteConfirmed(e.target.checked)}
               className="mt-0.5 h-4 w-4 cursor-pointer rounded border-[var(--border-gold)]/50 bg-transparent accent-red-600"
             />
-            <span className="text-sm text-[var(--color-warm-gray)]">
+            <span className="text-sm text-muted-foreground">
               I understand this will permanently delete my account and all
               associated data
             </span>
@@ -230,7 +230,7 @@ export function AccountActions() {
           <AlertDialogFooter>
             <AlertDialogCancel
               disabled={isDeleting}
-              className="border-[var(--border-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--border-gold)] hover:text-[var(--color-cream)]"
+              className="border-[var(--border-gold)]/30 text-muted-foreground hover:border-[var(--border-gold)] hover:text-foreground"
             >
               Cancel
             </AlertDialogCancel>

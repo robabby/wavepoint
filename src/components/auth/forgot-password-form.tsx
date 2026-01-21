@@ -25,8 +25,8 @@ interface ForgotPasswordFormProps {
 
 // Shared input styling
 const inputClassName = cn(
-  "h-11 border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50",
-  "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+  "h-11 border-[var(--border-gold)]/30 bg-card/50",
+  "text-foreground placeholder:text-muted-foreground",
   "focus-visible:border-[var(--color-gold)] focus-visible:ring-[var(--color-gold)]/20"
 );
 
@@ -86,10 +86,10 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
             <Mail className="h-6 w-6 text-[var(--color-gold)]" />
           </div>
           <div className="space-y-2">
-            <h3 className="font-heading text-lg text-[var(--color-cream)]">
+            <h3 className="font-heading text-lg text-foreground">
               Check Your Email
             </h3>
-            <p className="text-sm text-[var(--color-warm-gray)]">
+            <p className="text-sm text-muted-foreground">
               If an account exists with that email, we&apos;ve sent a password
               reset link. The link expires in 1 hour.
             </p>
@@ -119,7 +119,7 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
             name="email"
             render={({ field }) => (
               <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+                <FormLabel className="text-sm font-medium text-foreground">
                   Email
                 </FormLabel>
                 <FormControl>
@@ -150,7 +150,7 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
         <Button
           type="submit"
           disabled={form.formState.isSubmitting || cooldownSeconds > 0}
-          className="w-full h-11 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
+          className="w-full h-11 bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
         >
           {form.formState.isSubmitting ? (
             <>
@@ -166,7 +166,7 @@ export function ForgotPasswordForm({ onSwitchView }: ForgotPasswordFormProps) {
         </Button>
 
         {/* Info text */}
-        <p className="text-center text-xs text-[var(--color-dim)]">
+        <p className="text-center text-xs text-muted-foreground">
           We&apos;ll send a password reset link to your email address.
         </p>
       </form>

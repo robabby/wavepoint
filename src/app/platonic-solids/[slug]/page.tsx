@@ -89,7 +89,7 @@ export default async function PlatonicSolidPage({
     process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
 
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <StructuredData
         data={createArticleSchema({
           url: `${baseUrl}${getGeometryPath(geometry)}`,
@@ -111,7 +111,7 @@ export default async function PlatonicSolidPage({
                 <Flex direction="column" gap="6" justify="center">
                   <Heading
                     size={{ initial: "7", md: "9" }}
-                    className="font-display text-[var(--color-cream)]"
+                    className="font-display text-foreground"
                   >
                     {title}
                   </Heading>
@@ -134,11 +134,7 @@ export default async function PlatonicSolidPage({
                     width={400}
                     height={400}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="w-full max-w-xs sm:max-w-sm md:max-w-md object-contain"
-                    style={{
-                      filter:
-                        "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                    }}
+                    className="w-full max-w-xs sm:max-w-sm md:max-w-md object-contain svg-gold"
                   />
                 </PulsingGeometry>
               </HeroGeometry>
@@ -161,17 +157,13 @@ export default async function PlatonicSolidPage({
                         alt={`${title} Solid`}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-contain"
-                        style={{
-                          filter:
-                            "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                        }}
+                        className="object-contain svg-gold"
                       />
                     </PulsingGeometry>
                     <Text weight="bold" className="text-[var(--color-gold-bright)]">
                       Solid View
                     </Text>
-                    <Text size="2" className="text-center text-[var(--color-warm-gray)]">
+                    <Text size="2" className="text-center text-muted-foreground">
                       All faces visible
                     </Text>
                   </Flex>
@@ -185,17 +177,13 @@ export default async function PlatonicSolidPage({
                         alt={`${title} Wireframe`}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-contain"
-                        style={{
-                          filter:
-                            "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                        }}
+                        className="object-contain svg-gold"
                       />
                     </PulsingGeometry>
                     <Text weight="bold" className="text-[var(--color-gold-bright)]">
                       Wireframe
                     </Text>
-                    <Text size="2" className="text-center text-[var(--color-warm-gray)]">
+                    <Text size="2" className="text-center text-muted-foreground">
                       Edge structure
                     </Text>
                   </Flex>
@@ -209,17 +197,13 @@ export default async function PlatonicSolidPage({
                         alt={`${title} Net`}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-contain"
-                        style={{
-                          filter:
-                            "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                        }}
+                        className="object-contain svg-gold"
                       />
                     </PulsingGeometry>
                     <Text weight="bold" className="text-[var(--color-gold-bright)]">
                       Unfolded Net
                     </Text>
-                    <Text size="2" className="text-center text-[var(--color-warm-gray)]">
+                    <Text size="2" className="text-center text-muted-foreground">
                       2D pattern
                     </Text>
                   </Flex>
@@ -240,10 +224,10 @@ export default async function PlatonicSolidPage({
                   <Text size="8" weight="bold" className="text-[var(--color-gold)]">
                     {mathProperties?.faces}
                   </Text>
-                  <Text size="4" weight="medium" className="text-[var(--color-cream)]">
+                  <Text size="4" weight="medium" className="text-foreground">
                     Faces
                   </Text>
-                  <Text size="2" className="text-[var(--color-warm-gray)]">
+                  <Text size="2" className="text-muted-foreground">
                     {mathProperties?.faceShape}
                   </Text>
                 </Flex>
@@ -251,10 +235,10 @@ export default async function PlatonicSolidPage({
                   <Text size="8" weight="bold" className="text-[var(--color-gold)]">
                     {mathProperties?.vertices}
                   </Text>
-                  <Text size="4" weight="medium" className="text-[var(--color-cream)]">
+                  <Text size="4" weight="medium" className="text-foreground">
                     Vertices
                   </Text>
-                  <Text size="2" className="text-[var(--color-warm-gray)]">
+                  <Text size="2" className="text-muted-foreground">
                     Corners
                   </Text>
                 </Flex>
@@ -262,10 +246,10 @@ export default async function PlatonicSolidPage({
                   <Text size="8" weight="bold" className="text-[var(--color-gold)]">
                     {mathProperties?.edges}
                   </Text>
-                  <Text size="4" weight="medium" className="text-[var(--color-cream)]">
+                  <Text size="4" weight="medium" className="text-foreground">
                     Edges
                   </Text>
-                  <Text size="2" className="text-[var(--color-warm-gray)]">
+                  <Text size="2" className="text-muted-foreground">
                     Lines
                   </Text>
                 </Flex>
@@ -288,7 +272,7 @@ export default async function PlatonicSolidPage({
                   >
                     Element
                   </Text>
-                  <Text size="5" className="text-[var(--color-cream)]">
+                  <Text size="5" className="text-foreground">
                     {relatedBy?.element
                       ? relatedBy.element.charAt(0).toUpperCase() +
                         relatedBy.element.slice(1)
@@ -302,7 +286,7 @@ export default async function PlatonicSolidPage({
                   >
                     Dual
                   </Text>
-                  <Text size="5" className="text-[var(--color-cream)]">
+                  <Text size="5" className="text-foreground">
                     {dualOfTitle}
                   </Text>
                 </Flex>
@@ -325,7 +309,7 @@ export default async function PlatonicSolidPage({
               {mdxContent.content}
             </ContentLayout>
           ) : (
-            <div className="text-center text-[var(--color-warm-gray)]">
+            <div className="text-center text-muted-foreground">
               <Text>Content coming soon...</Text>
             </div>
           )}

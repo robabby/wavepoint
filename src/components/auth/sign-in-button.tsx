@@ -26,7 +26,7 @@ export function SignInButton({
         onClick={() => openModal("sign-in")}
         className={cn(
           "flex w-full items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium text-left",
-          "text-[var(--color-cream)] transition-all duration-200 ease-out",
+          "text-foreground transition-all duration-200 ease-out",
           "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]",
           className
         )}
@@ -44,8 +44,8 @@ export function SignInButton({
       onClick={() => openModal("sign-in")}
       className={cn(
         "cursor-pointer border-[var(--border-gold)] bg-transparent",
-        "text-[var(--color-warm-gray)]",
-        "hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-dark-bronze)]",
+        "text-muted-foreground",
+        "hover:border-[var(--color-gold)]/50 hover:bg-muted",
         "hover:text-[var(--color-gold)]",
         className
       )}

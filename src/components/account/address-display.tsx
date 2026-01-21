@@ -35,13 +35,13 @@ export function AddressDisplay({ address }: AddressDisplayProps) {
         <Heading
           as="h1"
           size="6"
-          className="mb-6 font-heading text-[var(--color-cream)]"
+          className="mb-6 font-heading text-foreground"
         >
           Shipping Address
         </Heading>
-        <Card className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]">
+        <Card className="border-[var(--border-gold)]/30 bg-background">
           <CardHeader>
-            <CardTitle className="text-lg text-[var(--color-cream)]">
+            <CardTitle className="text-lg text-foreground">
               Add your shipping address
             </CardTitle>
           </CardHeader>
@@ -73,11 +73,11 @@ export function AddressDisplay({ address }: AddressDisplayProps) {
         <Heading
           as="h1"
           size="6"
-          className="mb-6 font-heading text-[var(--color-cream)]"
+          className="mb-6 font-heading text-foreground"
         >
           Edit Address
         </Heading>
-        <Card className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]">
+        <Card className="border-[var(--border-gold)]/30 bg-background">
           <CardContent className="pt-6">
             <AddressForm
               defaultValues={formValues}
@@ -95,18 +95,18 @@ export function AddressDisplay({ address }: AddressDisplayProps) {
       <Heading
         as="h1"
         size="6"
-        className="mb-6 font-heading text-[var(--color-cream)]"
+        className="mb-6 font-heading text-foreground"
       >
         Shipping Address
       </Heading>
-      <Card className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]">
+      <Card className="border-[var(--border-gold)]/30 bg-background">
         <CardHeader>
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-gold)]/10">
                 <MapPin className="h-5 w-5 text-[var(--color-gold)]" />
               </div>
-              <CardTitle className="text-lg text-[var(--color-cream)]">
+              <CardTitle className="text-lg text-foreground">
                 {address.name}
               </CardTitle>
             </div>
@@ -114,7 +114,7 @@ export function AddressDisplay({ address }: AddressDisplayProps) {
               variant="outline"
               size="sm"
               onClick={() => setIsEditing(true)}
-              className="border-[var(--border-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--border-gold)] hover:text-[var(--color-cream)]"
+              className="border-[var(--border-gold)]/30 text-muted-foreground hover:border-[var(--border-gold)] hover:text-foreground"
             >
               <Pencil className="mr-2 h-3 w-3" />
               Edit
@@ -122,7 +122,7 @@ export function AddressDisplay({ address }: AddressDisplayProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-1 text-[var(--color-warm-gray)]">
+          <div className="space-y-1 text-muted-foreground">
             <Text as="p">{address.line1}</Text>
             {address.line2 && <Text as="p">{address.line2}</Text>}
             <Text as="p">

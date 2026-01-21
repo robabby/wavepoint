@@ -57,10 +57,10 @@ function DesktopTableOfContents() {
                     "block w-full cursor-pointer text-left text-sm transition-[color,transform] duration-200",
                     "py-1.5 pr-2",
                     "hover:text-[var(--color-gold-bright)]",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     activeSection === section.id
                       ? "font-medium text-[var(--color-gold)] translate-x-1"
-                      : "text-[var(--color-warm-gray)]"
+                      : "text-muted-foreground"
                   )}
                   aria-current={
                     activeSection === section.id ? "true" : undefined
@@ -106,14 +106,14 @@ function MobileTableOfContents() {
 
   return (
     <div className="sticky top-16 z-20 mb-6 lg:hidden">
-      <div className="rounded-lg border border-[var(--border-gold)] bg-[var(--color-obsidian)]/95 backdrop-blur-sm">
+      <div className="rounded-lg border border-[var(--border-gold)] bg-background/95 backdrop-blur-sm">
         {/* Dropdown trigger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
             "flex w-full cursor-pointer items-center justify-between p-4",
             "transition-colors duration-200",
-            "hover:bg-[var(--color-warm-charcoal)]/50",
+            "hover:bg-card/50",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-inset"
           )}
           aria-expanded={isOpen}
@@ -121,7 +121,7 @@ function MobileTableOfContents() {
         >
           <div className="flex items-center gap-3">
             <List className="h-4 w-4 text-[var(--color-gold)]" />
-            <Text size="2" weight="medium" className="text-[var(--color-cream)]">
+            <Text size="2" weight="medium" className="text-foreground">
               {currentSection?.title ?? "Jump to section"}
             </Text>
           </div>
@@ -158,11 +158,11 @@ function MobileTableOfContents() {
                         className={cn(
                           "block w-full cursor-pointer rounded-md px-3 py-2 text-left text-sm",
                           "transition-colors duration-150",
-                          "hover:bg-[var(--color-warm-charcoal)]",
+                          "hover:bg-card",
                           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-inset",
                           activeSection === section.id
-                            ? "bg-[var(--color-warm-charcoal)] font-medium text-[var(--color-gold)]"
-                            : "text-[var(--color-cream)]"
+                            ? "bg-card font-medium text-[var(--color-gold)]"
+                            : "text-foreground"
                         )}
                         aria-current={
                           activeSection === section.id ? "true" : undefined

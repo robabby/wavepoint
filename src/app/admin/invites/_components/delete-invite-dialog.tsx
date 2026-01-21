@@ -44,15 +44,15 @@ export function DeleteInviteDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]">
+      <AlertDialogContent className="border-[var(--border-gold)]/30 bg-background">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2 font-display uppercase tracking-widest text-[var(--color-cream)]">
+          <AlertDialogTitle className="flex items-center gap-2 font-display uppercase tracking-widest text-foreground">
             <AlertTriangle className="h-5 w-5 text-red-400" />
             Delete Invite
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-[var(--color-warm-gray)]">
+          <AlertDialogDescription className="text-muted-foreground">
             Permanently delete the invite for{" "}
-            <span className="font-medium text-[var(--color-cream)]">
+            <span className="font-medium text-foreground">
               {invite?.email}
             </span>
             ? This action cannot be undone.
@@ -61,7 +61,7 @@ export function DeleteInviteDialog({
         <AlertDialogFooter>
           <AlertDialogCancel
             disabled={isDeleting}
-            className="border-[var(--color-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--color-gold)] hover:bg-transparent hover:text-[var(--color-cream)]"
+            className="border-[var(--color-gold)]/30 text-muted-foreground hover:border-[var(--color-gold)] hover:bg-transparent hover:text-foreground"
           >
             Keep Invite
           </AlertDialogCancel>

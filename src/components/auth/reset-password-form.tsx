@@ -39,8 +39,8 @@ type FormData = z.infer<typeof formSchema>;
 
 // Shared input styling
 const inputClassName = cn(
-  "h-11 border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50",
-  "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+  "h-11 border-[var(--border-gold)]/30 bg-card/50",
+  "text-foreground placeholder:text-muted-foreground",
   "focus-visible:border-[var(--color-gold)] focus-visible:ring-[var(--color-gold)]/20"
 );
 
@@ -79,10 +79,10 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
           <CheckCircle className="h-6 w-6 text-green-500" />
         </div>
         <div className="space-y-2">
-          <h3 className="font-heading text-lg text-[var(--color-cream)]">
+          <h3 className="font-heading text-lg text-foreground">
             Password Reset Successfully
           </h3>
-          <p className="text-sm text-[var(--color-warm-gray)]">
+          <p className="text-sm text-muted-foreground">
             Your password has been changed. Redirecting to sign in...
           </p>
         </div>
@@ -100,7 +100,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
             name="password"
             render={({ field }) => (
               <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+                <FormLabel className="text-sm font-medium text-foreground">
                   New Password
                 </FormLabel>
                 <FormControl>
@@ -130,7 +130,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="w-full h-11 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
+          className="w-full h-11 bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
         >
           {form.formState.isSubmitting ? (
             <>

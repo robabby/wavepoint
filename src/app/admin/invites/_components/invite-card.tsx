@@ -56,13 +56,13 @@ export function InviteCard({
   const showActionMenu = isPending || isCancelled;
 
   return (
-    <Card className="border border-[var(--border-gold)]/30 bg-[var(--color-obsidian)] p-4">
+    <Card className="border border-[var(--border-gold)]/30 bg-background p-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         {/* Left: Email and metadata */}
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex items-center gap-2">
             <span className="text-[var(--color-gold)]/40">&#x25C7;</span>
-            <span className="truncate font-medium text-[var(--color-cream)]">
+            <span className="truncate font-medium text-foreground">
               {invite.email}
             </span>
           </div>
@@ -70,8 +70,8 @@ export function InviteCard({
             <span className="font-mono tracking-wider text-[var(--color-gold)]">
               {invite.code}
             </span>
-            <span className="text-[var(--color-dim)]">&middot;</span>
-            <span className="text-[var(--color-warm-gray)]">{dateLabel}</span>
+            <span className="text-muted-foreground">&middot;</span>
+            <span className="text-muted-foreground">{dateLabel}</span>
           </div>
         </div>
 
@@ -114,7 +114,7 @@ export function InviteCard({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-[var(--color-warm-gray)] hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)]"
+                  className="h-8 w-8 text-muted-foreground hover:bg-[var(--color-gold)]/10 hover:text-[var(--color-gold)]"
                 >
                   <MoreHorizontal className="h-4 w-4" />
                   <span className="sr-only">Open menu</span>
@@ -122,12 +122,12 @@ export function InviteCard({
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="end"
-                className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]"
+                className="border-[var(--border-gold)]/30 bg-background"
               >
                 {isPending && onCancelClick && (
                   <DropdownMenuItem
                     onClick={() => onCancelClick(invite)}
-                    className="cursor-pointer text-[var(--color-warm-gray)] focus:bg-[var(--color-gold)]/10 focus:text-[var(--color-gold)]"
+                    className="cursor-pointer text-muted-foreground focus:bg-[var(--color-gold)]/10 focus:text-[var(--color-gold)]"
                   >
                     <XCircle className="h-4 w-4" />
                     Cancel Invite

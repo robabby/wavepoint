@@ -96,8 +96,8 @@ export function NumberHeroInput({
           className={cn(
             "w-full rounded-xl border px-6 py-4 text-center",
             "font-display text-3xl tracking-widest",
-            "bg-[var(--color-warm-charcoal)]/50 backdrop-blur-sm",
-            "placeholder:text-[var(--color-dim)] placeholder:text-xl placeholder:tracking-normal placeholder:font-sans",
+            "bg-card/50 backdrop-blur-sm",
+            "placeholder:text-muted-foreground placeholder:text-xl placeholder:tracking-normal placeholder:font-sans",
             "text-[var(--color-gold)]",
             "transition-all duration-200",
             // Default border
@@ -114,12 +114,12 @@ export function NumberHeroInput({
             <button
               type="button"
               onClick={handleClear}
-              className="rounded-full p-1 text-[var(--color-dim)] hover:text-[var(--color-gold)] hover:bg-[var(--color-warm-charcoal)] transition-colors"
+              className="rounded-full p-1 text-muted-foreground hover:text-[var(--color-gold)] hover:bg-card transition-colors"
               aria-label="Clear input"
             >
               <X className="h-4 w-4" />
             </button>
-            <span className="text-sm text-[var(--color-dim)]">Enter</span>
+            <span className="text-sm text-muted-foreground">Enter</span>
           </div>
         )}
       </div>

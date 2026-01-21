@@ -35,30 +35,30 @@ interface ContactFormProps {
 
 // Shared input styling (matches auth forms)
 const inputClassName = cn(
-  "h-11 border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50",
-  "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+  "h-11 border-[var(--border-gold)]/30 bg-card/50",
+  "text-foreground placeholder:text-muted-foreground",
   "focus-visible:border-[var(--color-gold)] focus-visible:ring-[var(--color-gold)]/20"
 );
 
 const textareaClassName = cn(
-  "min-h-[150px] resize-none border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50",
-  "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+  "min-h-[150px] resize-none border-[var(--border-gold)]/30 bg-card/50",
+  "text-foreground placeholder:text-muted-foreground",
   "focus-visible:border-[var(--color-gold)] focus-visible:ring-[var(--color-gold)]/20"
 );
 
 const selectTriggerClassName = cn(
-  "h-11 w-full border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50",
-  "text-[var(--color-cream)]",
+  "h-11 w-full border-[var(--border-gold)]/30 bg-card/50",
+  "text-foreground",
   "focus:border-[var(--color-gold)] focus:ring-[var(--color-gold)]/20",
-  "data-[placeholder]:text-[var(--color-dim)]"
+  "data-[placeholder]:text-muted-foreground"
 );
 
 const selectContentClassName = cn(
-  "border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]"
+  "border-[var(--border-gold)]/30 bg-background"
 );
 
 const selectItemClassName = cn(
-  "text-[var(--color-cream)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+  "text-foreground focus:bg-card focus:text-[var(--color-gold)]"
 );
 
 export function ContactForm({ defaultEmail }: ContactFormProps) {
@@ -115,8 +115,8 @@ export function ContactForm({ defaultEmail }: ContactFormProps) {
         <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-gold)]/20">
           <Check className="h-5 w-5 text-[var(--color-gold)]" />
         </div>
-        <h3 className="font-heading text-lg text-[var(--color-cream)]">Sent</h3>
-        <p className="text-[var(--color-warm-gray)]">We&apos;ll be in touch.</p>
+        <h3 className="font-heading text-lg text-foreground">Sent</h3>
+        <p className="text-muted-foreground">We&apos;ll be in touch.</p>
       </div>
     );
   }
@@ -130,7 +130,7 @@ export function ContactForm({ defaultEmail }: ContactFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+              <FormLabel className="text-sm font-medium text-foreground">
                 Name
               </FormLabel>
               <FormControl>
@@ -153,7 +153,7 @@ export function ContactForm({ defaultEmail }: ContactFormProps) {
           name="email"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+              <FormLabel className="text-sm font-medium text-foreground">
                 Email
               </FormLabel>
               <FormControl>
@@ -177,7 +177,7 @@ export function ContactForm({ defaultEmail }: ContactFormProps) {
           name="subject"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+              <FormLabel className="text-sm font-medium text-foreground">
                 Subject
               </FormLabel>
               <Select
@@ -213,7 +213,7 @@ export function ContactForm({ defaultEmail }: ContactFormProps) {
           name="message"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+              <FormLabel className="text-sm font-medium text-foreground">
                 Message
               </FormLabel>
               <FormControl>
@@ -241,7 +241,7 @@ export function ContactForm({ defaultEmail }: ContactFormProps) {
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="h-11 w-full bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
+          className="h-11 w-full bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
         >
           {form.formState.isSubmitting ? (
             <>

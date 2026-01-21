@@ -16,25 +16,25 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* Header */}
         <AnimateOnScroll className="mx-auto mb-8 max-w-md text-center sm:mb-12">
           <Heading
             size="8"
-            className="font-display text-[var(--color-cream)]"
+            className="font-display text-foreground"
             mb="3"
           >
             Get in touch
           </Heading>
-          <Text size="3" className="text-[var(--color-warm-gray)]">
+          <Text size="3" className="text-muted-foreground">
             Questions, feedback, or just want to say hello?
           </Text>
         </AnimateOnScroll>
 
         {/* Form - no hover animation to avoid jarring UX with dropdown */}
         <AnimateOnScroll delay={0.1}>
-          <div className="mx-auto max-w-md rounded-lg border border-[var(--border-gold)] bg-[var(--color-warm-charcoal)] p-6 sm:p-8">
+          <div className="mx-auto max-w-md rounded-lg border border-[var(--border-gold)] bg-card p-6 sm:p-8">
             <ContactFormWrapper />
           </div>
         </AnimateOnScroll>

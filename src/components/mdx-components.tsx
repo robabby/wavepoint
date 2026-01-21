@@ -43,17 +43,17 @@ export function getMDXComponents(components: MDXComponents): MDXComponents {
 
     // Paragraphs
     p: ({ children }) => (
-      <Text as="p" mb="2" className="text-[var(--color-cream)]">
+      <Text as="p" mb="2" className="text-foreground">
         {children}
       </Text>
     ),
 
     // Lists
     ul: ({ children }) => (
-      <ul className="mb-4 space-y-3 text-[var(--color-cream)]">{children}</ul>
+      <ul className="mb-4 space-y-3 text-foreground">{children}</ul>
     ),
     ol: ({ children }) => (
-      <ol className="mb-4 ml-4 space-y-3 text-[var(--color-cream)]">{children}</ol>
+      <ol className="mb-4 ml-4 space-y-3 text-foreground">{children}</ol>
     ),
     li: ({ children }) => <li>{children}</li>,
 

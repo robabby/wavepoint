@@ -57,10 +57,10 @@ function EmptyCollection() {
           className="text-[var(--color-gold)]"
         />
       </div>
-      <h3 className="font-heading text-xl text-[var(--color-cream)]">
+      <h3 className="font-heading text-xl text-foreground">
         No signals captured yet
       </h3>
-      <p className="mt-2 max-w-sm text-[var(--color-dim)]">
+      <p className="mt-2 max-w-sm text-muted-foreground">
         The universe is patient.
       </p>
     </div>

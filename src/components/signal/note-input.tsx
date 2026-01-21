@@ -37,10 +37,10 @@ export function NoteInput({
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <p className="font-heading text-lg text-[var(--color-cream)]">
+        <p className="font-heading text-lg text-foreground">
           Add a note (optional)
         </p>
-        <p className="mt-1 text-sm text-[var(--color-dim)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           What were you doing? What came to mind?
         </p>
       </div>
@@ -54,15 +54,15 @@ export function NoteInput({
         disabled={disabled || isLoading}
         className={cn(
           "w-full rounded-xl p-4",
-          "bg-[var(--color-warm-charcoal)]/30 border border-[var(--border-gold)]/20",
-          "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+          "bg-card/30 border border-[var(--border-gold)]/20",
+          "text-foreground placeholder:text-muted-foreground",
           "focus:border-[var(--color-gold)]/50 focus:outline-none focus:ring-1 focus:ring-[var(--color-gold)]/30",
           "resize-none transition-colors",
           "disabled:opacity-50 disabled:cursor-not-allowed"
         )}
       />
 
-      <div className="flex justify-between text-xs text-[var(--color-dim)]">
+      <div className="flex justify-between text-xs text-muted-foreground">
         <span>
           {value.length}/{MAX_LENGTH}
         </span>
@@ -78,7 +78,7 @@ export function NoteInput({
           <button
             onClick={onSkip}
             disabled={disabled || isLoading}
-            className="text-sm text-[var(--color-dim)] hover:text-[var(--color-warm-gray)] transition-colors disabled:opacity-50"
+            className="text-sm text-muted-foreground hover:text-muted-foreground transition-colors disabled:opacity-50"
           >
             Skip note
           </button>

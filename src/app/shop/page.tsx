@@ -37,11 +37,11 @@ export default async function ShopPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* Header */}
         <AnimateOnScroll className="mx-auto mb-8 max-w-4xl text-center sm:mb-12 lg:mb-16">
-          <Heading size="9" className="font-display text-[var(--color-cream)]" mb="4">
+          <Heading size="9" className="font-display text-foreground" mb="4">
             Shop
           </Heading>
           <Box mb="2">
@@ -49,7 +49,7 @@ export default async function ShopPage() {
               Sacred geometry merchandise
             </Text>
           </Box>
-          <Text size="3" className="mx-auto max-w-3xl text-[var(--color-warm-gray)]">
+          <Text size="3" className="mx-auto max-w-3xl text-muted-foreground">
             Wear and use these timeless patterns in your daily life. Each piece
             features sacred geometry designs that have inspired seekers for
             millennia.
@@ -60,11 +60,11 @@ export default async function ShopPage() {
         {productsWithVariants.length === 0 ? (
           <AnimateOnScroll>
             <AnimatedCard className="mx-auto max-w-2xl p-8 text-center">
-              <ShoppingBag className="mx-auto mb-4 h-16 w-16 text-[var(--color-warm-gray)]/50" />
+              <ShoppingBag className="mx-auto mb-4 h-16 w-16 text-muted-foreground/50" />
               <Heading size="6" className="mb-4 font-heading text-[var(--color-gold)]">
                 No Products Available
               </Heading>
-              <Text className="text-[var(--color-warm-gray)]">
+              <Text className="text-muted-foreground">
                 We&apos;re working on adding new sacred geometry merchandise.
                 Check back soon!
               </Text>
@@ -93,12 +93,12 @@ export default async function ShopPage() {
             <Heading size="6" className="mb-4 font-heading text-[var(--color-gold)]">
               About Our Products
             </Heading>
-            <Text className="mb-4 text-[var(--color-warm-gray)]">
+            <Text className="mb-4 text-muted-foreground">
               Each item is printed on demand using high-quality materials and
               eco-friendly inks. By ordering only what is needed, we minimize
               waste and ensure every piece is made with care.
             </Text>
-            <Text className="text-[var(--color-warm-gray)]">
+            <Text className="text-muted-foreground">
               All designs feature Metatron&#39;s Cube—the sacred pattern that
               contains within it all five Platonic Solids and represents the
               blueprint of creation itself.

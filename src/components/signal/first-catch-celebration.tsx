@@ -36,7 +36,7 @@ export function FirstCatchCelebration({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onDismiss}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-obsidian)]/90 cursor-pointer"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 cursor-pointer"
       role="dialog"
       aria-modal="true"
       aria-label="First catch celebration"
@@ -56,10 +56,10 @@ export function FirstCatchCelebration({
             <span className="inline-block px-4 py-2 rounded-full bg-[var(--color-gold)]/10 border border-[var(--color-gold)] text-[var(--color-gold)] text-sm font-heading tracking-widest uppercase">
               First Catch
             </span>
-            <p className="mt-6 text-5xl font-display text-[var(--color-cream)]">
+            <p className="mt-6 text-5xl font-display text-foreground">
               {number}
             </p>
-            <p className="mt-4 text-sm text-[var(--color-dim)]">
+            <p className="mt-4 text-sm text-muted-foreground">
               Tap anywhere to continue
             </p>
           </motion.div>

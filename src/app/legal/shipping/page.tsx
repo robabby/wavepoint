@@ -24,29 +24,29 @@ function Section({
       >
         {title}
       </Heading>
-      <div className="space-y-4 text-[var(--color-warm-gray)]">{children}</div>
+      <div className="space-y-4 text-muted-foreground">{children}</div>
     </section>
   );
 }
 
 export default function ShippingPage() {
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         <AnimateOnScroll className="mb-8 sm:mb-12">
           <Heading
             size="8"
-            className="mb-4 font-display text-[var(--color-cream)]"
+            className="mb-4 font-display text-foreground"
           >
             Shipping Policy
           </Heading>
-          <Text className="text-[var(--color-warm-gray)]">
+          <Text className="text-muted-foreground">
             Last updated: January 2026
           </Text>
         </AnimateOnScroll>
 
         <AnimateOnScroll delay={0.1}>
-          <div className="rounded-lg border border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)] p-6 sm:p-8">
+          <div className="rounded-lg border border-[var(--border-gold)]/30 bg-card p-6 sm:p-8">
             <Section title="Processing Time">
               <Text as="p">
                 All orders are printed on-demand by our fulfillment partner,
@@ -83,10 +83,10 @@ export default function ShippingPage() {
                 <table className="w-full text-left">
                   <thead>
                     <tr className="border-b border-[var(--border-gold)]/30">
-                      <th className="pb-2 pr-4 text-[var(--color-cream)]">
+                      <th className="pb-2 pr-4 text-foreground">
                         Region
                       </th>
-                      <th className="pb-2 text-[var(--color-cream)]">
+                      <th className="pb-2 text-foreground">
                         Estimated Time
                       </th>
                     </tr>

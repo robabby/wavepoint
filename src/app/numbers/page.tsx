@@ -64,7 +64,7 @@ export default function NumbersPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"

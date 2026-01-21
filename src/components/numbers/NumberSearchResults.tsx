@@ -20,7 +20,7 @@ export function NumberSearchResults({
   if (results.length === 0) {
     return (
       <div className="text-center py-8">
-        <Text className="text-[var(--color-warm-gray)]">
+        <Text className="text-muted-foreground">
           No matches for &ldquo;{query}&rdquo; — Press Enter to explore anyway
         </Text>
       </div>
@@ -31,7 +31,7 @@ export function NumberSearchResults({
     <div>
       <Text
         size="2"
-        className="mb-6 block text-center text-[var(--color-dim)]"
+        className="mb-6 block text-center text-muted-foreground"
       >
         {results.length} pattern{results.length !== 1 ? "s" : ""} found
       </Text>

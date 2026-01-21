@@ -43,10 +43,10 @@ export function MoodSelector({
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <p className="font-heading text-lg text-[var(--color-cream)]">
+        <p className="font-heading text-lg text-foreground">
           What energy surrounds this moment?
         </p>
-        <p className="mt-1 text-sm text-[var(--color-dim)]">
+        <p className="mt-1 text-sm text-muted-foreground">
           Select up to {MAX_SELECTIONS} (optional)
         </p>
       </div>
@@ -72,7 +72,7 @@ export function MoodSelector({
           <button
             onClick={onSkip}
             disabled={disabled}
-            className="text-sm text-[var(--color-dim)] hover:text-[var(--color-warm-gray)] transition-colors disabled:opacity-50"
+            className="text-sm text-muted-foreground hover:text-muted-foreground transition-colors disabled:opacity-50"
           >
             Continue without mood
           </button>
@@ -109,7 +109,7 @@ function MoodButton({
         "transition-all duration-300",
         isSelected
           ? "bg-[var(--color-gold)]/10"
-          : "hover:bg-[var(--color-warm-charcoal)]/50",
+          : "hover:bg-card/50",
         "disabled:cursor-not-allowed disabled:opacity-40"
       )}
     >
@@ -119,7 +119,7 @@ function MoodButton({
       <span
         className={cn(
           "text-xs font-heading tracking-wide uppercase",
-          isSelected ? "text-[var(--color-gold)]" : "text-[var(--color-dim)]"
+          isSelected ? "text-[var(--color-gold)]" : "text-muted-foreground"
         )}
       >
         {mood.label}

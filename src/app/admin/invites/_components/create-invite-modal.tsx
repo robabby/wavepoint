@@ -121,25 +121,25 @@ export function CreateInviteModal({
   };
 
   const inputClassName =
-    "h-11 border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50 text-[var(--color-cream)] placeholder:text-[var(--color-dim)] focus-visible:border-[var(--color-gold)] focus-visible:ring-[var(--color-gold)]/20";
+    "h-11 border-[var(--border-gold)]/30 bg-card/50 text-foreground placeholder:text-muted-foreground focus-visible:border-[var(--color-gold)] focus-visible:ring-[var(--color-gold)]/20";
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)] sm:max-w-md">
+      <DialogContent className="border-[var(--border-gold)]/30 bg-background sm:max-w-md">
         {result ? (
           // Success state
           <>
             <DialogHeader>
-              <DialogTitle className="font-display uppercase tracking-widest text-[var(--color-cream)]">
+              <DialogTitle className="font-display uppercase tracking-widest text-foreground">
                 Invite Created
               </DialogTitle>
-              <DialogDescription className="text-[var(--color-warm-gray)]">
+              <DialogDescription className="text-muted-foreground">
                 Invite link ready to share with {result.email}
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4 py-4">
-              <div className="rounded-md border border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/30 p-3">
+              <div className="rounded-md border border-[var(--border-gold)]/30 bg-card/30 p-3">
                 <p className="break-all font-mono text-sm text-[var(--color-gold)]">
                   {result.inviteUrl}
                 </p>
@@ -166,7 +166,7 @@ export function CreateInviteModal({
             <DialogFooter>
               <Button
                 onClick={handleDone}
-                className="w-full bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+                className="w-full bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
               >
                 Done
               </Button>
@@ -176,10 +176,10 @@ export function CreateInviteModal({
           // Form state
           <>
             <DialogHeader>
-              <DialogTitle className="font-display uppercase tracking-widest text-[var(--color-cream)]">
+              <DialogTitle className="font-display uppercase tracking-widest text-foreground">
                 Create Invite
               </DialogTitle>
-              <DialogDescription className="text-[var(--color-warm-gray)]">
+              <DialogDescription className="text-muted-foreground">
                 Grant access to the inner circle
               </DialogDescription>
             </DialogHeader>
@@ -198,7 +198,7 @@ export function CreateInviteModal({
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[var(--color-cream)]">
+                      <FormLabel className="text-foreground">
                         Email Address
                       </FormLabel>
                       <FormControl>
@@ -220,7 +220,7 @@ export function CreateInviteModal({
                   <Button
                     type="submit"
                     disabled={form.formState.isSubmitting}
-                    className="w-full bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+                    className="w-full bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
                   >
                     {form.formState.isSubmitting ? (
                       <>

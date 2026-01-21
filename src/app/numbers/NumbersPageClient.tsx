@@ -47,7 +47,7 @@ export function NumbersPageClient({
         <AnimateOnScroll className="flex flex-col items-center gap-8">
           <Heading
             size="9"
-            className="font-display text-[var(--color-cream)]"
+            className="font-display text-foreground"
           >
             What did you notice?
           </Heading>
@@ -61,7 +61,7 @@ export function NumbersPageClient({
 
           <Text
             size="3"
-            className="max-w-md text-[var(--color-warm-gray)]"
+            className="max-w-md text-muted-foreground"
           >
             Often called angel numbers, these recurring sequences appear when
             you&apos;re paying attention.
@@ -70,7 +70,7 @@ export function NumbersPageClient({
           {!isSearching && (
             <a
               href="#featured"
-              className="mt-4 flex flex-col items-center gap-1 text-[var(--color-dim)] transition-colors hover:text-[var(--color-gold)]"
+              className="mt-4 flex flex-col items-center gap-1 text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
               aria-label="Scroll to explore patterns"
             >
               <span className="text-sm">explore</span>
@@ -126,7 +126,7 @@ export function NumbersPageClient({
                       >
                         {category.pluralLabel}
                       </Heading>
-                      <Text size="2" className="text-[var(--color-dim)]">
+                      <Text size="2" className="text-muted-foreground">
                         {category.description}
                       </Text>
                     </div>
@@ -153,12 +153,12 @@ export function NumbersPageClient({
           <AnimatedCard className="mx-auto max-w-2xl p-8 text-center">
             <Heading
               size="5"
-              className="mb-3 font-display text-[var(--color-cream)]"
+              className="mb-3 font-display text-foreground"
             >
               Notice these patterns often?
             </Heading>
 
-            <Text className="mb-6 text-[var(--color-warm-gray)]">
+            <Text className="mb-6 text-muted-foreground">
               {signalEnabled
                 ? "Signal helps you track what you see and find meaning over time."
                 : "Track what you see and find meaning over time with Signal."}

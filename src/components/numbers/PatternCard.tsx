@@ -39,7 +39,7 @@ export function PatternCard({
           </span>
 
           {/* Title */}
-          <span className="mt-3 text-xs text-[var(--color-warm-gray)]">
+          <span className="mt-3 text-xs text-muted-foreground">
             {pattern.title}
           </span>
 
@@ -55,7 +55,7 @@ export function PatternCard({
             {pattern.keywords.slice(0, 3).map((keyword) => (
               <span
                 key={keyword}
-                className="rounded bg-[var(--color-obsidian)]/50 px-1.5 py-0.5 text-[10px] text-[var(--color-dim)]"
+                className="rounded bg-background/50 px-1.5 py-0.5 text-[10px] text-muted-foreground"
               >
                 {keyword}
               </span>

@@ -56,7 +56,7 @@ export function NumberPad({ onSubmit, disabled, isLoading }: NumberPadProps) {
       />
 
       {/* Number pad grid */}
-      <div className="relative rounded-2xl border border-[var(--border-gold)]/20 p-4 bg-[var(--color-warm-charcoal)]/30">
+      <div className="relative rounded-2xl border border-[var(--border-gold)]/20 p-4 bg-card/30">
         {/* Subtle top accent line */}
         <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-[var(--color-gold)]/20 to-transparent" />
 
@@ -133,7 +133,7 @@ function NumberDisplay({ value }: { value: string }) {
 
 function PlaceholderDots() {
   return (
-    <span className="inline-flex gap-1.5 text-[var(--color-dim)] text-4xl">
+    <span className="inline-flex gap-1.5 text-muted-foreground text-4xl">
       {[0, 1, 2].map((i) => (
         <motion.span
           key={i}
@@ -164,7 +164,7 @@ function DigitButton({
       className={cn(
         "h-16 text-2xl font-display rounded-xl",
         "border border-[var(--border-gold)]/30",
-        "text-[var(--color-cream)] bg-transparent",
+        "text-foreground bg-transparent",
         "hover:border-[var(--color-gold)]/60 hover:bg-[var(--color-gold)]/5",
         "active:bg-[var(--color-gold)]/10",
         "transition-colors duration-150",
@@ -194,8 +194,8 @@ function UtilityButton({
       className={cn(
         "h-16 text-sm rounded-xl",
         "border border-[var(--border-copper)]/30",
-        "text-[var(--color-dim)]",
-        "hover:border-[var(--color-copper)]/50 hover:text-[var(--color-warm-gray)]",
+        "text-muted-foreground",
+        "hover:border-[var(--color-copper)]/50 hover:text-muted-foreground",
         "transition-colors duration-150",
         "disabled:opacity-40 disabled:cursor-not-allowed"
       )}
@@ -233,7 +233,7 @@ function QuickSelectChips({
             "border transition-all duration-200",
             currentValue === num
               ? "border-[var(--color-gold)] bg-[var(--color-gold)]/10 text-[var(--color-gold)]"
-              : "border-[var(--border-gold)]/30 text-[var(--color-cream)] hover:border-[var(--color-gold)]/50"
+              : "border-[var(--border-gold)]/30 text-foreground hover:border-[var(--color-gold)]/50"
           )}
         >
           {num}

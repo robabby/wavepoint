@@ -54,7 +54,7 @@ export function SacredSpinner({
         <circle cx="12" cy="2" r="2" fill="var(--color-gold)" />
       </motion.svg>
       {label && (
-        <span className="text-sm text-[var(--color-dim)]">{label}</span>
+        <span className="text-sm text-muted-foreground">{label}</span>
       )}
     </span>
   );

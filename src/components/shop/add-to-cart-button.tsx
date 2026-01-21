@@ -103,12 +103,12 @@ export function AddToCartButton({
       "flex w-full items-center justify-center gap-2 py-6 text-lg font-medium transition-colors";
 
     if (buttonState === "added") {
-      return `${baseClass} bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold)]`;
+      return `${baseClass} bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold)]`;
     }
     if (isDisabled) {
-      return `${baseClass} bg-[var(--color-warm-charcoal)] text-[var(--color-dim)] cursor-not-allowed`;
+      return `${baseClass} bg-card text-muted-foreground cursor-not-allowed`;
     }
-    return `${baseClass} bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]`;
+    return `${baseClass} bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]`;
   };
 
   return (

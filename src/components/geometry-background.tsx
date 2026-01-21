@@ -35,11 +35,7 @@ export function GeometryBackground({ className }: GeometryBackgroundProps) {
           src="/images/geometries/patterns/flower-of-life/flower-of-life-primary.svg"
           alt=""
           fill
-          className="object-contain opacity-[0.08]"
-          style={{
-            filter:
-              "brightness(0) saturate(100%) invert(76%) sepia(30%) saturate(500%) hue-rotate(5deg) brightness(95%) contrast(90%)",
-          }}
+          className="object-contain opacity-[0.08] svg-gold-muted"
           priority
         />
       </motion.div>

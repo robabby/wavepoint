@@ -40,7 +40,7 @@ export default function FAQPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <StructuredData data={faqSchema} />
 
       <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
@@ -48,7 +48,7 @@ export default function FAQPage() {
         <AnimateOnScroll className="mx-auto mb-8 max-w-4xl text-center sm:mb-12 lg:mb-16">
           <Heading
             size="9"
-            className="font-display text-[var(--color-cream)]"
+            className="font-display text-foreground"
             mb="4"
           >
             Frequently Asked Questions
@@ -60,7 +60,7 @@ export default function FAQPage() {
           </Box>
           <Text
             size="3"
-            className="mx-auto max-w-3xl text-[var(--color-warm-gray)]"
+            className="mx-auto max-w-3xl text-muted-foreground"
           >
             Explore answers to common questions about sacred geometry, from the
             fundamental Platonic Solids to ancient patterns like the Flower of
@@ -84,7 +84,7 @@ export default function FAQPage() {
                     >
                       {category.name}
                     </Heading>
-                    <Text size="2" className="text-[var(--color-warm-gray)]">
+                    <Text size="2" className="text-muted-foreground">
                       {category.description}
                     </Text>
                   </div>
@@ -97,12 +97,12 @@ export default function FAQPage() {
                         value={faq.id}
                         className="border-b border-[var(--border-gold)]/30"
                       >
-                        <AccordionTrigger className="py-4 text-left text-[var(--color-cream)] hover:text-[var(--color-gold)] hover:no-underline [&[data-state=open]]:text-[var(--color-gold)]">
+                        <AccordionTrigger className="py-4 text-left text-foreground hover:text-[var(--color-gold)] hover:no-underline [&[data-state=open]]:text-[var(--color-gold)]">
                           <span className="pr-4 text-base font-medium sm:text-lg">
                             {faq.question}
                           </span>
                         </AccordionTrigger>
-                        <AccordionContent className="pb-4 text-sm leading-relaxed text-[var(--color-warm-gray)] sm:text-base">
+                        <AccordionContent className="pb-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
                           <div
                             dangerouslySetInnerHTML={{ __html: faq.answer }}
                             className="prose-a:text-[var(--color-gold)] prose-a:underline prose-a:underline-offset-2 hover:prose-a:text-[var(--color-gold-bright)]"
@@ -120,7 +120,7 @@ export default function FAQPage() {
         {/* Bottom CTA */}
         <AnimateOnScroll delay={0.4}>
           <div className="mx-auto mt-12 max-w-4xl text-center sm:mt-16">
-            <Text className="text-[var(--color-warm-gray)]">
+            <Text className="text-muted-foreground">
               Have more questions? Explore our detailed guides on{" "}
               <Link
                 href="/platonic-solids"

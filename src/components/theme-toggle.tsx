@@ -31,9 +31,9 @@ export function ThemeToggle() {
         <button
           className={cn(
             "flex h-9 w-9 items-center justify-center rounded-md",
-            "text-[var(--color-warm-gray)]",
+            "text-muted-foreground",
             "transition-colors",
-            "hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]",
+            "hover:bg-card hover:text-[var(--color-gold)]",
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/50"
           )}
           aria-label="Toggle theme"

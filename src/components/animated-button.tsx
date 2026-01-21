@@ -25,7 +25,7 @@ export function AnimatedButton({
     primary: {
       whileHover: {
         scale: 1.02,
-        boxShadow: "0 0 24px rgba(212, 168, 75, 0.4)",
+        boxShadow: "0 0 24px var(--glow-gold)",
       },
       whileTap: {
         scale: 0.98,
@@ -34,7 +34,7 @@ export function AnimatedButton({
     outline: {
       whileHover: {
         scale: 1.02,
-        boxShadow: "0 0 16px rgba(212, 168, 75, 0.2)",
+        boxShadow: "0 0 16px var(--glow-gold)",
       },
       whileTap: {
         scale: 0.98,
@@ -53,7 +53,7 @@ export function AnimatedButton({
   return (
     <motion.div
       className={cn(
-        "inline-block rounded-md transition-shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-[var(--color-gold)] focus-within:ring-offset-2 focus-within:ring-offset-[var(--color-obsidian)]",
+        "inline-block rounded-md transition-shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-[var(--color-gold)] focus-within:ring-offset-2 focus-within:ring-offset-background",
         className
       )}
       whileHover={variantStyles[variant].whileHover}

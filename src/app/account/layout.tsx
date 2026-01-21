@@ -21,13 +21,13 @@ export default async function AccountLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* Header */}
         <div className="mb-8 lg:mb-12">
           <Heading
             size="8"
-            className="font-display text-[var(--color-cream)]"
+            className="font-display text-foreground"
           >
             Account
           </Heading>

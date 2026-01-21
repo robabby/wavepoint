@@ -22,18 +22,18 @@ function ResetPasswordContent() {
   if (!token) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center px-4">
-        <div className="w-full max-w-md rounded-lg border border-[var(--border-gold)] bg-[var(--color-obsidian)] p-8 text-center">
+        <div className="w-full max-w-md rounded-lg border border-[var(--border-gold)] bg-background p-8 text-center">
           <XCircle className="mx-auto h-12 w-12 text-red-500" />
-          <h1 className="mt-4 font-heading text-xl text-[var(--color-cream)]">
+          <h1 className="mt-4 font-heading text-xl text-foreground">
             Invalid Reset Link
           </h1>
-          <p className="mt-2 text-[var(--color-warm-gray)]">
+          <p className="mt-2 text-muted-foreground">
             No reset token was provided. Please request a new password reset
             link.
           </p>
           <Button
             asChild
-            className="mt-6 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+            className="mt-6 bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
           >
             <Link href="/">Return to Home</Link>
           </Button>
@@ -45,12 +45,12 @@ function ResetPasswordContent() {
   // Show reset form
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-lg border border-[var(--border-gold)] bg-[var(--color-obsidian)] p-8">
+      <div className="w-full max-w-md rounded-lg border border-[var(--border-gold)] bg-background p-8">
         <div className="mb-6 text-center">
-          <h1 className="font-heading text-xl text-[var(--color-cream)]">
+          <h1 className="font-heading text-xl text-foreground">
             Reset Your Password
           </h1>
-          <p className="mt-2 text-sm text-[var(--color-warm-gray)]">
+          <p className="mt-2 text-sm text-muted-foreground">
             Enter a new password for your account.
           </p>
         </div>

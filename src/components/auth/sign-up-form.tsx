@@ -27,8 +27,8 @@ interface SignUpFormProps {
 
 // Shared input styling
 const inputClassName = cn(
-  "h-11 border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50",
-  "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+  "h-11 border-[var(--border-gold)]/30 bg-card/50",
+  "text-foreground placeholder:text-muted-foreground",
   "focus-visible:border-[var(--color-gold)] focus-visible:ring-[var(--color-gold)]/20"
 );
 
@@ -89,10 +89,10 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
           {/* Warning banner when invites required but no pre-filled code */}
           {invitesRequired && !hasPrefilledInvite && (
             <div className="rounded-md border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 p-3">
-              <p className="text-sm text-[var(--color-cream)]">
+              <p className="text-sm text-foreground">
                 Registration is invite-only
               </p>
-              <p className="mt-1 text-xs text-[var(--color-warm-gray)]">
+              <p className="mt-1 text-xs text-muted-foreground">
                 You need an invite code to join. Already have one? Enter it below.
               </p>
             </div>
@@ -105,7 +105,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
               name="inviteCode"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+                  <FormLabel className="text-sm font-medium text-foreground">
                     Invite Code
                   </FormLabel>
                   <FormControl>
@@ -118,7 +118,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
                         className={cn(
                           inputClassName,
                           "font-mono uppercase tracking-wider",
-                          hasPrefilledInvite && "bg-[var(--color-warm-charcoal)]/30 cursor-not-allowed"
+                          hasPrefilledInvite && "bg-card/30 cursor-not-allowed"
                         )}
                         {...field}
                       />
@@ -128,7 +128,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
                     </div>
                   </FormControl>
                   {!hasPrefilledInvite && (
-                    <p className="text-xs text-[var(--color-dim)]">
+                    <p className="text-xs text-muted-foreground">
                       Format: SG-XXXXXX
                     </p>
                   )}
@@ -144,7 +144,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
             name="email"
             render={({ field }) => (
               <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+                <FormLabel className="text-sm font-medium text-foreground">
                   Email
                 </FormLabel>
                 <FormControl>
@@ -156,7 +156,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
                     readOnly={hasPrefilledInvite}
                     className={cn(
                       inputClassName,
-                      hasPrefilledInvite && "bg-[var(--color-warm-charcoal)]/30 cursor-not-allowed"
+                      hasPrefilledInvite && "bg-card/30 cursor-not-allowed"
                     )}
                     {...field}
                   />
@@ -172,7 +172,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
             name="password"
             render={({ field }) => (
               <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+                <FormLabel className="text-sm font-medium text-foreground">
                   Password
                 </FormLabel>
                 <FormControl>
@@ -202,7 +202,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="w-full h-11 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
+          className="w-full h-11 bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
         >
           {form.formState.isSubmitting ? (
             <>
@@ -215,7 +215,7 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
         </Button>
 
         {/* Switch to sign-in */}
-        <p className="text-center text-sm text-[var(--color-warm-gray)]">
+        <p className="text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <button
             type="button"

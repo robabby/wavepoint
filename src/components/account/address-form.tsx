@@ -36,24 +36,24 @@ interface AddressFormProps {
 
 // Shared input styling (matches auth forms)
 const inputClassName = cn(
-  "h-11 border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50",
-  "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+  "h-11 border-[var(--border-gold)]/30 bg-card/50",
+  "text-foreground placeholder:text-muted-foreground",
   "focus-visible:border-[var(--color-gold)] focus-visible:ring-[var(--color-gold)]/20"
 );
 
 const selectTriggerClassName = cn(
-  "h-11 w-full border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/50",
-  "text-[var(--color-cream)]",
+  "h-11 w-full border-[var(--border-gold)]/30 bg-card/50",
+  "text-foreground",
   "focus:border-[var(--color-gold)] focus:ring-[var(--color-gold)]/20",
-  "data-[placeholder]:text-[var(--color-dim)]"
+  "data-[placeholder]:text-muted-foreground"
 );
 
 const selectContentClassName = cn(
-  "border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]"
+  "border-[var(--border-gold)]/30 bg-background"
 );
 
 const selectItemClassName = cn(
-  "text-[var(--color-cream)] focus:bg-[var(--color-warm-charcoal)] focus:text-[var(--color-gold)]"
+  "text-foreground focus:bg-card focus:text-[var(--color-gold)]"
 );
 
 /**
@@ -122,7 +122,7 @@ export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+              <FormLabel className="text-sm font-medium text-foreground">
                 Full Name
               </FormLabel>
               <FormControl>
@@ -145,7 +145,7 @@ export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
           name="line1"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+              <FormLabel className="text-sm font-medium text-foreground">
                 Street Address
               </FormLabel>
               <FormControl>
@@ -168,8 +168,8 @@ export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
           name="line2"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
-                Apt, Suite, etc. <span className="text-[var(--color-dim)]">(optional)</span>
+              <FormLabel className="text-sm font-medium text-foreground">
+                Apt, Suite, etc. <span className="text-muted-foreground">(optional)</span>
               </FormLabel>
               <FormControl>
                 <Input
@@ -193,7 +193,7 @@ export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
             name="city"
             render={({ field }) => (
               <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+                <FormLabel className="text-sm font-medium text-foreground">
                   City
                 </FormLabel>
                 <FormControl>
@@ -216,7 +216,7 @@ export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
             name="state"
             render={({ field }) => (
               <FormItem className="space-y-2">
-                <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+                <FormLabel className="text-sm font-medium text-foreground">
                   State
                 </FormLabel>
                 <Select
@@ -253,7 +253,7 @@ export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
           name="postalCode"
           render={({ field }) => (
             <FormItem className="space-y-2">
-              <FormLabel className="text-sm font-medium text-[var(--color-cream)]">
+              <FormLabel className="text-sm font-medium text-foreground">
                 ZIP Code
               </FormLabel>
               <FormControl>
@@ -283,7 +283,7 @@ export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
           <Button
             type="submit"
             disabled={form.formState.isSubmitting}
-            className="h-11 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
+            className="h-11 bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)] disabled:opacity-50"
           >
             {form.formState.isSubmitting ? (
               <>
@@ -300,7 +300,7 @@ export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
               variant="outline"
               onClick={onCancel}
               disabled={form.formState.isSubmitting}
-              className="h-11 border-[var(--border-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--border-gold)] hover:text-[var(--color-cream)]"
+              className="h-11 border-[var(--border-gold)]/30 text-muted-foreground hover:border-[var(--border-gold)] hover:text-foreground"
             >
               Cancel
             </Button>

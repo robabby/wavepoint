@@ -79,7 +79,7 @@ export function PersonalizationBadge({
       <span className="text-xs text-[var(--color-gold)]">
         You&apos;ve seen this {stats.count} {stats.count === 1 ? "time" : "times"}
       </span>
-      <span className="text-xs text-[var(--color-dim)]">
+      <span className="text-xs text-muted-foreground">
         · Last {relativeTime}
       </span>
     </div>

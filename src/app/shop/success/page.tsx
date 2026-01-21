@@ -28,10 +28,10 @@ async function OrderDetails({ sessionId }: { sessionId: string }) {
 
     return (
       <div className="space-y-2 text-center">
-        <Text className="text-[var(--color-warm-gray)]">
+        <Text className="text-muted-foreground">
           Order confirmation sent to:
         </Text>
-        <Text weight="medium" className="text-[var(--color-cream)]">
+        <Text weight="medium" className="text-foreground">
           {customerEmail}
         </Text>
       </div>
@@ -59,12 +59,12 @@ export default async function SuccessPage({ searchParams }: SuccessPageProps) {
         <Heading
           as="h1"
           size="7"
-          className="font-heading text-[var(--color-cream)]"
+          className="font-heading text-foreground"
         >
           Thank You!
         </Heading>
 
-        <Text size="4" className="text-[var(--color-warm-gray)]">
+        <Text size="4" className="text-muted-foreground">
           Your order has been placed successfully. We&apos;ll send you a
           confirmation email with tracking information once your items ship.
         </Text>
@@ -73,7 +73,7 @@ export default async function SuccessPage({ searchParams }: SuccessPageProps) {
         {sessionId && (
           <Suspense
             fallback={
-              <Text className="text-[var(--color-warm-gray)]">
+              <Text className="text-muted-foreground">
                 Loading order details...
               </Text>
             }
@@ -93,7 +93,7 @@ export default async function SuccessPage({ searchParams }: SuccessPageProps) {
             </Button>
           </Link>
           <Link href="/">
-            <Button className="bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]">
+            <Button className="bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]">
               Return Home
             </Button>
           </Link>

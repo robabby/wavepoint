@@ -98,8 +98,8 @@ export function VariantSelector({
                   className={cn(
                     "min-w-[3rem] rounded-md border px-3 py-2 text-sm font-medium transition-[border-color,background-color]",
                     isSelected
-                      ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-obsidian)]"
-                      : "border-[var(--border-gold)] bg-transparent text-[var(--color-cream)] hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10",
+                      ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-primary-foreground"
+                      : "border-[var(--border-gold)] bg-transparent text-foreground hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10",
                     !isAvailable &&
                       "cursor-not-allowed opacity-40 line-through hover:bg-transparent"
                   )}
@@ -137,8 +137,8 @@ export function VariantSelector({
                   className={cn(
                     "rounded-md border px-4 py-2 text-sm font-medium transition-[border-color,background-color]",
                     isSelected
-                      ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-[var(--color-obsidian)]"
-                      : "border-[var(--border-gold)] bg-transparent text-[var(--color-cream)] hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10",
+                      ? "border-[var(--color-gold)] bg-[var(--color-gold)] text-primary-foreground"
+                      : "border-[var(--border-gold)] bg-transparent text-foreground hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10",
                     !isAvailable &&
                       "cursor-not-allowed opacity-40 line-through hover:bg-transparent"
                   )}

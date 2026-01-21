@@ -37,7 +37,7 @@ export function ProductCard({ product, variants, thumbnail }: ProductCardProps) 
       <AnimatedCard className="h-full p-3 sm:p-6">
         <div className="flex h-full flex-col gap-4">
           {/* Product Image */}
-          <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-[var(--color-obsidian)]">
+          <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-background">
             {thumbnail ? (
               <Image
                 src={thumbnail}
@@ -48,7 +48,7 @@ export function ProductCard({ product, variants, thumbnail }: ProductCardProps) 
               />
             ) : (
               <div className="flex h-full items-center justify-center">
-                <Text className="text-[var(--color-warm-gray)]">No image</Text>
+                <Text className="text-muted-foreground">No image</Text>
               </div>
             )}
           </div>
@@ -68,7 +68,7 @@ export function ProductCard({ product, variants, thumbnail }: ProductCardProps) 
               </Badge>
             )}
 
-            <Text size="2" className="text-[var(--color-warm-gray)]">
+            <Text size="2" className="text-muted-foreground">
               {product.tagline}
             </Text>
           </div>
@@ -77,12 +77,12 @@ export function ProductCard({ product, variants, thumbnail }: ProductCardProps) 
           <div className="flex flex-wrap items-center justify-between gap-2">
             <Badge
               variant="secondary"
-              className="bg-[var(--color-dark-bronze)] text-[var(--color-gold)]"
+              className="bg-muted text-[var(--color-gold)]"
             >
               {categoryLabels[product.category] ?? product.category}
             </Badge>
 
-            <Text size="4" weight="bold" className="text-[var(--color-cream)]">
+            <Text size="4" weight="bold" className="text-foreground">
               {priceDisplay}
             </Text>
           </div>

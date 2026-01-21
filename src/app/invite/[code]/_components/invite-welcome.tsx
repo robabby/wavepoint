@@ -38,15 +38,16 @@ const itemVariants: Variants = {
 };
 
 // Subtle pulse animation for the invite code glow
+// Uses CSS variables for theme-aware glow colors
 const glowVariants: Variants = {
   initial: {
-    boxShadow: "0 0 20px rgba(212, 168, 75, 0.15), inset 0 0 20px rgba(212, 168, 75, 0.05)",
+    boxShadow: "0 0 20px var(--glow-gold), inset 0 0 20px var(--glow-gold)",
   },
   animate: {
     boxShadow: [
-      "0 0 20px rgba(212, 168, 75, 0.15), inset 0 0 20px rgba(212, 168, 75, 0.05)",
-      "0 0 40px rgba(212, 168, 75, 0.25), inset 0 0 30px rgba(212, 168, 75, 0.1)",
-      "0 0 20px rgba(212, 168, 75, 0.15), inset 0 0 20px rgba(212, 168, 75, 0.05)",
+      "0 0 20px var(--glow-gold), inset 0 0 20px var(--glow-gold)",
+      "0 0 40px var(--glow-gold), inset 0 0 30px var(--glow-gold)",
+      "0 0 20px var(--glow-gold), inset 0 0 20px var(--glow-gold)",
     ],
     transition: {
       duration: 3,
@@ -67,7 +68,7 @@ export function InviteWelcome({ invite }: InviteWelcomeProps) {
   const signUpUrl = `/?auth=sign-up&invite=${encodeURIComponent(invite.code)}&email=${encodeURIComponent(invite.email)}`;
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--color-obsidian)]">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background">
       {/* Animated Seed of Life background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <motion.div
@@ -89,21 +90,17 @@ export function InviteWelcome({ invite }: InviteWelcomeProps) {
             src="/images/geometries/patterns/seed-of-life/seed-of-life-primary.svg"
             alt=""
             fill
-            className="object-contain opacity-[0.06]"
-            style={{
-              filter:
-                "brightness(0) saturate(100%) invert(76%) sepia(30%) saturate(500%) hue-rotate(5deg) brightness(95%) contrast(90%)",
-            }}
+            className="object-contain opacity-[0.06] svg-gold-muted"
             priority
           />
         </motion.div>
 
-        {/* Radial gradient overlay for depth */}
+        {/* Radial gradient overlay for depth - fades to background */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at center, transparent 0%, transparent 30%, rgba(12, 12, 12, 0.6) 70%, rgba(12, 12, 12, 0.9) 100%)",
+              "radial-gradient(ellipse at center, transparent 0%, transparent 30%, color-mix(in srgb, var(--background) 60%, transparent) 70%, color-mix(in srgb, var(--background) 90%, transparent) 100%)",
           }}
         />
       </div>
@@ -131,7 +128,7 @@ export function InviteWelcome({ invite }: InviteWelcomeProps) {
         {/* Main heading */}
         <motion.h1
           variants={itemVariants}
-          className="mb-6 font-display text-hero tracking-wide text-[var(--color-cream)]"
+          className="mb-6 font-display text-hero tracking-wide text-foreground"
         >
           You&apos;re In
         </motion.h1>
@@ -139,18 +136,18 @@ export function InviteWelcome({ invite }: InviteWelcomeProps) {
         {/* Subtitle */}
         <motion.p
           variants={itemVariants}
-          className="mb-12 font-heading text-xl text-[var(--color-warm-gray)] sm:text-2xl"
+          className="mb-12 font-heading text-xl text-muted-foreground sm:text-2xl"
         >
           Welcome to WavePoint
         </motion.p>
 
         {/* Invite code display */}
         <motion.div variants={itemVariants} className="mb-10">
-          <p className="mb-3 text-xs uppercase tracking-[0.2em] text-[var(--color-dim)]">
+          <p className="mb-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Your access code
           </p>
           <motion.div
-            className="inline-block rounded-xl border border-[var(--color-gold)]/20 bg-[var(--color-warm-charcoal)]/40 px-8 py-4 backdrop-blur-sm"
+            className="inline-block rounded-xl border border-[var(--color-gold)]/20 bg-card/40 px-8 py-4 backdrop-blur-sm"
             variants={glowVariants}
             initial="initial"
             animate="animate"
@@ -165,7 +162,7 @@ export function InviteWelcome({ invite }: InviteWelcomeProps) {
         <motion.div variants={itemVariants}>
           <Link
             href={signUpUrl}
-            className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-[var(--color-gold)] px-10 py-4 text-lg font-medium text-[var(--color-obsidian)] transition-all duration-300 hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_30px_rgba(212,168,75,0.4)]"
+            className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-[var(--color-gold)] px-10 py-4 text-lg font-medium text-primary-foreground transition-all duration-300 hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_30px_var(--glow-gold)]"
           >
             <span className="relative z-10">Accept Invitation</span>
           </Link>
@@ -173,10 +170,10 @@ export function InviteWelcome({ invite }: InviteWelcomeProps) {
 
         {/* Email hint */}
         <motion.div variants={itemVariants} className="mt-12">
-          <p className="text-sm text-[var(--color-dim)]">
+          <p className="text-sm text-muted-foreground">
             This invitation was sent to
           </p>
-          <p className="mt-1 font-medium text-[var(--color-warm-gray)]">
+          <p className="mt-1 font-medium text-muted-foreground">
             {invite.email}
           </p>
         </motion.div>

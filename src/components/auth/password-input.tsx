@@ -27,7 +27,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           disabled={disabled}
           className={cn(
             "absolute right-3 top-1/2 -translate-y-1/2",
-            "text-[var(--color-dim)] hover:text-[var(--color-gold)]",
+            "text-muted-foreground hover:text-[var(--color-gold)]",
             "transition-colors focus:outline-none",
             "disabled:pointer-events-none disabled:opacity-50"
           )}

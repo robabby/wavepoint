@@ -43,7 +43,7 @@ export function AccountSidebar({ className }: AccountSidebarProps) {
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-[var(--color-gold)]/10 text-[var(--color-gold)]"
-                    : "text-[var(--color-warm-gray)] hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-cream)]"
+                    : "text-muted-foreground hover:bg-card hover:text-foreground"
                 )}
               >
                 <item.icon className="h-4 w-4" />
@@ -66,7 +66,7 @@ export function AccountSidebar({ className }: AccountSidebarProps) {
                 "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors",
                 isActive
                   ? "bg-[var(--color-gold)]/10 text-[var(--color-gold)]"
-                  : "text-[var(--color-warm-gray)] hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-cream)]"
+                  : "text-muted-foreground hover:bg-card hover:text-foreground"
               )}
             >
               <item.icon className="h-4 w-4" />
