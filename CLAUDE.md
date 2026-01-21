@@ -211,9 +211,9 @@ Deeper product and business context lives in Obsidian (accessible via MCP):
 
 | Resource | Location | Use For |
 |----------|----------|---------|
-| Full PRDs | `Areas/Metatron Collective/PRDs/` | Product rationale, research, full user journeys |
-| KPIs & Metrics | `Areas/Metatron Collective/Metrics/` | Success definitions, weekly reviews |
-| Decisions | `Areas/Metatron Collective/Decisions/` | Historical context on why we chose X |
+| Full PRDs | `Areas/WavePoint/PRDs/` | Product rationale, research, full user journeys |
+| KPIs & Metrics | `Areas/WavePoint/Metrics/` | Success definitions, weekly reviews |
+| Decisions | `Areas/WavePoint/Decisions/` | Historical context on why we chose X |
 | AI Methodology | `Areas/AI/Collaboration/Methodology.md` | How we work together |
 
 Reference when making strategic decisions or needing "why" context beyond implementation scope.
@@ -237,7 +237,7 @@ UX resources live in `docs/ux/`. Reference these when designing features, writin
 
 ## Linear Integration
 
-- **Project**: Metatron Collective
+- **Project**: WavePoint
 - **Team**: Sherpa
 - **Prefix**: `SG-`
 - **Branch format**: `sg-<issue-number>-<slugified-title>`
