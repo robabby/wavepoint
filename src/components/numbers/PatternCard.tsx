@@ -24,6 +24,7 @@ export function PatternCard({
     <Link
       href={`/numbers/${pattern.id}`}
       className={cn("group block focus:outline-none", className)}
+      aria-label={`${pattern.id}: ${pattern.essence} — ${pattern.title}`}
     >
       <AnimatedCard className="h-full">
         <div className="flex flex-col p-5">

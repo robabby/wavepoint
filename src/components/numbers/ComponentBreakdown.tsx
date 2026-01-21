@@ -54,6 +54,7 @@ export function ComponentBreakdown({
                 <Link
                   href={`/numbers/${component.patternId}`}
                   className="font-display text-2xl text-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
+                  aria-label={`View ${component.patternId} meaning`}
                 >
                   {component.digit}
                 </Link>
@@ -72,6 +73,7 @@ export function ComponentBreakdown({
                   <Link
                     href={`/numbers/${component.patternId}`}
                     className="ml-2 text-xs text-[var(--color-gold)]/60 hover:text-[var(--color-gold)] transition-colors"
+                    aria-label={`Learn more about ${component.patternId}`}
                   >
                     Learn more →
                   </Link>

@@ -18,6 +18,8 @@ import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard } from "@/components/animated-card";
 import { isSignalEnabled } from "@/lib/signal/feature-flags";
 
+const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
+
 /**
  * Generate static params for all known patterns.
  * Uncovered patterns are handled dynamically.
@@ -90,8 +92,39 @@ export default async function PatternDetailPage({
   if (!pattern) {
     const breakdown = generateComponentBreakdown(patternParam);
 
+    // JSON-LD for uncovered patterns
+    const jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: `${patternParam} - Number Meaning`,
+      description: `Explore the meaning of ${patternParam}. Understand what this number pattern might signify when you notice it.`,
+      url: `${baseUrl}/numbers/${patternParam}`,
+      breadcrumb: {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Numbers",
+            item: `${baseUrl}/numbers`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: patternParam,
+            item: `${baseUrl}/numbers/${patternParam}`,
+          },
+        ],
+      },
+    };
+
     return (
       <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
           <div className="mx-auto max-w-2xl">
             {/* Header */}
@@ -164,8 +197,49 @@ export default async function PatternDetailPage({
   const relatedPatterns = getRelatedPatterns(pattern.id as NumberPatternId);
   const category = getCategoryMeta(pattern.category);
 
+  // JSON-LD for known patterns
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: `${pattern.id} - ${pattern.title}`,
+    description: pattern.meaning,
+    url: `${baseUrl}/numbers/${pattern.id}`,
+    keywords: pattern.keywords.join(", "),
+    publisher: {
+      "@type": "Organization",
+      name: "WavePoint",
+      url: baseUrl,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${baseUrl}/numbers/${pattern.id}`,
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Numbers",
+          item: `${baseUrl}/numbers`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: pattern.id,
+          item: `${baseUrl}/numbers/${pattern.id}`,
+        },
+      ],
+    },
+  };
+
   return (
     <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-3xl">
           {/* Hero Section */}

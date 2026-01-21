@@ -119,6 +119,11 @@ export function Header() {
   const navItems = useMemo<NavItem[]>(() => {
     const items: NavItem[] = [
       {
+        path: ROUTES.numbers.path,
+        desktopLabel: "Numbers",
+        mobileLabel: "Numbers",
+      },
+      {
         path: ROUTES.platonicSolids.path,
         desktopLabel: "Platonic Solids",
         mobileLabel: "Solids",

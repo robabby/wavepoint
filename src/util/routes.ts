@@ -9,7 +9,7 @@ export const ROUTES = {
     name: "Platonic Solids",
     path: "/platonic-solids",
     description: "The five perfect forms from which all matter emerges",
-    order: 1,
+    order: 2,
     children: {
       tetrahedron: {
         name: "Tetrahedron",
@@ -45,11 +45,17 @@ export const ROUTES = {
       },
     },
   },
+  numbers: {
+    name: "Numbers",
+    path: "/numbers",
+    description: "Explore the meanings behind repeating number patterns",
+    order: 1,
+  },
   patterns: {
     name: "Patterns",
     path: "/patterns",
     description: "Infinite geometries that encode universal principles",
-    order: 2,
+    order: 3,
     children: {
       circleDot: {
         name: "Circle Dot",
@@ -134,12 +140,12 @@ export const ROUTES = {
     name: "FAQ",
     path: "/faq",
     description: "Frequently asked questions about sacred geometry",
-    order: 3,
+    order: 4,
   },
   contact: {
     name: "Contact",
     path: "/contact",
     description: "Get in touch with the WavePoint team",
-    order: 4,
+    order: 5,
   },
 };

@@ -11,7 +11,10 @@ import {
   getFeaturedPatterns,
   getAllCategories,
   getPatternsByCategory,
+  getAllPatterns,
 } from "@/lib/numbers";
+
+const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
 
 export const metadata: Metadata = {
   title: "Number Meanings",
@@ -38,9 +41,35 @@ export default function NumbersPage() {
   const featuredPatterns = getFeaturedPatterns();
   const categories = getAllCategories();
   const signalEnabled = isSignalEnabled();
+  const allPatterns = getAllPatterns();
+
+  // JSON-LD structured data for SEO
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Number Meanings",
+    description:
+      "Explore the meanings behind repeating numbers like 111, 444, and 1111. Often called angel numbers, these recurring sequences appear when you're paying attention.",
+    url: `${baseUrl}/numbers`,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: allPatterns.length,
+      itemListElement: allPatterns.map((pattern, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${baseUrl}/numbers/${pattern.id}`,
+        name: `${pattern.id} - ${pattern.title}`,
+      })),
+    },
+  };
 
   return (
     <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero Section */}
       <section className="flex min-h-[70vh] flex-col items-center justify-center px-4 py-16 text-center">
         <AnimateOnScroll className="flex flex-col items-center gap-8">
