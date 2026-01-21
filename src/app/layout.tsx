@@ -2,6 +2,7 @@ import "@radix-ui/themes/styles.css";
 import "@/styles/globals.css";
 
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import {
   Cinzel_Decorative,
   Cormorant_Garamond,
@@ -138,6 +139,7 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
       <Analytics />
+      <SpeedInsights />
     </html>
   );
 }
