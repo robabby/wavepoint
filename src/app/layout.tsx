@@ -8,7 +8,6 @@ import {
   Crimson_Pro,
 } from "next/font/google";
 import { type Metadata } from "next";
-import { Theme } from "@radix-ui/themes";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion-provider";
@@ -22,6 +21,8 @@ import { AuthModal } from "@/components/auth/auth-modal";
 import { EmailVerificationBanner } from "@/components/auth/email-verification-banner";
 import { CartProvider } from "@/lib/shop/cart-context";
 import { isAuthEnabled } from "@/lib/features/access";
+import { ThemeProvider } from "@/lib/theme";
+import { ThemeWrapper } from "@/components/theme-wrapper";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
@@ -91,7 +92,27 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${cinzelDecorative.variable} ${cormorantGaramond.variable} ${crimsonPro.variable}`}
+      suppressHydrationWarning
     >
+      <head>
+        {/* Flash-prevention script - runs before React hydration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('wavepoint-theme');
+                  var isDark = theme === 'dark' ||
+                    (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
         <StructuredData
           data={createWebSiteSchema(
@@ -101,18 +122,20 @@ export default function RootLayout({
           )}
         />
         <SkipToContent />
-        <Theme appearance="dark">
-          {/* AuthProvider always included for session access (admin checks, etc.) */}
-          <AuthProvider>
-            {/* AuthModal always rendered - it only displays when isOpen is true.
-                This allows invite flows to work even when auth is disabled for public.
-                The modal opens via URL params (?auth=sign-up&invite=...) */}
-            <AuthModal />
-            {/* CartProvider always included so useCart() works after session changes.
-                Components use useCanAccessShop() client-side for visibility control. */}
-            <CartProvider>{coreContent}</CartProvider>
-          </AuthProvider>
-        </Theme>
+        <ThemeProvider>
+          <ThemeWrapper>
+            {/* AuthProvider always included for session access (admin checks, etc.) */}
+            <AuthProvider>
+              {/* AuthModal always rendered - it only displays when isOpen is true.
+                  This allows invite flows to work even when auth is disabled for public.
+                  The modal opens via URL params (?auth=sign-up&invite=...) */}
+              <AuthModal />
+              {/* CartProvider always included so useCart() works after session changes.
+                  Components use useCanAccessShop() client-side for visibility control. */}
+              <CartProvider>{coreContent}</CartProvider>
+            </AuthProvider>
+          </ThemeWrapper>
+        </ThemeProvider>
       </body>
       <Analytics />
     </html>

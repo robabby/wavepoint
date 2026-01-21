@@ -67,11 +67,11 @@ const platonicSolids = getPlatonicSolids()
 
 export default function PlatonicSolidsPage() {
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* Header */}
         <AnimateOnScroll className="mx-auto mb-8 max-w-4xl text-center sm:mb-12 lg:mb-16">
-          <Heading size="9" className="font-display text-[var(--color-cream)]" mb="4">
+          <Heading size="9" className="font-display text-foreground" mb="4">
             {ROUTES.platonicSolids.name}
           </Heading>
           <Box mb="2">
@@ -79,7 +79,7 @@ export default function PlatonicSolidsPage() {
               {ROUTES.platonicSolids.description}
             </Text>
           </Box>
-          <Text size="3" className="mx-auto max-w-3xl text-[var(--color-warm-gray)]">
+          <Text size="3" className="mx-auto max-w-3xl text-muted-foreground">
             Discovered by the ancient Greeks and explored by Plato, these five
             perfect solids are the only three-dimensional shapes where every
             face, edge, and angle is identical. Each represents a fundamental
@@ -106,11 +106,7 @@ export default function PlatonicSolidsPage() {
                           alt={solid.name}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-contain"
-                          style={{
-                            filter:
-                              "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                          }}
+                          className="object-contain svg-gold"
                         />
                       </GeometryImage>
 
@@ -123,14 +119,14 @@ export default function PlatonicSolidsPage() {
                         </div>
                       </div>
 
-                      <Text size="2" className="text-[var(--color-warm-gray)]">
+                      <Text size="2" className="text-muted-foreground">
                         {solid.description}
                       </Text>
 
                       <div className="flex flex-wrap justify-between gap-2">
                         <Badge
                           variant="secondary"
-                          className="bg-[var(--color-dark-bronze)] text-[var(--color-gold)]"
+                          className="bg-muted text-[var(--color-gold)]"
                         >
                           {solid.element}
                         </Badge>
@@ -156,13 +152,13 @@ export default function PlatonicSolidsPage() {
             <Heading size="6" className="mb-4 font-heading text-[var(--color-gold)]">
               The Sacred Five
             </Heading>
-            <Text className="mb-4 text-[var(--color-warm-gray)]">
+            <Text className="mb-4 text-muted-foreground">
               These five shapes are unique in all of geometry. No other regular
               polyhedra exist beyond these. This mathematical limitation gives
               them profound significance—they represent the complete set of
               possible perfect three-dimensional forms.
             </Text>
-            <Text className="text-[var(--color-warm-gray)]">
+            <Text className="text-muted-foreground">
               The ancient Greeks believed these shapes were the building blocks
               of reality itself. Modern physics has discovered surprising
               connections between these geometries and the structure of atoms,

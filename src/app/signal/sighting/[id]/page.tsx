@@ -55,7 +55,7 @@ export default function SightingDetailPage({ params }: Props) {
   if (isError || !sighting) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-        <p className="text-[var(--color-dim)]">Sighting not found</p>
+        <p className="text-muted-foreground">Sighting not found</p>
         <Link
           href="/signal"
           className="text-[var(--color-gold)] hover:underline"
@@ -71,11 +71,11 @@ export default function SightingDetailPage({ params }: Props) {
       <SignalBackground />
 
       {/* Header */}
-      <header className="sticky top-0 z-20 border-b border-[var(--border-gold)]/20 bg-[var(--color-obsidian)]/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-20 border-b border-[var(--border-gold)]/20 bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <Link
             href="/signal"
-            className="flex items-center gap-2 text-[var(--color-dim)] transition-colors hover:text-[var(--color-cream)]"
+            className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="h-5 w-5" />
             <span className="hidden sm:inline">Back</span>
@@ -84,7 +84,7 @@ export default function SightingDetailPage({ params }: Props) {
             <button
               onClick={handleRegenerate}
               disabled={isRegenerating}
-              className="rounded-lg p-2 text-[var(--color-dim)] transition-colors hover:bg-[var(--color-warm-charcoal)]/50 hover:text-[var(--color-gold)] disabled:opacity-50"
+              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-card/50 hover:text-[var(--color-gold)] disabled:opacity-50"
               aria-label="Regenerate interpretation"
             >
               <RefreshCw
@@ -94,7 +94,7 @@ export default function SightingDetailPage({ params }: Props) {
             </button>
             <button
               onClick={() => setDeleteOpen(true)}
-              className="rounded-lg p-2 text-[var(--color-dim)] transition-colors hover:bg-red-500/10 hover:text-red-400"
+              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-red-500/10 hover:text-red-400"
               aria-label="Delete sighting"
             >
               <Trash2 className="h-5 w-5" aria-hidden="true" />
@@ -112,7 +112,7 @@ export default function SightingDetailPage({ params }: Props) {
           >
             {sighting.number}
           </span>
-          <p className="mt-2 text-sm text-[var(--color-dim)]">
+          <p className="mt-2 text-sm text-muted-foreground">
             {formatDistanceToNow(new Date(sighting.timestamp), {
               addSuffix: true,
             })}
@@ -125,7 +125,7 @@ export default function SightingDetailPage({ params }: Props) {
             {sighting.moodTags.map((mood) => (
               <span
                 key={mood}
-                className="rounded-full border border-[var(--border-gold)]/30 px-3 py-1 text-sm text-[var(--color-warm-gray)]"
+                className="rounded-full border border-[var(--border-gold)]/30 px-3 py-1 text-sm text-muted-foreground"
               >
                 {mood}
               </span>
@@ -135,8 +135,8 @@ export default function SightingDetailPage({ params }: Props) {
 
         {/* Note */}
         {sighting.note && (
-          <div className="mb-6 rounded-xl border border-[var(--border-gold)]/20 bg-[var(--color-warm-charcoal)]/30 p-4">
-            <p className="italic text-[var(--color-cream)]">
+          <div className="mb-6 rounded-xl border border-[var(--border-gold)]/20 bg-card/30 p-4">
+            <p className="italic text-foreground">
               &ldquo;{sighting.note}&rdquo;
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function SightingDetailPage({ params }: Props) {
 
         {/* Interpretation */}
         <section>
-          <h2 className="mb-4 font-heading text-lg text-[var(--color-cream)]">
+          <h2 className="mb-4 font-heading text-lg text-foreground">
             Interpretation
           </h2>
           <InterpretationCard

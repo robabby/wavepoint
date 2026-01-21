@@ -83,14 +83,14 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/shop" className="text-[var(--color-warm-gray)] hover:text-[var(--color-gold)]">
+              <Link href="/shop" className="text-muted-foreground hover:text-[var(--color-gold)]">
                 Shop
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator className="text-[var(--color-warm-gray)]" />
+          <BreadcrumbSeparator className="text-muted-foreground" />
           <BreadcrumbItem>
-            <BreadcrumbPage className="text-[var(--color-cream)]">
+            <BreadcrumbPage className="text-foreground">
               {product.name}
             </BreadcrumbPage>
           </BreadcrumbItem>
@@ -106,8 +106,8 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
         <button
           onClick={() => currentImage && setLightboxOpen(true)}
           className={cn(
-            "relative aspect-square w-full overflow-hidden rounded-lg bg-[var(--color-warm-charcoal)]",
-            "transition-shadow focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2 focus:ring-offset-[var(--color-obsidian)]",
+            "relative aspect-square w-full overflow-hidden rounded-lg bg-card",
+            "transition-shadow focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2 focus:ring-offset-background",
             currentImage && "cursor-zoom-in hover:ring-2 hover:ring-[var(--color-gold)]/50"
           )}
           aria-label={currentImage ? `View ${product.name} fullscreen` : undefined}
@@ -125,7 +125,7 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
             />
           ) : (
             <div className="flex h-full items-center justify-center">
-              <Text className="text-[var(--color-warm-gray)]">No image available</Text>
+              <Text className="text-muted-foreground">No image available</Text>
             </div>
           )}
         </button>
@@ -144,9 +144,9 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
                   onClick={() => setGalleryIndex(index)}
                   className={cn(
                     "relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md transition-[box-shadow,opacity]",
-                    "hover:ring-2 hover:ring-[var(--color-gold)] hover:ring-offset-2 hover:ring-offset-[var(--color-obsidian)]",
+                    "hover:ring-2 hover:ring-[var(--color-gold)] hover:ring-offset-2 hover:ring-offset-background",
                     index === galleryIndex
-                      ? "ring-2 ring-[var(--color-gold)] ring-offset-2 ring-offset-[var(--color-obsidian)]"
+                      ? "ring-2 ring-[var(--color-gold)] ring-offset-2 ring-offset-background"
                       : "opacity-60 hover:opacity-100"
                   )}
                 >
@@ -155,7 +155,7 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
                     alt={`${product.name} view ${index + 1}`}
                     fill
                     sizes="64px"
-                    className="object-contain bg-[var(--color-warm-charcoal)] p-1"
+                    className="object-contain bg-card p-1"
                   />
                 </button>
               ))}
@@ -171,7 +171,7 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
                     "h-1.5 rounded-full transition-[width,background-color]",
                     index === galleryIndex
                       ? "w-4 bg-[var(--color-gold)]"
-                      : "w-1.5 bg-[var(--color-warm-gray)]/40 hover:bg-[var(--color-warm-gray)]"
+                      : "w-1.5 bg-muted-foreground/40 hover:bg-muted-foreground"
                   )}
                   aria-label={`View image ${index + 1}`}
                   aria-current={index === galleryIndex ? "true" : undefined}
@@ -187,7 +187,7 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
         {/* Category Badge */}
         <Badge
           variant="secondary"
-          className="w-fit bg-[var(--color-dark-bronze)] text-[var(--color-gold)]"
+          className="w-fit bg-muted text-[var(--color-gold)]"
         >
           {categoryLabels[product.category] ?? product.category}
         </Badge>
@@ -196,7 +196,7 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
         <div>
           <Heading
             size={{ initial: "7", md: "8" }}
-            className="mb-2 font-display text-[var(--color-cream)]"
+            className="mb-2 font-display text-foreground"
           >
             {product.name}
           </Heading>
@@ -221,10 +221,10 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
         </Text>
 
         {/* Description */}
-        <Text className="text-[var(--color-warm-gray)]">{product.description}</Text>
+        <Text className="text-muted-foreground">{product.description}</Text>
 
         {/* Variant Selector */}
-        <div className="rounded-lg border border-[var(--border-gold)] bg-[var(--color-warm-charcoal)] p-6">
+        <div className="rounded-lg border border-[var(--border-gold)] bg-card p-6">
           <VariantSelector
             variants={variants}
             selectedVariantId={selectedVariantId}
@@ -234,7 +234,7 @@ export function ProductDetails({ product, variants, geometryLink }: ProductDetai
 
         {/* Selected Variant Info */}
         {selectedVariant && (
-          <Text size="2" className="text-[var(--color-warm-gray)]">
+          <Text size="2" className="text-muted-foreground">
             Selected: {selectedVariant.name}
           </Text>
         )}

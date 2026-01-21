@@ -87,8 +87,8 @@ export function ImageLightbox({
           <DialogPrimitive.Close
             className={cn(
               "absolute right-4 top-4 z-50 rounded-full p-2",
-              "bg-[var(--color-obsidian)]/80 text-[var(--color-warm-gray)]",
-              "transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-cream)]",
+              "bg-background/80 text-muted-foreground",
+              "transition-colors hover:bg-card hover:text-foreground",
               "focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2 focus:ring-offset-black"
             )}
           >
@@ -102,8 +102,8 @@ export function ImageLightbox({
               onClick={goToPrevious}
               className={cn(
                 "absolute left-4 top-1/2 z-50 -translate-y-1/2 rounded-full p-2",
-                "bg-[var(--color-obsidian)]/80 text-[var(--color-warm-gray)]",
-                "transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-cream)]",
+                "bg-background/80 text-muted-foreground",
+                "transition-colors hover:bg-card hover:text-foreground",
                 "focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2 focus:ring-offset-black"
               )}
               aria-label="Previous image"
@@ -130,8 +130,8 @@ export function ImageLightbox({
               onClick={goToNext}
               className={cn(
                 "absolute right-4 top-1/2 z-50 -translate-y-1/2 rounded-full p-2",
-                "bg-[var(--color-obsidian)]/80 text-[var(--color-warm-gray)]",
-                "transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-cream)]",
+                "bg-background/80 text-muted-foreground",
+                "transition-colors hover:bg-card hover:text-foreground",
                 "focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)] focus:ring-offset-2 focus:ring-offset-black"
               )}
               aria-label="Next image"

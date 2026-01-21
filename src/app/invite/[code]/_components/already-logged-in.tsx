@@ -48,7 +48,7 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
   // Case 1: Email matches - user already has access
   if (emailsMatch) {
     return (
-      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--color-obsidian)]">
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background">
         {/* Animated Seed of Life background */}
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <motion.div
@@ -70,11 +70,7 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
               src="/images/geometries/patterns/seed-of-life/seed-of-life-primary.svg"
               alt=""
               fill
-              className="object-contain opacity-[0.06]"
-              style={{
-                filter:
-                  "brightness(0) saturate(100%) invert(76%) sepia(30%) saturate(500%) hue-rotate(5deg) brightness(95%) contrast(90%)",
-              }}
+              className="object-contain opacity-[0.06] svg-gold-muted"
               priority
             />
           </motion.div>
@@ -83,7 +79,7 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
             className="absolute inset-0"
             style={{
               background:
-                "radial-gradient(ellipse at center, transparent 0%, transparent 30%, rgba(12, 12, 12, 0.6) 70%, rgba(12, 12, 12, 0.9) 100%)",
+                "radial-gradient(ellipse at center, transparent 0%, transparent 30%, color-mix(in srgb, var(--background) 60%, transparent) 70%, color-mix(in srgb, var(--background) 90%, transparent) 100%)",
             }}
           />
         </div>
@@ -110,7 +106,7 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
           {/* Main heading */}
           <motion.h1
             variants={itemVariants}
-            className="mb-6 font-display text-page-title tracking-wide text-[var(--color-cream)]"
+            className="mb-6 font-display text-page-title tracking-wide text-foreground"
           >
             You&apos;re Already In
           </motion.h1>
@@ -118,17 +114,17 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
           {/* Message */}
           <motion.p
             variants={itemVariants}
-            className="mb-10 text-lg text-[var(--color-warm-gray)]"
+            className="mb-10 text-lg text-muted-foreground"
           >
             Signed in as{" "}
-            <span className="text-[var(--color-cream)]">{session.user?.email}</span>
+            <span className="text-foreground">{session.user?.email}</span>
           </motion.p>
 
           {/* Continue button */}
           <motion.div variants={itemVariants}>
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-lg bg-[var(--color-gold)] px-10 py-4 text-lg font-medium text-[var(--color-obsidian)] transition-all duration-300 hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_30px_rgba(212,168,75,0.4)]"
+              className="inline-flex items-center justify-center rounded-lg bg-[var(--color-gold)] px-10 py-4 text-lg font-medium text-primary-foreground transition-all duration-300 hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_30px_rgba(212,168,75,0.4)]"
             >
               Continue
             </Link>
@@ -145,14 +141,14 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
 
   // Case 2: Email mismatch - offer to sign out
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--color-obsidian)]">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background">
       {/* Subtle radial gradient */}
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(212, 168, 75, 0.03) 0%, transparent 50%)",
+            "radial-gradient(ellipse at center, var(--glow-gold) 0%, transparent 50%)",
         }}
       />
 
@@ -170,22 +166,22 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
         {/* Main heading */}
         <motion.h1
           variants={itemVariants}
-          className="mb-6 font-display text-page-title tracking-wide text-[var(--color-cream)]"
+          className="mb-6 font-display text-page-title tracking-wide text-foreground"
         >
           Different Account
         </motion.h1>
 
         {/* Message */}
         <motion.div variants={itemVariants} className="mb-10">
-          <p className="mb-2 text-[var(--color-warm-gray)]">
+          <p className="mb-2 text-muted-foreground">
             This invitation was sent to
           </p>
           <p className="mb-4 font-medium text-[var(--color-gold)]">
             {invite.email}
           </p>
-          <p className="text-[var(--color-warm-gray)]">
+          <p className="text-muted-foreground">
             You&apos;re signed in as{" "}
-            <span className="text-[var(--color-cream)]">{session.user?.email}</span>
+            <span className="text-foreground">{session.user?.email}</span>
           </p>
         </motion.div>
 
@@ -197,14 +193,14 @@ export function AlreadyLoggedIn({ invite, session }: AlreadyLoggedInProps) {
                 callbackUrl: `/invite/${invite.code}`,
               })
             }
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--color-gold)] px-8 py-3 font-medium text-[var(--color-obsidian)] transition-all duration-300 hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_20px_rgba(212,168,75,0.3)]"
+            className="inline-flex items-center justify-center rounded-lg bg-[var(--color-gold)] px-8 py-3 font-medium text-primary-foreground transition-all duration-300 hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_20px_rgba(212,168,75,0.3)]"
           >
             Sign Out to Use Invite
           </button>
 
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg border border-[var(--color-gold)]/30 bg-transparent px-8 py-3 font-medium text-[var(--color-cream)] transition-all duration-300 hover:border-[var(--color-gold)]/60 hover:bg-[var(--color-gold)]/5"
+            className="inline-flex items-center justify-center rounded-lg border border-[var(--color-gold)]/30 bg-transparent px-8 py-3 font-medium text-foreground transition-all duration-300 hover:border-[var(--color-gold)]/60 hover:bg-[var(--color-gold)]/5"
           >
             Continue as {session.user?.email?.split("@")[0]}
           </Link>

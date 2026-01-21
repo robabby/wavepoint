@@ -20,6 +20,7 @@ import { CartIcon } from "@/components/shop/cart-icon";
 import { CartDrawer } from "@/components/shop/cart-drawer";
 import { useCanAccessShop, useCanAccessAuth } from "@/lib/features/access";
 import { AuthHeaderSection } from "@/components/auth/auth-header-section";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type NavItem = {
   path: string;
@@ -54,7 +55,7 @@ function AnimatedNavLink({
       onFocus={onFocus}
       className={cn(
         "group relative text-xs font-medium transition-colors hover:text-[var(--color-gold)] focus:outline-none focus-visible:text-[var(--color-gold)] sm:text-sm",
-        isActive ? "text-[var(--color-gold)]" : "text-[var(--color-warm-gray)]"
+        isActive ? "text-[var(--color-gold)]" : "text-muted-foreground"
       )}
     >
       <span className="hidden sm:inline">{desktopLabel}</span>
@@ -267,7 +268,7 @@ export function Header() {
       {/* Global Search Command - listens for ⌘K */}
       <SearchCommand />
 
-      <header className="sticky top-0 z-50 w-full border-b border-[var(--border-gold)] bg-[var(--color-obsidian)]/95 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 w-full border-b border-[var(--border-gold)] bg-background/95 backdrop-blur-xl">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link
@@ -287,12 +288,12 @@ export function Header() {
             >
               <CircleDot className="h-5 w-5 text-[var(--color-gold)] sm:h-6 sm:w-6" />
             </motion.div>
-            <span className="font-heading text-lg font-semibold text-[var(--color-cream)] sm:text-xl">
+            <span className="font-heading text-lg font-semibold text-foreground sm:text-xl">
               WavePoint
             </span>
           </Link>
 
-          {/* Mobile Actions: Search + Cart + Menu */}
+          {/* Mobile Actions: Search + Theme + Cart + Menu */}
           <div className="flex items-center gap-1 sm:hidden">
             {/* Search Icon */}
             <button
@@ -304,11 +305,14 @@ export function Header() {
                 });
                 document.dispatchEvent(event);
               }}
-              className="flex h-10 w-10 items-center justify-center rounded-md text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+              className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-card hover:text-[var(--color-gold)]"
               aria-label="Search"
             >
               <Search className="h-5 w-5" />
             </button>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
 
             {shopEnabled && <CartIcon />}
 
@@ -316,7 +320,7 @@ export function Header() {
 
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-md text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+              className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-card hover:text-[var(--color-gold)]"
               aria-label="Open menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -363,11 +367,14 @@ export function Header() {
                   });
                   document.dispatchEvent(event);
                 }}
-                className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--color-warm-gray)] transition-colors hover:bg-[var(--color-warm-charcoal)] hover:text-[var(--color-gold)]"
+                className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-card hover:text-[var(--color-gold)]"
                 aria-label="Search (⌘K)"
               >
                 <Search className="h-5 w-5" />
               </button>
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
 
               {/* Cart Icon - only when shop is enabled */}
               {shopEnabled && <CartIcon />}
@@ -426,7 +433,7 @@ export function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
                     "flex h-10 w-10 items-center justify-center rounded-lg",
-                    "text-[var(--color-warm-gray)]",
+                    "text-muted-foreground",
                     "transition-all duration-200",
                     "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
                   )}
@@ -447,8 +454,8 @@ export function Header() {
                       "flex items-center gap-3 rounded-lg px-4 py-4 text-lg font-medium",
                       "transition-all duration-200 ease-out",
                       isActive(item.path)
-                        ? "bg-[var(--color-dark-bronze)]/50 text-[var(--color-gold)] border-l-2 border-[var(--color-gold)] [box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]"
-                        : "text-[var(--color-cream)] hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
+                        ? "bg-muted/50 text-[var(--color-gold)] border-l-2 border-[var(--color-gold)] [box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]"
+                        : "text-foreground hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
                     )}
                   >
                     {isActive(item.path) && (

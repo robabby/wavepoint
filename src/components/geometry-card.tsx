@@ -39,7 +39,7 @@ export function GeometryCard({
         "group block",
         // Glassmorphism base
         "rounded-lg border backdrop-blur-md",
-        "bg-[var(--color-warm-charcoal)]/60",
+        "bg-card/60",
         "border-[var(--border-gold)]/40",
         // Shadow
         "shadow-lg shadow-black/20",
@@ -48,9 +48,9 @@ export function GeometryCard({
         "hover:-translate-y-1",
         "hover:shadow-xl hover:shadow-[var(--glow-gold)]",
         "hover:border-[var(--color-gold)]/50",
-        "hover:bg-[var(--color-warm-charcoal)]/70",
+        "hover:bg-card/70",
         // Focus state
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className
       )}
     >
@@ -67,11 +67,7 @@ export function GeometryCard({
             src={thumbnailPath}
             alt={geometry.name}
             fill
-            className="object-contain"
-            style={{
-              filter:
-                "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-            }}
+            className="object-contain svg-gold"
           />
         </div>
 
@@ -89,13 +85,13 @@ export function GeometryCard({
 
           {/* Context (if provided) */}
           {context && (
-            <p className="mb-1 text-xs text-[var(--color-warm-gray)]">
+            <p className="mb-1 text-xs text-muted-foreground">
               {context}
             </p>
           )}
 
           {/* Description (truncated) */}
-          <p className="line-clamp-2 text-xs leading-relaxed text-[var(--color-warm-gray)]/80">
+          <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground/80">
             {geometry.description}
           </p>
         </div>

@@ -36,8 +36,8 @@ export function SubmitButton({
         "w-full h-14 rounded-xl text-lg font-heading tracking-wide",
         "transition-all duration-200",
         isDisabled
-          ? "bg-[var(--color-warm-charcoal)] text-[var(--color-dim)] cursor-not-allowed"
-          : "bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]",
+          ? "bg-card text-muted-foreground cursor-not-allowed"
+          : "bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]",
         className
       )}
     >

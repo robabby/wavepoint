@@ -51,14 +51,14 @@ function VerifyEmailContent() {
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
-      <div className="w-full max-w-md rounded-lg border border-[var(--border-gold)] bg-[var(--color-obsidian)] p-8 text-center">
+      <div className="w-full max-w-md rounded-lg border border-[var(--border-gold)] bg-background p-8 text-center">
         {state === "loading" && (
           <>
             <Loader2 className="mx-auto h-12 w-12 animate-spin text-[var(--color-gold)]" />
-            <h1 className="mt-4 font-heading text-xl text-[var(--color-cream)]">
+            <h1 className="mt-4 font-heading text-xl text-foreground">
               Verifying your email...
             </h1>
-            <p className="mt-2 text-[var(--color-warm-gray)]">
+            <p className="mt-2 text-muted-foreground">
               Please wait while we verify your email address.
             </p>
           </>
@@ -67,17 +67,17 @@ function VerifyEmailContent() {
         {state === "success" && (
           <>
             <CheckCircle className="mx-auto h-12 w-12 text-green-500" />
-            <h1 className="mt-4 font-heading text-xl text-[var(--color-cream)]">
+            <h1 className="mt-4 font-heading text-xl text-foreground">
               Email Verified!
             </h1>
-            <p className="mt-2 text-[var(--color-warm-gray)]">
+            <p className="mt-2 text-muted-foreground">
               Your email has been verified successfully. Redirecting to home...
             </p>
             <Button
               onClick={() => {
                 window.location.href = "/";
               }}
-              className="mt-6 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+              className="mt-6 bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
             >
               Continue to Home
             </Button>
@@ -87,18 +87,18 @@ function VerifyEmailContent() {
         {state === "error" && (
           <>
             <XCircle className="mx-auto h-12 w-12 text-red-500" />
-            <h1 className="mt-4 font-heading text-xl text-[var(--color-cream)]">
+            <h1 className="mt-4 font-heading text-xl text-foreground">
               Verification Failed
             </h1>
-            <p className="mt-2 text-[var(--color-warm-gray)]">
+            <p className="mt-2 text-muted-foreground">
               {error ?? "This verification link is invalid or has expired."}
             </p>
-            <p className="mt-4 text-sm text-[var(--color-dim)]">
+            <p className="mt-4 text-sm text-muted-foreground">
               Please try signing in and requesting a new verification email.
             </p>
             <Button
               asChild
-              className="mt-6 bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+              className="mt-6 bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
             >
               <Link href="/">Return to Home</Link>
             </Button>

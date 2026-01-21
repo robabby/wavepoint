@@ -44,15 +44,15 @@ export function CancelInviteDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]">
+      <AlertDialogContent className="border-[var(--border-gold)]/30 bg-background">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2 font-display uppercase tracking-widest text-[var(--color-cream)]">
+          <AlertDialogTitle className="flex items-center gap-2 font-display uppercase tracking-widest text-foreground">
             <XCircle className="h-5 w-5 text-[var(--color-gold)]" />
             Cancel Invite
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-[var(--color-warm-gray)]">
+          <AlertDialogDescription className="text-muted-foreground">
             Cancel the invite for{" "}
-            <span className="font-medium text-[var(--color-cream)]">
+            <span className="font-medium text-foreground">
               {invite?.email}
             </span>
             ? The invite link will no longer work.
@@ -61,14 +61,14 @@ export function CancelInviteDialog({
         <AlertDialogFooter>
           <AlertDialogCancel
             disabled={isCancelling}
-            className="border-[var(--color-gold)]/30 text-[var(--color-warm-gray)] hover:border-[var(--color-gold)] hover:bg-transparent hover:text-[var(--color-cream)]"
+            className="border-[var(--color-gold)]/30 text-muted-foreground hover:border-[var(--color-gold)] hover:bg-transparent hover:text-foreground"
           >
             Keep Invite
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
             disabled={isCancelling}
-            className="bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+            className="bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
           >
             {isCancelling ? (
               <>

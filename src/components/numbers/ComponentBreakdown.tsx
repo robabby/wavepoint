@@ -22,14 +22,14 @@ export function ComponentBreakdown({
         <span className="font-display text-5xl tracking-widest text-[var(--color-gold)]">
           {breakdown.number}
         </span>
-        <p className="mt-2 text-sm text-[var(--color-dim)]">
+        <p className="mt-2 text-sm text-muted-foreground">
           Number breakdown
         </p>
       </div>
 
       {/* Synthesized meaning */}
-      <div className="rounded-lg border border-[var(--border-gold)]/30 bg-[var(--color-warm-charcoal)]/30 p-4">
-        <p className="text-center text-[var(--color-warm-gray)]">
+      <div className="rounded-lg border border-[var(--border-gold)]/30 bg-card/30 p-4">
+        <p className="text-center text-muted-foreground">
           {breakdown.synthesizedMeaning}
         </p>
       </div>
@@ -45,7 +45,7 @@ export function ComponentBreakdown({
               key={`${component.digit}-${index}`}
               className={cn(
                 "flex items-center gap-4 rounded-lg border p-3",
-                "border-[var(--border-gold)]/20 bg-[var(--color-warm-charcoal)]/20",
+                "border-[var(--border-gold)]/20 bg-card/20",
                 component.patternId && "hover:border-[var(--color-gold)]/40 transition-colors"
               )}
             >
@@ -66,7 +66,7 @@ export function ComponentBreakdown({
 
               {/* Meaning */}
               <div className="flex-1">
-                <span className="text-sm text-[var(--color-warm-gray)]">
+                <span className="text-sm text-muted-foreground">
                   {component.meaning}
                 </span>
                 {component.patternId && (
@@ -85,7 +85,7 @@ export function ComponentBreakdown({
       </div>
 
       {/* Explore suggestion */}
-      <p className="text-center text-xs text-[var(--color-dim)]">
+      <p className="text-center text-xs text-muted-foreground">
         Each digit carries its own energy. Together, they create a unique message for you.
       </p>
     </div>

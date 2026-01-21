@@ -29,7 +29,7 @@ export function StepIndicator({
               ? "w-6 bg-[var(--color-gold)]"
               : currentStep > step
                 ? "w-1.5 bg-[var(--color-gold)]/50"
-                : "w-1.5 bg-[var(--color-dim)]/30"
+                : "w-1.5 bg-muted-foreground/30"
           )}
         />
       ))}

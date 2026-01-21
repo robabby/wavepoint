@@ -72,7 +72,7 @@ function FooterLink({
   return (
     <Link
       href={href}
-      className="text-sm text-[var(--color-warm-gray)] transition-colors hover:text-[var(--color-gold)]"
+      className="text-sm text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
     >
       {children}
     </Link>
@@ -81,7 +81,7 @@ function FooterLink({
 
 export function Footer() {
   return (
-    <footer className="border-t border-[var(--border-gold)] bg-[var(--color-obsidian)]">
+    <footer className="border-t border-[var(--border-gold)] bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <GeometricDivider />
 
@@ -92,7 +92,7 @@ export function Footer() {
             <h3 className="mb-4 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)]">
               About
             </h3>
-            <p className="text-sm leading-relaxed text-[var(--color-warm-gray)]">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               An exploration of the geometric patterns that underlie reality.
               From Platonic solids to sacred symbols, discover the mathematics
               of creation.
@@ -138,7 +138,7 @@ export function Footer() {
                 href="https://github.com/robabby/sacred-geometry"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-[var(--color-warm-gray)] transition-colors hover:text-[var(--color-gold)]"
+                className="text-sm text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
               >
                 GitHub
               </a>
@@ -146,7 +146,7 @@ export function Footer() {
                 href="https://robabby.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-[var(--color-warm-gray)] transition-colors hover:text-[var(--color-gold)]"
+                className="text-sm text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
               >
                 Rob Abby
               </a>
@@ -167,7 +167,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-[var(--border-gold)]/30 py-4 text-center sm:py-5 lg:py-6">
-          <p className="text-xs text-[var(--color-dim)]">
+          <p className="text-xs text-muted-foreground">
             Built with Next.js, React, and curiosity
           </p>
         </div>

@@ -35,19 +35,19 @@ export function DeleteDialog({
 }: DeleteDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="border-red-500/30 bg-[var(--color-obsidian)]">
+      <AlertDialogContent className="border-red-500/30 bg-background">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-[var(--color-cream)]">
+          <AlertDialogTitle className="text-foreground">
             {title}
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-[var(--color-warm-gray)]">
+          <AlertDialogDescription className="text-muted-foreground">
             {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
             disabled={isDeleting}
-            className="border-[var(--border-gold)]/30 bg-transparent text-[var(--color-warm-gray)] hover:border-[var(--border-gold)] hover:bg-transparent hover:text-[var(--color-cream)]"
+            className="border-[var(--border-gold)]/30 bg-transparent text-muted-foreground hover:border-[var(--border-gold)] hover:bg-transparent hover:text-foreground"
           >
             Cancel
           </AlertDialogCancel>

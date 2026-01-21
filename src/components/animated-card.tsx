@@ -19,15 +19,15 @@ export function AnimatedCard({ children, className }: AnimatedCardProps) {
   return (
     <motion.div
       className={cn(
-        "rounded-lg border border-[var(--border-gold)] bg-[var(--color-warm-charcoal)]",
+        "rounded-lg border border-[var(--border-gold)] bg-card",
         // Focus-visible styles for when card is wrapped in a focusable element
-        "transition-shadow focus-within:ring-2 focus-within:ring-[var(--color-gold)] focus-within:ring-offset-2 focus-within:ring-offset-[var(--color-obsidian)]",
+        "transition-shadow focus-within:ring-2 focus-within:ring-[var(--color-gold)] focus-within:ring-offset-2 focus-within:ring-offset-background",
         className
       )}
       whileHover={{
         scale: 1.02,
-        borderColor: "rgba(212, 168, 75, 0.5)",
-        boxShadow: "0 0 20px rgba(212, 168, 75, 0.15)",
+        borderColor: "var(--border-gold)",
+        boxShadow: "0 0 20px var(--glow-gold)",
       }}
       transition={{
         duration: 0.3,

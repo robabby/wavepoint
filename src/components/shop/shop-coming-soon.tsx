@@ -9,19 +9,19 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
  */
 export function ShopComingSoon() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="flex min-h-screen items-center justify-center bg-background text-foreground">
       <div className="container mx-auto px-4 py-16 text-center">
         <AnimateOnScroll>
           {/* Decorative icon */}
           <div className="mb-8 flex justify-center">
-            <div className="rounded-full border border-[var(--border-gold)] bg-[var(--color-warm-charcoal)] p-6">
+            <div className="rounded-full border border-[var(--border-gold)] bg-card p-6">
               <CircleDot className="h-12 w-12 text-[var(--color-gold)]" />
             </div>
           </div>
 
           <Heading
             size="9"
-            className="mb-4 font-display text-[var(--color-cream)]"
+            className="mb-4 font-display text-foreground"
           >
             Shop Coming Soon
           </Heading>
@@ -34,7 +34,7 @@ export function ShopComingSoon() {
 
           <Text
             size="3"
-            className="mx-auto mb-8 max-w-lg text-[var(--color-warm-gray)]"
+            className="mx-auto mb-8 max-w-lg text-muted-foreground"
           >
             We&apos;re preparing a collection of carefully designed products
             featuring Metatron&apos;s Cube and other sacred patterns. Check back
@@ -43,7 +43,7 @@ export function ShopComingSoon() {
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-gold)] bg-[var(--color-warm-charcoal)] px-6 py-3 font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-dark-bronze)]"
+            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-gold)] bg-card px-6 py-3 font-medium text-[var(--color-gold)] transition-colors hover:bg-muted"
           >
             Return Home
           </Link>

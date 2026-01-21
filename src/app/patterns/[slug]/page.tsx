@@ -74,7 +74,7 @@ export default async function PatternPage({
     process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
 
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <StructuredData
         data={createArticleSchema({
           url: `${baseUrl}${getGeometryPath(geometry)}`,
@@ -96,7 +96,7 @@ export default async function PatternPage({
                 <Flex direction="column" gap="6" justify="center">
                   <Heading
                     size={{ initial: "7", md: "9" }}
-                    className="font-display text-[var(--color-cream)]"
+                    className="font-display text-foreground"
                   >
                     {title ?? name}
                   </Heading>
@@ -118,11 +118,7 @@ export default async function PatternPage({
                     width={400}
                     height={400}
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="w-full max-w-xs sm:max-w-sm md:max-w-md object-contain"
-                    style={{
-                      filter:
-                        "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                    }}
+                    className="w-full max-w-xs sm:max-w-sm md:max-w-md object-contain svg-gold"
                   />
                 </PulsingGeometry>
               </HeroGeometry>
@@ -144,7 +140,7 @@ export default async function PatternPage({
               {mdxContent.content}
             </ContentLayout>
           ) : (
-            <div className="text-center text-[var(--color-warm-gray)]">
+            <div className="text-center text-muted-foreground">
               <Text>Content coming soon...</Text>
             </div>
           )}

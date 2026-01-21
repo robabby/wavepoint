@@ -15,17 +15,17 @@ export default async function AccountOverviewPage() {
   return (
     <div className="space-y-8">
       {/* User info card */}
-      <Card className="border-[var(--border-gold)]/30 bg-[var(--color-obsidian)]">
+      <Card className="border-[var(--border-gold)]/30 bg-background">
         <CardHeader>
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-gold)]/10">
               <User className="h-7 w-7 text-[var(--color-gold)]" />
             </div>
             <div>
-              <CardTitle className="text-lg text-[var(--color-cream)]">
+              <CardTitle className="text-lg text-foreground">
                 Welcome back
               </CardTitle>
-              <Text className="text-[var(--color-warm-gray)]">
+              <Text className="text-muted-foreground">
                 {session.user.email}
               </Text>
             </div>
@@ -38,7 +38,7 @@ export default async function AccountOverviewPage() {
         <Heading
           as="h2"
           size="5"
-          className="mb-4 font-heading text-[var(--color-cream)]"
+          className="mb-4 font-heading text-foreground"
         >
           Manage Account
         </Heading>

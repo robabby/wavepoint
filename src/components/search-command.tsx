@@ -265,7 +265,7 @@ export function SearchCommand() {
               value={query}
               onValueChange={handleQueryChange}
               className={cn(
-                "text-[var(--color-cream)] placeholder:text-[var(--color-dim)]",
+                "text-foreground placeholder:text-muted-foreground",
                 "text-base sm:text-lg h-14 sm:h-16 pr-12",
                 // Enhanced gold tint on the search icon
                 "[&_svg]:text-[var(--color-gold)]/60 [&_svg]:drop-shadow-[0_0_3px_rgba(212,168,75,0.3)] [&_svg]:h-5 [&_svg]:w-5 sm:[&_svg]:h-6 sm:[&_svg]:w-6"
@@ -276,10 +276,10 @@ export function SearchCommand() {
                 onClick={() => setQuery("")}
                 className={cn(
                   "absolute right-4 p-1.5 rounded-md",
-                  "text-[var(--color-dim)] hover:text-[var(--color-warm-gray)]",
-                  "hover:bg-[var(--color-dark-bronze)]/50",
+                  "text-muted-foreground hover:text-muted-foreground",
+                  "hover:bg-muted/50",
                   "transition-all duration-200",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 )}
               >
                 <X className="h-4 w-4" />
@@ -299,19 +299,19 @@ export function SearchCommand() {
                       "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-lg",
                       "bg-[var(--glass-bg-elevated)]",
                       "border border-[var(--glass-border)]/50",
-                      "hover:bg-[var(--color-dark-bronze)]/50",
+                      "hover:bg-muted/50",
                       "hover:border-[var(--color-gold)]/40",
                       "hover:[box-shadow:0_0_20px_rgba(212,168,75,0.08)]",
                       "transition-all duration-200 ease-out"
                     )}
                     onClick={() => setOpen(false)}
                   >
-                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded bg-[var(--color-obsidian)]/60 border border-[var(--glass-border)]/30 flex items-center justify-center">
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded bg-background/60 border border-[var(--glass-border)]/30 flex items-center justify-center">
                       <span className="text-[var(--color-gold)] font-heading text-xl sm:text-2xl">{platonicCount}</span>
                     </div>
                     <div>
-                      <p className="text-base sm:text-lg font-medium text-[var(--color-cream)]">Platonic Solids</p>
-                      <p className="text-sm sm:text-base text-[var(--color-dim)]">Perfect forms</p>
+                      <p className="text-base sm:text-lg font-medium text-foreground">Platonic Solids</p>
+                      <p className="text-sm sm:text-base text-muted-foreground">Perfect forms</p>
                     </div>
                   </Link>
 
@@ -321,26 +321,26 @@ export function SearchCommand() {
                       "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-lg",
                       "bg-[var(--glass-bg-elevated)]",
                       "border border-[var(--glass-border)]/50",
-                      "hover:bg-[var(--color-dark-bronze)]/50",
+                      "hover:bg-muted/50",
                       "hover:border-[var(--color-gold)]/40",
                       "hover:[box-shadow:0_0_20px_rgba(212,168,75,0.08)]",
                       "transition-all duration-200 ease-out"
                     )}
                     onClick={() => setOpen(false)}
                   >
-                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded bg-[var(--color-obsidian)]/60 border border-[var(--glass-border)]/30 flex items-center justify-center">
+                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded bg-background/60 border border-[var(--glass-border)]/30 flex items-center justify-center">
                       <span className="text-[var(--color-gold)] font-heading text-xl sm:text-2xl">{patternCount}</span>
                     </div>
                     <div>
-                      <p className="text-base sm:text-lg font-medium text-[var(--color-cream)]">Patterns</p>
-                      <p className="text-sm sm:text-base text-[var(--color-dim)]">Universal geometry</p>
+                      <p className="text-base sm:text-lg font-medium text-foreground">Patterns</p>
+                      <p className="text-sm sm:text-base text-muted-foreground">Universal geometry</p>
                     </div>
                   </Link>
                 </div>
 
                 {/* Popular searches */}
                 <div className="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-[var(--glass-border)]/30">
-                  <p className="text-sm sm:text-base text-[var(--color-dim)] mb-3 sm:mb-4 px-1">Popular searches</p>
+                  <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4 px-1">Popular searches</p>
                   <div className="flex flex-wrap gap-2 sm:gap-3">
                     {["Flower of Life", "Metatron", "Golden Ratio", "Vesica Piscis"].map((term) => (
                       <button
@@ -348,14 +348,14 @@ export function SearchCommand() {
                         onClick={() => setQuery(term)}
                         className={cn(
                           "px-4 py-2 sm:px-5 sm:py-2.5 text-sm sm:text-base rounded-full",
-                          "bg-[var(--color-obsidian)]/60",
-                          "text-[var(--color-warm-gray)]",
+                          "bg-background/60",
+                          "text-muted-foreground",
                           "border border-[var(--glass-border)]/30",
                           "hover:text-[var(--color-gold)]",
                           "hover:border-[var(--color-gold)]/40",
                           "hover:bg-[var(--glass-bg-elevated)]",
                           "transition-all duration-200 ease-out",
-                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                         )}
                       >
                         {term}
@@ -390,7 +390,7 @@ export function SearchCommand() {
                     className={cn(
                       "cursor-pointer rounded-md mx-2 sm:mx-3 my-0.5 py-3 sm:py-4 px-3 sm:px-4",
                       "transition-all duration-200 ease-out",
-                      "data-[selected=true]:bg-[var(--color-dark-bronze)]/60",
+                      "data-[selected=true]:bg-muted/60",
                       "data-[selected=true]:border-l-2 data-[selected=true]:border-[var(--color-gold)]",
                       "data-[selected=true]:[box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]",
                       "hover:bg-[var(--glass-bg-elevated)]"
@@ -398,7 +398,7 @@ export function SearchCommand() {
                   >
                     <div className="flex items-center gap-3 sm:gap-4 w-full">
                       <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-[var(--color-gold)]/50" />
-                      <span className="flex-1 text-base sm:text-lg text-[var(--color-cream)]">{recentQuery}</span>
+                      <span className="flex-1 text-base sm:text-lg text-foreground">{recentQuery}</span>
                     </div>
                   </CommandItem>
                 ))}
@@ -406,7 +406,7 @@ export function SearchCommand() {
                   onSelect={handleClearRecent}
                   className={cn(
                     "cursor-pointer mx-2 sm:mx-3 mt-2 py-2.5 px-3 sm:px-4 rounded-md",
-                    "text-[var(--color-dim)]",
+                    "text-muted-foreground",
                     "hover:text-[var(--color-gold)]",
                     "hover:bg-[var(--glass-bg-elevated)]",
                     "transition-all duration-200 ease-out",
@@ -423,15 +423,15 @@ export function SearchCommand() {
               {searchQuery && (
                 <div className="py-10 sm:py-12 px-6 sm:px-8 text-center">
                   {/* Visual indicator */}
-                  <div className="mx-auto mb-5 h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-[var(--color-dark-bronze)] flex items-center justify-center">
-                    <Search className="h-6 w-6 sm:h-7 sm:w-7 text-[var(--color-dim)]" />
+                  <div className="mx-auto mb-5 h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-muted flex items-center justify-center">
+                    <Search className="h-6 w-6 sm:h-7 sm:w-7 text-muted-foreground" />
                   </div>
 
                   {/* Message */}
-                  <p className="text-[var(--color-warm-gray)] text-base sm:text-lg font-medium mb-2">
+                  <p className="text-muted-foreground text-base sm:text-lg font-medium mb-2">
                     No results for &ldquo;{searchQuery}&rdquo;
                   </p>
-                  <p className="text-[var(--color-dim)] text-sm sm:text-base mb-8">
+                  <p className="text-muted-foreground text-sm sm:text-base mb-8">
                     Try a different term or explore suggestions below
                   </p>
 
@@ -443,13 +443,13 @@ export function SearchCommand() {
                         onClick={() => setQuery(suggestion)}
                         className={cn(
                           "px-4 py-2 sm:px-5 sm:py-2.5 text-sm sm:text-base rounded-full",
-                          "bg-[var(--color-dark-bronze)]",
+                          "bg-muted",
                           "text-[var(--color-gold)]",
                           "border border-[var(--border-gold)]/50",
-                          "hover:bg-[var(--color-warm-charcoal)]",
+                          "hover:bg-card",
                           "hover:border-[var(--color-gold)]/70",
                           "transition-[background-color,border-color] duration-200",
-                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-obsidian)]"
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                         )}
                       >
                         {suggestion}
@@ -504,7 +504,7 @@ export function SearchCommand() {
                     className={cn(
                       "cursor-pointer rounded-md mx-2 sm:mx-3 my-0.5 py-3 sm:py-4 px-3 sm:px-4",
                       "transition-all duration-200 ease-out",
-                      "data-[selected=true]:bg-[var(--color-dark-bronze)]/60",
+                      "data-[selected=true]:bg-muted/60",
                       "data-[selected=true]:border-l-2 data-[selected=true]:border-[var(--color-gold)]",
                       "data-[selected=true]:[box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]",
                       "hover:bg-[var(--glass-bg-elevated)]"
@@ -513,28 +513,24 @@ export function SearchCommand() {
                     <div className="flex items-center gap-3 sm:gap-4 w-full">
                       {/* Geometry Image */}
                       {geometry.images?.heroImage && (
-                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md overflow-hidden bg-[var(--color-dark-bronze)]/30">
+                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md overflow-hidden bg-muted/30">
                           <Image
                             src={geometry.images.heroImage}
                             alt={geometry.name}
                             fill
                             sizes="48px"
-                            className="object-contain p-1"
-                            style={{
-                              filter:
-                                "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                            }}
+                            className="object-contain p-1 svg-gold"
                           />
                         </div>
                       )}
 
                       {/* Geometry Details */}
                       <div className="flex flex-col flex-1 min-w-0">
-                        <span className="font-medium text-base sm:text-lg truncate text-[var(--color-cream)]">
+                        <span className="font-medium text-base sm:text-lg truncate text-foreground">
                           {highlightText(geometry.name, searchQuery)}
                         </span>
                         {geometry.description && (
-                          <span className="text-[var(--color-warm-gray)] text-sm sm:text-base truncate">
+                          <span className="text-muted-foreground text-sm sm:text-base truncate">
                             {highlightText(geometry.description, searchQuery)}
                           </span>
                         )}
@@ -579,7 +575,7 @@ export function SearchCommand() {
                     className={cn(
                       "cursor-pointer rounded-md mx-2 sm:mx-3 my-0.5 py-3 sm:py-4 px-3 sm:px-4",
                       "transition-all duration-200 ease-out",
-                      "data-[selected=true]:bg-[var(--color-dark-bronze)]/60",
+                      "data-[selected=true]:bg-muted/60",
                       "data-[selected=true]:border-l-2 data-[selected=true]:border-[var(--color-gold)]",
                       "data-[selected=true]:[box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]",
                       "hover:bg-[var(--glass-bg-elevated)]"
@@ -588,28 +584,24 @@ export function SearchCommand() {
                     <div className="flex items-center gap-3 sm:gap-4 w-full">
                       {/* Geometry Image */}
                       {geometry.images?.heroImage && (
-                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md overflow-hidden bg-[var(--color-dark-bronze)]/30">
+                        <div className="relative h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md overflow-hidden bg-muted/30">
                           <Image
                             src={geometry.images.heroImage}
                             alt={geometry.name}
                             fill
                             sizes="48px"
-                            className="object-contain p-1"
-                            style={{
-                              filter:
-                                "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                            }}
+                            className="object-contain p-1 svg-gold"
                           />
                         </div>
                       )}
 
                       {/* Geometry Details */}
                       <div className="flex flex-col flex-1 min-w-0">
-                        <span className="font-medium text-base sm:text-lg truncate text-[var(--color-cream)]">
+                        <span className="font-medium text-base sm:text-lg truncate text-foreground">
                           {highlightText(geometry.name, searchQuery)}
                         </span>
                         {geometry.description && (
-                          <span className="text-[var(--color-warm-gray)] text-sm sm:text-base truncate">
+                          <span className="text-muted-foreground text-sm sm:text-base truncate">
                             {highlightText(geometry.description, searchQuery)}
                           </span>
                         )}
@@ -640,13 +632,13 @@ export function SearchCommand() {
               "[box-shadow:inset_0_1px_0_rgba(245,240,230,0.03)]"
             )}
           >
-            <div className="hidden sm:flex items-center gap-5 text-sm text-[var(--color-dim)]">
+            <div className="hidden sm:flex items-center gap-5 text-sm text-muted-foreground">
               <span className="flex items-center gap-2">
                 <kbd className={cn(
                   "px-2 py-1 rounded",
-                  "bg-[var(--color-obsidian)]/60 backdrop-blur-sm",
+                  "bg-background/60 backdrop-blur-sm",
                   "border border-[var(--glass-border)]/50",
-                  "text-[var(--color-warm-gray)] font-mono text-xs"
+                  "text-muted-foreground font-mono text-xs"
                 )}>
                   ↑↓
                 </kbd>
@@ -655,9 +647,9 @@ export function SearchCommand() {
               <span className="flex items-center gap-2">
                 <kbd className={cn(
                   "px-2 py-1 rounded",
-                  "bg-[var(--color-obsidian)]/60 backdrop-blur-sm",
+                  "bg-background/60 backdrop-blur-sm",
                   "border border-[var(--glass-border)]/50",
-                  "text-[var(--color-warm-gray)] font-mono text-xs"
+                  "text-muted-foreground font-mono text-xs"
                 )}>
                   ↵
                 </kbd>
@@ -666,16 +658,16 @@ export function SearchCommand() {
               <span className="flex items-center gap-2">
                 <kbd className={cn(
                   "px-2 py-1 rounded",
-                  "bg-[var(--color-obsidian)]/60 backdrop-blur-sm",
+                  "bg-background/60 backdrop-blur-sm",
                   "border border-[var(--glass-border)]/50",
-                  "text-[var(--color-warm-gray)] font-mono text-xs"
+                  "text-muted-foreground font-mono text-xs"
                 )}>
                   esc
                 </kbd>
                 <span>close</span>
               </span>
             </div>
-            <span className="text-sm text-[var(--color-dim)]">
+            <span className="text-sm text-muted-foreground">
               {results.length > 0 ? `${results.length} result${results.length === 1 ? "" : "s"}` : ""}
             </span>
           </div>

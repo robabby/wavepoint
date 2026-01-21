@@ -80,14 +80,14 @@ export function CartDrawer() {
     <Sheet open={isOpen} onOpenChange={(open) => !open && closeCart()}>
       <SheetContent
         side="right"
-        className="flex w-full flex-col border-[var(--border-gold)] bg-[var(--color-obsidian)] sm:max-w-md"
+        className="flex w-full flex-col border-[var(--border-gold)] bg-background sm:max-w-md"
       >
         <SheetHeader className="border-b border-[var(--border-gold)]/50">
-          <SheetTitle className="flex items-center gap-2 font-heading text-[var(--color-cream)]">
+          <SheetTitle className="flex items-center gap-2 font-heading text-foreground">
             <ShoppingBag className="h-5 w-5 text-[var(--color-gold)]" />
             Your Cart
             {itemCount > 0 && (
-              <span className="ml-2 text-sm font-normal text-[var(--color-warm-gray)]">
+              <span className="ml-2 text-sm font-normal text-muted-foreground">
                 ({itemCount})
               </span>
             )}
@@ -101,8 +101,8 @@ export function CartDrawer() {
         <div className="flex-1 overflow-y-auto">
           {items.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-              <ShoppingBag className="h-16 w-16 text-[var(--color-warm-gray)]/50" />
-              <span className="text-base text-[var(--color-warm-gray)]">
+              <ShoppingBag className="h-16 w-16 text-muted-foreground/50" />
+              <span className="text-base text-muted-foreground">
                 Your cart is empty
               </span>
               <Link href="/shop" onClick={closeCart}>
@@ -122,7 +122,7 @@ export function CartDrawer() {
                   className="flex gap-4 p-4"
                 >
                   {/* Product Image */}
-                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md bg-[var(--color-warm-charcoal)]">
+                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md bg-card">
                     {item.image ? (
                       <Image
                         src={item.image}
@@ -133,17 +133,17 @@ export function CartDrawer() {
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center">
-                        <ShoppingBag className="h-6 w-6 text-[var(--color-warm-gray)]/50" />
+                        <ShoppingBag className="h-6 w-6 text-muted-foreground/50" />
                       </div>
                     )}
                   </div>
 
                   {/* Product Details */}
                   <div className="flex flex-1 flex-col gap-1.5">
-                    <span className="font-heading text-lg font-medium text-[var(--color-cream)]">
+                    <span className="font-heading text-lg font-medium text-foreground">
                       {item.name}
                     </span>
-                    <span className="text-sm text-[var(--color-warm-gray)]">
+                    <span className="text-sm text-muted-foreground">
                       {item.variantName}
                     </span>
                     <span className="text-lg font-semibold text-[var(--color-gold)]">
@@ -156,26 +156,26 @@ export function CartDrawer() {
                         onClick={() =>
                           updateQuantity(item.printfulVariantId, item.quantity - 1)
                         }
-                        className="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--border-gold)]/50 text-[var(--color-warm-gray)] transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+                        className="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--border-gold)]/50 text-muted-foreground transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
                         aria-label={`Decrease quantity of ${item.name}`}
                       >
                         <Minus className="h-4 w-4" />
                       </button>
-                      <span className="w-10 text-center text-base text-[var(--color-cream)]">
+                      <span className="w-10 text-center text-base text-foreground">
                         {item.quantity}
                       </span>
                       <button
                         onClick={() =>
                           updateQuantity(item.printfulVariantId, item.quantity + 1)
                         }
-                        className="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--border-gold)]/50 text-[var(--color-warm-gray)] transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+                        className="flex h-10 w-10 items-center justify-center rounded-md border border-[var(--border-gold)]/50 text-muted-foreground transition-colors hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
                         aria-label={`Increase quantity of ${item.name}`}
                       >
                         <Plus className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => removeItem(item.printfulVariantId)}
-                        className="ml-auto flex h-10 w-10 items-center justify-center rounded-md text-[var(--color-warm-gray)] transition-colors hover:text-red-400"
+                        className="ml-auto flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:text-red-400"
                         aria-label={`Remove ${item.name} from cart`}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -192,14 +192,14 @@ export function CartDrawer() {
         {items.length > 0 && (
           <SheetFooter className="border-t border-[var(--border-gold)]/50 pb-safe">
             <div className="flex w-full items-center justify-between">
-              <span className="text-base text-[var(--color-warm-gray)]">
+              <span className="text-base text-muted-foreground">
                 Subtotal
               </span>
-              <span className="text-xl font-bold text-[var(--color-cream)]">
+              <span className="text-xl font-bold text-foreground">
                 {formatPrice(subtotal)}
               </span>
             </div>
-            <span className="text-sm text-[var(--color-warm-gray)]">
+            <span className="text-sm text-muted-foreground">
               Shipping and taxes calculated at checkout
             </span>
             {checkoutError && (
@@ -211,7 +211,7 @@ export function CartDrawer() {
               </div>
             )}
             <Button
-              className="mt-4 w-full bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+              className="mt-4 w-full bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
               onClick={handleCheckout}
               disabled={isCheckingOut}
             >

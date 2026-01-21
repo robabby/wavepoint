@@ -82,11 +82,11 @@ const patterns = getPatterns()
 
 export default function PatternsPage() {
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* Header */}
         <AnimateOnScroll className="mx-auto mb-8 max-w-4xl text-center sm:mb-12 lg:mb-16">
-          <Heading size="9" className="font-display text-[var(--color-cream)]" mb="4">
+          <Heading size="9" className="font-display text-foreground" mb="4">
             {ROUTES.patterns.name}
           </Heading>
           <Box mb="2">
@@ -94,7 +94,7 @@ export default function PatternsPage() {
               {ROUTES.patterns.description}
             </Text>
           </Box>
-          <Text size="3" className="mx-auto max-w-3xl text-[var(--color-warm-gray)]">
+          <Text size="3" className="mx-auto max-w-3xl text-muted-foreground">
             These timeless patterns appear across cultures and throughout
             history, from ancient temples to modern science. They represent the
             fundamental organizing principles of consciousness, energy, and
@@ -121,11 +121,7 @@ export default function PatternsPage() {
                           alt={pattern.name}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-contain"
-                          style={{
-                            filter:
-                              "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                          }}
+                          className="object-contain svg-gold"
                         />
                       </GeometryImage>
 
@@ -141,13 +137,13 @@ export default function PatternsPage() {
                       <div className="flex flex-wrap gap-2">
                         <Badge
                           variant="secondary"
-                          className="bg-[var(--color-dark-bronze)] text-[var(--color-gold)]"
+                          className="bg-muted text-[var(--color-gold)]"
                         >
                           {pattern.category}
                         </Badge>
                       </div>
 
-                      <Text size="2" className="line-clamp-3 text-[var(--color-warm-gray)]">
+                      <Text size="2" className="line-clamp-3 text-muted-foreground">
                         {pattern.description}
                       </Text>
 
@@ -172,11 +168,7 @@ export default function PatternsPage() {
                   alt="Flower of Life"
                   fill
                   sizes="48px"
-                  className="object-contain"
-                  style={{
-                    filter:
-                      "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                  }}
+                  className="object-contain svg-gold"
                 />
               </GeometryImage>
               <Heading size="7" className="font-heading text-[var(--color-gold)]">
@@ -184,7 +176,7 @@ export default function PatternsPage() {
               </Heading>
             </div>
 
-            <Text className="mb-4 text-[var(--color-warm-gray)]">
+            <Text className="mb-4 text-muted-foreground">
               The Flower of Life is perhaps the most widely recognized symbol in
               sacred geometry. Found in temples across the world—from Egypt to
               China, from Europe to India—this pattern predates all major
@@ -192,7 +184,7 @@ export default function PatternsPage() {
               nature of reality.
             </Text>
 
-            <Text className="text-[var(--color-warm-gray)]">
+            <Text className="text-muted-foreground">
               By overlapping circles in a specific pattern, the Flower of Life
               emerges naturally. Within its petals hide countless other sacred
               patterns: the Seed of Life, the Tree of Life, Metatron&apos;s
@@ -210,7 +202,7 @@ export default function PatternsPage() {
               The Golden Ratio & Sacred Proportions
             </Heading>
 
-            <Text className="mb-4 text-[var(--color-warm-gray)]">
+            <Text className="mb-4 text-muted-foreground">
               Sacred patterns often embody special mathematical ratios that
               appear throughout nature:
             </Text>
@@ -220,7 +212,7 @@ export default function PatternsPage() {
                 <Text weight="bold" className="text-[var(--color-gold-bright)]">
                   φ (Phi) ≈ 1.618 - The Golden Ratio
                 </Text>
-                <Text className="text-[var(--color-warm-gray)]">
+                <Text className="text-muted-foreground">
                   Found in spiral shells, flower petals, galaxy arms, and human
                   proportions. Represents optimal growth and aesthetic
                   perfection.
@@ -231,7 +223,7 @@ export default function PatternsPage() {
                 <Text weight="bold" className="text-[var(--color-gold-bright)]">
                   √2 ≈ 1.414 - The Silver Ratio
                 </Text>
-                <Text className="text-[var(--color-warm-gray)]">
+                <Text className="text-muted-foreground">
                   The diagonal of a square. Found in paper sizes and sacred
                   architecture. Represents the bridge between dimensions.
                 </Text>
@@ -241,7 +233,7 @@ export default function PatternsPage() {
                 <Text weight="bold" className="text-[var(--color-gold-bright)]">
                   π (Pi) ≈ 3.14159 - Circle Constant
                 </Text>
-                <Text className="text-[var(--color-warm-gray)]">
+                <Text className="text-muted-foreground">
                   The relationship between circle and diameter. Represents
                   cycles, wholeness, and the infinite.
                 </Text>
@@ -257,12 +249,12 @@ export default function PatternsPage() {
               Where Sacred Patterns Appear
             </Heading>
 
-            <Text className="mb-4 text-[var(--color-warm-gray)]">
+            <Text className="mb-4 text-muted-foreground">
               These patterns are not mere human inventions—they are discoveries.
               They appear everywhere:
             </Text>
 
-            <ul className="space-y-3 text-[var(--color-warm-gray)]">
+            <ul className="space-y-3 text-muted-foreground">
               <li>
                 <strong className="text-[var(--color-gold-bright)]">Nature:</strong> Flower
                 petals, pine cones, nautilus shells, crystal structures, DNA

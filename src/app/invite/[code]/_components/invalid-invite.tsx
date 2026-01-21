@@ -31,14 +31,14 @@ const itemVariants: Variants = {
  */
 export function InvalidInvite() {
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--color-obsidian)]">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background">
       {/* Subtle radial gradient */}
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(212, 168, 75, 0.03) 0%, transparent 50%)",
+            "radial-gradient(ellipse at center, var(--glow-gold) 0%, transparent 50%)",
         }}
       />
 
@@ -50,13 +50,13 @@ export function InvalidInvite() {
       >
         {/* Decorative line */}
         <motion.div variants={itemVariants} className="mb-8">
-          <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-[var(--color-dim)]/40 to-transparent" />
+          <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-muted-foreground/40 to-transparent" />
         </motion.div>
 
         {/* Main heading */}
         <motion.h1
           variants={itemVariants}
-          className="mb-4 font-display text-page-title tracking-wide text-[var(--color-cream)]"
+          className="mb-4 font-display text-page-title tracking-wide text-foreground"
         >
           Not Found
         </motion.h1>
@@ -64,7 +64,7 @@ export function InvalidInvite() {
         {/* Message */}
         <motion.p
           variants={itemVariants}
-          className="mb-10 text-lg text-[var(--color-warm-gray)]"
+          className="mb-10 text-lg text-muted-foreground"
         >
           This invitation doesn&apos;t exist or has expired.
         </motion.p>
@@ -73,7 +73,7 @@ export function InvalidInvite() {
         <motion.div variants={itemVariants}>
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg border border-[var(--color-gold)]/30 bg-transparent px-8 py-3 font-medium text-[var(--color-cream)] transition-all duration-300 hover:border-[var(--color-gold)]/60 hover:bg-[var(--color-gold)]/5"
+            className="inline-flex items-center justify-center rounded-lg border border-[var(--color-gold)]/30 bg-transparent px-8 py-3 font-medium text-foreground transition-all duration-300 hover:border-[var(--color-gold)]/60 hover:bg-[var(--color-gold)]/5"
           >
             Return Home
           </Link>
@@ -81,7 +81,7 @@ export function InvalidInvite() {
 
         {/* Decorative line */}
         <motion.div variants={itemVariants} className="mt-12">
-          <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-[var(--color-dim)]/40 to-transparent" />
+          <div className="mx-auto h-px w-16 bg-gradient-to-r from-transparent via-muted-foreground/40 to-transparent" />
         </motion.div>
       </motion.div>
     </main>

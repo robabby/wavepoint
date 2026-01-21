@@ -25,7 +25,7 @@ export function AuthHeaderSection({
     return (
       <div
         className={cn(
-          "animate-pulse rounded bg-[var(--color-warm-charcoal)]",
+          "animate-pulse rounded bg-card",
           variant === "desktop" ? "h-8 w-16" : "h-12 w-full rounded-lg",
           className
         )}

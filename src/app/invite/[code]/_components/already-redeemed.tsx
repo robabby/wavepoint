@@ -31,14 +31,14 @@ const itemVariants: Variants = {
  */
 export function AlreadyRedeemed() {
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--color-obsidian)]">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background">
       {/* Subtle radial gradient */}
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(212, 168, 75, 0.03) 0%, transparent 50%)",
+            "radial-gradient(ellipse at center, var(--glow-gold) 0%, transparent 50%)",
         }}
       />
 
@@ -56,7 +56,7 @@ export function AlreadyRedeemed() {
         {/* Main heading */}
         <motion.h1
           variants={itemVariants}
-          className="mb-4 font-display text-page-title tracking-wide text-[var(--color-cream)]"
+          className="mb-4 font-display text-page-title tracking-wide text-foreground"
         >
           Already Used
         </motion.h1>
@@ -64,7 +64,7 @@ export function AlreadyRedeemed() {
         {/* Message */}
         <motion.p
           variants={itemVariants}
-          className="mb-10 text-lg text-[var(--color-warm-gray)]"
+          className="mb-10 text-lg text-muted-foreground"
         >
           This invitation has already been redeemed.
         </motion.p>
@@ -73,7 +73,7 @@ export function AlreadyRedeemed() {
         <motion.div variants={itemVariants}>
           <Link
             href="/?auth=sign-in"
-            className="inline-flex items-center justify-center rounded-lg bg-[var(--color-gold)] px-8 py-3 font-medium text-[var(--color-obsidian)] transition-all duration-300 hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_20px_rgba(212,168,75,0.3)]"
+            className="inline-flex items-center justify-center rounded-lg bg-[var(--color-gold)] px-8 py-3 font-medium text-primary-foreground transition-all duration-300 hover:bg-[var(--color-gold-bright)] hover:shadow-[0_0_20px_rgba(212,168,75,0.3)]"
           >
             Sign In
           </Link>

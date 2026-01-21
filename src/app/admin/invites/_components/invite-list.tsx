@@ -104,18 +104,18 @@ export function InviteList({ invites, stats, baseUrl }: InviteListProps) {
         <div>
           <Heading
             size="6"
-            className="mb-2 font-display uppercase tracking-widest text-[var(--color-cream)]"
+            className="mb-2 font-display uppercase tracking-widest text-foreground"
           >
             Invites
           </Heading>
-          <Text size="2" className="text-[var(--color-warm-gray)]">
+          <Text size="2" className="text-muted-foreground">
             Manage beta access to the inner circle
           </Text>
         </div>
         {invites.length > 0 && (
           <Button
             onClick={() => setModalOpen(true)}
-            className="bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+            className="bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
           >
             <Plus className="h-4 w-4" />
             Create Invite
@@ -125,19 +125,19 @@ export function InviteList({ invites, stats, baseUrl }: InviteListProps) {
 
       {/* Empty state - only show when no invites at all */}
       {invites.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-[var(--border-gold)]/20 bg-[var(--color-obsidian)] px-6 py-16 text-center">
+        <div className="flex flex-col items-center justify-center rounded-lg border border-[var(--border-gold)]/20 bg-background px-6 py-16 text-center">
           <span className="mb-4 text-3xl text-[var(--color-gold)]/40">
             &#x25C7;
           </span>
-          <h3 className="mb-2 text-lg font-medium text-[var(--color-cream)]">
+          <h3 className="mb-2 text-lg font-medium text-foreground">
             No invites yet
           </h3>
-          <p className="mb-6 max-w-sm text-[var(--color-warm-gray)]">
+          <p className="mb-6 max-w-sm text-muted-foreground">
             Create your first invite to begin building the inner circle.
           </p>
           <Button
             onClick={() => setModalOpen(true)}
-            className="bg-[var(--color-gold)] text-[var(--color-obsidian)] hover:bg-[var(--color-gold-bright)]"
+            className="bg-[var(--color-gold)] text-primary-foreground hover:bg-[var(--color-gold-bright)]"
           >
             <Plus className="h-4 w-4" />
             Create Invite
@@ -146,9 +146,9 @@ export function InviteList({ invites, stats, baseUrl }: InviteListProps) {
       ) : (
         <>
           {/* Stats bar */}
-          <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--color-warm-gray)]">
+          <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
             <span>
-              <strong className="font-medium text-[var(--color-cream)]">
+              <strong className="font-medium text-foreground">
                 {stats.total}
               </strong>{" "}
               total
@@ -182,7 +182,7 @@ export function InviteList({ invites, stats, baseUrl }: InviteListProps) {
 
           {/* Tabs for Active/Cancelled */}
           <Tabs defaultValue="active" className="w-full">
-            <TabsList className="mb-4 bg-[var(--color-warm-charcoal)]/30">
+            <TabsList className="mb-4 bg-card/30">
               <TabsTrigger
                 value="active"
                 className="data-[state=active]:bg-[var(--color-gold)]/10 data-[state=active]:text-[var(--color-gold)]"
@@ -199,8 +199,8 @@ export function InviteList({ invites, stats, baseUrl }: InviteListProps) {
 
             <TabsContent value="active">
               {activeInvites.length === 0 ? (
-                <div className="rounded-lg border border-[var(--border-gold)]/20 bg-[var(--color-obsidian)] px-6 py-12 text-center">
-                  <p className="text-[var(--color-warm-gray)]">
+                <div className="rounded-lg border border-[var(--border-gold)]/20 bg-background px-6 py-12 text-center">
+                  <p className="text-muted-foreground">
                     No active invites. All invites have been cancelled.
                   </p>
                 </div>
@@ -220,8 +220,8 @@ export function InviteList({ invites, stats, baseUrl }: InviteListProps) {
 
             <TabsContent value="cancelled">
               {cancelledInvites.length === 0 ? (
-                <div className="rounded-lg border border-[var(--border-gold)]/20 bg-[var(--color-obsidian)] px-6 py-12 text-center">
-                  <p className="text-[var(--color-warm-gray)]">
+                <div className="rounded-lg border border-[var(--border-gold)]/20 bg-background px-6 py-12 text-center">
+                  <p className="text-muted-foreground">
                     No cancelled invites.
                   </p>
                 </div>

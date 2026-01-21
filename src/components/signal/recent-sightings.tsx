@@ -23,7 +23,7 @@ export function RecentSightings({ sightings, isLoading }: RecentSightingsProps) 
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className="h-16 animate-pulse rounded-lg bg-[var(--color-warm-charcoal)]/30"
+            className="h-16 animate-pulse rounded-lg bg-card/30"
           />
         ))}
       </div>
@@ -32,7 +32,7 @@ export function RecentSightings({ sightings, isLoading }: RecentSightingsProps) 
 
   if (sightings.length === 0) {
     return (
-      <p className="py-8 text-center text-[var(--color-dim)]">
+      <p className="py-8 text-center text-muted-foreground">
         No recent sightings
       </p>
     );
@@ -51,8 +51,8 @@ export function RecentSightings({ sightings, isLoading }: RecentSightingsProps) 
             href={`/signal/sighting/${sighting.id}`}
             className={cn(
               "flex items-center justify-between rounded-lg p-4",
-              "border border-[var(--border-gold)]/20 bg-[var(--color-warm-charcoal)]/30",
-              "transition-colors hover:border-[var(--color-gold)]/40 hover:bg-[var(--color-warm-charcoal)]/50"
+              "border border-[var(--border-gold)]/20 bg-card/30",
+              "transition-colors hover:border-[var(--color-gold)]/40 hover:bg-card/50"
             )}
           >
             <div className="flex items-center gap-4">
@@ -60,12 +60,12 @@ export function RecentSightings({ sightings, isLoading }: RecentSightingsProps) 
                 {sighting.number}
               </span>
               {sighting.moodTags && sighting.moodTags.length > 0 && (
-                <span className="text-sm text-[var(--color-dim)]">
+                <span className="text-sm text-muted-foreground">
                   {sighting.moodTags.slice(0, 2).join(", ")}
                 </span>
               )}
             </div>
-            <span className="text-xs text-[var(--color-dim)]">
+            <span className="text-xs text-muted-foreground">
               {formatDistanceToNow(new Date(sighting.timestamp), {
                 addSuffix: true,
               })}

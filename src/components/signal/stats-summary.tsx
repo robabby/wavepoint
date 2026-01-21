@@ -22,13 +22,13 @@ export function StatsSummary({
     return (
       <div className="flex justify-center gap-8 py-6 mb-8">
         <div className="animate-pulse text-center">
-          <div className="mx-auto h-8 w-12 rounded bg-[var(--color-warm-charcoal)]" />
-          <div className="mx-auto mt-2 h-3 w-20 rounded bg-[var(--color-warm-charcoal)]" />
+          <div className="mx-auto h-8 w-12 rounded bg-card" />
+          <div className="mx-auto mt-2 h-3 w-20 rounded bg-card" />
         </div>
         <div className="w-px bg-[var(--border-gold)]/30" />
         <div className="animate-pulse text-center">
-          <div className="mx-auto h-8 w-12 rounded bg-[var(--color-warm-charcoal)]" />
-          <div className="mx-auto mt-2 h-3 w-20 rounded bg-[var(--color-warm-charcoal)]" />
+          <div className="mx-auto h-8 w-12 rounded bg-card" />
+          <div className="mx-auto mt-2 h-3 w-20 rounded bg-card" />
         </div>
       </div>
     );
@@ -45,7 +45,7 @@ export function StatsSummary({
         <div className="font-display text-3xl text-[var(--color-gold)]">
           {totalSightings}
         </div>
-        <div className="text-xs text-[var(--color-dim)] uppercase tracking-wide">
+        <div className="text-xs text-muted-foreground uppercase tracking-wide">
           Total Sightings
         </div>
       </div>
@@ -54,7 +54,7 @@ export function StatsSummary({
         <div className="font-display text-3xl text-[var(--color-gold)]">
           {uniqueNumbers}
         </div>
-        <div className="text-xs text-[var(--color-dim)] uppercase tracking-wide">
+        <div className="text-xs text-muted-foreground uppercase tracking-wide">
           Unique Numbers
         </div>
       </div>

@@ -60,13 +60,13 @@ const platonicSolids = getPlatonicSolids()
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Hero Section with Animated Background */}
       <AnimatedHero className="min-h-[60vh] sm:min-h-[70vh]">
         <div className="container mx-auto flex min-h-[60vh] flex-col items-center justify-center gap-4 px-4 py-8 sm:min-h-[70vh] sm:gap-6 sm:px-6 sm:py-12 lg:gap-8 lg:px-8 lg:py-16">
           <div className="flex flex-col items-center gap-4 text-center sm:gap-6">
             <AnimatedHeroItem>
-              <p className="font-heading max-w-2xl px-4 text-lg text-[var(--color-warm-gray)] sm:text-2xl">
+              <p className="font-heading max-w-2xl px-4 text-lg text-muted-foreground sm:text-2xl">
                 Welcome to the world of
               </p>
             </AnimatedHeroItem>
@@ -74,7 +74,7 @@ export default function HomePage() {
             <AnimatedHeroItem>
               <div className="flex items-center gap-2 sm:gap-4">
                 <CircleDot className="h-8 w-8 text-[var(--color-gold)] sm:h-12 sm:w-12" />
-                <h1 className="font-display text-hero tracking-tight text-[var(--color-cream)]">
+                <h1 className="font-display text-hero tracking-tight text-foreground">
                   SACRED{" "}
                   <span className="text-[var(--color-gold)]">GEOMETRY</span>
                 </h1>
@@ -106,7 +106,7 @@ export default function HomePage() {
             </AnimatedHeroItem>
 
             <AnimatedHeroItem>
-              <p className="max-w-3xl px-4 text-sm text-[var(--color-warm-gray)] sm:text-lg">
+              <p className="max-w-3xl px-4 text-sm text-muted-foreground sm:text-lg">
                 Discover the mathematical principles and timeless patterns that form
                 the foundation of our universe. From the Platonic Solids to the
                 Flower of Life, explore the geometries that have inspired mystics,
@@ -121,7 +121,7 @@ export default function HomePage() {
                 <Button
                   asChild
                   size="3"
-                  className="w-full bg-[var(--color-gold)] font-semibold text-[var(--color-obsidian)] shadow-lg shadow-[var(--glow-gold)] transition-colors hover:bg-[var(--color-gold-bright)] sm:w-auto"
+                  className="w-full bg-[var(--color-gold)] font-semibold text-primary-foreground shadow-lg shadow-[var(--glow-gold)] transition-colors hover:bg-[var(--color-gold-bright)] sm:w-auto"
                 >
                   <Link href={ROUTES.platonicSolids.path}>
                     <span className="hidden sm:inline">
@@ -151,16 +151,16 @@ export default function HomePage() {
       {/* Interactive Tabs Section */}
       <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         <Tabs defaultValue="solids" className="mx-auto max-w-6xl">
-          <TabsList className="grid w-full grid-cols-2 rounded-lg border border-[var(--border-gold)] bg-[var(--color-warm-charcoal)] p-1">
+          <TabsList className="grid w-full grid-cols-2 rounded-lg border border-[var(--border-gold)] bg-card p-1">
             <TabsTrigger
               value="solids"
-              className="rounded-md text-[var(--color-warm-gray)] transition-[background-color,color,box-shadow] data-[state=active]:bg-[var(--color-gold)] data-[state=active]:text-[var(--color-obsidian)] data-[state=active]:shadow-[0_0_12px_var(--glow-gold)]"
+              className="rounded-md text-muted-foreground transition-[background-color,color,box-shadow] data-[state=active]:bg-[var(--color-gold)] data-[state=active]:text-primary-foreground data-[state=active]:shadow-[0_0_12px_var(--glow-gold)]"
             >
               Platonic Solids
             </TabsTrigger>
             <TabsTrigger
               value="patterns"
-              className="rounded-md text-[var(--color-warm-gray)] transition-[background-color,color,box-shadow] data-[state=active]:bg-[var(--color-gold)] data-[state=active]:text-[var(--color-obsidian)] data-[state=active]:shadow-[0_0_12px_var(--glow-gold)]"
+              className="rounded-md text-muted-foreground transition-[background-color,color,box-shadow] data-[state=active]:bg-[var(--color-gold)] data-[state=active]:text-primary-foreground data-[state=active]:shadow-[0_0_12px_var(--glow-gold)]"
             >
               Sacred Patterns
             </TabsTrigger>
@@ -171,13 +171,13 @@ export default function HomePage() {
             <AnimateOnScroll className="mb-4 text-center sm:mb-6 lg:mb-8">
               <Heading
                 size={{ initial: "6", sm: "7" }}
-                className="font-heading mb-2 text-[var(--color-cream)] sm:mb-3"
+                className="font-heading mb-2 text-foreground sm:mb-3"
               >
                 The Five Perfect Solids
               </Heading>
               <Text
                 size={{ initial: "2", sm: "3" }}
-                className="text-[var(--color-warm-gray)]"
+                className="text-muted-foreground"
               >
                 Each solid represents a fundamental element and possesses
                 complete geometric regularity
@@ -201,11 +201,7 @@ export default function HomePage() {
                               alt={solid.name}
                               fill
                               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                              className="object-contain"
-                              style={{
-                                filter:
-                                  "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                              }}
+                              className="object-contain svg-gold"
                             />
                           </GeometryImage>
                           <Icon
@@ -216,7 +212,7 @@ export default function HomePage() {
                           </Text>
                           <Badge
                             variant="secondary"
-                            className="bg-[var(--color-dark-bronze)] px-1.5 py-0.5 text-[10px] text-[var(--color-warm-gray)] sm:text-xs"
+                            className="bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground sm:text-xs"
                           >
                             {solid.element}
                           </Badge>
@@ -252,13 +248,13 @@ export default function HomePage() {
             <AnimateOnScroll className="mb-4 text-center sm:mb-6 lg:mb-8">
               <Heading
                 size={{ initial: "6", sm: "7" }}
-                className="font-heading mb-2 text-[var(--color-cream)] sm:mb-3"
+                className="font-heading mb-2 text-foreground sm:mb-3"
               >
                 Infinite Geometries
               </Heading>
               <Text
                 size={{ initial: "2", sm: "3" }}
-                className="text-[var(--color-warm-gray)]"
+                className="text-muted-foreground"
               >
                 Patterns that encode universal principles and appear throughout
                 nature and consciousness
@@ -287,11 +283,7 @@ export default function HomePage() {
                               alt={pattern.name}
                               fill
                               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                              className="object-contain"
-                              style={{
-                                filter:
-                                  "brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%)",
-                              }}
+                              className="object-contain svg-gold"
                             />
                           </GeometryImage>
                           <Heading
@@ -302,7 +294,7 @@ export default function HomePage() {
                           </Heading>
                           <Text
                             size="2"
-                            className="text-center text-[var(--color-warm-gray)]"
+                            className="text-center text-muted-foreground"
                           >
                             {pattern.description}
                           </Text>

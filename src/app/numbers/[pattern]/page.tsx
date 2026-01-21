@@ -9,6 +9,7 @@ import {
   getRelatedPatterns,
   getCategoryMeta,
   generateComponentBreakdown,
+  findRelatedPatternsForUncovered,
   type NumberPatternId,
 } from "@/lib/numbers";
 import { getNumberContent } from "@/lib/content/numbers";
@@ -91,6 +92,7 @@ export default async function PatternDetailPage({
   // Handle uncovered patterns with component breakdown
   if (!pattern) {
     const breakdown = generateComponentBreakdown(patternParam);
+    const relatedForUncovered = findRelatedPatternsForUncovered(patternParam);
 
     // JSON-LD for uncovered patterns
     const jsonLd = {
@@ -119,7 +121,7 @@ export default async function PatternDetailPage({
     };
 
     return (
-      <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+      <main className="min-h-screen bg-background text-foreground">
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"
@@ -131,7 +133,7 @@ export default async function PatternDetailPage({
             <AnimateOnScroll className="mb-12 text-center">
               <Link
                 href="/numbers"
-                className="mb-4 inline-block text-sm text-[var(--color-dim)] hover:text-[var(--color-gold)] transition-colors"
+                className="mb-4 inline-block text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
               >
                 ← All numbers
               </Link>
@@ -141,7 +143,7 @@ export default async function PatternDetailPage({
               >
                 {patternParam}
               </Heading>
-              <Text className="text-[var(--color-warm-gray)]">
+              <Text className="text-muted-foreground">
                 This pattern isn&apos;t in our core collection, but let&apos;s explore its components.
               </Text>
             </AnimateOnScroll>
@@ -153,16 +155,38 @@ export default async function PatternDetailPage({
               </AnimatedCard>
             </AnimateOnScroll>
 
+            {/* Related Patterns for Uncovered */}
+            {relatedForUncovered.length > 0 && (
+              <AnimateOnScroll delay={0.2} className="mt-12">
+                <Heading
+                  size="4"
+                  className="mb-6 font-display text-[var(--color-gold)]"
+                >
+                  Related patterns
+                </Heading>
+                <StaggerChildren
+                  className="grid grid-cols-2 gap-4 sm:grid-cols-3"
+                  staggerDelay={0.05}
+                >
+                  {relatedForUncovered.map((related) => (
+                    <StaggerItem key={related.id}>
+                      <PatternCard pattern={related} />
+                    </StaggerItem>
+                  ))}
+                </StaggerChildren>
+              </AnimateOnScroll>
+            )}
+
             {/* Signal CTA */}
-            <AnimateOnScroll delay={0.2} className="mt-12">
+            <AnimateOnScroll delay={relatedForUncovered.length > 0 ? 0.3 : 0.2} className="mt-12">
               <AnimatedCard className="p-6 text-center sm:p-8">
                 <Heading
                   size="5"
-                  className="mb-3 font-display text-[var(--color-cream)]"
+                  className="mb-3 font-display text-foreground"
                 >
                   Keep seeing {patternParam}?
                 </Heading>
-                <Text className="mb-6 text-[var(--color-warm-gray)]">
+                <Text className="mb-6 text-muted-foreground">
                   {signalEnabled
                     ? "Track this sighting in Signal to discover patterns over time."
                     : "Track your number sightings and find meaning in the patterns."}
@@ -178,10 +202,10 @@ export default async function PatternDetailPage({
             </AnimateOnScroll>
 
             {/* Browse link */}
-            <AnimateOnScroll delay={0.3} className="mt-8 text-center">
+            <AnimateOnScroll delay={relatedForUncovered.length > 0 ? 0.4 : 0.3} className="mt-8 text-center">
               <Link
                 href="/numbers"
-                className="text-sm text-[var(--color-dim)] hover:text-[var(--color-gold)] transition-colors"
+                className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
               >
                 Browse all number meanings →
               </Link>
@@ -234,7 +258,7 @@ export default async function PatternDetailPage({
   };
 
   return (
-    <main className="min-h-screen bg-[var(--color-obsidian)] text-[var(--color-cream)]">
+    <main className="min-h-screen bg-background text-foreground">
       {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
@@ -246,7 +270,7 @@ export default async function PatternDetailPage({
           <AnimateOnScroll className="mb-12 text-center">
             <Link
               href="/numbers"
-              className="mb-4 inline-block text-sm text-[var(--color-dim)] hover:text-[var(--color-gold)] transition-colors"
+              className="mb-4 inline-block text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
               ← All numbers
             </Link>
@@ -261,7 +285,7 @@ export default async function PatternDetailPage({
             <Heading
               size="6"
               as="h2"
-              className="mb-4 font-display text-[var(--color-cream)]"
+              className="mb-4 font-display text-foreground"
             >
               {pattern.title}
             </Heading>
@@ -282,7 +306,7 @@ export default async function PatternDetailPage({
           {/* Core Meaning */}
           <AnimateOnScroll delay={0.1}>
             <AnimatedCard className="mb-8 p-6 sm:p-8">
-              <Text size="4" className="leading-relaxed text-[var(--color-warm-gray)]">
+              <Text size="4" className="leading-relaxed text-muted-foreground">
                 {pattern.meaning}
               </Text>
             </AnimatedCard>
@@ -312,7 +336,7 @@ export default async function PatternDetailPage({
                   {pattern.keywords.map((keyword) => (
                     <span
                       key={keyword}
-                      className="rounded-full border border-[var(--color-gold)]/20 bg-[var(--color-warm-charcoal)]/30 px-3 py-1 text-xs text-[var(--color-warm-gray)]"
+                      className="rounded-full border border-[var(--color-gold)]/20 bg-card/30 px-3 py-1 text-xs text-muted-foreground"
                     >
                       {keyword}
                     </span>
@@ -349,11 +373,11 @@ export default async function PatternDetailPage({
             <AnimatedCard className="p-6 text-center sm:p-8">
               <Heading
                 size="5"
-                className="mb-3 font-display text-[var(--color-cream)]"
+                className="mb-3 font-display text-foreground"
               >
                 Seeing {pattern.id} often?
               </Heading>
-              <Text className="mb-6 text-[var(--color-warm-gray)]">
+              <Text className="mb-6 text-muted-foreground">
                 {signalEnabled
                   ? "Track this sighting in Signal to discover patterns over time."
                   : "Track your number sightings and find meaning in the patterns."}
@@ -372,7 +396,7 @@ export default async function PatternDetailPage({
           <AnimateOnScroll delay={0.5} className="mt-8 text-center">
             <Link
               href="/numbers"
-              className="text-sm text-[var(--color-dim)] hover:text-[var(--color-gold)] transition-colors"
+              className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
               Browse all number meanings →
             </Link>
