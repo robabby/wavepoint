@@ -177,29 +177,29 @@ export default async function PatternDetailPage({
               </AnimateOnScroll>
             )}
 
-            {/* Signal CTA */}
-            <AnimateOnScroll delay={relatedForUncovered.length > 0 ? 0.3 : 0.2} className="mt-12">
-              <AnimatedCard className="p-6 text-center sm:p-8">
-                <Heading
-                  size="5"
-                  className="mb-3 font-display text-foreground"
-                >
-                  Keep seeing {patternParam}?
-                </Heading>
-                <Text className="mb-6 text-muted-foreground">
-                  {signalEnabled
-                    ? "Track this sighting in Signal to discover patterns over time."
-                    : "Track your number sightings and find meaning in the patterns."}
-                </Text>
-                <Link
-                  href={signalEnabled ? "/signal/capture" : "/signal"}
-                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
-                >
-                  {signalEnabled ? "Log this sighting" : "Start tracking"}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </AnimatedCard>
-            </AnimateOnScroll>
+{/* Signal CTA - only shown when Signal feature is enabled */}
+            {signalEnabled && (
+              <AnimateOnScroll delay={relatedForUncovered.length > 0 ? 0.3 : 0.2} className="mt-12">
+                <AnimatedCard className="p-6 text-center sm:p-8">
+                  <Heading
+                    size="5"
+                    className="mb-3 font-display text-foreground"
+                  >
+                    Keep seeing {patternParam}?
+                  </Heading>
+                  <Text className="mb-6 text-muted-foreground">
+                    Track this sighting in Signal to discover patterns over time.
+                  </Text>
+                  <Link
+                    href="/signal/capture"
+                    className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
+                  >
+                    Log this sighting
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </AnimatedCard>
+              </AnimateOnScroll>
+            )}
 
             {/* Browse link */}
             <AnimateOnScroll delay={relatedForUncovered.length > 0 ? 0.4 : 0.3} className="mt-8 text-center">
@@ -368,29 +368,29 @@ export default async function PatternDetailPage({
             </AnimateOnScroll>
           )}
 
-          {/* Signal CTA */}
-          <AnimateOnScroll delay={0.4}>
-            <AnimatedCard className="p-6 text-center sm:p-8">
-              <Heading
-                size="5"
-                className="mb-3 font-display text-foreground"
-              >
-                Seeing {pattern.id} often?
-              </Heading>
-              <Text className="mb-6 text-muted-foreground">
-                {signalEnabled
-                  ? "Track this sighting in Signal to discover patterns over time."
-                  : "Track your number sightings and find meaning in the patterns."}
-              </Text>
-              <Link
-                href={signalEnabled ? "/signal/capture" : "/signal"}
-                className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
-              >
-                {signalEnabled ? "Log this sighting" : "Start tracking"}
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </AnimatedCard>
-          </AnimateOnScroll>
+{/* Signal CTA - only shown when Signal feature is enabled */}
+          {signalEnabled && (
+            <AnimateOnScroll delay={0.4}>
+              <AnimatedCard className="p-6 text-center sm:p-8">
+                <Heading
+                  size="5"
+                  className="mb-3 font-display text-foreground"
+                >
+                  Seeing {pattern.id} often?
+                </Heading>
+                <Text className="mb-6 text-muted-foreground">
+                  Track this sighting in Signal to discover patterns over time.
+                </Text>
+                <Link
+                  href="/signal/capture"
+                  className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
+                >
+                  Log this sighting
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </AnimatedCard>
+            </AnimateOnScroll>
+          )}
 
           {/* Browse link */}
           <AnimateOnScroll delay={0.5} className="mt-8 text-center">
