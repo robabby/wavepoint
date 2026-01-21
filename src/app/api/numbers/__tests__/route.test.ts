@@ -14,7 +14,7 @@ describe("GET /api/numbers", () => {
 
     expect(response.status).toBe(200);
     expect(data.patterns).toBeDefined();
-    expect(data.total).toBe(20); // 20 patterns in launch set
+    expect(data.total).toBe(90); // 90 patterns in expanded catalog
     expect(Array.isArray(data.patterns)).toBe(true);
   });
 

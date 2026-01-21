@@ -7,8 +7,8 @@ import { PATTERNS, getBaseMeaning, getEssence } from "../data";
 import { NUMBER_PATTERN_IDS } from "../types";
 
 describe("PATTERNS", () => {
-  it("contains all 20 patterns", () => {
-    expect(Object.keys(PATTERNS)).toHaveLength(20);
+  it("contains all 90 patterns", () => {
+    expect(Object.keys(PATTERNS)).toHaveLength(90);
   });
 
   it("has all required fields for each pattern", () => {
@@ -52,8 +52,8 @@ describe("getBaseMeaning", () => {
   });
 
   it("returns fallback for unknown patterns", () => {
-    const meaning = getBaseMeaning("789");
-    expect(meaning).toContain("789");
+    const meaning = getBaseMeaning("98765");
+    expect(meaning).toContain("98765");
     expect(meaning).toContain("unique significance");
   });
 });
@@ -65,7 +65,7 @@ describe("getEssence", () => {
   });
 
   it("returns undefined for unknown patterns", () => {
-    const essence = getEssence("789");
+    const essence = getEssence("98765");
     expect(essence).toBeUndefined();
   });
 });
