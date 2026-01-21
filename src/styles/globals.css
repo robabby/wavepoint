@@ -358,33 +358,6 @@ body::after {
     color: var(--color-dim);
   }
 
-  /* ==========================================================================
-     SVG Color Filters - Theme-Aware
-     Colorize SVG images to gold that adapts to light/dark themes
-     ========================================================================== */
-
-  /* Primary gold filter for geometry illustrations */
-  .svg-gold {
-    /* Light mode: darker gold (#876b24) for contrast on ivory */
-    filter: brightness(0) saturate(100%) invert(40%) sepia(85%) saturate(450%) hue-rotate(22deg) brightness(92%) contrast(95%);
-  }
-
-  .dark .svg-gold {
-    /* Dark mode: lighter gold (#d4a84b) for contrast on obsidian */
-    filter: brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%);
-  }
-
-  /* Muted gold filter for background decorative elements */
-  .svg-gold-muted {
-    /* Light mode: subtle gold for backgrounds */
-    filter: brightness(0) saturate(100%) invert(50%) sepia(50%) saturate(300%) hue-rotate(22deg) brightness(95%) contrast(90%);
-  }
-
-  .dark .svg-gold-muted {
-    /* Dark mode: subtle gold for backgrounds */
-    filter: brightness(0) saturate(100%) invert(76%) sepia(30%) saturate(500%) hue-rotate(5deg) brightness(95%) contrast(90%);
-  }
-
   /* Background colors from palette */
   .bg-obsidian {
     background-color: var(--color-obsidian);
@@ -433,6 +406,33 @@ body::after {
   .scrollbar-none::-webkit-scrollbar {
     display: none; /* Chrome/Safari/Opera */
   }
+}
+
+/* ==========================================================================
+   SVG Color Filters - Theme-Aware
+   Placed outside @layer utilities for proper dark mode specificity
+   ========================================================================== */
+
+/* Primary gold filter for geometry illustrations */
+.svg-gold {
+  /* Light mode: darker gold (#876b24) for contrast on ivory */
+  filter: brightness(0) saturate(100%) invert(40%) sepia(85%) saturate(450%) hue-rotate(22deg) brightness(92%) contrast(95%);
+}
+
+.dark .svg-gold {
+  /* Dark mode: lighter gold (#d4a84b) for contrast on obsidian */
+  filter: brightness(0) saturate(100%) invert(85%) sepia(66%) saturate(466%) hue-rotate(358deg) brightness(98%) contrast(91%);
+}
+
+/* Muted gold filter for background decorative elements */
+.svg-gold-muted {
+  /* Light mode: subtle gold for backgrounds */
+  filter: brightness(0) saturate(100%) invert(50%) sepia(50%) saturate(300%) hue-rotate(22deg) brightness(95%) contrast(90%);
+}
+
+.dark .svg-gold-muted {
+  /* Dark mode: subtle gold for backgrounds */
+  filter: brightness(0) saturate(100%) invert(76%) sepia(30%) saturate(500%) hue-rotate(5deg) brightness(95%) contrast(90%);
 }
 
 /* ==========================================================================

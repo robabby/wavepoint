@@ -9,6 +9,7 @@ import {
   PatternCard,
   NumberSearchResults,
 } from "@/components/numbers";
+import { cn } from "@/lib/utils";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard } from "@/components/animated-card";
@@ -43,8 +44,16 @@ export function NumbersPageClient({
   return (
     <>
       {/* Hero Section */}
-      <section className="flex min-h-[70vh] flex-col items-center justify-center px-4 py-16 text-center">
-        <AnimateOnScroll className="flex flex-col items-center gap-8">
+      <section className={cn(
+        "flex flex-col items-center justify-center px-4 text-center",
+        "transition-all duration-300 ease-out",
+        isSearching ? "py-8" : "min-h-[70vh] py-16"
+      )}>
+        <AnimateOnScroll className={cn(
+          "flex flex-col items-center",
+          "transition-all duration-300 ease-out",
+          isSearching ? "gap-4" : "gap-8"
+        )}>
           <Heading
             size="9"
             className="font-display text-foreground"
@@ -61,22 +70,30 @@ export function NumbersPageClient({
 
           <Text
             size="3"
-            className="max-w-md text-muted-foreground"
+            className={cn(
+              "max-w-md text-muted-foreground",
+              "transition-all duration-200 ease-out",
+              isSearching ? "h-0 opacity-0" : "opacity-100"
+            )}
+            aria-hidden={isSearching}
           >
             Often called angel numbers, these recurring sequences appear when
             you&apos;re paying attention.
           </Text>
 
-          {!isSearching && (
-            <a
-              href="#featured"
-              className="mt-4 flex flex-col items-center gap-1 text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
-              aria-label="Scroll to explore patterns"
-            >
-              <span className="text-sm">explore</span>
-              <ChevronDown className="h-5 w-5 animate-bounce" />
-            </a>
-          )}
+          <a
+            href="#featured"
+            className={cn(
+              "mt-4 flex flex-col items-center gap-1 text-muted-foreground transition-all duration-200 ease-out hover:text-[var(--color-gold)]",
+              isSearching ? "pointer-events-none h-0 opacity-0" : "opacity-100"
+            )}
+            aria-label="Scroll to explore patterns"
+            aria-hidden={isSearching}
+            tabIndex={isSearching ? -1 : 0}
+          >
+            <span className="text-sm">explore</span>
+            <ChevronDown className="h-5 w-5 animate-bounce" />
+          </a>
         </AnimateOnScroll>
       </section>
 

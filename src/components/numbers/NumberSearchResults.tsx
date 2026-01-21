@@ -36,6 +36,7 @@ export function NumberSearchResults({
         {results.length} pattern{results.length !== 1 ? "s" : ""} found
       </Text>
       <StaggerChildren
+        key={query}
         className="mx-auto grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6"
         staggerDelay={0.05}
       >

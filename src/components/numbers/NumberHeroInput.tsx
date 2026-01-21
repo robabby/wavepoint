@@ -97,7 +97,7 @@ export function NumberHeroInput({
             "w-full rounded-xl border px-6 py-4 text-center",
             "font-display text-3xl tracking-widest",
             "bg-card/50 backdrop-blur-sm",
-            "placeholder:text-muted-foreground placeholder:text-xl placeholder:tracking-normal placeholder:font-sans",
+            "placeholder:text-muted-foreground/50 placeholder:text-3xl placeholder:tracking-widest placeholder:font-display",
             "text-[var(--color-gold)]",
             "transition-all duration-200",
             // Default border
