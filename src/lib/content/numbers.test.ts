@@ -14,9 +14,11 @@ describe("numbers content loader", () => {
       expect(numberContentExists("nonexistent")).toBe(false);
     });
 
-    it("returns false for patterns without MDX files", () => {
-      // 666 exists in data but has no MDX file
-      expect(numberContentExists("666")).toBe(false);
+    it("returns true for all catalog patterns", () => {
+      // All 90 patterns now have MDX content
+      expect(numberContentExists("1122")).toBe(true);
+      expect(numberContentExists("101")).toBe(true);
+      expect(numberContentExists("1428")).toBe(true);
     });
   });
 

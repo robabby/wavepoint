@@ -14,11 +14,14 @@ export function getAllPatterns(): NumberPattern[] {
   return Object.values(PATTERNS).sort((a, b) => {
     // Sort by category order first, then by pattern order
     const categoryOrder: Record<NumberCategory, number> = {
-      triple: 1,
-      quad: 2,
-      sequential: 3,
-      mirrored: 4,
-      double: 5,
+      double: 1,
+      triple: 2,
+      quad: 3,
+      sequential: 4,
+      mirrored: 5,
+      clock: 6,
+      sandwich: 7,
+      compound: 8,
     };
     const catDiff = categoryOrder[a.category] - categoryOrder[b.category];
     if (catDiff !== 0) return catDiff;
