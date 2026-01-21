@@ -164,6 +164,7 @@
   /* Light mode gold variants for different uses */
   --color-gold-text: #876b24;
   --color-gold-decorative: #a38230;
+  --color-copper-text: #8f5a28;
 }
 
 /* ==========================================================================
@@ -241,6 +242,7 @@
   /* Dark mode gold variants (same value, for consistency) */
   --color-gold-text: #d4a84b;
   --color-gold-decorative: #d4a84b;
+  --color-copper-text: #b87333;
 }
 
 /* ==========================================================================
