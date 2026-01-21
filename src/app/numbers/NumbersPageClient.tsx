@@ -165,31 +165,31 @@ export function NumbersPageClient({
           </>
         )}
 
-        {/* Signal CTA */}
-        <AnimateOnScroll>
-          <AnimatedCard className="mx-auto max-w-2xl p-8 text-center">
-            <Heading
-              size="5"
-              className="mb-3 font-display text-foreground"
-            >
-              Notice these patterns often?
-            </Heading>
+{/* Signal CTA - only shown when Signal feature is enabled */}
+        {signalEnabled && (
+          <AnimateOnScroll>
+            <AnimatedCard className="mx-auto max-w-2xl p-8 text-center">
+              <Heading
+                size="5"
+                className="mb-3 font-display text-foreground"
+              >
+                Notice these patterns often?
+              </Heading>
 
-            <Text className="mb-6 text-muted-foreground">
-              {signalEnabled
-                ? "Signal helps you track what you see and find meaning over time."
-                : "Track what you see and find meaning over time with Signal."}
-            </Text>
+              <Text className="mb-6 text-muted-foreground">
+                Track what you see and find meaning over time with Signal.
+              </Text>
 
-            <Link
-              href={signalEnabled ? "/signal" : "/signal"}
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
-            >
-              {signalEnabled ? "View your signals" : "Start tracking"}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </AnimatedCard>
-        </AnimateOnScroll>
+              <Link
+                href="/signal"
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
+              >
+                Start tracking
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </AnimatedCard>
+          </AnimateOnScroll>
+        )}
       </div>
     </>
   );
