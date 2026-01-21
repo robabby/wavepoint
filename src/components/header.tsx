@@ -20,6 +20,7 @@ import { CartIcon } from "@/components/shop/cart-icon";
 import { CartDrawer } from "@/components/shop/cart-drawer";
 import { useCanAccessShop, useCanAccessAuth } from "@/lib/features/access";
 import { AuthHeaderSection } from "@/components/auth/auth-header-section";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type NavItem = {
   path: string;
@@ -292,7 +293,7 @@ export function Header() {
             </span>
           </Link>
 
-          {/* Mobile Actions: Search + Cart + Menu */}
+          {/* Mobile Actions: Search + Theme + Cart + Menu */}
           <div className="flex items-center gap-1 sm:hidden">
             {/* Search Icon */}
             <button
@@ -309,6 +310,9 @@ export function Header() {
             >
               <Search className="h-5 w-5" />
             </button>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
 
             {shopEnabled && <CartIcon />}
 
@@ -368,6 +372,9 @@ export function Header() {
               >
                 <Search className="h-5 w-5" />
               </button>
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
 
               {/* Cart Icon - only when shop is enabled */}
               {shopEnabled && <CartIcon />}

@@ -2,29 +2,61 @@
 
 import { useState, type KeyboardEvent, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NumberHeroInputProps {
   className?: string;
   placeholder?: string;
+  /** Controlled value (optional - uncontrolled mode if not provided) */
+  value?: string;
+  /** Controlled onChange handler (optional - uncontrolled mode if not provided) */
+  onChange?: (value: string) => void;
+  /** Called when clear button is clicked (controlled mode only) */
+  onClear?: () => void;
 }
 
 /**
  * Hero input for the Numbers landing page.
- * Accepts 2-5 digit number sequences and navigates to the pattern page on Enter.
+ * Supports both controlled and uncontrolled modes.
+ * - Uncontrolled: Manages own state, navigates on Enter
+ * - Controlled: Parent manages state via value/onChange
  */
 export function NumberHeroInput({
   className,
   placeholder = "Enter a number sequence...",
+  value: controlledValue,
+  onChange: controlledOnChange,
+  onClear,
 }: NumberHeroInputProps) {
-  const [value, setValue] = useState("");
+  const [internalValue, setInternalValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  // Determine if controlled or uncontrolled
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : internalValue;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     // Only allow digits
     const digits = e.target.value.replace(/\D/g, "");
-    setValue(digits);
+
+    if (isControlled && controlledOnChange) {
+      controlledOnChange(digits);
+    } else {
+      setInternalValue(digits);
+    }
+    setError(null);
+  };
+
+  const handleClear = () => {
+    if (isControlled && onClear) {
+      onClear();
+    } else if (isControlled && controlledOnChange) {
+      controlledOnChange("");
+    } else {
+      setInternalValue("");
+    }
     setError(null);
   };
 
@@ -65,7 +97,7 @@ export function NumberHeroInput({
             "w-full rounded-xl border px-6 py-4 text-center",
             "font-display text-3xl tracking-widest",
             "bg-[var(--color-warm-charcoal)]/50 backdrop-blur-sm",
-            "placeholder:text-[var(--color-dim)] placeholder:text-lg placeholder:tracking-normal placeholder:font-sans",
+            "placeholder:text-[var(--color-dim)] placeholder:text-xl placeholder:tracking-normal placeholder:font-sans",
             "text-[var(--color-gold)]",
             "transition-all duration-200",
             // Default border
@@ -78,9 +110,17 @@ export function NumberHeroInput({
           )}
         />
         {value.length > 0 && (
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[var(--color-dim)]">
-            Press Enter
-          </span>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleClear}
+              className="rounded-full p-1 text-[var(--color-dim)] hover:text-[var(--color-gold)] hover:bg-[var(--color-warm-charcoal)] transition-colors"
+              aria-label="Clear input"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            <span className="text-sm text-[var(--color-dim)]">Enter</span>
+          </div>
         )}
       </div>
       {error && (

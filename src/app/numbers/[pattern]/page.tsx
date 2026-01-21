@@ -9,6 +9,7 @@ import {
   getRelatedPatterns,
   getCategoryMeta,
   generateComponentBreakdown,
+  findRelatedPatternsForUncovered,
   type NumberPatternId,
 } from "@/lib/numbers";
 import { getNumberContent } from "@/lib/content/numbers";
@@ -91,6 +92,7 @@ export default async function PatternDetailPage({
   // Handle uncovered patterns with component breakdown
   if (!pattern) {
     const breakdown = generateComponentBreakdown(patternParam);
+    const relatedForUncovered = findRelatedPatternsForUncovered(patternParam);
 
     // JSON-LD for uncovered patterns
     const jsonLd = {
@@ -153,8 +155,30 @@ export default async function PatternDetailPage({
               </AnimatedCard>
             </AnimateOnScroll>
 
+            {/* Related Patterns for Uncovered */}
+            {relatedForUncovered.length > 0 && (
+              <AnimateOnScroll delay={0.2} className="mt-12">
+                <Heading
+                  size="4"
+                  className="mb-6 font-display text-[var(--color-gold)]"
+                >
+                  Related patterns
+                </Heading>
+                <StaggerChildren
+                  className="grid grid-cols-2 gap-4 sm:grid-cols-3"
+                  staggerDelay={0.05}
+                >
+                  {relatedForUncovered.map((related) => (
+                    <StaggerItem key={related.id}>
+                      <PatternCard pattern={related} />
+                    </StaggerItem>
+                  ))}
+                </StaggerChildren>
+              </AnimateOnScroll>
+            )}
+
             {/* Signal CTA */}
-            <AnimateOnScroll delay={0.2} className="mt-12">
+            <AnimateOnScroll delay={relatedForUncovered.length > 0 ? 0.3 : 0.2} className="mt-12">
               <AnimatedCard className="p-6 text-center sm:p-8">
                 <Heading
                   size="5"
@@ -178,7 +202,7 @@ export default async function PatternDetailPage({
             </AnimateOnScroll>
 
             {/* Browse link */}
-            <AnimateOnScroll delay={0.3} className="mt-8 text-center">
+            <AnimateOnScroll delay={relatedForUncovered.length > 0 ? 0.4 : 0.3} className="mt-8 text-center">
               <Link
                 href="/numbers"
                 className="text-sm text-[var(--color-dim)] hover:text-[var(--color-gold)] transition-colors"

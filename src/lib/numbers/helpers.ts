@@ -163,3 +163,139 @@ export function getPatternCount(): number {
 export function getPatternCountByCategory(category: NumberCategory): number {
   return getPatternsByCategory(category).length;
 }
+
+/**
+ * Find related patterns for an uncovered number.
+ * Uses three strategies:
+ * 1. Containment - find patterns whose ID is contained in the number
+ * 2. Digit patterns - find repeating patterns for each unique digit
+ * 3. Category similarity - if ascending/descending/palindrome, show similar patterns
+ *
+ * Returns up to 6 related patterns.
+ */
+export function findRelatedPatternsForUncovered(number: string): NumberPattern[] {
+  const found = new Set<NumberPatternId>();
+  const results: NumberPattern[] = [];
+
+  // Strategy 1: Find patterns contained in the number
+  // e.g., "12345" contains "123", "1234", "234", "345", etc.
+  for (const id of NUMBER_PATTERN_IDS) {
+    if (number.includes(id) && number !== id) {
+      found.add(id);
+    }
+  }
+
+  // Strategy 2: Find repeating digit patterns for each unique digit
+  // e.g., "8847" relates to 88, 888, 44, 444, 77, 777
+  const uniqueDigits = [...new Set(number.split(""))].filter((d) => d !== "0");
+  for (const digit of uniqueDigits) {
+    const double = `${digit}${digit}` as NumberPatternId;
+    const triple = `${digit}${digit}${digit}` as NumberPatternId;
+    const quad = `${digit}${digit}${digit}${digit}` as NumberPatternId;
+
+    if (NUMBER_PATTERN_IDS.includes(double)) found.add(double);
+    if (NUMBER_PATTERN_IDS.includes(triple)) found.add(triple);
+    if (NUMBER_PATTERN_IDS.includes(quad)) found.add(quad);
+  }
+
+  // Strategy 3: Check for sequential or palindrome patterns
+  const isAscending = isAscendingSequence(number);
+  const isDescending = isDescendingSequence(number);
+  const isPalindrome = isPalindromeNumber(number);
+
+  if (isAscending) {
+    // Add other ascending sequences
+    const ascending: NumberPatternId[] = [
+      "123",
+      "234",
+      "345",
+      "456",
+      "567",
+      "678",
+      "789",
+      "1234",
+      "12345",
+    ];
+    for (const id of ascending) {
+      if (number !== id) found.add(id);
+    }
+  }
+
+  if (isDescending) {
+    // Add other descending sequences
+    const descending: NumberPatternId[] = ["321", "432", "4321", "54321"];
+    for (const id of descending) {
+      if (number !== id) found.add(id);
+    }
+  }
+
+  if (isPalindrome && number.length >= 4) {
+    // Add mirrored patterns
+    const mirrored: NumberPatternId[] = [
+      "1001",
+      "1221",
+      "1331",
+      "1441",
+      "1551",
+      "1661",
+      "1771",
+      "1881",
+      "1991",
+    ];
+    for (const id of mirrored) {
+      if (number !== id) found.add(id);
+    }
+  }
+
+  // Convert to pattern objects and limit to 6
+  for (const id of found) {
+    const pattern = PATTERNS[id];
+    if (pattern && results.length < 6) {
+      results.push(pattern);
+    }
+    if (results.length >= 6) break;
+  }
+
+  // Sort by relevance: contained patterns first, then by order
+  return results.sort((a, b) => {
+    const aContained = number.includes(a.id);
+    const bContained = number.includes(b.id);
+    if (aContained && !bContained) return -1;
+    if (!aContained && bContained) return 1;
+    return a.order - b.order;
+  });
+}
+
+/**
+ * Check if a number is an ascending sequence (e.g., 123, 456, 12345).
+ */
+function isAscendingSequence(number: string): boolean {
+  if (number.length < 3) return false;
+  for (let i = 1; i < number.length; i++) {
+    const prev = parseInt(number[i - 1]!, 10);
+    const curr = parseInt(number[i]!, 10);
+    if (curr !== prev + 1) return false;
+  }
+  return true;
+}
+
+/**
+ * Check if a number is a descending sequence (e.g., 321, 987, 54321).
+ */
+function isDescendingSequence(number: string): boolean {
+  if (number.length < 3) return false;
+  for (let i = 1; i < number.length; i++) {
+    const prev = parseInt(number[i - 1]!, 10);
+    const curr = parseInt(number[i]!, 10);
+    if (curr !== prev - 1) return false;
+  }
+  return true;
+}
+
+/**
+ * Check if a number is a palindrome (e.g., 1221, 12321).
+ */
+function isPalindromeNumber(number: string): boolean {
+  if (number.length < 3) return false;
+  return number === number.split("").reverse().join("");
+}

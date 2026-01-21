@@ -55,6 +55,7 @@ export {
   getRelatedPatterns,
   isKnownPattern,
   searchPatterns,
+  findRelatedPatternsForUncovered,
 } from "./helpers";
 
 // Component breakdown (for uncovered patterns)
