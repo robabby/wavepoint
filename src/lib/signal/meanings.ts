@@ -1,30 +1,37 @@
 /**
- * Base meanings for common angel numbers.
- * Used as foundation for AI interpretations and fallbacks.
+ * Base meanings for angel numbers.
+ *
+ * This module re-exports getBaseMeaning from the Numbers module,
+ * which is now the single source of truth for pattern meanings.
+ *
+ * For patterns not covered by Numbers (e.g., "000"), we provide
+ * a local fallback meaning below.
  */
-const BASE_MEANINGS: Record<string, string> = {
-  "111": "New beginnings, manifestation, alignment with your higher purpose",
-  "222": "Balance, harmony, trust the process, partnerships",
-  "333": "Ascended masters are near, creativity, self-expression",
-  "444": "Angels are with you, protection, foundation building",
-  "555": "Major changes coming, transformation, freedom",
-  "666": "Balance material and spiritual, self-reflection",
-  "777": "Spiritual awakening, luck, divine wisdom",
-  "888": "Abundance, financial prosperity, infinite flow",
-  "999": "Completion, endings leading to new beginnings",
-  "000": "Infinite potential, oneness with the universe",
-  "1111": "Powerful manifestation portal, alignment, wake-up call",
-  "1212": "Stay positive, trust your path, spiritual growth",
-  "1234": "Progress, step by step, you're on the right track",
+
+import { getBaseMeaning as getNumbersBaseMeaning } from "@/lib/numbers";
+
+/**
+ * Additional meanings for patterns not covered by the Numbers module.
+ * These are patterns that users might encounter but aren't part of
+ * the main Numbers content hub.
+ */
+const ADDITIONAL_MEANINGS: Record<string, string> = {
+  "000": "The appearance of 000 speaks to infinite potential and the void from which all creation emerges. This pattern connects you to the source—the boundless space where possibilities are unlimited. It's a reminder that before any manifestation comes emptiness, and within that emptiness lies everything. You're being invited to release attachment and trust in the infinite.",
 };
 
 /**
  * Get the base meaning for a number.
- * Returns a generic message for unknown numbers.
+ * First checks the Numbers module (20 core patterns),
+ * then falls back to additional meanings, then a generic response.
  */
 export function getBaseMeaning(number: string): string {
-  return (
-    BASE_MEANINGS[number] ??
-    `The number ${number} carries unique significance for you`
-  );
+  // First try the Numbers module (single source of truth)
+  const numbersMeaning = getNumbersBaseMeaning(number);
+
+  // If Numbers returns the generic fallback, check our additional meanings
+  if (numbersMeaning === `The number ${number} carries unique significance for you`) {
+    return ADDITIONAL_MEANINGS[number] ?? numbersMeaning;
+  }
+
+  return numbersMeaning;
 }
