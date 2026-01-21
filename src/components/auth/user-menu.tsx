@@ -140,7 +140,7 @@ export function UserMenu({
           <DropdownMenuItem asChild>
             <Link
               href="/account"
-              className="text-muted-foreground focus:bg-card focus:text-[var(--color-gold)]"
+              className="text-muted-foreground !focus:bg-card !focus:text-[var(--color-gold-text)]"
             >
               <Settings className="mr-2 h-4 w-4" />
               Account
@@ -150,7 +150,7 @@ export function UserMenu({
             <DropdownMenuItem asChild>
               <Link
                 href="/signal"
-                className="text-muted-foreground focus:bg-card focus:text-[var(--color-gold)]"
+                className="text-muted-foreground !focus:bg-card !focus:text-[var(--color-gold-text)]"
               >
                 <Sparkles className="mr-2 h-4 w-4" />
                 Signal
@@ -161,7 +161,7 @@ export function UserMenu({
             <DropdownMenuItem asChild>
               <Link
                 href="/admin"
-                className="text-muted-foreground focus:bg-card focus:text-[var(--color-gold)]"
+                className="text-muted-foreground !focus:bg-card !focus:text-[var(--color-gold-text)]"
               >
                 <Shield className="mr-2 h-4 w-4" />
                 Admin
@@ -172,7 +172,7 @@ export function UserMenu({
         <DropdownMenuSeparator className="bg-[var(--border-gold)]/30" />
         <DropdownMenuItem
           onClick={onSignOut}
-          className="text-muted-foreground focus:bg-card focus:text-[var(--color-gold)]"
+          className="text-muted-foreground !focus:bg-card !focus:text-[var(--color-gold-text)]"
         >
           <LogOut className="mr-2 h-4 w-4" />
           Sign Out
