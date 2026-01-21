@@ -84,7 +84,7 @@ export function MDXSection({ children }: MDXSectionProps) {
     <Card
       ref={sectionRef}
       id={fallbackId}
-      className="mb-6 border-[var(--border-gold)] bg-gradient-to-br from-[var(--color-warm-charcoal)] to-[var(--color-dark-bronze)] p-6 sm:mb-8 sm:p-8"
+      className="mb-6 border-[var(--border-gold)] bg-card dark:bg-gradient-to-br dark:from-[var(--color-warm-charcoal)] dark:to-[var(--color-dark-bronze)] p-6 sm:mb-8 sm:p-8"
     >
       {children}
     </Card>
