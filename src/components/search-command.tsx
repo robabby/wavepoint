@@ -23,6 +23,8 @@ import {
   getPatterns,
 } from "@/lib/data";
 import type { Geometry } from "@/lib/data/geometries.types";
+import { searchPatterns, getPatternCount } from "@/lib/numbers";
+import type { NumberPattern } from "@/lib/numbers";
 import { cn } from "@/lib/utils";
 
 // Helper function to highlight matching text
@@ -34,7 +36,7 @@ function highlightText(text: string, query: string): React.ReactNode {
     part.toLowerCase() === query.toLowerCase() ? (
       <mark
         key={index}
-        className="bg-[var(--color-gold)]/20 text-[var(--color-gold-bright)] font-medium rounded-sm px-0.5"
+        className="bg-[var(--color-gold)]/20 text-[var(--color-gold-text)] font-medium rounded-sm px-0.5"
       >
         {part}
       </mark>
@@ -194,6 +196,11 @@ export function SearchCommand() {
   const platonicResults = results.filter((g) => g.category === "platonic");
   const patternResults = results.filter((g) => g.category === "pattern");
 
+  // Search numbers using existing helper (limit to 6)
+  const numberResults = searchQuery.length > 0
+    ? searchPatterns(searchQuery).slice(0, 6)
+    : [];
+
   // Handle selection and navigation
   const handleSelect = (geometry: Geometry) => {
     // Save the search query to recent searches
@@ -203,6 +210,16 @@ export function SearchCommand() {
     setOpen(false);
     setQuery(""); // Clear query on selection
     router.push(getGeometryPath(geometry));
+  };
+
+  // Handle number pattern selection
+  const handleNumberSelect = (pattern: NumberPattern) => {
+    if (searchQuery.length > 0) {
+      saveRecentSearch(searchQuery);
+    }
+    setOpen(false);
+    setQuery("");
+    router.push(`/numbers/${pattern.slug}`);
   };
 
   // Handle clicking a recent search
@@ -232,6 +249,7 @@ export function SearchCommand() {
   // Get counts for discovery state
   const platonicCount = getPlatonicSolids().length;
   const patternCount = getPatterns().length;
+  const numberCount = getPatternCount();
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -291,12 +309,12 @@ export function SearchCommand() {
             {/* Discovery State - show when no query and no recent searches */}
             {!searchQuery && recentSearches.length === 0 && (
               <div className="py-6 sm:py-8 px-4 sm:px-6">
-                {/* Quick access categories */}
-                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                {/* Quick access categories - vertical card layout */}
+                <div className="grid grid-cols-3 gap-3 sm:gap-4">
                   <Link
                     href="/platonic-solids"
                     className={cn(
-                      "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-lg",
+                      "flex flex-col items-center text-center p-4 sm:p-5 rounded-lg",
                       "bg-[var(--glass-bg-elevated)]",
                       "border border-[var(--glass-border)]/50",
                       "hover:bg-muted/50",
@@ -306,19 +324,37 @@ export function SearchCommand() {
                     )}
                     onClick={() => setOpen(false)}
                   >
-                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded bg-background/60 border border-[var(--glass-border)]/30 flex items-center justify-center">
-                      <span className="text-[var(--color-gold)] font-heading text-xl sm:text-2xl">{platonicCount}</span>
+                    <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-background/60 border border-[var(--glass-border)]/30 flex items-center justify-center mb-3">
+                      <span className="text-[var(--color-gold)] font-heading text-2xl sm:text-3xl">{platonicCount}</span>
                     </div>
-                    <div>
-                      <p className="text-base sm:text-lg font-medium text-foreground">Platonic Solids</p>
-                      <p className="text-sm sm:text-base text-muted-foreground">Perfect forms</p>
+                    <p className="text-sm sm:text-base font-medium text-foreground leading-tight">Platonic Solids</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">Perfect forms</p>
+                  </Link>
+
+                  <Link
+                    href="/numbers"
+                    className={cn(
+                      "flex flex-col items-center text-center p-4 sm:p-5 rounded-lg",
+                      "bg-[var(--glass-bg-elevated)]",
+                      "border border-[var(--glass-border)]/50",
+                      "hover:bg-muted/50",
+                      "hover:border-[var(--color-gold)]/40",
+                      "hover:[box-shadow:0_0_20px_rgba(212,168,75,0.08)]",
+                      "transition-all duration-200 ease-out"
+                    )}
+                    onClick={() => setOpen(false)}
+                  >
+                    <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-background/60 border border-[var(--glass-border)]/30 flex items-center justify-center mb-3">
+                      <span className="text-[var(--color-gold)] font-heading text-2xl sm:text-3xl">{numberCount}</span>
                     </div>
+                    <p className="text-sm sm:text-base font-medium text-foreground leading-tight">Numbers</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">Repeating sequences</p>
                   </Link>
 
                   <Link
                     href="/patterns"
                     className={cn(
-                      "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-lg",
+                      "flex flex-col items-center text-center p-4 sm:p-5 rounded-lg",
                       "bg-[var(--glass-bg-elevated)]",
                       "border border-[var(--glass-border)]/50",
                       "hover:bg-muted/50",
@@ -328,13 +364,11 @@ export function SearchCommand() {
                     )}
                     onClick={() => setOpen(false)}
                   >
-                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded bg-background/60 border border-[var(--glass-border)]/30 flex items-center justify-center">
-                      <span className="text-[var(--color-gold)] font-heading text-xl sm:text-2xl">{patternCount}</span>
+                    <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-background/60 border border-[var(--glass-border)]/30 flex items-center justify-center mb-3">
+                      <span className="text-[var(--color-gold)] font-heading text-2xl sm:text-3xl">{patternCount}</span>
                     </div>
-                    <div>
-                      <p className="text-base sm:text-lg font-medium text-foreground">Patterns</p>
-                      <p className="text-sm sm:text-base text-muted-foreground">Universal geometry</p>
-                    </div>
+                    <p className="text-sm sm:text-base font-medium text-foreground leading-tight">Patterns</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">Universal geometry</p>
                   </Link>
                 </div>
 
@@ -342,7 +376,7 @@ export function SearchCommand() {
                 <div className="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-[var(--glass-border)]/30">
                   <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4 px-1">Popular searches</p>
                   <div className="flex flex-wrap gap-2 sm:gap-3">
-                    {["Flower of Life", "Metatron", "Golden Ratio", "Vesica Piscis"].map((term) => (
+                    {["Flower of Life", "Metatron", "Golden Ratio", "111", "444"].map((term) => (
                       <button
                         key={term}
                         onClick={() => setQuery(term)}
@@ -458,13 +492,21 @@ export function SearchCommand() {
                   </div>
 
                   {/* Browse links */}
-                  <div className="flex justify-center gap-8 text-sm sm:text-base">
+                  <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm sm:text-base">
                     <Link
                       href="/platonic-solids"
                       className="text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-colors flex items-center gap-1.5"
                       onClick={() => setOpen(false)}
                     >
                       <span>Platonic Solids</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <Link
+                      href="/numbers"
+                      className="text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-colors flex items-center gap-1.5"
+                      onClick={() => setOpen(false)}
+                    >
+                      <span>Numbers</span>
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
@@ -540,7 +582,7 @@ export function SearchCommand() {
                       {geometry.relatedBy?.element && (
                         <Badge
                           variant="outline"
-                          className="shrink-0 capitalize text-sm sm:text-base bg-transparent border-[var(--border-copper)] text-[var(--color-copper)]"
+                          className="shrink-0 capitalize text-sm sm:text-base bg-transparent border-[var(--border-copper)] text-[var(--color-copper-text)]"
                         >
                           {geometry.relatedBy.element}
                         </Badge>
@@ -611,11 +653,64 @@ export function SearchCommand() {
                       {geometry.relatedBy?.element && (
                         <Badge
                           variant="outline"
-                          className="shrink-0 capitalize text-sm sm:text-base bg-transparent border-[var(--border-copper)] text-[var(--color-copper)]"
+                          className="shrink-0 capitalize text-sm sm:text-base bg-transparent border-[var(--border-copper)] text-[var(--color-copper-text)]"
                         >
                           {geometry.relatedBy.element}
                         </Badge>
                       )}
+                    </div>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+
+            {/* Numbers Group */}
+            {numberResults.length > 0 && (
+              <CommandGroup
+                heading="Numbers"
+                className={cn(
+                  "[&_[cmdk-group-heading]]:text-[var(--color-gold)]",
+                  "[&_[cmdk-group-heading]]:font-heading",
+                  "[&_[cmdk-group-heading]]:text-sm",
+                  "[&_[cmdk-group-heading]]:sm:text-base",
+                  "[&_[cmdk-group-heading]]:uppercase",
+                  "[&_[cmdk-group-heading]]:tracking-wider",
+                  "[&_[cmdk-group-heading]]:px-4",
+                  "[&_[cmdk-group-heading]]:sm:px-5",
+                  "[&_[cmdk-group-heading]]:py-3"
+                )}
+              >
+                {numberResults.map((pattern) => (
+                  <CommandItem
+                    key={pattern.id}
+                    value={`${pattern.id} ${pattern.title} ${pattern.keywords.join(" ")}`}
+                    onSelect={() => handleNumberSelect(pattern)}
+                    className={cn(
+                      "cursor-pointer rounded-md mx-2 sm:mx-3 my-0.5 py-3 sm:py-4 px-3 sm:px-4",
+                      "transition-all duration-200 ease-out",
+                      "data-[selected=true]:bg-muted/60",
+                      "data-[selected=true]:border-l-2 data-[selected=true]:border-[var(--color-gold)]",
+                      "data-[selected=true]:[box-shadow:inset_2px_0_8px_rgba(212,168,75,0.1)]",
+                      "hover:bg-[var(--glass-bg-elevated)]"
+                    )}
+                  >
+                    <div className="flex items-center gap-3 sm:gap-4 w-full">
+                      {/* Number Badge */}
+                      <div className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-md bg-[var(--color-gold)]/10 border border-[var(--color-gold)]/30 flex items-center justify-center">
+                        <span className="text-[var(--color-gold-text)] font-heading text-sm sm:text-base">
+                          {pattern.id}
+                        </span>
+                      </div>
+
+                      {/* Pattern Details */}
+                      <div className="flex flex-col flex-1 min-w-0">
+                        <span className="font-medium text-base sm:text-lg truncate text-foreground">
+                          {highlightText(pattern.title, searchQuery)}
+                        </span>
+                        <span className="text-muted-foreground text-sm sm:text-base truncate">
+                          {highlightText(pattern.essence, searchQuery)}
+                        </span>
+                      </div>
                     </div>
                   </CommandItem>
                 ))}
@@ -668,7 +763,9 @@ export function SearchCommand() {
               </span>
             </div>
             <span className="text-sm text-muted-foreground">
-              {results.length > 0 ? `${results.length} result${results.length === 1 ? "" : "s"}` : ""}
+              {results.length + numberResults.length > 0
+                ? `${results.length + numberResults.length} result${results.length + numberResults.length === 1 ? "" : "s"}`
+                : ""}
             </span>
           </div>
         </Command>
