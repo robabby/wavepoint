@@ -15,8 +15,8 @@ describe("numbers content loader", () => {
     });
 
     it("returns false for patterns without MDX files", () => {
-      // 666 exists in data but has no MDX file
-      expect(numberContentExists("666")).toBe(false);
+      // 11 exists in data but has no MDX file
+      expect(numberContentExists("11")).toBe(false);
     });
   });
 
