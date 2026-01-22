@@ -254,6 +254,30 @@ export const contactSubmissions = pgTable(
   ]
 );
 
+// =============================================================================
+// Waitlist - Feature waitlist signups
+// =============================================================================
+
+/**
+ * Waitlist signups - collect emails for upcoming features
+ * Rate limited by IP (5/hour)
+ */
+export const waitlistSignups = pgTable(
+  "waitlist_signups",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    email: text("email").notNull(),
+    source: text("source").notNull(), // "signal"
+    ipAddress: text("ip_address"),
+    brevoContactId: text("brevo_contact_id"),
+    createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("waitlist_signups_email_source_idx").on(table.email, table.source),
+    index("waitlist_signups_source_idx").on(table.source),
+  ]
+);
+
 // Type exports for use in application code
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -287,3 +311,6 @@ export type NewInvite = typeof invites.$inferInsert;
 
 export type ContactSubmission = typeof contactSubmissions.$inferSelect;
 export type NewContactSubmission = typeof contactSubmissions.$inferInsert;
+
+export type WaitlistSignup = typeof waitlistSignups.$inferSelect;
+export type NewWaitlistSignup = typeof waitlistSignups.$inferInsert;

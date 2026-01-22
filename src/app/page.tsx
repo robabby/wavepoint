@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,7 +12,8 @@ import { AnimatedHero, AnimatedHeroItem } from "@/components/animated-hero";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard, GeometryImage } from "@/components/animated-card";
 import { cn } from "@/lib/utils";
-import { useCanAccessSignal } from "@/lib/features/access";
+import { isSignalEnabled } from "@/lib/signal/feature-flags";
+import { WaitlistModal } from "@/components/signal/waitlist-modal";
 import {
   getGeometryBySlug,
   getGeometryPath,
@@ -29,7 +31,8 @@ const featuredNumbers = ["111", "222", "333"];
 
 export default function HomePage() {
   const router = useRouter();
-  const signalEnabled = useCanAccessSignal();
+  const signalEnabled = isSignalEnabled();
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -216,9 +219,9 @@ export default function HomePage() {
             </Link>
           </StaggerItem>
 
-          {/* Signal Card - only shown when feature is enabled */}
-          {signalEnabled && (
-            <StaggerItem>
+          {/* Signal Card - always shown, different states based on feature flag */}
+          <StaggerItem>
+            {signalEnabled ? (
               <Link href="/signal" className="group block h-full">
                 <AnimatedCard className="flex h-full flex-col p-6 sm:p-8">
                   <div className="mb-4 flex items-center gap-3">
@@ -263,10 +266,63 @@ export default function HomePage() {
                   </div>
                 </AnimatedCard>
               </Link>
-            </StaggerItem>
-          )}
+            ) : (
+              <div className="group block h-full">
+                <AnimatedCard className="flex h-full flex-col p-6 sm:p-8">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-gold)]/10">
+                        <Sparkles className="h-5 w-5 text-[var(--color-gold)]" />
+                      </div>
+                      <h2 className="font-heading text-xl font-semibold text-foreground sm:text-2xl">
+                        Signal
+                      </h2>
+                    </div>
+                    <span className="rounded-full bg-[var(--color-gold)]/10 px-2.5 py-0.5 text-xs font-medium tracking-wide text-[var(--color-gold)]">
+                      Coming Soon
+                    </span>
+                  </div>
+
+                  <p className="mb-6 text-sm text-muted-foreground sm:text-base">
+                    Track your number sightings and discover personal patterns
+                  </p>
+
+                  {/* Feature highlight */}
+                  <div className="mb-6 flex flex-col gap-2">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Record synchronicities
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Get AI-powered interpretations
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Track patterns over time
+                    </div>
+                  </div>
+
+                  <div className="mt-auto">
+                    <Button
+                      onClick={() => setWaitlistOpen(true)}
+                      variant="outline"
+                      className="w-full border-[var(--border-gold)] text-[var(--color-gold)] transition-all hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10"
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        Join Waitlist
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </span>
+                    </Button>
+                  </div>
+                </AnimatedCard>
+              </div>
+            )}
+          </StaggerItem>
         </StaggerChildren>
       </div>
+
+      <WaitlistModal open={waitlistOpen} onOpenChange={setWaitlistOpen} />
     </div>
   );
 }
