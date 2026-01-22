@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import {
   getAllPatterns,
   getPatternByNumber,
-  getRelatedPatterns,
+  getRelatedPatternsWithType,
   getCategoryMeta,
   generateComponentBreakdown,
   findRelatedPatternsForUncovered,
@@ -218,7 +218,7 @@ export default async function PatternDetailPage({
 
   // Known pattern - fetch MDX content and related patterns
   const mdxContent = await getNumberContent(pattern.id);
-  const relatedPatterns = getRelatedPatterns(pattern.id as NumberPatternId);
+  const relatedPatterns = getRelatedPatternsWithType(pattern.id as NumberPatternId);
   const category = getCategoryMeta(pattern.category);
 
   // JSON-LD for known patterns
@@ -360,8 +360,11 @@ export default async function PatternDetailPage({
                 staggerDelay={0.05}
               >
                 {relatedPatterns.map((related) => (
-                  <StaggerItem key={related.id}>
-                    <PatternCard pattern={related} />
+                  <StaggerItem key={related.pattern.id}>
+                    <PatternCard
+                      pattern={related.pattern}
+                      relationshipType={related.relationship.type}
+                    />
                   </StaggerItem>
                 ))}
               </StaggerChildren>

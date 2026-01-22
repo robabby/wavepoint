@@ -6,6 +6,8 @@
 import { PATTERNS } from "./data";
 import type { NumberCategory, NumberPattern, NumberPatternId } from "./types";
 import { NUMBER_PATTERN_IDS } from "./types";
+import { getRelationshipsForPattern } from "./relationships";
+import type { NumberRelationshipMeta } from "./relationship-types";
 
 /**
  * Get all patterns as an array, sorted by category order then pattern order.
@@ -57,16 +59,35 @@ export function getFeaturedPatterns(): NumberPattern[] {
 }
 
 /**
+ * A related pattern with its relationship metadata.
+ */
+export interface RelatedPatternWithType {
+  pattern: NumberPattern;
+  relationship: NumberRelationshipMeta;
+}
+
+/**
+ * Get related patterns with their relationship types.
+ * Uses the computed relationship system.
+ */
+export function getRelatedPatternsWithType(
+  patternId: NumberPatternId
+): RelatedPatternWithType[] {
+  return getRelationshipsForPattern(patternId)
+    .map((rel) => {
+      const pattern = PATTERNS[rel.targetId];
+      if (!pattern) return null;
+      return { pattern, relationship: rel };
+    })
+    .filter((r): r is RelatedPatternWithType => r !== null);
+}
+
+/**
  * Get related patterns for a given pattern.
- * Returns full pattern objects for the related IDs.
+ * Now delegates to the computed relationship system.
  */
 export function getRelatedPatterns(patternId: NumberPatternId): NumberPattern[] {
-  const pattern = PATTERNS[patternId];
-  if (!pattern) return [];
-
-  return pattern.related
-    .map((id) => PATTERNS[id])
-    .filter((p): p is NumberPattern => p !== undefined);
+  return getRelatedPatternsWithType(patternId).map((r) => r.pattern);
 }
 
 /**

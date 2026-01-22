@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { AnimatedCard } from "@/components/animated-card";
-import type { NumberPattern } from "@/lib/numbers";
+import type { NumberPattern, NumberRelationshipType } from "@/lib/numbers";
+import { NumberRelationshipBadge } from "./NumberRelationshipBadge";
 
 interface PatternCardProps {
   pattern: NumberPattern;
   showCategory?: boolean;
+  relationshipType?: NumberRelationshipType;
   className?: string;
 }
 
@@ -18,6 +20,7 @@ interface PatternCardProps {
 export function PatternCard({
   pattern,
   showCategory = false,
+  relationshipType,
   className,
 }: PatternCardProps) {
   return (
@@ -33,9 +36,17 @@ export function PatternCard({
             {pattern.id}
           </span>
 
-          {/* Essence - short tagline */}
-          <span className="mt-1 text-sm font-medium text-[var(--color-gold-bright)]">
-            {pattern.essence}
+          {/* Essence - short tagline with optional relationship badge */}
+          <span className="mt-1 flex items-center gap-2 text-sm">
+            <span className="font-medium text-[var(--color-gold-bright)]">
+              {pattern.essence}
+            </span>
+            {relationshipType && (
+              <>
+                <span className="text-muted-foreground/50">·</span>
+                <NumberRelationshipBadge type={relationshipType} />
+              </>
+            )}
           </span>
 
           {/* Title */}

@@ -35,6 +35,23 @@ export type {
 
 export { NUMBER_PATTERN_IDS } from "./types";
 
+// Relationship types
+export type {
+  NumberRelationshipType,
+  NumberRelationshipMeta,
+  NumberRelationshipCategory,
+} from "./relationship-types";
+
+export {
+  RELATIONSHIP_PRIORITY,
+  RELATIONSHIP_LABELS,
+  getNumberRelationshipCategory,
+  getRelationshipLabel,
+} from "./relationship-types";
+
+// Relationships
+export { getRelationshipsForPattern, MANUAL_RELATIONSHIPS } from "./relationships";
+
 // Data
 export { PATTERNS, getBaseMeaning, getEssence } from "./data";
 
@@ -53,10 +70,13 @@ export {
   getPreviousPattern,
   getFeaturedPatterns,
   getRelatedPatterns,
+  getRelatedPatternsWithType,
   isKnownPattern,
   searchPatterns,
   findRelatedPatternsForUncovered,
 } from "./helpers";
+
+export type { RelatedPatternWithType } from "./helpers";
 
 // Component breakdown (for uncovered patterns)
 export {
