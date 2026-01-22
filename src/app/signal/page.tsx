@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { canAccessSignal } from "@/lib/features/access";
 import { DashboardContent } from "./dashboard-content";
-import { SacredSpinner } from "@/components/signal";
+import { SacredSpinner, SignalMarketingPage } from "@/components/signal";
 
 export const metadata: Metadata = {
   title: "Signal",
-  description: "Your angel number collection and insights.",
+  description: "Track your angel number synchronicities.",
 };
 
 function DashboardLoading() {
@@ -16,7 +19,19 @@ function DashboardLoading() {
   );
 }
 
-export default function SignalDashboard() {
+export default async function SignalPage() {
+  const session = await auth();
+
+  // Show marketing page when feature is disabled (unless admin)
+  if (!canAccessSignal(session)) {
+    return <SignalMarketingPage />;
+  }
+
+  // Require auth for the actual Signal app
+  if (!session?.user) {
+    redirect("/?auth=sign-in");
+  }
+
   return (
     <Suspense fallback={<DashboardLoading />}>
       <DashboardContent />

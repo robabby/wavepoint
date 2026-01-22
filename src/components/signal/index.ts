@@ -38,6 +38,12 @@ export { StatsSummary, type StatsSummaryProps } from "./stats-summary";
 export { RecentSightings, type RecentSightingsProps } from "./recent-sightings";
 export { DeleteDialog, type DeleteDialogProps } from "./delete-dialog";
 
+// Marketing components
+// Note: FloatingNumbers must be dynamically imported with ssr: false
+// Use: dynamic(() => import("./floating-numbers").then(m => m.FloatingNumbers), { ssr: false })
+export type { FloatingNumbersProps } from "./floating-numbers";
+export { SignalMarketingPage } from "./signal-marketing-page";
+
 // Animation config (for page-level transitions)
 export {
   SIGNAL_TIMING,

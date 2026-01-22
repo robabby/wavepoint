@@ -18,7 +18,7 @@ import { SearchCommand } from "@/components/search-command";
 import { EASE_STANDARD } from "@/lib/animation-constants";
 import { CartIcon } from "@/components/shop/cart-icon";
 import { CartDrawer } from "@/components/shop/cart-drawer";
-import { useCanAccessShop, useCanAccessAuth, useCanAccessSignal } from "@/lib/features/access";
+import { useCanAccessShop, useCanAccessAuth } from "@/lib/features/access";
 import { AuthHeaderSection } from "@/components/auth/auth-header-section";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { GeometriesDropdown } from "@/components/geometries-dropdown";
@@ -117,21 +117,18 @@ export function Header() {
 
   const shopEnabled = useCanAccessShop();
   const authEnabled = useCanAccessAuth();
-  const signalEnabled = useCanAccessSignal();
 
   // Desktop nav items (excludes Geometries dropdown which is handled separately)
   // Order: Signal | Numbers | Geometries ▼ | Shop
   const desktopNavItems = useMemo<NavItem[]>(() => {
     const items: NavItem[] = [];
 
-    // Signal appears first (before Numbers)
-    if (signalEnabled) {
-      items.push({
-        path: "/signal",
-        desktopLabel: "Signal",
-        mobileLabel: "Signal",
-      });
-    }
+    // Signal appears first (before Numbers) - always visible, shows marketing when disabled
+    items.push({
+      path: "/signal",
+      desktopLabel: "Signal",
+      mobileLabel: "Signal",
+    });
 
     // Numbers is always present
     items.push({
@@ -150,21 +147,19 @@ export function Header() {
     }
 
     return items;
-  }, [shopEnabled, signalEnabled]);
+  }, [shopEnabled]);
 
   // Mobile nav items (expanded - no dropdown)
   // Order: Signal | Numbers | Platonic Solids | Patterns | Shop
   const mobileNavItems = useMemo<NavItem[]>(() => {
     const items: NavItem[] = [];
 
-    // Signal appears first
-    if (signalEnabled) {
-      items.push({
-        path: "/signal",
-        desktopLabel: "Signal",
-        mobileLabel: "Signal",
-      });
-    }
+    // Signal appears first - always visible, shows marketing when disabled
+    items.push({
+      path: "/signal",
+      desktopLabel: "Signal",
+      mobileLabel: "Signal",
+    });
 
     // Numbers and geometry sections
     items.push(
@@ -195,7 +190,7 @@ export function Header() {
     }
 
     return items;
-  }, [shopEnabled, signalEnabled]);
+  }, [shopEnabled]);
 
   // For keyboard navigation, use desktop nav items
   const navItems = desktopNavItems;
