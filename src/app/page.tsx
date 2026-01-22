@@ -175,7 +175,7 @@ export default function HomePage() {
                     <Hash className="h-5 w-5 text-[var(--color-gold)]" />
                   </div>
                   <h2 className="font-heading text-xl font-semibold text-foreground sm:text-2xl">
-                    Angel Numbers
+                    Number Sequences
                   </h2>
                 </div>
 
@@ -305,14 +305,17 @@ export default function HomePage() {
 
                   <div className="mt-auto">
                     <Button
-                      onClick={() => setWaitlistOpen(true)}
-                      variant="outline"
-                      className="w-full border-[var(--border-gold)] text-[var(--color-gold)] transition-all hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10"
+                      asChild
+                      className="w-full bg-[var(--color-gold)] text-primary-foreground transition-all hover:bg-[var(--color-gold-bright)]"
                     >
-                      <span className="flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setWaitlistOpen(true)}
+                        className="flex w-full items-center justify-center gap-2"
+                      >
                         Join Waitlist
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </span>
+                      </button>
                     </Button>
                   </div>
                 </AnimatedCard>
