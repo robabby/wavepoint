@@ -41,7 +41,7 @@ export function AuthHeaderSection({
         variant={variant}
         email={session.user.email}
         isAdmin={session.user.isAdmin}
-        onSignOut={() => signOut()}
+        onSignOut={() => signOut({ callbackUrl: "/" })}
         className={className}
       />
     );
