@@ -8,6 +8,7 @@ import {
   NumberHeroInput,
   PatternCard,
   NumberSearchResults,
+  NumberRain,
 } from "@/components/numbers";
 import { cn } from "@/lib/utils";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
@@ -45,11 +46,13 @@ export function NumbersPageClient({
     <>
       {/* Hero Section */}
       <section className={cn(
-        "flex flex-col items-center justify-center px-4 text-center",
+        "relative flex flex-col items-center justify-center px-4 text-center",
         "transition-all duration-300 ease-out",
         isSearching ? "py-8" : "min-h-[70vh] py-16"
       )}>
+        <NumberRain paused={isSearching} />
         <AnimateOnScroll className={cn(
+          "relative z-10",
           "flex flex-col items-center",
           "transition-all duration-300 ease-out",
           isSearching ? "gap-4" : "gap-8"

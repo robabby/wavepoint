@@ -438,6 +438,32 @@ body::after {
 }
 
 /* ==========================================================================
+   Number Rain Animation
+   Ethereal falling numbers for the /numbers page hero
+   ========================================================================== */
+@keyframes number-fall {
+  0% {
+    transform: translateY(-30px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(75vh) translateX(var(--drift, 0)) rotate(var(--rotation, 0deg));
+    opacity: 0;
+  }
+}
+
+.animate-number-fall {
+  animation: number-fall linear infinite;
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
    Reduced Motion Support
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
