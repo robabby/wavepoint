@@ -21,14 +21,37 @@ const config = {
   // SEO redirects for URL rebranding
   async redirects() {
     return [
+      // Legacy sacred-patterns redirects
       {
         source: "/sacred-patterns",
-        destination: "/patterns",
+        destination: "/geometries/patterns",
         permanent: true,
       },
       {
         source: "/sacred-patterns/:slug",
-        destination: "/patterns/:slug",
+        destination: "/geometries/patterns/:slug",
+        permanent: true,
+      },
+      // Navigation restructure redirects (platonic-solids → geometries/platonic-solids)
+      {
+        source: "/platonic-solids",
+        destination: "/geometries/platonic-solids",
+        permanent: true,
+      },
+      {
+        source: "/platonic-solids/:slug",
+        destination: "/geometries/platonic-solids/:slug",
+        permanent: true,
+      },
+      // Navigation restructure redirects (patterns → geometries/patterns)
+      {
+        source: "/patterns",
+        destination: "/geometries/patterns",
+        permanent: true,
+      },
+      {
+        source: "/patterns/:slug",
+        destination: "/geometries/patterns/:slug",
         permanent: true,
       },
     ];

@@ -5,41 +5,47 @@ export const ROUTES = {
     description: "Welcome to the world of sacred geometry",
     order: 0,
   },
+  geometries: {
+    name: "Geometries",
+    path: "/geometries",
+    description: "Explore sacred geometry patterns and forms",
+    order: 2,
+  },
   platonicSolids: {
     name: "Platonic Solids",
-    path: "/platonic-solids",
+    path: "/geometries/platonic-solids",
     description: "The five perfect forms from which all matter emerges",
     order: 2,
     children: {
       tetrahedron: {
         name: "Tetrahedron",
-        path: "/platonic-solids/tetrahedron",
+        path: "/geometries/platonic-solids/tetrahedron",
         description:
           "The simplest Platonic solid, symbolizing fire and balance.",
         order: 1,
       },
       hexahedron: {
         name: "Hexahedron (Cube)",
-        path: "/platonic-solids/hexahedron",
+        path: "/geometries/platonic-solids/hexahedron",
         description: "Represents earth, stability, and groundedness.",
         order: 2,
       },
       octahedron: {
         name: "Octahedron",
-        path: "/platonic-solids/octahedron",
+        path: "/geometries/platonic-solids/octahedron",
         description: "Symbolizes air, intellect, and communication.",
         order: 3,
       },
       dodecahedron: {
         name: "Dodecahedron",
-        path: "/platonic-solids/dodecahedron",
+        path: "/geometries/platonic-solids/dodecahedron",
         description:
           "Associated with the universe, spirit, and higher consciousness.",
         order: 4,
       },
       icosahedron: {
         name: "Icosahedron",
-        path: "/platonic-solids/icosahedron",
+        path: "/geometries/platonic-solids/icosahedron",
         description: "Represents water, emotion, and fluidity.",
         order: 5,
       },
@@ -53,83 +59,83 @@ export const ROUTES = {
   },
   patterns: {
     name: "Patterns",
-    path: "/patterns",
+    path: "/geometries/patterns",
     description: "Infinite geometries that encode universal principles",
     order: 3,
     children: {
       circleDot: {
         name: "Circle Dot",
-        path: "/patterns/circle-dot",
+        path: "/geometries/patterns/circle-dot",
         description:
           "The primordial symbol of unity and creation, representing the divine spark and the beginning of all form",
         order: 1,
       },
       vesicaPiscis: {
         name: "Vesica Piscis",
-        path: "/patterns/vesica-piscis",
+        path: "/geometries/patterns/vesica-piscis",
         description:
           "The intersection of two circles, representing duality and the portal of creation",
         order: 2,
       },
       seedOfLife: {
         name: "Seed of Life",
-        path: "/patterns/seed-of-life",
+        path: "/geometries/patterns/seed-of-life",
         description:
           "Seven circles in perfect symmetry, representing the seven days of creation",
         order: 3,
       },
       fruitOfLife: {
         name: "Fruit of Life",
-        path: "/patterns/fruit-of-life",
+        path: "/geometries/patterns/fruit-of-life",
         description:
           "Thirteen circles extracted from the Flower of Life, representing the blueprint of the universe",
         order: 4,
       },
       flowerOfLife: {
         name: "Flower of Life",
-        path: "/patterns/flower-of-life",
+        path: "/geometries/patterns/flower-of-life",
         description:
           "Ancient symbol of creation consisting of overlapping circles representing the fundamental forms of space and time",
         order: 5,
       },
       metatronsCube: {
         name: "Metatron's Cube",
-        path: "/patterns/metatrons-cube",
+        path: "/geometries/patterns/metatrons-cube",
         description:
           "Contains all five Platonic Solids and represents the geometric pattern of the universe",
         order: 6,
       },
       sriYantra: {
         name: "Sri Yantra",
-        path: "/patterns/sri-yantra",
+        path: "/geometries/patterns/sri-yantra",
         description:
           "Sacred Hindu geometry representing the union of divine masculine and feminine energies",
         order: 7,
       },
       starTetrahedron: {
         name: "Star Tetrahedron",
-        path: "/patterns/star-tetrahedron",
+        path: "/geometries/patterns/star-tetrahedron",
         description:
           "Two interlocking tetrahedrons forming a three-dimensional Star of David, representing the union of spirit and matter",
         order: 8,
       },
       goldenRatio: {
         name: "Golden Ratio",
-        path: "/patterns/golden-ratio",
+        path: "/geometries/patterns/golden-ratio",
         description:
           "Divine proportion (φ ≈ 1.618) that appears throughout nature and sacred architecture",
         order: 9,
       },
       philosophersStone: {
         name: "Philosopher's Stone",
-        path: "/patterns/philosophers-stone",
+        path: "/geometries/patterns/philosophers-stone",
         description:
           "Ancient alchemical symbol representing spiritual transformation and the union of opposites",
         order: 10,
       },
       pentagram: {
         name: "Pentagram",
-        path: "/patterns/pentagram",
+        path: "/geometries/patterns/pentagram",
         description:
           "Five-pointed star embodying the golden ratio and representing the human form",
         order: 11,

@@ -63,21 +63,21 @@ describe("GeometryNavigation", () => {
       const prevLink = Array.from(links).find((link) =>
         link.textContent?.includes("Hexahedron")
       );
-      expect(prevLink?.getAttribute("href")).toBe("/platonic-solids/hexahedron");
+      expect(prevLink?.getAttribute("href")).toBe("/geometries/platonic-solids/hexahedron");
 
       // Next link (Icosahedron) - order: Tetra(1) → Hexa(2) → Octa(3) → Icosa(4) → Dodeca(5)
       const nextLink = Array.from(links).find((link) =>
         link.textContent?.includes("Icosahedron")
       );
       expect(nextLink?.getAttribute("href")).toBe(
-        "/platonic-solids/icosahedron"
+        "/geometries/platonic-solids/icosahedron"
       );
 
       // All link
       const allLink = Array.from(links).find((link) =>
         link.textContent?.includes("All Platonic Solids")
       );
-      expect(allLink?.getAttribute("href")).toBe("/platonic-solids");
+      expect(allLink?.getAttribute("href")).toBe("/geometries/platonic-solids");
     });
   });
 
@@ -134,7 +134,7 @@ describe("GeometryNavigation", () => {
         link.textContent?.includes("Sri Yantra")
       );
       expect(prevLink).toBeDefined();
-      expect(prevLink?.getAttribute("href")).toBe("/patterns/sri-yantra");
+      expect(prevLink?.getAttribute("href")).toBe("/geometries/patterns/sri-yantra");
 
       // Next link (Golden Ratio)
       const nextLink = links.find((link) =>
@@ -142,7 +142,7 @@ describe("GeometryNavigation", () => {
       );
       expect(nextLink).toBeDefined();
       expect(nextLink?.getAttribute("href")).toBe(
-        "/patterns/golden-ratio"
+        "/geometries/patterns/golden-ratio"
       );
 
       // All link
@@ -150,7 +150,7 @@ describe("GeometryNavigation", () => {
         link.textContent?.includes("All Patterns")
       );
       expect(allLink).toBeDefined();
-      expect(allLink?.getAttribute("href")).toBe("/patterns");
+      expect(allLink?.getAttribute("href")).toBe("/geometries/patterns");
     });
   });
 
