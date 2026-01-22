@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-T3 Stack Next.js 16 app for sacred geometry. Uses App Router, React 19, TypeScript, Tailwind CSS v4, shadcn/ui (New York style), Radix UI Themes (dark default), MDX content via `next-mdx-remote`, React Query (server state), Vitest, Stripe (checkout), and Printful (print-on-demand).
+**WavePoint** — T3 Stack Next.js 16 app for sacred geometry. Uses App Router, React 19, TypeScript, Tailwind CSS v4, shadcn/ui (New York style), Radix UI Themes (dark default), MDX content via `next-mdx-remote`, React Query (server state), Vitest, Stripe (checkout), and Printful (print-on-demand).
 
 ## Commands
 
