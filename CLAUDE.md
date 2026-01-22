@@ -14,6 +14,18 @@ pnpm test         # Vitest
 pnpm build        # Production build
 ```
 
+## Database (Drizzle + Neon)
+
+Uses Drizzle ORM with Neon PostgreSQL. Schema defined in `src/lib/db/schema.ts`.
+
+```bash
+npx drizzle-kit push      # Push schema changes to database
+npx drizzle-kit generate  # Generate migration files
+npx drizzle-kit studio    # Open Drizzle Studio (DB GUI)
+```
+
+**Workflow:** Modify `src/lib/db/schema.ts` → run `npx drizzle-kit push` → verify with `pnpm check`.
+
 ## Directory Structure
 
 ```
@@ -27,6 +39,7 @@ src/components/signal/      # Signal UI components (NumberPad, cards, etc.)
 src/lib/data/               # Data model (geometries + products)
 src/lib/shop/               # Shop: Printful API, Stripe, cart, feature flags
 src/lib/signal/             # Signal: Claude API, meanings, feature flags
+src/lib/waitlist/           # Waitlist: feature waitlist signups + Brevo sync
 src/hooks/signal/           # Signal React Query hooks
 src/app/signal/             # Signal pages (dashboard, capture, sighting)
 src/app/api/signal/         # Signal API routes (sightings, interpret, stats)
@@ -163,6 +176,7 @@ localImages: {
 | `NEXT_PUBLIC_SHOP_ENABLED` | Feature flag (`true`/`false`, default: `false`) |
 | `NEXT_PUBLIC_SIGNAL_ENABLED` | Signal feature flag (`true`/`false`, default: `false`) |
 | `ANTHROPIC_API_KEY` | Claude API key for Signal interpretations |
+| `BREVO_WAITLIST_LIST_ID` | Brevo list ID for Signal waitlist signups |
 | `APP_URL` | Base URL for Stripe redirects (default: `http://localhost:3000`) |
 
 ## Signal Integration (`src/lib/signal/`)

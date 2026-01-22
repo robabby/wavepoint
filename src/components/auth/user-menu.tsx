@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User, CircleUser, Settings, LogOut, Sparkles, Shield } from "lucide-react";
-import { useCanAccessSignal } from "@/lib/features/access";
+import { User, CircleUser, Settings, LogOut, Shield } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,8 +34,6 @@ export function UserMenu({
   onSignOut,
   className,
 }: UserMenuProps) {
-  const signalEnabled = useCanAccessSignal();
-
   if (variant === "mobile") {
     return (
       <div className={cn("flex flex-col gap-1", className)}>
@@ -62,21 +59,6 @@ export function UserMenu({
           <Settings className="h-5 w-5" />
           <span>Account</span>
         </Link>
-
-        {/* Signal link - only when feature is enabled */}
-        {signalEnabled && (
-          <Link
-            href="/signal"
-            className={cn(
-              "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
-              "text-foreground transition-all duration-200 ease-out",
-              "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
-            )}
-          >
-            <Sparkles className="h-5 w-5" />
-            <span>Signal</span>
-          </Link>
-        )}
 
         {/* Admin link - only for admins */}
         {isAdmin && (
@@ -146,17 +128,6 @@ export function UserMenu({
               Account
             </Link>
           </DropdownMenuItem>
-          {signalEnabled && (
-            <DropdownMenuItem asChild>
-              <Link
-                href="/signal"
-                className="text-muted-foreground !focus:bg-card !focus:text-[var(--color-gold-text)]"
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                Signal
-              </Link>
-            </DropdownMenuItem>
-          )}
           {isAdmin && (
             <DropdownMenuItem asChild>
               <Link

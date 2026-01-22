@@ -18,9 +18,10 @@ import { SearchCommand } from "@/components/search-command";
 import { EASE_STANDARD } from "@/lib/animation-constants";
 import { CartIcon } from "@/components/shop/cart-icon";
 import { CartDrawer } from "@/components/shop/cart-drawer";
-import { useCanAccessShop, useCanAccessAuth } from "@/lib/features/access";
+import { useCanAccessShop, useCanAccessAuth, useCanAccessSignal } from "@/lib/features/access";
 import { AuthHeaderSection } from "@/components/auth/auth-header-section";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { GeometriesDropdown } from "@/components/geometries-dropdown";
 
 type NavItem = {
   path: string;
@@ -116,26 +117,30 @@ export function Header() {
 
   const shopEnabled = useCanAccessShop();
   const authEnabled = useCanAccessAuth();
+  const signalEnabled = useCanAccessSignal();
 
-  const navItems = useMemo<NavItem[]>(() => {
-    const items: NavItem[] = [
-      {
-        path: ROUTES.numbers.path,
-        desktopLabel: "Numbers",
-        mobileLabel: "Numbers",
-      },
-      {
-        path: ROUTES.platonicSolids.path,
-        desktopLabel: "Platonic Solids",
-        mobileLabel: "Solids",
-      },
-      {
-        path: ROUTES.patterns.path,
-        desktopLabel: "Patterns",
-        mobileLabel: "Patterns",
-      },
-    ];
+  // Desktop nav items (excludes Geometries dropdown which is handled separately)
+  // Order: Signal | Numbers | Geometries ▼ | Shop
+  const desktopNavItems = useMemo<NavItem[]>(() => {
+    const items: NavItem[] = [];
 
+    // Signal appears first (before Numbers)
+    if (signalEnabled) {
+      items.push({
+        path: "/signal",
+        desktopLabel: "Signal",
+        mobileLabel: "Signal",
+      });
+    }
+
+    // Numbers is always present
+    items.push({
+      path: ROUTES.numbers.path,
+      desktopLabel: "Numbers",
+      mobileLabel: "Numbers",
+    });
+
+    // Shop appears after Geometries dropdown (handled separately in JSX)
     if (shopEnabled) {
       items.push({
         path: "/shop",
@@ -145,7 +150,55 @@ export function Header() {
     }
 
     return items;
-  }, [shopEnabled]);
+  }, [shopEnabled, signalEnabled]);
+
+  // Mobile nav items (expanded - no dropdown)
+  // Order: Signal | Numbers | Platonic Solids | Patterns | Shop
+  const mobileNavItems = useMemo<NavItem[]>(() => {
+    const items: NavItem[] = [];
+
+    // Signal appears first
+    if (signalEnabled) {
+      items.push({
+        path: "/signal",
+        desktopLabel: "Signal",
+        mobileLabel: "Signal",
+      });
+    }
+
+    // Numbers and geometry sections
+    items.push(
+      {
+        path: ROUTES.numbers.path,
+        desktopLabel: "Numbers",
+        mobileLabel: "Numbers",
+      },
+      {
+        path: ROUTES.platonicSolids.path,
+        desktopLabel: "Platonic Solids",
+        mobileLabel: "Platonic Solids",
+      },
+      {
+        path: ROUTES.patterns.path,
+        desktopLabel: "Patterns",
+        mobileLabel: "Patterns",
+      }
+    );
+
+    // Shop appears last
+    if (shopEnabled) {
+      items.push({
+        path: "/shop",
+        desktopLabel: "Shop",
+        mobileLabel: "Shop",
+      });
+    }
+
+    return items;
+  }, [shopEnabled, signalEnabled]);
+
+  // For keyboard navigation, use desktop nav items
+  const navItems = desktopNavItems;
 
   const activeIndex = useMemo(() => {
     const index = navItems.findIndex((item) => isActive(item.path));
@@ -288,8 +341,8 @@ export function Header() {
             >
               <CircleDot className="h-5 w-5 text-[var(--color-gold)] sm:h-6 sm:w-6" />
             </motion.div>
-            <span className="font-heading text-lg font-semibold text-foreground sm:text-xl">
-              WavePoint
+            <span className="font-display text-lg tracking-wide text-foreground sm:text-xl">
+              WAVE<span className="text-[var(--color-gold)]">POINT</span>
             </span>
           </Link>
 
@@ -330,26 +383,61 @@ export function Header() {
 
           {/* Desktop: Navigation + Utility Actions */}
           <div className="hidden items-center gap-6 sm:flex">
-            {/* Navigation */}
+            {/* Navigation: Signal | Numbers | Geometries ▼ | Shop */}
             <nav
               aria-label="Primary"
               className="flex items-center gap-6"
               onKeyDown={handleNavKeyDown}
             >
-              {navItems.map((item, index) => (
+              {/* Signal and Numbers links (items before Geometries dropdown) */}
+              {desktopNavItems
+                .filter((item) => item.path !== "/shop")
+                .map((item, index) => (
+                  <AnimatedNavLink
+                    key={item.path}
+                    href={item.path}
+                    isActive={isActive(item.path)}
+                    desktopLabel={item.desktopLabel}
+                    mobileLabel={item.mobileLabel}
+                    tabIndex={focusIndex === index ? 0 : -1}
+                    onFocus={() => setFocusIndex(index)}
+                    refCallback={(node) => {
+                      navRefs.current[index] = node;
+                    }}
+                  />
+                ))}
+
+              {/* Geometries dropdown */}
+              <GeometriesDropdown />
+
+              {/* Shop link (after Geometries dropdown) */}
+              {shopEnabled && (
                 <AnimatedNavLink
-                  key={item.path}
-                  href={item.path}
-                  isActive={isActive(item.path)}
-                  desktopLabel={item.desktopLabel}
-                  mobileLabel={item.mobileLabel}
-                  tabIndex={focusIndex === index ? 0 : -1}
-                  onFocus={() => setFocusIndex(index)}
+                  href="/shop"
+                  isActive={isActive("/shop")}
+                  desktopLabel="Shop"
+                  mobileLabel="Shop"
+                  tabIndex={
+                    focusIndex ===
+                    desktopNavItems.filter((item) => item.path !== "/shop")
+                      .length
+                      ? 0
+                      : -1
+                  }
+                  onFocus={() =>
+                    setFocusIndex(
+                      desktopNavItems.filter((item) => item.path !== "/shop")
+                        .length
+                    )
+                  }
                   refCallback={(node) => {
-                    navRefs.current[index] = node;
+                    navRefs.current[
+                      desktopNavItems.filter((item) => item.path !== "/shop")
+                        .length
+                    ] = node;
                   }}
                 />
-              ))}
+              )}
             </nav>
 
             {/* Separator between nav and utility actions */}
@@ -445,8 +533,8 @@ export function Header() {
 
               {/* Drawer Content */}
               <nav className="flex flex-col gap-1 p-5" aria-label="Mobile navigation">
-                {/* Navigation Links */}
-                {navItems.map((item) => (
+                {/* Navigation Links - expanded for mobile (no dropdown) */}
+                {mobileNavItems.map((item) => (
                   <Link
                     key={item.path}
                     href={item.path}

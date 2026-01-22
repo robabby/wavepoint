@@ -1,331 +1,331 @@
-import { Button, Heading, Text } from "@radix-ui/themes";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  CircleDot,
-  Sparkles,
-  Triangle,
-  Droplets,
-  Box as BoxIcon,
-  Octagon,
-} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { CircleDot, Hash, Sparkles, Search, ArrowRight } from "lucide-react";
+import { Button } from "@radix-ui/themes";
 import { ROUTES } from "@/util/routes";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/client-tabs";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  getPlatonicSolids,
-  getPatterns,
-  getGeometryPath,
-} from "@/lib/data";
 import { AnimatedHero, AnimatedHeroItem } from "@/components/animated-hero";
-import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard, GeometryImage } from "@/components/animated-card";
-import { AnimatedButton } from "@/components/animated-button";
+import { cn } from "@/lib/utils";
+import { isSignalEnabled } from "@/lib/signal/feature-flags";
+import { WaitlistModal } from "@/components/signal/waitlist-modal";
+import {
+  getGeometryBySlug,
+  getGeometryPath,
+} from "@/lib/data";
 
-// Icon mapping for Platonic Solids
-const iconMap: Record<string, typeof Triangle> = {
-  tetrahedron: Triangle,
-  hexahedron: BoxIcon,
-  octahedron: Octagon,
-  dodecahedron: Sparkles,
-  icosahedron: Droplets,
-};
+// Featured geometries for the hub card
+const featuredGeometries = [
+  { slug: "tetrahedron", label: "Tetrahedron" },
+  { slug: "flower-of-life", label: "Flower of Life" },
+  { slug: "golden-ratio", label: "Golden Ratio" },
+];
 
-// Color mapping for Platonic Solids - using gold/copper palette
-const colorMap: Record<string, string> = {
-  tetrahedron: "text-[var(--color-gold)]",
-  hexahedron: "text-[var(--color-copper)]",
-  octahedron: "text-[var(--color-gold-bright)]",
-  dodecahedron: "text-[var(--color-bronze)]",
-  icosahedron: "text-[var(--color-gold-muted)]",
-};
-
-const platonicSolids = getPlatonicSolids()
-  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-  .map((solid) => ({
-    id: solid.id,
-    name: solid.name,
-    path: getGeometryPath(solid),
-    element: solid.relatedBy?.element
-      ? solid.relatedBy.element.charAt(0).toUpperCase() +
-        solid.relatedBy.element.slice(1)
-      : "Unknown",
-    faces: solid.mathProperties?.faces ?? 0,
-    icon: iconMap[solid.slug] ?? Triangle,
-    image: solid.images?.heroImage ?? "",
-    color: colorMap[solid.slug] ?? "text-amber-400",
-  }));
+// Featured angel numbers
+const featuredNumbers = ["111", "222", "333"];
 
 export default function HomePage() {
+  const router = useRouter();
+  const signalEnabled = isSignalEnabled();
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section with Animated Background */}
-      <AnimatedHero className="min-h-[60vh] sm:min-h-[70vh]">
-        <div className="container mx-auto flex min-h-[60vh] flex-col items-center justify-center gap-4 px-4 py-8 sm:min-h-[70vh] sm:gap-6 sm:px-6 sm:py-12 lg:gap-8 lg:px-8 lg:py-16">
-          <div className="flex flex-col items-center gap-4 text-center sm:gap-6">
-            <AnimatedHeroItem>
-              <p className="font-heading max-w-2xl px-4 text-lg text-muted-foreground sm:text-2xl">
-                Welcome to the world of
-              </p>
-            </AnimatedHeroItem>
-
-            <AnimatedHeroItem>
-              <div className="flex items-center gap-2 sm:gap-4">
-                <CircleDot className="h-8 w-8 text-[var(--color-gold)] sm:h-12 sm:w-12" />
-                <h1 className="font-display text-hero tracking-tight text-foreground">
-                  SACRED{" "}
-                  <span className="text-[var(--color-gold)]">GEOMETRY</span>
-                </h1>
-                <CircleDot className="h-8 w-8 text-[var(--color-gold)] sm:h-12 sm:w-12" />
-              </div>
-            </AnimatedHeroItem>
-
-            <AnimatedHeroItem>
-              <div className="flex flex-wrap justify-center gap-2 px-4">
-                <Badge
-                  variant="outline"
-                  className="border-[var(--border-gold)] bg-[var(--color-gold)]/10 text-xs text-[var(--color-gold)] sm:text-sm"
-                >
-                  5 Platonic Solids
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="border-[var(--border-gold)] bg-[var(--color-gold)]/10 text-xs text-[var(--color-gold)] sm:text-sm"
-                >
-                  Sacred Patterns
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="border-[var(--border-gold)] bg-[var(--color-gold)]/10 text-xs text-[var(--color-gold)] sm:text-sm"
-                >
-                  Golden Ratio
-                </Badge>
-              </div>
-            </AnimatedHeroItem>
-
-            <AnimatedHeroItem>
-              <p className="max-w-3xl px-4 text-sm text-muted-foreground sm:text-lg">
-                Discover the mathematical principles and timeless patterns that form
-                the foundation of our universe. From the Platonic Solids to the
-                Flower of Life, explore the geometries that have inspired mystics,
-                scientists, and artists throughout history.
-              </p>
-            </AnimatedHeroItem>
-          </div>
-
+      {/* Hero Section */}
+      <AnimatedHero className="min-h-[50vh] sm:min-h-[60vh]">
+        <div className="container mx-auto flex min-h-[50vh] flex-col items-center justify-center gap-6 px-4 py-12 sm:min-h-[60vh] sm:gap-8 sm:px-6 lg:px-8">
+          {/* Headline */}
           <AnimatedHeroItem>
-            <div className="mt-4 flex w-full flex-col items-center gap-3 px-4 sm:mt-8 sm:w-auto sm:flex-row sm:gap-4">
-              <AnimatedButton variant="primary" className="w-full sm:w-auto">
-                <Button
-                  asChild
-                  size="3"
-                  className="w-full bg-[var(--color-gold)] font-semibold text-primary-foreground shadow-lg shadow-[var(--glow-gold)] transition-colors hover:bg-[var(--color-gold-bright)] sm:w-auto"
-                >
-                  <Link href={ROUTES.platonicSolids.path}>
-                    <span className="hidden sm:inline">
-                      Explore Platonic Solids →
-                    </span>
-                    <span className="sm:hidden">Platonic Solids →</span>
-                  </Link>
-                </Button>
-              </AnimatedButton>
-              <AnimatedButton variant="outline" className="w-full sm:w-auto">
-                <Button
-                  asChild
-                  size="3"
-                  variant="outline"
-                  className="w-full border-[var(--color-gold)]/50 text-[var(--color-gold)] transition-[border-color,background-color] hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 sm:w-auto"
-                >
-                  <Link href={ROUTES.patterns.path}>Sacred Patterns →</Link>
-                </Button>
-              </AnimatedButton>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <CircleDot className="h-8 w-8 text-[var(--color-gold)] sm:h-10 sm:w-10" />
+              <h1 className="font-display text-hero tracking-tight text-foreground">
+                WAVE<span className="text-[var(--color-gold)]">POINT</span>
+              </h1>
+              <CircleDot className="h-8 w-8 text-[var(--color-gold)] sm:h-10 sm:w-10" />
             </div>
+          </AnimatedHeroItem>
+
+          {/* Subheading */}
+          <AnimatedHeroItem>
+            <p className="font-heading max-w-xl px-4 text-center text-lg text-muted-foreground sm:text-xl">
+              Explore the language of the universe
+            </p>
+          </AnimatedHeroItem>
+
+          {/* Search Trigger */}
+          <AnimatedHeroItem>
+            <button
+              onClick={() => {
+                const event = new KeyboardEvent("keydown", {
+                  key: "k",
+                  metaKey: true,
+                  bubbles: true,
+                });
+                document.dispatchEvent(event);
+              }}
+              className={cn(
+                "group flex w-full max-w-md items-center gap-3 rounded-lg px-4 py-3 sm:px-5 sm:py-4",
+                // Glass background
+                "bg-[var(--glass-bg)] backdrop-blur-xl",
+                // Gold border
+                "border border-[var(--glass-border)]",
+                // Transitions
+                "transition-all duration-300",
+                // Hover state with glow
+                "hover:border-[var(--color-gold)] hover:shadow-[0_0_20px_var(--glow-gold)]"
+              )}
+            >
+              <Search className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-[var(--color-gold)]" />
+              <span className="flex-1 text-left text-sm text-muted-foreground sm:text-base">
+                Search patterns, numbers, geometries...
+              </span>
+              <kbd className="hidden rounded bg-muted px-2 py-1 text-xs text-muted-foreground sm:inline-block">
+                ⌘K
+              </kbd>
+            </button>
           </AnimatedHeroItem>
         </div>
       </AnimatedHero>
 
       <Separator className="h-px bg-gradient-to-r from-transparent via-[var(--color-gold)]/40 to-transparent" />
 
-      {/* Interactive Tabs Section */}
-      <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-        <Tabs defaultValue="solids" className="mx-auto max-w-6xl">
-          <TabsList className="grid w-full grid-cols-2 rounded-lg border border-[var(--border-gold)] bg-card p-1">
-            <TabsTrigger
-              value="solids"
-              className="rounded-md text-muted-foreground transition-[background-color,color,box-shadow] data-[state=active]:bg-[var(--color-gold)] data-[state=active]:text-primary-foreground data-[state=active]:shadow-[0_0_12px_var(--glow-gold)]"
-            >
-              Platonic Solids
-            </TabsTrigger>
-            <TabsTrigger
-              value="patterns"
-              className="rounded-md text-muted-foreground transition-[background-color,color,box-shadow] data-[state=active]:bg-[var(--color-gold)] data-[state=active]:text-primary-foreground data-[state=active]:shadow-[0_0_12px_var(--glow-gold)]"
-            >
-              Sacred Patterns
-            </TabsTrigger>
-          </TabsList>
+      {/* Hub Section */}
+      <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <StaggerChildren
+          className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3"
+          staggerDelay={0.15}
+        >
+          {/* Geometries Card */}
+          <StaggerItem>
+            <Link href={ROUTES.geometries.path} className="group block h-full">
+              <AnimatedCard className="flex h-full flex-col p-6 sm:p-8">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-gold)]/10">
+                    <CircleDot className="h-5 w-5 text-[var(--color-gold)]" />
+                  </div>
+                  <h2 className="font-heading text-xl font-semibold text-foreground sm:text-2xl">
+                    Sacred Geometry
+                  </h2>
+                </div>
 
-          {/* Platonic Solids Tab */}
-          <TabsContent value="solids" className="mt-4 sm:mt-6 lg:mt-8">
-            <AnimateOnScroll className="mb-4 text-center sm:mb-6 lg:mb-8">
-              <Heading
-                size={{ initial: "6", sm: "7" }}
-                className="font-heading mb-2 text-foreground sm:mb-3"
-              >
-                The Five Perfect Solids
-              </Heading>
-              <Text
-                size={{ initial: "2", sm: "3" }}
-                className="text-muted-foreground"
-              >
-                Each solid represents a fundamental element and possesses
-                complete geometric regularity
-              </Text>
-            </AnimateOnScroll>
+                <p className="mb-6 text-sm text-muted-foreground sm:text-base">
+                  Discover the mathematical principles that form the foundation of our universe
+                </p>
 
-            <StaggerChildren
-              className="grid grid-cols-2 gap-4 md:grid-cols-3 sm:gap-6 lg:grid-cols-5 lg:gap-8"
-              staggerDelay={0.08}
-            >
-              {platonicSolids.map((solid) => {
-                const Icon = solid.icon;
-                return (
-                  <StaggerItem key={solid.name}>
-                    <Link href={solid.path} className="group block">
-                      <AnimatedCard className="p-3 sm:p-4">
-                        <div className="flex flex-col items-center gap-2 sm:gap-3">
-                          <GeometryImage className="relative h-16 w-full sm:h-24">
-                            <Image
-                              src={solid.image}
-                              alt={solid.name}
-                              fill
-                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                              className="object-contain svg-gold"
-                            />
-                          </GeometryImage>
-                          <Icon
-                            className={`h-4 w-4 sm:h-5 sm:w-5 ${solid.color}`}
+                {/* Featured Items - using buttons to avoid nested <a> tags */}
+                <div className="mb-6 flex flex-wrap gap-3">
+                  {featuredGeometries.map(({ slug, label }) => {
+                    const geometry = getGeometryBySlug(slug);
+                    if (!geometry) return null;
+                    return (
+                      <button
+                        key={slug}
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          router.push(getGeometryPath(geometry));
+                        }}
+                        className="group/item flex items-center gap-2 rounded-lg border border-[var(--border-gold)]/50 bg-card/50 px-3 py-2 transition-all hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10"
+                      >
+                        <GeometryImage className="relative h-6 w-6">
+                          <Image
+                            src={geometry.images?.heroImage ?? ""}
+                            alt={label}
+                            fill
+                            sizes="24px"
+                            className="object-contain svg-gold"
                           />
-                          <Text className="text-center text-[10px] font-medium leading-tight text-[var(--color-gold-bright)] sm:text-xs">
-                            {solid.name}
-                          </Text>
-                          <Badge
-                            variant="secondary"
-                            className="bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground sm:text-xs"
-                          >
-                            {solid.element}
-                          </Badge>
-                        </div>
-                      </AnimatedCard>
-                    </Link>
-                  </StaggerItem>
-                );
-              })}
-            </StaggerChildren>
+                        </GeometryImage>
+                        <span className="text-xs text-muted-foreground transition-colors group-hover/item:text-[var(--color-gold)]">
+                          {label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
 
-            <AnimateOnScroll className="mt-4 text-center sm:mt-6 lg:mt-8" delay={0.3}>
-              <AnimatedButton variant="outline">
-                <Button
-                  asChild
-                  variant="outline"
-                  size={{ initial: "2", sm: "3" }}
-                  className="border-[var(--border-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10"
-                >
-                  <Link href={ROUTES.platonicSolids.path}>
-                    <span className="hidden sm:inline">
-                      View All Platonic Solids →
+                <div className="mt-auto">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full border-[var(--border-gold)] text-[var(--color-gold)] transition-all group-hover:border-[var(--color-gold)] group-hover:bg-[var(--color-gold)]/10"
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      Explore
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </span>
-                    <span className="sm:hidden">View All →</span>
-                  </Link>
-                </Button>
-              </AnimatedButton>
-            </AnimateOnScroll>
-          </TabsContent>
+                  </Button>
+                </div>
+              </AnimatedCard>
+            </Link>
+          </StaggerItem>
 
-          {/* Sacred Patterns Tab */}
-          <TabsContent value="patterns" className="mt-4 sm:mt-6 lg:mt-8">
-            <AnimateOnScroll className="mb-4 text-center sm:mb-6 lg:mb-8">
-              <Heading
-                size={{ initial: "6", sm: "7" }}
-                className="font-heading mb-2 text-foreground sm:mb-3"
-              >
-                Infinite Geometries
-              </Heading>
-              <Text
-                size={{ initial: "2", sm: "3" }}
-                className="text-muted-foreground"
-              >
-                Patterns that encode universal principles and appear throughout
-                nature and consciousness
-              </Text>
-            </AnimateOnScroll>
+          {/* Numbers Card */}
+          <StaggerItem>
+            <Link href={ROUTES.numbers.path} className="group block h-full">
+              <AnimatedCard className="flex h-full flex-col p-6 sm:p-8">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-gold)]/10">
+                    <Hash className="h-5 w-5 text-[var(--color-gold)]" />
+                  </div>
+                  <h2 className="font-heading text-xl font-semibold text-foreground sm:text-2xl">
+                    Number Sequences
+                  </h2>
+                </div>
 
-            <StaggerChildren
-              className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8"
-              staggerDelay={0.12}
-            >
-              {[
-                { slug: "flower-of-life", badge: "Universal Pattern" },
-                { slug: "metatrons-cube", badge: "Sacred Blueprint" },
-                { slug: "golden-ratio", badge: "Divine Proportion" },
-              ].map(({ slug, badge }) => {
-                const pattern = getPatterns().find((p) => p.slug === slug);
-                if (!pattern) return null;
-                return (
-                  <StaggerItem key={pattern.slug}>
-                    <Link href={getGeometryPath(pattern)} className="group block">
-                      <AnimatedCard className="p-6">
-                        <div className="flex flex-col items-center gap-4">
-                          <GeometryImage className="relative h-32 w-full">
-                            <Image
-                              src={pattern.images?.heroImage ?? ""}
-                              alt={pattern.name}
-                              fill
-                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                              className="object-contain svg-gold"
-                            />
-                          </GeometryImage>
-                          <Heading
-                            size="4"
-                            className="font-heading text-[var(--color-gold-bright)]"
-                          >
-                            {pattern.name}
-                          </Heading>
-                          <Text
-                            size="2"
-                            className="text-center text-muted-foreground"
-                          >
-                            {pattern.description}
-                          </Text>
-                          <Badge className="bg-[var(--color-gold)]/20 text-[var(--color-gold)]">
-                            {badge}
-                          </Badge>
-                        </div>
-                      </AnimatedCard>
-                    </Link>
-                  </StaggerItem>
-                );
-              })}
-            </StaggerChildren>
+                <p className="mb-6 text-sm text-muted-foreground sm:text-base">
+                  Explore the meanings behind repeating number patterns
+                </p>
 
-            <AnimateOnScroll className="mt-4 text-center sm:mt-6 lg:mt-8" delay={0.3}>
-              <AnimatedButton variant="outline" className="w-full sm:w-auto">
-                <Button
-                  asChild
-                  variant="outline"
-                  size={{ initial: "2", sm: "3" }}
-                  className="w-full border-[var(--border-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 sm:w-auto"
-                >
-                  <Link href={ROUTES.patterns.path}>
-                    Explore All Patterns →
-                  </Link>
-                </Button>
-              </AnimatedButton>
-            </AnimateOnScroll>
-          </TabsContent>
-        </Tabs>
+                {/* Featured Numbers - using buttons to avoid nested <a> tags */}
+                <div className="mb-6 flex flex-wrap gap-3">
+                  {featuredNumbers.map((number) => (
+                    <button
+                      key={number}
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        router.push(`${ROUTES.numbers.path}/${number}`);
+                      }}
+                      className="group/item flex items-center justify-center rounded-lg border border-[var(--border-gold)]/50 bg-card/50 px-4 py-2 transition-all hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10"
+                    >
+                      <span className="font-mono text-lg font-semibold text-muted-foreground transition-colors group-hover/item:text-[var(--color-gold)]">
+                        {number}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="mt-auto">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full border-[var(--border-gold)] text-[var(--color-gold)] transition-all group-hover:border-[var(--color-gold)] group-hover:bg-[var(--color-gold)]/10"
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      Discover
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </Button>
+                </div>
+              </AnimatedCard>
+            </Link>
+          </StaggerItem>
+
+          {/* Signal Card - always shown, different states based on feature flag */}
+          <StaggerItem>
+            {signalEnabled ? (
+              <Link href="/signal" className="group block h-full">
+                <AnimatedCard className="flex h-full flex-col p-6 sm:p-8">
+                  <div className="mb-4 flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-gold)]/10">
+                      <Sparkles className="h-5 w-5 text-[var(--color-gold)]" />
+                    </div>
+                    <h2 className="font-heading text-xl font-semibold text-foreground sm:text-2xl">
+                      Signal
+                    </h2>
+                  </div>
+
+                  <p className="mb-6 text-sm text-muted-foreground sm:text-base">
+                    Track your number sightings and discover personal patterns
+                  </p>
+
+                  {/* Feature highlight */}
+                  <div className="mb-6 flex flex-col gap-2">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Record synchronicities
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Get AI-powered interpretations
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Track patterns over time
+                    </div>
+                  </div>
+
+                  <div className="mt-auto">
+                    <Button
+                      asChild
+                      className="w-full bg-[var(--color-gold)] text-primary-foreground transition-all hover:bg-[var(--color-gold-bright)]"
+                    >
+                      <span className="flex items-center justify-center gap-2">
+                        Get Started
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </span>
+                    </Button>
+                  </div>
+                </AnimatedCard>
+              </Link>
+            ) : (
+              <div className="group block h-full">
+                <AnimatedCard className="flex h-full flex-col p-6 sm:p-8">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-gold)]/10">
+                        <Sparkles className="h-5 w-5 text-[var(--color-gold)]" />
+                      </div>
+                      <h2 className="font-heading text-xl font-semibold text-foreground sm:text-2xl">
+                        Signal
+                      </h2>
+                    </div>
+                    <span className="rounded-full bg-[var(--color-gold)]/10 px-2.5 py-0.5 text-xs font-medium tracking-wide text-[var(--color-gold)]">
+                      Coming Soon
+                    </span>
+                  </div>
+
+                  <p className="mb-6 text-sm text-muted-foreground sm:text-base">
+                    Track your number sightings and discover personal patterns
+                  </p>
+
+                  {/* Feature highlight */}
+                  <div className="mb-6 flex flex-col gap-2">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Record synchronicities
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Get AI-powered interpretations
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-gold)]" />
+                      Track patterns over time
+                    </div>
+                  </div>
+
+                  <div className="mt-auto">
+                    <Button
+                      asChild
+                      className="w-full bg-[var(--color-gold)] text-primary-foreground transition-all hover:bg-[var(--color-gold-bright)]"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setWaitlistOpen(true)}
+                        className="flex w-full items-center justify-center gap-2"
+                      >
+                        Join Waitlist
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      </button>
+                    </Button>
+                  </div>
+                </AnimatedCard>
+              </div>
+            )}
+          </StaggerItem>
+        </StaggerChildren>
       </div>
+
+      <WaitlistModal open={waitlistOpen} onOpenChange={setWaitlistOpen} />
     </div>
   );
 }
