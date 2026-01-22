@@ -361,7 +361,7 @@ export const PATTERNS: Record<string, Geometry> = {
       ],
     },
     images: {
-      heroImage: `/images/geometries/patterns/vector-equilibrum/vector-equilibrum-primary.svg`,
+      heroImage: `/images/geometries/patterns/vector-equilibrium/vector-equilibrium-primary.svg`,
     },
     featured: true,
     order: 14,
