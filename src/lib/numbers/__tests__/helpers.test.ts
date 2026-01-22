@@ -99,17 +99,24 @@ describe("getFeaturedPatterns", () => {
 });
 
 describe("getRelatedPatterns", () => {
-  it("returns related patterns for 111", () => {
+  it("returns related patterns for 111 (computed family + thematic)", () => {
     const related = getRelatedPatterns("111");
     const ids = related.map((p) => p.id);
 
+    // Family relationships (computed)
     expect(ids).toContain("11");
     expect(ids).toContain("1111");
+    // Thematic relationship (manual override)
+    expect(ids).toContain("999");
   });
 
-  it("returns empty array for pattern with no relations", () => {
+  it("returns computed family relationships for 555", () => {
+    // Previously returned empty, now computes digit-family relationships
     const related = getRelatedPatterns("555");
-    expect(related).toEqual([]);
+    const ids = related.map((p) => p.id);
+
+    expect(ids).toContain("55");
+    expect(ids).toContain("5555");
   });
 
   it("returns empty array for unknown pattern", () => {
