@@ -27,7 +27,7 @@ export function GeometriesDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "group relative flex items-center gap-1 text-xs font-medium transition-colors sm:text-sm",
+          "group relative flex cursor-pointer items-center gap-1 text-xs font-medium transition-colors sm:text-sm",
           "hover:text-[var(--color-gold)] focus:outline-none focus-visible:text-[var(--color-gold)]",
           isActive ? "text-[var(--color-gold)]" : "text-muted-foreground"
         )}
@@ -61,25 +61,44 @@ export function GeometriesDropdown() {
         align="start"
         sideOffset={12}
         className={cn(
-          // Glass background matching mobile drawer aesthetic
+          // Glass background with depth
           "bg-[var(--glass-bg)] backdrop-blur-xl",
-          // Gold border with subtle shadow
-          "border-[var(--glass-border)]",
-          "shadow-lg shadow-black/20",
-          "min-w-[180px]"
+          // Refined gold border
+          "border border-[var(--glass-border)]",
+          // Layered shadow for depth
+          "shadow-[0_8px_32px_rgba(0,0,0,0.4)]",
+          // Sizing
+          "min-w-[220px] p-2"
         )}
       >
         <DropdownMenuItem asChild>
           <Link
             href={ROUTES.platonicSolids.path}
             className={cn(
-              "cursor-pointer px-3 py-2.5 text-sm",
-              "text-muted-foreground",
-              "focus:bg-[var(--glass-bg-elevated)] focus:text-[var(--color-gold)]",
-              pathname.startsWith(ROUTES.platonicSolids.path) &&
-                "text-[var(--color-gold)]"
+              // Layout with left border space
+              "group relative flex cursor-pointer items-center gap-3 py-3 pl-5 pr-4",
+              // Typography - elegant serif
+              "font-heading text-sm tracking-wide",
+              // Force override all background states
+              "!bg-transparent",
+              // Force text colors (override base component)
+              pathname.startsWith(ROUTES.platonicSolids.path)
+                ? "!text-[var(--color-gold)]"
+                : "!text-muted-foreground hover:!text-[var(--color-gold)] focus:!text-[var(--color-gold)]",
+              // Smooth transitions
+              "transition-all duration-200",
+              "focus:outline-none"
             )}
           >
+            {/* Left border accent - appears on hover/active */}
+            <span
+              className={cn(
+                "absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full transition-all duration-200",
+                pathname.startsWith(ROUTES.platonicSolids.path)
+                  ? "bg-[var(--color-gold)] shadow-[0_0_8px_var(--glow-gold)]"
+                  : "bg-transparent group-hover:bg-[var(--color-gold)]/60"
+              )}
+            />
             Platonic Solids
           </Link>
         </DropdownMenuItem>
@@ -88,13 +107,30 @@ export function GeometriesDropdown() {
           <Link
             href={ROUTES.patterns.path}
             className={cn(
-              "cursor-pointer px-3 py-2.5 text-sm",
-              "text-muted-foreground",
-              "focus:bg-[var(--glass-bg-elevated)] focus:text-[var(--color-gold)]",
-              pathname.startsWith(ROUTES.patterns.path) &&
-                "text-[var(--color-gold)]"
+              // Layout with left border space
+              "group relative flex cursor-pointer items-center gap-3 py-3 pl-5 pr-4",
+              // Typography - elegant serif
+              "font-heading text-sm tracking-wide",
+              // Force override all background states
+              "!bg-transparent",
+              // Force text colors (override base component)
+              pathname.startsWith(ROUTES.patterns.path)
+                ? "!text-[var(--color-gold)]"
+                : "!text-muted-foreground hover:!text-[var(--color-gold)] focus:!text-[var(--color-gold)]",
+              // Smooth transitions
+              "transition-all duration-200",
+              "focus:outline-none"
             )}
           >
+            {/* Left border accent - appears on hover/active */}
+            <span
+              className={cn(
+                "absolute left-0 top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full transition-all duration-200",
+                pathname.startsWith(ROUTES.patterns.path)
+                  ? "bg-[var(--color-gold)] shadow-[0_0_8px_var(--glow-gold)]"
+                  : "bg-transparent group-hover:bg-[var(--color-gold)]/60"
+              )}
+            />
             Patterns
           </Link>
         </DropdownMenuItem>

@@ -120,17 +120,11 @@ export function Header() {
   const signalEnabled = useCanAccessSignal();
 
   // Desktop nav items (excludes Geometries dropdown which is handled separately)
+  // Order: Signal | Numbers | Geometries ▼ | Shop
   const desktopNavItems = useMemo<NavItem[]>(() => {
-    const items: NavItem[] = [
-      {
-        path: ROUTES.numbers.path,
-        desktopLabel: "Numbers",
-        mobileLabel: "Numbers",
-      },
-    ];
+    const items: NavItem[] = [];
 
-    // Signal appears after Geometries dropdown (handled separately in JSX)
-
+    // Signal appears first (before Numbers)
     if (signalEnabled) {
       items.push({
         path: "/signal",
@@ -139,6 +133,14 @@ export function Header() {
       });
     }
 
+    // Numbers is always present
+    items.push({
+      path: ROUTES.numbers.path,
+      desktopLabel: "Numbers",
+      mobileLabel: "Numbers",
+    });
+
+    // Shop appears after Geometries dropdown (handled separately in JSX)
     if (shopEnabled) {
       items.push({
         path: "/shop",
@@ -151,8 +153,21 @@ export function Header() {
   }, [shopEnabled, signalEnabled]);
 
   // Mobile nav items (expanded - no dropdown)
+  // Order: Signal | Numbers | Platonic Solids | Patterns | Shop
   const mobileNavItems = useMemo<NavItem[]>(() => {
-    const items: NavItem[] = [
+    const items: NavItem[] = [];
+
+    // Signal appears first
+    if (signalEnabled) {
+      items.push({
+        path: "/signal",
+        desktopLabel: "Signal",
+        mobileLabel: "Signal",
+      });
+    }
+
+    // Numbers and geometry sections
+    items.push(
       {
         path: ROUTES.numbers.path,
         desktopLabel: "Numbers",
@@ -167,17 +182,10 @@ export function Header() {
         path: ROUTES.patterns.path,
         desktopLabel: "Patterns",
         mobileLabel: "Patterns",
-      },
-    ];
+      }
+    );
 
-    if (signalEnabled) {
-      items.push({
-        path: "/signal",
-        desktopLabel: "Signal",
-        mobileLabel: "Signal",
-      });
-    }
-
+    // Shop appears last
     if (shopEnabled) {
       items.push({
         path: "/shop",
@@ -333,8 +341,8 @@ export function Header() {
             >
               <CircleDot className="h-5 w-5 text-[var(--color-gold)] sm:h-6 sm:w-6" />
             </motion.div>
-            <span className="font-heading text-lg font-semibold text-foreground sm:text-xl">
-              WavePoint
+            <span className="font-display text-lg tracking-wide text-foreground sm:text-xl">
+              WAVE<span className="text-[var(--color-gold)]">POINT</span>
             </span>
           </Link>
 
@@ -375,43 +383,61 @@ export function Header() {
 
           {/* Desktop: Navigation + Utility Actions */}
           <div className="hidden items-center gap-6 sm:flex">
-            {/* Navigation: Numbers | Geometries ▼ | Signal | Shop */}
+            {/* Navigation: Signal | Numbers | Geometries ▼ | Shop */}
             <nav
               aria-label="Primary"
               className="flex items-center gap-6"
               onKeyDown={handleNavKeyDown}
             >
-              {/* Numbers link */}
-              <AnimatedNavLink
-                href={ROUTES.numbers.path}
-                isActive={isActive(ROUTES.numbers.path)}
-                desktopLabel="Numbers"
-                mobileLabel="Numbers"
-                tabIndex={focusIndex === 0 ? 0 : -1}
-                onFocus={() => setFocusIndex(0)}
-                refCallback={(node) => {
-                  navRefs.current[0] = node;
-                }}
-              />
+              {/* Signal and Numbers links (items before Geometries dropdown) */}
+              {desktopNavItems
+                .filter((item) => item.path !== "/shop")
+                .map((item, index) => (
+                  <AnimatedNavLink
+                    key={item.path}
+                    href={item.path}
+                    isActive={isActive(item.path)}
+                    desktopLabel={item.desktopLabel}
+                    mobileLabel={item.mobileLabel}
+                    tabIndex={focusIndex === index ? 0 : -1}
+                    onFocus={() => setFocusIndex(index)}
+                    refCallback={(node) => {
+                      navRefs.current[index] = node;
+                    }}
+                  />
+                ))}
 
               {/* Geometries dropdown */}
               <GeometriesDropdown />
 
-              {/* Signal and Shop links */}
-              {desktopNavItems.slice(1).map((item, index) => (
+              {/* Shop link (after Geometries dropdown) */}
+              {shopEnabled && (
                 <AnimatedNavLink
-                  key={item.path}
-                  href={item.path}
-                  isActive={isActive(item.path)}
-                  desktopLabel={item.desktopLabel}
-                  mobileLabel={item.mobileLabel}
-                  tabIndex={focusIndex === index + 1 ? 0 : -1}
-                  onFocus={() => setFocusIndex(index + 1)}
+                  href="/shop"
+                  isActive={isActive("/shop")}
+                  desktopLabel="Shop"
+                  mobileLabel="Shop"
+                  tabIndex={
+                    focusIndex ===
+                    desktopNavItems.filter((item) => item.path !== "/shop")
+                      .length
+                      ? 0
+                      : -1
+                  }
+                  onFocus={() =>
+                    setFocusIndex(
+                      desktopNavItems.filter((item) => item.path !== "/shop")
+                        .length
+                    )
+                  }
                   refCallback={(node) => {
-                    navRefs.current[index + 1] = node;
+                    navRefs.current[
+                      desktopNavItems.filter((item) => item.path !== "/shop")
+                        .length
+                    ] = node;
                   }}
                 />
-              ))}
+              )}
             </nav>
 
             {/* Separator between nav and utility actions */}
