@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { useTheme, type Theme } from "@/lib/theme";
 import {
@@ -16,14 +17,20 @@ const themeOptions: Array<{ value: Theme; label: string; icon: typeof Sun }> = [
   { value: "system", label: "System", icon: Monitor },
 ];
 
+// Track hydration state without triggering lint warnings
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 /**
  * Theme toggle dropdown for switching between light, dark, and system themes.
  */
 export function ThemeToggle() {
   const { theme, resolvedTheme, setTheme } = useTheme();
+  const isHydrated = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  // Show the icon for the current resolved theme
-  const CurrentIcon = resolvedTheme === "dark" ? Moon : Sun;
+  // Show Moon during SSR (matches server's "dark" default), then actual icon after hydration
+  const CurrentIcon = isHydrated && resolvedTheme === "light" ? Sun : Moon;
 
   return (
     <DropdownMenu>

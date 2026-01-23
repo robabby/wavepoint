@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   try {
     // Rate limit by IP: 5 attempts per hour
     const ip = request.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown";
-    const rateLimitResult = checkRateLimit(`register:${ip}`, {
+    const rateLimitResult = await checkRateLimit(`register:${ip}`, {
       limit: 5,
       windowMs: 60 * 60 * 1000, // 1 hour
     });

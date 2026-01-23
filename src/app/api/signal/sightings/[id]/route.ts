@@ -59,7 +59,7 @@ export async function PATCH(
     }
 
     // Rate limit check (30/min for updates)
-    const rateLimit = checkRateLimit(`${session.user.id}:sighting:update`, {
+    const rateLimit = await checkRateLimit(`${session.user.id}:sighting:update`, {
       limit: 30,
     });
     if (!rateLimit.allowed) {
@@ -137,7 +137,7 @@ export async function DELETE(
     }
 
     // Rate limit check (30/min for deletions)
-    const rateLimit = checkRateLimit(`${session.user.id}:sighting:delete`, {
+    const rateLimit = await checkRateLimit(`${session.user.id}:sighting:delete`, {
       limit: 30,
     });
     if (!rateLimit.allowed) {
