@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
-import { SignalProviders } from "./providers";
 
+// QueryProvider is now at root layout level, so Signal pages
+// no longer need their own providers wrapper.
 export default function SignalLayout({ children }: { children: ReactNode }) {
-  return <SignalProviders>{children}</SignalProviders>;
+  return <>{children}</>;
 }

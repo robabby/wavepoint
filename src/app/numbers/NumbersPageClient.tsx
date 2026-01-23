@@ -101,6 +101,23 @@ export function NumbersPageClient({
       </section>
 
       <div className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
+        {/* Signal relationship banner - only when Signal is enabled and not searching */}
+        {signalEnabled && !isSearching && (
+          <AnimateOnScroll className="mb-12">
+            <div className="mx-auto max-w-2xl rounded-lg border border-[var(--border-gold)]/20 bg-card/30 px-4 py-3 text-center">
+              <Text size="2" className="text-muted-foreground">
+                This is your reference guide.{" "}
+                <Link
+                  href="/signal"
+                  className="text-[var(--color-gold)] transition-colors hover:underline"
+                >
+                  Track the numbers you notice →
+                </Link>
+              </Text>
+            </div>
+          </AnimateOnScroll>
+        )}
+
         {/* Show search results when searching */}
         {isSearching ? (
           <section className="mb-16">

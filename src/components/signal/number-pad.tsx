@@ -6,21 +6,55 @@ import { cn } from "@/lib/utils";
 import { SubmitButton } from "./submit-button";
 import { digitInteraction, SIGNAL_TIMING } from "./animation-config";
 
-const QUICK_NUMBERS = ["111", "222", "333", "444", "555", "1111", "1212"];
+const DEFAULT_QUICK_NUMBERS = [
+  "111", "222", "333", "444", "555", "666",
+  "777", "888", "999", "1111", "1212", "1234",
+];
 const MAX_DIGITS = 10;
 
 export interface NumberPadProps {
   onSubmit: (number: string) => void;
   disabled?: boolean;
   isLoading?: boolean;
+  /** User's personalized top numbers (from stats). Will be merged with defaults. */
+  userTopNumbers?: string[];
 }
 
 /**
  * Number pad for quick angel number entry.
  * Features a 3x3 grid, quick-select chips, and a prominent display.
+ *
+ * When userTopNumbers is provided, shows a mix of user's frequent numbers
+ * and common patterns. Falls back to defaults if no user data.
  */
-export function NumberPad({ onSubmit, disabled, isLoading }: NumberPadProps) {
+export function NumberPad({
+  onSubmit,
+  disabled,
+  isLoading,
+  userTopNumbers,
+}: NumberPadProps) {
   const [value, setValue] = useState("");
+
+  // Compute personalized quick-select numbers
+  // Take user's top 7 (if available), then fill remaining slots with defaults
+  const quickNumbers = (() => {
+    if (!userTopNumbers || userTopNumbers.length === 0) {
+      return DEFAULT_QUICK_NUMBERS;
+    }
+
+    const userNumbers = userTopNumbers.slice(0, 7);
+    const userNumberSet = new Set(userNumbers);
+
+    // Fill remaining slots with defaults not in user's list
+    const remainingDefaults = DEFAULT_QUICK_NUMBERS.filter(
+      (n) => !userNumberSet.has(n)
+    );
+
+    return [
+      ...userNumbers,
+      ...remainingDefaults.slice(0, 12 - userNumbers.length),
+    ];
+  })();
 
   const handleDigit = useCallback((digit: string) => {
     setValue((prev) => (prev.length < MAX_DIGITS ? prev + digit : prev));
@@ -49,7 +83,7 @@ export function NumberPad({ onSubmit, disabled, isLoading }: NumberPadProps) {
 
       {/* Quick select */}
       <QuickSelectChips
-        numbers={QUICK_NUMBERS}
+        numbers={quickNumbers}
         currentValue={value}
         onSelect={handleQuickSelect}
         disabled={disabled}
@@ -217,7 +251,7 @@ function QuickSelectChips({
   disabled?: boolean;
 }) {
   return (
-    <div className="flex flex-wrap justify-center gap-2">
+    <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 justify-items-center">
       {numbers.map((num, i) => (
         <motion.button
           key={num}

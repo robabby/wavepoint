@@ -24,6 +24,7 @@ import { CartProvider } from "@/lib/shop/cart-context";
 import { isAuthEnabled } from "@/lib/features/access";
 import { ThemeProvider } from "@/lib/theme";
 import { ThemeWrapper } from "@/components/theme-wrapper";
+import { QueryProvider } from "@/components/query-provider";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
@@ -131,9 +132,12 @@ export default function RootLayout({
                   This allows invite flows to work even when auth is disabled for public.
                   The modal opens via URL params (?auth=sign-up&invite=...) */}
               <AuthModal />
-              {/* CartProvider always included so useCart() works after session changes.
-                  Components use useCanAccessShop() client-side for visibility control. */}
-              <CartProvider>{coreContent}</CartProvider>
+              {/* QueryProvider for React Query hooks used across the app */}
+              <QueryProvider>
+                {/* CartProvider always included so useCart() works after session changes.
+                    Components use useCanAccessShop() client-side for visibility control. */}
+                <CartProvider>{coreContent}</CartProvider>
+              </QueryProvider>
             </AuthProvider>
           </ThemeWrapper>
         </ThemeProvider>

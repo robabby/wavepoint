@@ -229,10 +229,17 @@ export async function GET(request: Request) {
     const offsetParam = parseInt(searchParams.get("offset") ?? "0", 10);
     const offset = Math.max(Number.isNaN(offsetParam) ? 0 : offsetParam, 0);
     const numberFilter = searchParams.get("number");
+    const sinceParam = searchParams.get("since");
 
     const conditions = [eq(signalSightings.userId, session.user.id)];
     if (numberFilter) {
       conditions.push(eq(signalSightings.number, numberFilter));
+    }
+    if (sinceParam) {
+      const sinceDate = new Date(sinceParam);
+      if (!isNaN(sinceDate.getTime())) {
+        conditions.push(gte(signalSightings.timestamp, sinceDate));
+      }
     }
 
     const sightings = await db.query.signalSightings.findMany({
