@@ -10,6 +10,7 @@ import { auth } from "@/lib/auth";
 import { db, signalSightings, signalUserNumberStats } from "@/lib/db";
 import { generateInterpretation } from "@/lib/signal/claude";
 import { checkRateLimit } from "@/lib/signal/rate-limit";
+import { canRegenerate, incrementRegenerations } from "@/lib/signal/subscriptions";
 
 const regenerateSchema = z.object({
   sightingId: z.string().uuid(),
@@ -70,6 +71,33 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
+    // Check subscription access
+    const regenCheck = await canRegenerate(session.user.id);
+    if (!regenCheck.allowed) {
+      // Determine if it's a tier issue or limit issue
+      if (regenCheck.remaining === 0 && regenCheck.resetsAt) {
+        // Hit the monthly limit
+        return NextResponse.json(
+          {
+            error: "Monthly regeneration limit reached",
+            code: "REGEN_LIMIT_REACHED",
+            remaining: 0,
+            resetsAt: regenCheck.resetsAt.toISOString(),
+          },
+          { status: 403 }
+        );
+      }
+
+      // No subscription or inactive
+      return NextResponse.json(
+        {
+          error: "Upgrade to Signal Insight to regenerate interpretations",
+          code: "SUBSCRIPTION_REQUIRED",
+        },
+        { status: 403 }
+      );
+    }
+
     // Get stats for count
     const stats = await db.query.signalUserNumberStats.findFirst({
       where: and(
@@ -87,7 +115,13 @@ export async function POST(request: Request) {
       isFirstCatch: false, // Regeneration is never first catch
     });
 
-    return NextResponse.json({ interpretation: content });
+    // Increment regeneration counter after successful generation
+    await incrementRegenerations(session.user.id);
+
+    return NextResponse.json({
+      interpretation: content,
+      regenerationsRemaining: regenCheck.remaining - 1,
+    });
   } catch (error) {
     console.error("Regenerate interpretation error:", error);
     return NextResponse.json(

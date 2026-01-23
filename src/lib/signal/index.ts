@@ -33,5 +33,8 @@ export { checkRateLimit } from "./rate-limit";
 export {
   hasInsightAccess,
   getSubscriptionTier,
+  canRegenerate,
+  incrementRegenerations,
   SUBSCRIPTION_TIERS,
+  type CanRegenerateResult,
 } from "./subscriptions";

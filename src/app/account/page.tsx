@@ -2,8 +2,11 @@ import { redirect } from "next/navigation";
 import { Heading, Text } from "@radix-ui/themes";
 import { User } from "lucide-react";
 import { auth } from "@/lib/auth";
+import { getUserSubscription } from "@/lib/db/queries/subscriptions";
+import { isSignalEnabled } from "@/lib/signal";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { AccountActions } from "@/components/account/account-actions";
+import { SubscriptionStatus } from "@/components/signal/subscription-status";
 
 export default async function AccountOverviewPage() {
   const session = await auth();
@@ -11,6 +14,12 @@ export default async function AccountOverviewPage() {
   if (!session?.user) {
     redirect("/?auth=sign-in");
   }
+
+  // Fetch subscription data if Signal is enabled
+  const signalEnabled = isSignalEnabled();
+  const subscription = signalEnabled
+    ? await getUserSubscription(session.user.id)
+    : null;
 
   return (
     <div className="space-y-8">
@@ -32,6 +41,30 @@ export default async function AccountOverviewPage() {
           </div>
         </CardHeader>
       </Card>
+
+      {/* Signal subscription section - only show if Signal is enabled */}
+      {signalEnabled && (
+        <div>
+          <Heading
+            as="h2"
+            size="5"
+            className="mb-4 font-heading text-foreground"
+          >
+            Signal Subscription
+          </Heading>
+          <SubscriptionStatus
+            tier={(subscription?.tier as "free" | "insight") ?? "free"}
+            status={
+              subscription?.status as
+                | "active"
+                | "cancelled"
+                | "past_due"
+                | undefined
+            }
+            currentPeriodEnd={subscription?.currentPeriodEnd}
+          />
+        </div>
+      )}
 
       {/* Actions section */}
       <div>
