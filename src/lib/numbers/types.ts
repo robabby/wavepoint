@@ -38,7 +38,7 @@ export const NUMBER_PATTERN_IDS = [
   "7777",
   "8888",
   "9999",
-  // Sequential (13)
+  // Sequential (14)
   "123",
   "234",
   "345",
@@ -52,6 +52,7 @@ export const NUMBER_PATTERN_IDS = [
   "432",
   "4321",
   "54321",
+  "122",
   // Mirrored (9)
   "1001",
   "1221",
