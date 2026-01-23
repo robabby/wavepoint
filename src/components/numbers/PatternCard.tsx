@@ -15,6 +15,7 @@ interface PatternCardProps {
 
 /**
  * Card for displaying a number pattern in grids.
+ * Responsive: badge stacks below essence on mobile for breathing room.
  * Wraps AnimatedCard for consistent hover effects.
  */
 export function PatternCard({
@@ -26,43 +27,42 @@ export function PatternCard({
   return (
     <Link
       href={`/numbers/${pattern.id}`}
-      className={cn("group block focus:outline-none", className)}
+      className={cn("group block h-full focus:outline-none", className)}
       aria-label={`${pattern.id}: ${pattern.essence} — ${pattern.title}`}
     >
       <AnimatedCard className="h-full">
-        <div className="flex flex-col p-5">
+        <div className="flex flex-col min-h-[180px] p-4 sm:p-5">
           {/* Number display */}
-          <span className="font-display text-3xl tracking-wider text-[var(--color-gold)]">
+          <span className="font-display text-2xl sm:text-3xl tracking-wider text-[var(--color-gold)]">
             {pattern.id}
           </span>
 
-          {/* Essence - short tagline with optional relationship badge */}
-          <span className="mt-1 flex items-center gap-2 text-sm">
-            <span className="font-medium text-[var(--color-gold-bright)]">
-              {pattern.essence}
-            </span>
-            {relationshipType && (
-              <>
-                <span className="text-muted-foreground/50">·</span>
-                <NumberRelationshipBadge type={relationshipType} />
-              </>
-            )}
+          {/* Essence - short tagline */}
+          <span className="mt-1 text-sm font-medium text-[var(--color-gold-bright)]">
+            {pattern.essence}
           </span>
 
+          {/* Relationship badge - stacked below essence for mobile breathing room */}
+          {relationshipType && (
+            <div className="mt-1.5">
+              <NumberRelationshipBadge type={relationshipType} />
+            </div>
+          )}
+
           {/* Title */}
-          <span className="mt-3 text-xs text-muted-foreground">
+          <span className="mt-2 text-xs text-muted-foreground">
             {pattern.title}
           </span>
 
           {/* Category badge (optional) */}
           {showCategory && (
-            <span className="mt-3 inline-flex w-fit rounded-full bg-[var(--color-gold)]/10 px-2 py-0.5 text-xs capitalize text-[var(--color-gold)]">
+            <span className="mt-2 inline-flex w-fit rounded-full bg-[var(--color-gold)]/10 px-2 py-0.5 text-xs capitalize text-[var(--color-gold)]">
               {pattern.category}
             </span>
           )}
 
-          {/* Keywords */}
-          <div className="mt-3 flex flex-wrap gap-1">
+          {/* Keywords - pushed to bottom */}
+          <div className="mt-auto flex flex-wrap gap-1 pt-3">
             {pattern.keywords.slice(0, 3).map((keyword) => (
               <span
                 key={keyword}

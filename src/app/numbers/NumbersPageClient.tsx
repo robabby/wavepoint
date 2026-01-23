@@ -188,7 +188,7 @@ export function NumbersPageClient({
 {/* Signal CTA - only shown when Signal feature is enabled */}
         {signalEnabled && (
           <AnimateOnScroll>
-            <AnimatedCard className="mx-auto max-w-2xl p-8 text-center">
+            <AnimatedCard className="mx-auto flex max-w-2xl flex-col items-center p-8 text-center">
               <Heading
                 size="5"
                 className="mb-3 font-display text-foreground"
