@@ -303,21 +303,21 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="mt-auto">
+                  <button
+                    type="button"
+                    onClick={() => setWaitlistOpen(true)}
+                    className="mt-auto block w-full text-left"
+                  >
                     <Button
                       asChild
                       className="w-full bg-[var(--color-gold)] text-primary-foreground transition-all hover:bg-[var(--color-gold-bright)]"
                     >
-                      <button
-                        type="button"
-                        onClick={() => setWaitlistOpen(true)}
-                        className="flex w-full items-center justify-center gap-2"
-                      >
+                      <span className="flex items-center justify-center gap-2">
                         Join Waitlist
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </button>
+                      </span>
                     </Button>
-                  </div>
+                  </button>
                 </AnimatedCard>
               </div>
             )}
