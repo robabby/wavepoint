@@ -52,6 +52,10 @@ export {
   QuickCaptureBar,
   type QuickCaptureBarProps,
 } from "./quick-capture-bar";
+export {
+  InlineCaptureInput,
+  type InlineCaptureInputProps,
+} from "./inline-capture-input";
 
 // Filtering
 export {

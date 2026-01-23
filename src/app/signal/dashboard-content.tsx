@@ -11,7 +11,7 @@ import {
   ActivityHeatmap,
   DelightToast,
   getDateRangeStart,
-  QuickCaptureBar,
+  InlineCaptureInput,
   RecentSightings,
   SignalBackground,
   SightingFilters,
@@ -116,11 +116,11 @@ export function DashboardContent() {
           isLoading={statsLoading}
         />
 
-        {/* Quick Capture - only show when user has history and not filtering */}
-        {!isEmpty && !numberFilter && numberCounts.length > 0 && (
+        {/* Quick Capture - show for all users when not filtering */}
+        {!numberFilter && (
           <section className="mb-8">
-            <QuickCaptureBar
-              topNumbers={numberCounts.slice(0, 5)}
+            <InlineCaptureInput
+              userNumbers={numberCounts}
               onCapture={handleQuickCapture}
               isCapturing={isCreating}
             />
