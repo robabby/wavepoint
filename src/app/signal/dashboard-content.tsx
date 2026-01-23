@@ -4,12 +4,14 @@ import { useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { useSightings, useStats } from "@/hooks/signal";
+import { useSightings, useStats, useHeatmap } from "@/hooks/signal";
 import {
-  CollectionGrid,
-  StatsSummary,
+  ActivityHeatmap,
   RecentSightings,
   SignalBackground,
+  StatsSummary,
+  StreakStats,
+  YourNumbers,
 } from "@/components/signal";
 
 export function DashboardContent() {
@@ -23,6 +25,12 @@ export function DashboardContent() {
     numberCounts,
     isLoading: statsLoading,
   } = useStats();
+
+  const {
+    dailyCounts,
+    streaks,
+    isLoading: heatmapLoading,
+  } = useHeatmap();
 
   const { sightings, isLoading: sightingsLoading } = useSightings({
     number: numberFilter ?? undefined,
@@ -73,6 +81,29 @@ export function DashboardContent() {
           isLoading={statsLoading}
         />
 
+        {/* Activity Section - only show when user has data */}
+        {!isEmpty && !numberFilter && (
+          <section className="mb-8">
+            <h2 className="mb-4 font-heading text-xl text-foreground">
+              Activity
+            </h2>
+            <div className="rounded-lg border border-[var(--border-gold)]/20 bg-card/50 p-4">
+              <StreakStats
+                currentStreak={streaks.current}
+                longestStreak={streaks.longest}
+                totalActiveDays={streaks.totalActiveDays}
+                isLoading={heatmapLoading}
+              />
+              <div className="mt-4 border-t border-[var(--border-gold)]/10 pt-4">
+                <ActivityHeatmap
+                  dailyCounts={dailyCounts}
+                  isLoading={heatmapLoading}
+                />
+              </div>
+            </div>
+          </section>
+        )}
+
         {isEmpty ? (
           // Empty state - first time user
           <div className="py-12 text-center">
@@ -118,15 +149,16 @@ export function DashboardContent() {
               />
             </section>
 
-            {/* Collection Grid - only show when not filtered */}
+            {/* Your Numbers - only show when not filtered */}
             {!numberFilter && (
               <section className="mb-24">
                 <h2 className="mb-4 font-heading text-xl text-foreground">
-                  Your Collection
+                  Your Numbers
                 </h2>
-                <CollectionGrid
+                <YourNumbers
                   stats={gridStats}
                   onSelectNumber={handleSelectNumber}
+                  isLoading={statsLoading}
                 />
               </section>
             )}

@@ -4,13 +4,18 @@
  */
 
 import { NextResponse } from "next/server";
-import { and, count, desc, eq, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 
 import { auth } from "@/lib/auth";
 import { db, signalSightings, signalUserNumberStats } from "@/lib/db";
+import { updateUserActivityStats } from "@/lib/db/queries";
 import { generateInterpretation } from "@/lib/signal/claude";
+import { detectDelight, type DelightMoment } from "@/lib/signal/delight";
+import { generateInsight, type PatternInsight } from "@/lib/signal/insights";
+import { getBaseMeaning } from "@/lib/signal/meanings";
 import { checkRateLimit } from "@/lib/signal/rate-limit";
-import { createSightingSchema } from "@/lib/signal/schemas";
+import { createSightingSchema, type MoodOption } from "@/lib/signal/schemas";
+import { hasInsightAccess } from "@/lib/signal/subscriptions";
 
 export async function POST(request: Request) {
   try {
@@ -86,21 +91,118 @@ export async function POST(request: Request) {
     const isFirstCatch = stats!.count === 1;
     const result = { sighting: sighting!, stats: stats!, isFirstCatch };
 
-    // Generate interpretation (outside transaction - can retry independently)
-    const { content: interpretation } = await generateInterpretation({
-      sightingId: result.sighting.id,
+    // Update activity stats (streaks) - denormalized and recoverable if this fails
+    await updateUserActivityStats(userId, now);
+
+    // Count recent sightings for insight generation (past 7 days, excluding current)
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const [recentCountResult] = await db
+      .select({ count: count().mapWith(Number) })
+      .from(signalSightings)
+      .where(
+        and(
+          eq(signalSightings.userId, userId),
+          eq(signalSightings.number, number),
+          gte(signalSightings.timestamp, sevenDaysAgo)
+        )
+      );
+
+    // Generate pattern insight
+    const insight: PatternInsight | null = generateInsight({
       number,
-      note: note ?? undefined,
-      moodTags: moodTags ?? undefined,
       count: result.stats.count,
-      isFirstCatch: result.isFirstCatch,
+      firstSeen: result.stats.firstSeen,
+      lastSeen: isFirstCatch ? null : result.stats.lastSeen,
+      recentCount: (recentCountResult?.count ?? 1) - 1, // Exclude current sighting
+      isFirstCatch,
     });
+
+    // Check subscription tier for AI interpretation
+    const hasAiAccess = await hasInsightAccess(userId);
+
+    // Detect delight moments
+    // Get total sightings count and first sighting date
+    const [totalResult] = await db
+      .select({ count: count().mapWith(Number) })
+      .from(signalSightings)
+      .where(eq(signalSightings.userId, userId));
+
+    const [firstSighting] = await db
+      .select({ timestamp: signalSightings.timestamp })
+      .from(signalSightings)
+      .where(eq(signalSightings.userId, userId))
+      .orderBy(asc(signalSightings.timestamp))
+      .limit(1);
+
+    // Get historical sightings for pattern echo (last year, same number, with moods)
+    const oneYearAgo = new Date(now);
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const thirtyDaysAgo = new Date(now);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const historicalSightings = await db
+      .select({
+        number: signalSightings.number,
+        moodTags: signalSightings.moodTags,
+        timestamp: signalSightings.timestamp,
+      })
+      .from(signalSightings)
+      .where(
+        and(
+          eq(signalSightings.userId, userId),
+          eq(signalSightings.number, number),
+          gte(signalSightings.timestamp, oneYearAgo),
+          lte(signalSightings.timestamp, thirtyDaysAgo)
+        )
+      )
+      .orderBy(desc(signalSightings.timestamp))
+      .limit(10);
+
+    const delight: DelightMoment | null = detectDelight({
+      number,
+      timestamp: now,
+      moodTags: moodTags ?? undefined,
+      totalSightings: totalResult?.count ?? 0,
+      firstSightingDate: firstSighting?.timestamp ?? null,
+      historicalSightings: historicalSightings.map((s) => ({
+        number: s.number,
+        moodTags: s.moodTags as MoodOption[] | null,
+        timestamp: s.timestamp,
+      })),
+    });
+
+    // Generate interpretation based on subscription tier
+    let interpretation: string;
+    let tier: "free" | "insight";
+
+    if (hasAiAccess) {
+      // Insight tier: Generate AI interpretation
+      const { content } = await generateInterpretation({
+        sightingId: result.sighting.id,
+        number,
+        note: note ?? undefined,
+        moodTags: moodTags ?? undefined,
+        count: result.stats.count,
+        isFirstCatch: result.isFirstCatch,
+      });
+      interpretation = content;
+      tier = "insight";
+    } else {
+      // Free tier: Return base meaning from Numbers library
+      interpretation = getBaseMeaning(number);
+      tier = "free";
+    }
 
     return NextResponse.json({
       sighting: result.sighting,
       interpretation,
       isFirstCatch: result.isFirstCatch,
       count: result.stats.count,
+      insight,
+      delight,
+      tier,
     });
   } catch (error) {
     console.error("Create sighting error:", error);

@@ -9,3 +9,4 @@ export { PersonalizationBadge } from "./PersonalizationBadge";
 export { NumberSearchResults } from "./NumberSearchResults";
 export { NumberRelationshipBadge } from "./NumberRelationshipBadge";
 export { NumberRain } from "./NumberRain";
+export { SignalHistory } from "./signal-history";

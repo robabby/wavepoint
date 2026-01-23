@@ -5,4 +5,5 @@ export const signalKeys = {
     [...signalKeys.sightings(), filters] as const,
   sighting: (id: string) => [...signalKeys.sightings(), id] as const,
   stats: () => [...signalKeys.all, "stats"] as const,
+  heatmap: () => [...signalKeys.all, "heatmap"] as const,
 };
