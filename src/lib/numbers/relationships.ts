@@ -108,6 +108,22 @@ export const MANUAL_RELATIONSHIPS: Partial<
       context: "Material and spiritual balance",
     },
   ],
+
+  // Initiative to partnership connections
+  "122": [
+    {
+      type: "thematic",
+      targetId: "222",
+      strength: 8,
+      context: "Partnership energy amplified",
+    },
+    {
+      type: "thematic",
+      targetId: "123",
+      strength: 7,
+      context: "Forward momentum from initiative",
+    },
+  ],
 };
 
 // =============================================================================

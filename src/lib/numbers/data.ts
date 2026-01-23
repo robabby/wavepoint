@@ -487,6 +487,21 @@ export const PATTERNS: Record<NumberPatternId, NumberPattern> = {
     order: 13,
   },
 
+  "122": {
+    id: "122",
+    slug: "122",
+    category: "sequential",
+    title: "Initiative to Partnership",
+    essence: "Solo to duo",
+    meaning:
+      "The 122 pattern marks a transition from individual effort to meaningful collaboration. The leading 1 represents your initiative—the spark that began something. The doubled 2 that follows signals that partnership or balance is calling. This pattern often appears when independent projects are ready for collaboration, or when personal growth leads naturally to deeper connections. Trust that your individual foundation is strong enough to support what you're about to build with others.",
+    keywords: ["cooperation", "initiative", "partnership", "transition", "collaboration"],
+    related: ["22", "222", "123"],
+    featured: false,
+    excludeFromFeatured: false,
+    order: 14,
+  },
+
   // ═══════════════════════════════════════════════════════════════════════════
   // MIRRORED (9)
   // ═══════════════════════════════════════════════════════════════════════════
