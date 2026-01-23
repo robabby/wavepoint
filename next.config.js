@@ -9,15 +9,6 @@ import createMDX from "@next/mdx";
 const config = {
   // Configure pageExtensions to include markdown and MDX files
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-  // Allow external images from Printful CDN
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "files.cdn.printful.com",
-      },
-    ],
-  },
   // SEO redirects for URL rebranding
   async redirects() {
     return [

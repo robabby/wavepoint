@@ -6,7 +6,7 @@ import { AccountSidebar } from "@/components/account/account-sidebar";
 
 export const metadata: Metadata = {
   title: "Account",
-  description: "Manage your WavePoint account settings and orders.",
+  description: "Manage your WavePoint account settings.",
 };
 
 export default async function AccountLayout({

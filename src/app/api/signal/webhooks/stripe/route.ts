@@ -11,7 +11,7 @@
  */
 
 import { NextResponse } from "next/server";
-import { stripe } from "@/lib/shop/stripe";
+import { stripe } from "@/lib/stripe";
 import { env } from "@/env";
 import {
   upsertSubscription,

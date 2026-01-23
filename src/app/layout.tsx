@@ -20,7 +20,6 @@ import {
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { EmailVerificationBanner } from "@/components/auth/email-verification-banner";
-import { CartProvider } from "@/lib/shop/cart-context";
 import { isAuthEnabled } from "@/lib/features/access";
 import { ThemeProvider } from "@/lib/theme";
 import { ThemeWrapper } from "@/components/theme-wrapper";
@@ -133,11 +132,7 @@ export default function RootLayout({
                   The modal opens via URL params (?auth=sign-up&invite=...) */}
               <AuthModal />
               {/* QueryProvider for React Query hooks used across the app */}
-              <QueryProvider>
-                {/* CartProvider always included so useCart() works after session changes.
-                    Components use useCanAccessShop() client-side for visibility control. */}
-                <CartProvider>{coreContent}</CartProvider>
-              </QueryProvider>
+              <QueryProvider>{coreContent}</QueryProvider>
             </AuthProvider>
           </ThemeWrapper>
         </ThemeProvider>

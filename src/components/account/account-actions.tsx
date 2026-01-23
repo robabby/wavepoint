@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { Package, MapPin, KeyRound, Trash2, LogOut, Loader2 } from "lucide-react";
+import { KeyRound, Trash2, LogOut, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -113,7 +113,7 @@ function ActionCard({
 
 /**
  * Account actions grid component.
- * Displays action cards for orders, address, password, delete account, and sign out.
+ * Displays action cards for password, delete account, and sign out.
  */
 export function AccountActions() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -162,18 +162,6 @@ export function AccountActions() {
     <>
       <div className="grid gap-4 sm:grid-cols-2">
         <ActionCard
-          icon={Package}
-          title="Orders"
-          description="View your order history and track shipments"
-          href="/account/orders"
-        />
-        <ActionCard
-          icon={MapPin}
-          title="Shipping Address"
-          description="Manage your default shipping address"
-          href="/account/address"
-        />
-        <ActionCard
           icon={KeyRound}
           title="Change Password"
           description="Update your account password"
@@ -206,8 +194,7 @@ export function AccountActions() {
             </AlertDialogTitle>
             <AlertDialogDescription className="text-muted-foreground">
               Are you sure you want to delete your account? This action cannot
-              be undone. All your data will be permanently removed, except for
-              anonymized order records.
+              be undone. All your data will be permanently removed.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <label className="flex cursor-pointer items-start gap-3">
