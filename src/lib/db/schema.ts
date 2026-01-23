@@ -238,6 +238,28 @@ export const signalSubscriptions = pgTable("signal_subscriptions", {
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
 });
 
+/**
+ * Signal subscription usage - tracks regeneration usage per billing period
+ */
+export const signalSubscriptionUsage = pgTable(
+  "signal_subscription_usage",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    periodStart: timestamp("period_start", { mode: "date" }).notNull(),
+    regenerationsUsed: integer("regenerations_used").notNull().default(0),
+  },
+  (table) => [
+    unique("signal_subscription_usage_user_period_unique").on(
+      table.userId,
+      table.periodStart
+    ),
+    index("signal_subscription_usage_user_id_idx").on(table.userId),
+  ]
+);
+
 // =============================================================================
 // Invites - Closed beta access gating
 // =============================================================================
@@ -346,6 +368,9 @@ export type NewSignalUserActivityStats = typeof signalUserActivityStats.$inferIn
 
 export type SignalSubscription = typeof signalSubscriptions.$inferSelect;
 export type NewSignalSubscription = typeof signalSubscriptions.$inferInsert;
+
+export type SignalSubscriptionUsage = typeof signalSubscriptionUsage.$inferSelect;
+export type NewSignalSubscriptionUsage = typeof signalSubscriptionUsage.$inferInsert;
 
 export type Invite = typeof invites.$inferSelect;
 export type NewInvite = typeof invites.$inferInsert;
