@@ -77,7 +77,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "where-found-in-nature",
     question: "Where can sacred geometry be found in nature?",
     answer:
-      'Sacred geometric patterns appear everywhere in the natural world: the hexagonal cells of honeycombs, the spiral of nautilus shells and hurricanes, the branching of trees and rivers, the structure of crystals and snowflakes, and even the proportions of the human body. The <a href="/patterns/golden-ratio">Golden Ratio</a> (φ ≈ 1.618) appears in flower petals, seed arrangements, and spiral galaxies.',
+      'Sacred geometric patterns appear everywhere in the natural world: the hexagonal cells of honeycombs, the spiral of nautilus shells and hurricanes, the branching of trees and rivers, the structure of crystals and snowflakes, and even the proportions of the human body. The <a href="/sacred-patterns/golden-ratio">Golden Ratio</a> (φ ≈ 1.618) appears in flower petals, seed arrangements, and spiral galaxies.',
     category: "general",
     order: 3,
   },
@@ -85,7 +85,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "history-sacred-geometry",
     question: "What is the history of sacred geometry?",
     answer:
-      'Sacred geometry has roots in ancient Egypt, where it informed pyramid construction, and ancient Greece, where Pythagoras and Plato studied these forms. The <a href="/platonic-solids">Platonic Solids</a> were named after Plato, who associated them with the classical elements. Renaissance artists like Leonardo da Vinci studied the <a href="/patterns/flower-of-life">Flower of Life</a> and applied geometric principles to their masterworks.',
+      'Sacred geometry has roots in ancient Egypt, where it informed pyramid construction, and ancient Greece, where Pythagoras and Plato studied these forms. The <a href="/platonic-solids">Platonic Solids</a> were named after Plato, who associated them with the classical elements. Renaissance artists like Leonardo da Vinci studied the <a href="/sacred-patterns/flower-of-life">Flower of Life</a> and applied geometric principles to their masterworks.',
     category: "general",
     order: 4,
   },
@@ -109,7 +109,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "sacred-geometry-religion",
     question: "Is sacred geometry tied to a specific religion?",
     answer:
-      'Sacred geometry transcends any single religion or culture. The <a href="/patterns/flower-of-life">Flower of Life</a> appears in Egyptian, Chinese, and European contexts. The <a href="/patterns/sri-yantra">Sri Yantra</a> comes from Hindu tradition. The <a href="/patterns/tree-of-life">Tree of Life</a> appears in Kabbalah. These universal patterns have been discovered independently across cultures, suggesting they reflect fundamental truths rather than cultural inventions.',
+      'Sacred geometry transcends any single religion or culture. The <a href="/sacred-patterns/flower-of-life">Flower of Life</a> appears in Egyptian, Chinese, and European contexts. The <a href="/sacred-patterns/sri-yantra">Sri Yantra</a> comes from Hindu tradition. The <a href="/sacred-patterns/tree-of-life">Tree of Life</a> appears in Kabbalah. These universal patterns have been discovered independently across cultures, suggesting they reflect fundamental truths rather than cultural inventions.',
     category: "general",
     order: 7,
   },
@@ -173,7 +173,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "what-are-sacred-patterns",
     question: "What are sacred patterns?",
     answer:
-      '<a href="/sacred-patterns">Sacred patterns</a> are geometric designs that appear repeatedly throughout nature, art, and spiritual traditions. Unlike the three-dimensional <a href="/platonic-solids">Platonic Solids</a>, these are primarily two-dimensional patterns—circles, spirals, and their combinations—that encode mathematical relationships considered fundamental to creation. From the <a href="/patterns/flower-of-life">Flower of Life</a> to the <a href="/patterns/golden-ratio">Golden Ratio</a>, these patterns reveal the hidden order underlying the visible world.',
+      '<a href="/sacred-patterns">Sacred patterns</a> are geometric designs that appear repeatedly throughout nature, art, and spiritual traditions. Unlike the three-dimensional <a href="/platonic-solids">Platonic Solids</a>, these are primarily two-dimensional patterns—circles, spirals, and their combinations—that encode mathematical relationships considered fundamental to creation. From the <a href="/sacred-patterns/flower-of-life">Flower of Life</a> to the <a href="/sacred-patterns/golden-ratio">Golden Ratio</a>, these patterns reveal the hidden order underlying the visible world.',
     category: "patterns",
     order: 1,
   },
@@ -181,7 +181,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "what-is-flower-of-life",
     question: "What is the Flower of Life?",
     answer:
-      'The <a href="/patterns/flower-of-life">Flower of Life</a> is a geometric pattern of overlapping circles arranged in a hexagonal flower-like pattern. Starting from a single circle, each new circle is drawn with its center on the circumference of existing circles. This simple process generates a pattern containing all five Platonic Solids, the <a href="/patterns/seed-of-life">Seed of Life</a>, the <a href="/patterns/fruit-of-life">Fruit of Life</a>, and <a href="/patterns/metatrons-cube">Metatron\'s Cube</a>.',
+      'The <a href="/sacred-patterns/flower-of-life">Flower of Life</a> is a geometric pattern of overlapping circles arranged in a hexagonal flower-like pattern. Starting from a single circle, each new circle is drawn with its center on the circumference of existing circles. This simple process generates a pattern containing all five Platonic Solids, the <a href="/sacred-patterns/seed-of-life">Seed of Life</a>, the <a href="/sacred-patterns/fruit-of-life">Fruit of Life</a>, and <a href="/sacred-patterns/metatrons-cube">Metatron\'s Cube</a>.',
     category: "patterns",
     order: 2,
   },
@@ -189,7 +189,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "what-is-metatrons-cube",
     question: "What is Metatron's Cube?",
     answer:
-      '<a href="/patterns/metatrons-cube">Metatron\'s Cube</a> is created by connecting the centers of the 13 circles in the <a href="/patterns/fruit-of-life">Fruit of Life</a>. Remarkably, this single pattern contains all five Platonic Solids within it. Named after the archangel Metatron, it represents the geometric blueprint underlying physical creation—a kind of cosmic template from which all forms emerge.',
+      '<a href="/sacred-patterns/metatrons-cube">Metatron\'s Cube</a> is created by connecting the centers of the 13 circles in the <a href="/sacred-patterns/fruit-of-life">Fruit of Life</a>. Remarkably, this single pattern contains all five Platonic Solids within it. Named after the archangel Metatron, it represents the geometric blueprint underlying physical creation—a kind of cosmic template from which all forms emerge.',
     category: "patterns",
     order: 3,
   },
@@ -197,7 +197,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "what-is-golden-ratio",
     question: "What is the Golden Ratio?",
     answer:
-      'The <a href="/patterns/golden-ratio">Golden Ratio</a> (φ ≈ 1.618) is a mathematical proportion where the ratio of the whole to the larger part equals the ratio of the larger part to the smaller. It appears throughout nature—in spiral shells, flower petals, and human proportions—and has been used in art and architecture from the Parthenon to modern design. It\'s closely related to the Fibonacci sequence.',
+      'The <a href="/sacred-patterns/golden-ratio">Golden Ratio</a> (φ ≈ 1.618) is a mathematical proportion where the ratio of the whole to the larger part equals the ratio of the larger part to the smaller. It appears throughout nature—in spiral shells, flower petals, and human proportions—and has been used in art and architecture from the Parthenon to modern design. It\'s closely related to the Fibonacci sequence.',
     category: "patterns",
     order: 4,
   },
@@ -205,7 +205,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "what-is-vesica-piscis",
     question: "What is the Vesica Piscis?",
     answer:
-      'The <a href="/patterns/vesica-piscis">Vesica Piscis</a> is the almond-shaped intersection created when two circles of equal size overlap so that the center of each lies on the circumference of the other. This fundamental shape is considered the "womb of creation" in sacred geometry—from it, all other forms can be generated. It contains the proportions for the square root of 2, 3, and 5.',
+      'The <a href="/sacred-patterns/vesica-piscis">Vesica Piscis</a> is the almond-shaped intersection created when two circles of equal size overlap so that the center of each lies on the circumference of the other. This fundamental shape is considered the "womb of creation" in sacred geometry—from it, all other forms can be generated. It contains the proportions for the square root of 2, 3, and 5.',
     category: "patterns",
     order: 5,
   },
@@ -213,7 +213,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "what-is-star-tetrahedron",
     question: "What is the Star Tetrahedron (Merkaba)?",
     answer:
-      'The <a href="/patterns/star-tetrahedron">Star Tetrahedron</a>, also called the Merkaba, is formed by two interlocking tetrahedrons—one pointing up, one pointing down. It represents the union of opposites: masculine and feminine, heaven and earth, spirit and matter. Some traditions teach it as the geometric structure of the human energy field and a vehicle for spiritual ascension.',
+      'The <a href="/sacred-patterns/star-tetrahedron">Star Tetrahedron</a>, also called the Merkaba, is formed by two interlocking tetrahedrons—one pointing up, one pointing down. It represents the union of opposites: masculine and feminine, heaven and earth, spirit and matter. Some traditions teach it as the geometric structure of the human energy field and a vehicle for spiritual ascension.',
     category: "patterns",
     order: 6,
   },
@@ -221,7 +221,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "what-is-seed-of-life",
     question: "What is the Seed of Life?",
     answer:
-      'The <a href="/patterns/seed-of-life">Seed of Life</a> consists of seven circles—one central circle surrounded by six circles of equal size. It represents the seven days of creation and is the foundational pattern from which the <a href="/patterns/flower-of-life">Flower of Life</a> grows. The pattern mirrors the first stages of cell division (mitosis) in biological organisms.',
+      'The <a href="/sacred-patterns/seed-of-life">Seed of Life</a> consists of seven circles—one central circle surrounded by six circles of equal size. It represents the seven days of creation and is the foundational pattern from which the <a href="/sacred-patterns/flower-of-life">Flower of Life</a> grows. The pattern mirrors the first stages of cell division (mitosis) in biological organisms.',
     category: "patterns",
     order: 7,
   },
@@ -229,7 +229,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "what-is-sri-yantra",
     question: "What is the Sri Yantra?",
     answer:
-      'The <a href="/patterns/sri-yantra">Sri Yantra</a> is a sacred Hindu diagram consisting of nine interlocking triangles surrounding a central point (bindu). Four triangles point upward (representing masculine/Shiva), five point downward (feminine/Shakti). It represents the union of divine energies and is used for meditation and manifestation practices. Creating it with precise proportions is mathematically complex.',
+      'The <a href="/sacred-patterns/sri-yantra">Sri Yantra</a> is a sacred Hindu diagram consisting of nine interlocking triangles surrounding a central point (bindu). Four triangles point upward (representing masculine/Shiva), five point downward (feminine/Shakti). It represents the union of divine energies and is used for meditation and manifestation practices. Creating it with precise proportions is mathematically complex.',
     category: "patterns",
     order: 8,
   },
@@ -241,7 +241,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "how-to-draw-sacred-geometry",
     question: "How do I start drawing sacred geometry?",
     answer:
-      'Begin with a compass and straightedge—the traditional tools. Start with the <a href="/patterns/vesica-piscis">Vesica Piscis</a>: draw one circle, then a second with its center on the first\'s edge. From there, expand to the <a href="/patterns/seed-of-life">Seed of Life</a> by adding circles at each intersection point. This meditative practice develops precision and reveals how complex patterns emerge from simple beginnings.',
+      'Begin with a compass and straightedge—the traditional tools. Start with the <a href="/sacred-patterns/vesica-piscis">Vesica Piscis</a>: draw one circle, then a second with its center on the first\'s edge. From there, expand to the <a href="/sacred-patterns/seed-of-life">Seed of Life</a> by adding circles at each intersection point. This meditative practice develops precision and reveals how complex patterns emerge from simple beginnings.',
     category: "practice",
     order: 1,
   },
@@ -249,7 +249,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "meditation-with-geometry",
     question: "How can I meditate with sacred geometry?",
     answer:
-      'Several approaches work well: gaze softly at a pattern like the <a href="/patterns/flower-of-life">Flower of Life</a>, allowing your vision to relax and the pattern to reveal its depth. Visualize geometric forms at your chakra centers. Trace patterns with your finger or eyes, following the lines meditatively. Or simply contemplate the meaning of a shape, letting insights arise naturally.',
+      'Several approaches work well: gaze softly at a pattern like the <a href="/sacred-patterns/flower-of-life">Flower of Life</a>, allowing your vision to relax and the pattern to reveal its depth. Visualize geometric forms at your chakra centers. Trace patterns with your finger or eyes, following the lines meditatively. Or simply contemplate the meaning of a shape, letting insights arise naturally.',
     category: "practice",
     order: 2,
   },
@@ -273,7 +273,7 @@ export const FAQ_DATA: FAQItem[] = [
     id: "sacred-geometry-art",
     question: "How is sacred geometry used in art and architecture?",
     answer:
-      'Sacred geometry has informed art and architecture for millennia. The Egyptian pyramids embody tetrahedral geometry. Gothic cathedrals use the <a href="/patterns/vesica-piscis">Vesica Piscis</a> in their arches. Islamic art features intricate geometric patterns. Renaissance artists applied the <a href="/patterns/golden-ratio">Golden Ratio</a> to compositions. Modern architects continue using these proportions to create harmonious, aesthetically pleasing spaces.',
+      'Sacred geometry has informed art and architecture for millennia. The Egyptian pyramids embody tetrahedral geometry. Gothic cathedrals use the <a href="/sacred-patterns/vesica-piscis">Vesica Piscis</a> in their arches. Islamic art features intricate geometric patterns. Renaissance artists applied the <a href="/sacred-patterns/golden-ratio">Golden Ratio</a> to compositions. Modern architects continue using these proportions to create harmonious, aesthetically pleasing spaces.',
     category: "practice",
     order: 5,
   },

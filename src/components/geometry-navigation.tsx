@@ -30,8 +30,9 @@ export function GeometryNavigation({
 
   // Category-specific labels
   const allLabel =
-    category === "platonic" ? "All Platonic Solids" : "All Patterns";
-  const allLabelMobile = category === "platonic" ? "All Solids" : "All Patterns";
+    category === "platonic" ? "All Platonic Solids" : "All Sacred Patterns";
+  const allLabelMobile =
+    category === "platonic" ? "All Solids" : "All Sacred Patterns";
 
   return (
     <Flex

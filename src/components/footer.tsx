@@ -109,8 +109,8 @@ export function Footer() {
               <FooterLink href={ROUTES.platonicSolids.path}>
                 Platonic Solids
               </FooterLink>
-              <FooterLink href={ROUTES.patterns.path}>
-                Patterns
+              <FooterLink href={ROUTES.sacredPatterns.path}>
+                Sacred Patterns
               </FooterLink>
               <FooterLink href={ROUTES.faq.path}>FAQ</FooterLink>
             </nav>

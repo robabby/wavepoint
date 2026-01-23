@@ -19,7 +19,6 @@ import { EASE_STANDARD } from "@/lib/animation-constants";
 import { useCanAccessAuth } from "@/lib/features/access";
 import { AuthHeaderSection } from "@/components/auth/auth-header-section";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { GeometriesDropdown } from "@/components/geometries-dropdown";
 
 type NavItem = {
   path: string;
@@ -108,6 +107,14 @@ export function Header() {
   const isActive = useCallback(
     (path: string) => {
       if (path === "/") return pathname === "/";
+      // Sacred Geometry is active on hub, platonic-solids, or sacred-patterns
+      if (path === "/sacred-geometry") {
+        return (
+          pathname === "/sacred-geometry" ||
+          pathname.startsWith("/platonic-solids") ||
+          pathname.startsWith("/sacred-patterns")
+        );
+      }
       return pathname.startsWith(path);
     },
     [pathname]
@@ -115,8 +122,8 @@ export function Header() {
 
   const authEnabled = useCanAccessAuth();
 
-  // Desktop nav items (excludes Geometries dropdown which is handled separately)
-  // Order: Signal | Numbers | Geometries ▼
+  // Desktop nav items
+  // Order: Signal | Numbers | Sacred Geometry
   const desktopNavItems = useMemo<NavItem[]>(() => {
     return [
       // Signal appears first (before Numbers) - always visible, shows marketing when disabled
@@ -131,11 +138,17 @@ export function Header() {
         desktopLabel: "Numbers",
         mobileLabel: "Numbers",
       },
+      // Sacred Geometry (replaces dropdown)
+      {
+        path: ROUTES.sacredGeometry.path,
+        desktopLabel: "Sacred Geometry",
+        mobileLabel: "Sacred Geometry",
+      },
     ];
   }, []);
 
-  // Mobile nav items (expanded - no dropdown)
-  // Order: Signal | Numbers | Platonic Solids | Patterns
+  // Mobile nav items
+  // Order: Signal | Numbers | Sacred Geometry
   const mobileNavItems = useMemo<NavItem[]>(() => {
     return [
       // Signal appears first - always visible, shows marketing when disabled
@@ -150,15 +163,11 @@ export function Header() {
         desktopLabel: "Numbers",
         mobileLabel: "Numbers",
       },
+      // Single Sacred Geometry link (matches desktop)
       {
-        path: ROUTES.platonicSolids.path,
-        desktopLabel: "Platonic Solids",
-        mobileLabel: "Platonic Solids",
-      },
-      {
-        path: ROUTES.patterns.path,
-        desktopLabel: "Patterns",
-        mobileLabel: "Patterns",
+        path: ROUTES.sacredGeometry.path,
+        desktopLabel: "Sacred Geometry",
+        mobileLabel: "Sacred Geometry",
       },
     ];
   }, []);
@@ -347,13 +356,12 @@ export function Header() {
 
           {/* Desktop: Navigation + Utility Actions */}
           <div className="hidden items-center gap-6 sm:flex">
-            {/* Navigation: Signal | Numbers | Geometries ▼ */}
+            {/* Navigation: Signal | Numbers | Sacred Geometry */}
             <nav
               aria-label="Primary"
               className="flex items-center gap-6"
               onKeyDown={handleNavKeyDown}
             >
-              {/* Signal and Numbers links */}
               {desktopNavItems.map((item, index) => (
                 <AnimatedNavLink
                   key={item.path}
@@ -368,9 +376,6 @@ export function Header() {
                   }}
                 />
               ))}
-
-              {/* Geometries dropdown */}
-              <GeometriesDropdown />
             </nav>
 
             {/* Separator between nav and utility actions */}

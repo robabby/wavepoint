@@ -9,40 +9,46 @@ import createMDX from "@next/mdx";
 const config = {
   // Configure pageExtensions to include markdown and MDX files
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-  // SEO redirects for URL rebranding
+  // SEO redirects for URL restructure
   async redirects() {
     return [
-      // Legacy sacred-patterns redirects
+      // OLD hub path → new hub
       {
-        source: "/sacred-patterns",
-        destination: "/geometries/patterns",
+        source: "/geometries",
+        destination: "/sacred-geometry",
+        permanent: true,
+      },
+      // OLD nested platonic-solids paths → new flat paths
+      {
+        source: "/geometries/platonic-solids",
+        destination: "/platonic-solids",
         permanent: true,
       },
       {
-        source: "/sacred-patterns/:slug",
-        destination: "/geometries/patterns/:slug",
+        source: "/geometries/platonic-solids/:slug",
+        destination: "/platonic-solids/:slug",
         permanent: true,
       },
-      // Navigation restructure redirects (platonic-solids → geometries/platonic-solids)
+      // OLD nested patterns paths → new sacred-patterns paths
       {
-        source: "/platonic-solids",
-        destination: "/geometries/platonic-solids",
+        source: "/geometries/patterns",
+        destination: "/sacred-patterns",
         permanent: true,
       },
       {
-        source: "/platonic-solids/:slug",
-        destination: "/geometries/platonic-solids/:slug",
+        source: "/geometries/patterns/:slug",
+        destination: "/sacred-patterns/:slug",
         permanent: true,
       },
-      // Navigation restructure redirects (patterns → geometries/patterns)
+      // Legacy /patterns → /sacred-patterns (keep for old external links)
       {
         source: "/patterns",
-        destination: "/geometries/patterns",
+        destination: "/sacred-patterns",
         permanent: true,
       },
       {
         source: "/patterns/:slug",
-        destination: "/geometries/patterns/:slug",
+        destination: "/sacred-patterns/:slug",
         permanent: true,
       },
     ];
