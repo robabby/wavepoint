@@ -13,6 +13,7 @@ export const env = createEnv({
     PRINTFUL_API_KEY: z.string().min(1),
     STRIPE_SECRET_KEY: z.string().startsWith("sk_"),
     STRIPE_WEBHOOK_SECRET: z.string().startsWith("whsec_"),
+    STRIPE_SIGNAL_WEBHOOK_SECRET: z.string().startsWith("whsec_").optional(),
     APP_URL: z.string().url().default("http://localhost:3000"),
     // Email (Brevo) - optional, email features disabled if not set
     BREVO_API_KEY: z.string().min(1).optional(),
@@ -67,6 +68,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SIGNAL_ENABLED: process.env.NEXT_PUBLIC_SIGNAL_ENABLED,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    STRIPE_SIGNAL_WEBHOOK_SECRET: process.env.STRIPE_SIGNAL_WEBHOOK_SECRET,
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     APP_URL: process.env.APP_URL,

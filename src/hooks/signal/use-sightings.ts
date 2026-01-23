@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { SightingWithInterpretation } from "@/lib/signal/types";
 import type { CreateSightingInput } from "@/lib/signal/schemas";
+import type { DelightMoment } from "@/lib/signal/delight";
+import type { PatternInsight } from "@/lib/signal/insights";
 import { signalKeys } from "./query-keys";
 
 interface SightingsResponse {
@@ -50,6 +52,9 @@ interface CreateSightingResponse {
   interpretation: string;
   isFirstCatch: boolean;
   count: number;
+  insight: PatternInsight | null;
+  delight: DelightMoment | null;
+  tier?: "free" | "insight";
 }
 
 async function createSighting(
@@ -73,9 +78,10 @@ export function useCreateSighting() {
   const mutation = useMutation({
     mutationFn: createSighting,
     onSuccess: () => {
-      // Invalidate both sightings and stats caches
+      // Invalidate sightings, stats, and heatmap caches
       void queryClient.invalidateQueries({ queryKey: signalKeys.sightings() });
       void queryClient.invalidateQueries({ queryKey: signalKeys.stats() });
+      void queryClient.invalidateQueries({ queryKey: signalKeys.heatmap() });
     },
   });
 

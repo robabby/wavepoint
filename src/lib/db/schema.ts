@@ -162,6 +162,23 @@ export const signalInterpretations = pgTable(
 );
 
 /**
+ * Signal user activity stats - streak and engagement tracking
+ */
+export const signalUserActivityStats = pgTable("signal_user_activity_stats", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .unique()
+    .references(() => users.id, { onDelete: "cascade" }),
+  currentStreak: integer("current_streak").notNull().default(0),
+  longestStreak: integer("longest_streak").notNull().default(0),
+  totalActiveDays: integer("total_active_days").notNull().default(0),
+  lastActiveDate: text("last_active_date"), // 'YYYY-MM-DD'
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
+});
+
+/**
  * Signal user number stats - denormalized stats for performance
  */
 export const signalUserNumberStats = pgTable(
@@ -202,6 +219,24 @@ export const signalInterpretationsRelations = relations(
     }),
   })
 );
+
+/**
+ * Signal subscriptions - subscription tier tracking for Signal Insight
+ */
+export const signalSubscriptions = pgTable("signal_subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .unique()
+    .references(() => users.id, { onDelete: "cascade" }),
+  tier: text("tier").notNull().default("free"), // 'free' | 'insight'
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  status: text("status").notNull().default("active"), // 'active' | 'cancelled' | 'past_due'
+  currentPeriodEnd: timestamp("current_period_end", { mode: "date" }),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
+});
 
 // =============================================================================
 // Invites - Closed beta access gating
@@ -305,6 +340,12 @@ export type NewSignalInterpretation = typeof signalInterpretations.$inferInsert;
 
 export type SignalUserNumberStats = typeof signalUserNumberStats.$inferSelect;
 export type NewSignalUserNumberStats = typeof signalUserNumberStats.$inferInsert;
+
+export type SignalUserActivityStats = typeof signalUserActivityStats.$inferSelect;
+export type NewSignalUserActivityStats = typeof signalUserActivityStats.$inferInsert;
+
+export type SignalSubscription = typeof signalSubscriptions.$inferSelect;
+export type NewSignalSubscription = typeof signalSubscriptions.$inferInsert;
 
 export type Invite = typeof invites.$inferSelect;
 export type NewInvite = typeof invites.$inferInsert;

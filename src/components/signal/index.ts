@@ -25,12 +25,27 @@ export {
 } from "./interpretation-card";
 export { SightingCard, type SightingCardProps } from "./sighting-card";
 export { CollectionGrid, type CollectionGridProps } from "./collection-grid";
+export {
+  ActivityHeatmap,
+  type ActivityHeatmapProps,
+} from "./activity-heatmap";
+export { StreakStats, type StreakStatsProps } from "./streak-stats";
+export { YourNumbers, type YourNumbersProps } from "./your-numbers";
+export {
+  PatternInsightCard,
+  type PatternInsightProps,
+} from "./pattern-insight";
 
 // Celebration
 export {
   FirstCatchCelebration,
   type FirstCatchCelebrationProps,
 } from "./first-catch-celebration";
+export { DelightToast, type DelightToastProps } from "./delight-toast";
+
+// Subscription
+export { UpgradeCta } from "./upgrade-cta";
+export { SubscriptionStatus } from "./subscription-status";
 
 // Page-level components
 export { NoteInput, type NoteInputProps } from "./note-input";

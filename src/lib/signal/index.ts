@@ -28,3 +28,10 @@ export {
 
 // Rate limiting
 export { checkRateLimit } from "./rate-limit";
+
+// Subscriptions
+export {
+  hasInsightAccess,
+  getSubscriptionTier,
+  SUBSCRIPTION_TIERS,
+} from "./subscriptions";
