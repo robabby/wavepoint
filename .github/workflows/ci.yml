@@ -11,7 +11,7 @@ env:
 
 jobs:
   check:
-    name: Lint, Type Check & Unit Tests
+    name: Lint, Type Check & Test
     runs-on: ubuntu-latest
 
     steps:
