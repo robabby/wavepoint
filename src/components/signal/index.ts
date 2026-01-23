@@ -47,6 +47,20 @@ export { DelightToast, type DelightToastProps } from "./delight-toast";
 export { UpgradeCta } from "./upgrade-cta";
 export { SubscriptionStatus } from "./subscription-status";
 
+// Quick actions
+export {
+  QuickCaptureBar,
+  type QuickCaptureBarProps,
+} from "./quick-capture-bar";
+
+// Filtering
+export {
+  SightingFilters,
+  type SightingFiltersProps,
+  type DateRangeId,
+  getDateRangeStart,
+} from "./sighting-filters";
+
 // Page-level components
 export { NoteInput, type NoteInputProps } from "./note-input";
 export { StatsSummary, type StatsSummaryProps } from "./stats-summary";

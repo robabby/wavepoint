@@ -11,6 +11,12 @@ const MOODS = [
   { id: "anxious", emoji: "😰", label: "Anxious" },
   { id: "grateful", emoji: "🙏", label: "Grateful" },
   { id: "inspired", emoji: "✨", label: "Inspired" },
+  { id: "curious", emoji: "🧐", label: "Curious" },
+  { id: "hopeful", emoji: "🌱", label: "Hopeful" },
+  { id: "peaceful", emoji: "🕊️", label: "Peaceful" },
+  { id: "confused", emoji: "😕", label: "Confused" },
+  { id: "excited", emoji: "🎉", label: "Excited" },
+  { id: "uncertain", emoji: "🌫️", label: "Uncertain" },
 ] as const;
 
 const MAX_SELECTIONS = 3;
@@ -51,7 +57,7 @@ export function MoodSelector({
         </p>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-3">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-3">
         {MOODS.map((mood, index) => (
           <MoodButton
             key={mood.id}

@@ -3,7 +3,9 @@ export {
   useSightings,
   useSighting,
   useCreateSighting,
+  useUpdateSighting,
   useDeleteSighting,
+  useAdjacentSightings,
 } from "./use-sightings";
 export { useStats } from "./use-stats";
 export { useHeatmap } from "./use-heatmap";

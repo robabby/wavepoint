@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft } from "lucide-react";
-import { useCreateSighting } from "@/hooks/signal";
+import { useCreateSighting, useStats } from "@/hooks/signal";
 import type { MoodOption } from "@/lib/signal/schemas";
 import {
   NumberPad,
@@ -68,6 +68,10 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
   const [showDelight, setShowDelight] = useState<DelightMoment | null>(null);
 
   const { createSighting, isCreating, error } = useCreateSighting();
+  const { numberCounts } = useStats();
+
+  // Extract user's top numbers for personalized quick-select
+  const userTopNumbers = numberCounts.map((nc) => nc.number);
 
   const handleNumberSubmit = useCallback((number: string) => {
     setState((prev) => ({ ...prev, number }));
@@ -190,7 +194,11 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
               exit="exit"
               transition={stepTransition}
             >
-              <NumberPad onSubmit={handleNumberSubmit} disabled={isCreating} />
+              <NumberPad
+                onSubmit={handleNumberSubmit}
+                disabled={isCreating}
+                userTopNumbers={userTopNumbers}
+              />
             </motion.div>
           )}
 

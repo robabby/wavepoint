@@ -11,6 +11,12 @@ export const MOOD_OPTIONS = [
   "anxious",
   "grateful",
   "inspired",
+  "curious",
+  "hopeful",
+  "peaceful",
+  "confused",
+  "excited",
+  "uncertain",
 ] as const;
 
 export type MoodOption = (typeof MOOD_OPTIONS)[number];
@@ -30,3 +36,14 @@ export const createSightingSchema = z.object({
 });
 
 export type CreateSightingInput = z.infer<typeof createSightingSchema>;
+
+/**
+ * Schema for updating a sighting.
+ * Only note and moodTags can be updated (not the number).
+ */
+export const updateSightingSchema = z.object({
+  note: z.string().max(500, "Note too long").optional(),
+  moodTags: z.array(z.enum(MOOD_OPTIONS)).max(3, "Maximum 3 moods").optional(),
+});
+
+export type UpdateSightingInput = z.infer<typeof updateSightingSchema>;

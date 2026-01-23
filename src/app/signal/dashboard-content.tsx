@@ -1,23 +1,33 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Plus } from "lucide-react";
-import { useSightings, useStats, useHeatmap } from "@/hooks/signal";
+import { Plus, Settings } from "lucide-react";
+import { useSightings, useStats, useHeatmap, useCreateSighting } from "@/hooks/signal";
+import type { DelightMoment } from "@/lib/signal/delight";
+import type { MoodOption } from "@/lib/signal/schemas";
 import {
   ActivityHeatmap,
+  DelightToast,
+  getDateRangeStart,
+  QuickCaptureBar,
   RecentSightings,
   SignalBackground,
+  SightingFilters,
   StatsSummary,
   StreakStats,
   YourNumbers,
+  type DateRangeId,
 } from "@/components/signal";
 
 export function DashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const numberFilter = searchParams.get("number");
+  const dateRange = (searchParams.get("range") as DateRangeId) ?? "all";
+  const dateRangeStart = getDateRangeStart(dateRange);
+  const [delight, setDelight] = useState<DelightMoment | null>(null);
 
   const {
     totalSightings,
@@ -25,6 +35,8 @@ export function DashboardContent() {
     numberCounts,
     isLoading: statsLoading,
   } = useStats();
+
+  const { createSighting, isCreating } = useCreateSighting();
 
   const {
     dailyCounts,
@@ -34,6 +46,7 @@ export function DashboardContent() {
 
   const { sightings, isLoading: sightingsLoading } = useSightings({
     number: numberFilter ?? undefined,
+    since: dateRangeStart,
     limit: 10,
   });
 
@@ -46,9 +59,22 @@ export function DashboardContent() {
     [router, searchParams]
   );
 
-  const handleClearFilter = useCallback(() => {
-    router.push("/signal", { scroll: false });
-  }, [router]);
+  const handleQuickCapture = useCallback(
+    async (number: string, moods?: string[]) => {
+      const result = await createSighting({
+        number,
+        moodTags: moods as MoodOption[] | undefined,
+      });
+      if (result.delight) {
+        setDelight(result.delight);
+      }
+    },
+    [createSighting]
+  );
+
+  const handleDismissDelight = useCallback(() => {
+    setDelight(null);
+  }, []);
 
   // Transform numberCounts for CollectionGrid
   const gridStats = numberCounts.map((nc) => ({
@@ -65,11 +91,20 @@ export function DashboardContent() {
 
       <div className="container relative z-10 mx-auto max-w-4xl px-4 py-8">
         {/* Header */}
-        <header className="mb-8 text-center">
-          <h1 className="font-display text-4xl text-[var(--color-gold)]">
-            Signal
-          </h1>
-          <p className="mt-2 text-muted-foreground">
+        <header className="mb-8">
+          <div className="flex items-center justify-center gap-3">
+            <h1 className="font-display text-4xl text-[var(--color-gold)]">
+              Signal
+            </h1>
+            <Link
+              href="/signal/settings"
+              aria-label="Settings"
+              className="text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Settings className="h-5 w-5" />
+            </Link>
+          </div>
+          <p className="mt-2 text-center text-muted-foreground">
             Your angel number collection
           </p>
         </header>
@@ -80,6 +115,20 @@ export function DashboardContent() {
           uniqueNumbers={uniqueNumbers}
           isLoading={statsLoading}
         />
+
+        {/* Quick Capture - only show when user has history and not filtering */}
+        {!isEmpty && !numberFilter && numberCounts.length > 0 && (
+          <section className="mb-8">
+            <QuickCaptureBar
+              topNumbers={numberCounts.slice(0, 5)}
+              onCapture={handleQuickCapture}
+              isCapturing={isCreating}
+            />
+          </section>
+        )}
+
+        {/* Delight Toast */}
+        <DelightToast delight={delight} onDismiss={handleDismissDelight} />
 
         {/* Activity Section - only show when user has data */}
         {!isEmpty && !numberFilter && (
@@ -120,28 +169,19 @@ export function DashboardContent() {
           </div>
         ) : (
           <>
-            {/* Filter indicator */}
-            {numberFilter && (
-              <div className="mb-4 flex items-center justify-between">
-                <span className="text-foreground">
-                  Showing sightings of{" "}
-                  <span className="font-display text-[var(--color-gold)]">
-                    {numberFilter}
-                  </span>
-                </span>
-                <button
-                  onClick={handleClearFilter}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  Clear filter
-                </button>
-              </div>
-            )}
+            {/* Search and Filters */}
+            <section className="mb-6">
+              <SightingFilters />
+            </section>
 
             {/* Recent Sightings */}
             <section className="mb-8">
               <h2 className="mb-4 font-heading text-xl text-foreground">
-                {numberFilter ? `Sightings of ${numberFilter}` : "Recent Sightings"}
+                {numberFilter
+                  ? `Sightings of ${numberFilter}`
+                  : dateRange !== "all"
+                    ? `Recent Sightings (${dateRange === "week" ? "This Week" : "This Month"})`
+                    : "Recent Sightings"}
               </h2>
               <RecentSightings
                 sightings={sightings}
