@@ -8,7 +8,7 @@ import { NUMBER_PATTERN_IDS } from "../types";
 
 describe("PATTERNS", () => {
   it("contains all 90 patterns", () => {
-    expect(Object.keys(PATTERNS)).toHaveLength(90);
+    expect(Object.keys(PATTERNS)).toHaveLength(91);
   });
 
   it("has all required fields for each pattern", () => {

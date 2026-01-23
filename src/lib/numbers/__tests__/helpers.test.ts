@@ -41,7 +41,7 @@ describe("getPatternByNumber", () => {
 describe("getAllPatterns", () => {
   it("returns all 90 patterns", () => {
     const patterns = getAllPatterns();
-    expect(patterns).toHaveLength(90);
+    expect(patterns).toHaveLength(91);
   });
 
   it("returns patterns sorted by category then order", () => {
@@ -242,7 +242,7 @@ describe("getPreviousPattern", () => {
 describe("getPatternCount", () => {
   it("returns total count of patterns", () => {
     expect(getPatternCount()).toBe(NUMBER_PATTERN_IDS.length);
-    expect(getPatternCount()).toBe(90);
+    expect(getPatternCount()).toBe(91);
   });
 });
 
@@ -251,7 +251,7 @@ describe("getPatternCountByCategory", () => {
     expect(getPatternCountByCategory("double")).toBe(9);
     expect(getPatternCountByCategory("triple")).toBe(9);
     expect(getPatternCountByCategory("quad")).toBe(9);
-    expect(getPatternCountByCategory("sequential")).toBe(13);
+    expect(getPatternCountByCategory("sequential")).toBe(14);
     expect(getPatternCountByCategory("mirrored")).toBe(9);
     expect(getPatternCountByCategory("clock")).toBe(15);
     expect(getPatternCountByCategory("sandwich")).toBe(12);
