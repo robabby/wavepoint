@@ -47,7 +47,7 @@ function generateFloatingNumbers(count: number): FloatingNumber[] {
     x: Math.random() * 100,
     y: Math.random() * 100,
     size: 0.75 + Math.random() * 1.25, // 0.75rem to 2rem
-    opacity: 0.04 + Math.random() * 0.08, // 0.04 to 0.12
+    opacity: 0.08 + Math.random() * 0.12, // 0.08 to 0.20
     duration: 20 + Math.random() * 30, // 20s to 50s
     delay: Math.random() * -20, // Stagger start times
     xDirection: Math.random() > 0.5 ? 10 : -10,
@@ -76,7 +76,7 @@ export function FloatingNumbers({ className }: FloatingNumbersProps) {
       {FLOATING_NUMBERS.map((item) => (
         <motion.span
           key={item.id}
-          className="absolute font-display text-[var(--color-gold)] select-none"
+          className="absolute font-display text-[var(--color-gold-decorative)] select-none"
           style={{
             left: `${item.x}%`,
             top: `${item.y}%`,
