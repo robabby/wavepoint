@@ -77,4 +77,4 @@ Use cloud services directly for local development:
 
 - [Infrastructure Maturity Plan](../plans/2026-01-23-infrastructure-maturity.md)
 - `CONTRIBUTING.md` - Developer onboarding guide
-- `.env.local.example` - Environment configuration template
+- `.env.example` - Environment configuration template
