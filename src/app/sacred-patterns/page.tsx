@@ -56,11 +56,11 @@ const categoryMap: Record<string, string> = {
 };
 
 export const metadata: Metadata = {
-  title: "Patterns",
+  title: "Sacred Patterns",
   description:
     "Explore sacred geometric patterns including the Flower of Life, Metatron's Cube, Sri Yantra, Golden Ratio, and more. Discover the mathematical principles and divine patterns underlying the universe.",
   openGraph: {
-    title: "Patterns | WavePoint",
+    title: "Sacred Patterns | WavePoint",
     description:
       "Timeless geometric patterns that appear across cultures and throughout history, representing the fundamental organizing principles of creation.",
   },
@@ -87,11 +87,11 @@ export default function PatternsPage() {
         {/* Header */}
         <AnimateOnScroll className="mx-auto mb-8 max-w-4xl text-center sm:mb-12 lg:mb-16">
           <Heading size="9" className="font-display text-foreground" mb="4">
-            {ROUTES.patterns.name}
+            {ROUTES.sacredPatterns.name}
           </Heading>
           <Box mb="2">
             <Text size="5" className="mb-4 text-[var(--color-gold)]">
-              {ROUTES.patterns.description}
+              {ROUTES.sacredPatterns.description}
             </Text>
           </Box>
           <Text size="3" className="mx-auto max-w-3xl text-muted-foreground">

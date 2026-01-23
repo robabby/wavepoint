@@ -63,21 +63,21 @@ describe("GeometryNavigation", () => {
       const prevLink = Array.from(links).find((link) =>
         link.textContent?.includes("Hexahedron")
       );
-      expect(prevLink?.getAttribute("href")).toBe("/geometries/platonic-solids/hexahedron");
+      expect(prevLink?.getAttribute("href")).toBe("/platonic-solids/hexahedron");
 
       // Next link (Icosahedron) - order: Tetra(1) → Hexa(2) → Octa(3) → Icosa(4) → Dodeca(5)
       const nextLink = Array.from(links).find((link) =>
         link.textContent?.includes("Icosahedron")
       );
       expect(nextLink?.getAttribute("href")).toBe(
-        "/geometries/platonic-solids/icosahedron"
+        "/platonic-solids/icosahedron"
       );
 
       // All link
       const allLink = Array.from(links).find((link) =>
         link.textContent?.includes("All Platonic Solids")
       );
-      expect(allLink?.getAttribute("href")).toBe("/geometries/platonic-solids");
+      expect(allLink?.getAttribute("href")).toBe("/platonic-solids");
     });
   });
 
@@ -95,8 +95,8 @@ describe("GeometryNavigation", () => {
       expect(screen.getByText(/Egg of Life/i)).toBeInTheDocument();
       expect(screen.getAllByText(/Next/i).length).toBeGreaterThan(0);
 
-      // Should have "All Patterns" link (mobile and desktop variants)
-      expect(screen.getAllByText(/All Patterns/i).length).toBeGreaterThan(0);
+      // Should have "All Sacred Patterns" link (mobile and desktop variants)
+      expect(screen.getAllByText(/All Sacred Patterns/i).length).toBeGreaterThan(0);
     });
 
     it("should not render Previous button for first pattern (Circle Dot)", () => {
@@ -134,7 +134,7 @@ describe("GeometryNavigation", () => {
         link.textContent?.includes("Sri Yantra")
       );
       expect(prevLink).toBeDefined();
-      expect(prevLink?.getAttribute("href")).toBe("/geometries/patterns/sri-yantra");
+      expect(prevLink?.getAttribute("href")).toBe("/sacred-patterns/sri-yantra");
 
       // Next link (Golden Ratio)
       const nextLink = links.find((link) =>
@@ -142,15 +142,15 @@ describe("GeometryNavigation", () => {
       );
       expect(nextLink).toBeDefined();
       expect(nextLink?.getAttribute("href")).toBe(
-        "/geometries/patterns/golden-ratio"
+        "/sacred-patterns/golden-ratio"
       );
 
       // All link
       const allLink = links.find((link) =>
-        link.textContent?.includes("All Patterns")
+        link.textContent?.includes("All Sacred Patterns")
       );
       expect(allLink).toBeDefined();
-      expect(allLink?.getAttribute("href")).toBe("/geometries/patterns");
+      expect(allLink?.getAttribute("href")).toBe("/sacred-patterns");
     });
   });
 

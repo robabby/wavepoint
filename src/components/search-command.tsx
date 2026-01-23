@@ -352,7 +352,7 @@ export function SearchCommand() {
                   </Link>
 
                   <Link
-                    href="/patterns"
+                    href="/sacred-patterns"
                     className={cn(
                       "flex flex-col items-center text-center p-4 sm:p-5 rounded-lg",
                       "bg-[var(--glass-bg-elevated)]",
@@ -367,7 +367,7 @@ export function SearchCommand() {
                     <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-lg bg-background/60 border border-[var(--glass-border)]/30 flex items-center justify-center mb-3">
                       <span className="text-[var(--color-gold)] font-heading text-2xl sm:text-3xl">{patternCount}</span>
                     </div>
-                    <p className="text-sm sm:text-base font-medium text-foreground leading-tight">Patterns</p>
+                    <p className="text-sm sm:text-base font-medium text-foreground leading-tight">Sacred Patterns</p>
                     <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">Universal geometry</p>
                   </Link>
                 </div>
@@ -510,11 +510,11 @@ export function SearchCommand() {
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
-                      href="/patterns"
+                      href="/sacred-patterns"
                       className="text-[var(--color-gold)]/80 hover:text-[var(--color-gold)] transition-colors flex items-center gap-1.5"
                       onClick={() => setOpen(false)}
                     >
-                      <span>Patterns</span>
+                      <span>Sacred Patterns</span>
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>

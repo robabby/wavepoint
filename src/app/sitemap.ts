@@ -14,17 +14,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
     },
     {
-      url: `${BASE_URL}/geometries`,
+      url: `${BASE_URL}/sacred-geometry`,
       priority: 0.9,
       changeFrequency: "weekly",
     },
     {
-      url: `${BASE_URL}/geometries/platonic-solids`,
+      url: `${BASE_URL}/platonic-solids`,
       priority: 0.8,
       changeFrequency: "monthly",
     },
     {
-      url: `${BASE_URL}/geometries/patterns`,
+      url: `${BASE_URL}/sacred-patterns`,
       priority: 0.8,
       changeFrequency: "monthly",
     },

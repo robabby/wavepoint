@@ -138,7 +138,7 @@ export default function HomePage() {
                   variant="outline"
                   className="w-full border-[var(--color-gold)]/50 text-[var(--color-gold)] transition-[border-color,background-color] hover:border-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 sm:w-auto"
                 >
-                  <Link href={ROUTES.patterns.path}>Sacred Patterns →</Link>
+                  <Link href={ROUTES.sacredPatterns.path}>Sacred Patterns →</Link>
                 </Button>
               </AnimatedButton>
             </div>
@@ -317,8 +317,8 @@ export default function HomePage() {
                   size={{ initial: "2", sm: "3" }}
                   className="w-full border-[var(--border-gold)] text-[var(--color-gold)] hover:bg-[var(--color-gold)]/10 sm:w-auto"
                 >
-                  <Link href={ROUTES.patterns.path}>
-                    Explore All Patterns →
+                  <Link href={ROUTES.sacredPatterns.path}>
+                    Explore All Sacred Patterns →
                   </Link>
                 </Button>
               </AnimatedButton>

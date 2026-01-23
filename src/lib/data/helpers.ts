@@ -291,9 +291,9 @@ export function searchGeometries(
  */
 export function getGeometryPath(geometry: Geometry): string {
   if (geometry.category === "platonic") {
-    return `/geometries/platonic-solids/${geometry.slug}`;
+    return `/platonic-solids/${geometry.slug}`;
   } else if (geometry.category === "pattern") {
-    return `/geometries/patterns/${geometry.slug}`;
+    return `/sacred-patterns/${geometry.slug}`;
   }
   return "/";
 }
@@ -302,8 +302,8 @@ export function getGeometryPath(geometry: Geometry): string {
  * Get the URL path for a category's list page
  */
 export function getGeometryListPath(category: GeometryCategory): string {
-  if (category === "platonic") return "/geometries/platonic-solids";
-  if (category === "pattern") return "/geometries/patterns";
+  if (category === "platonic") return "/platonic-solids";
+  if (category === "pattern") return "/sacred-patterns";
   return "/";
 }
 

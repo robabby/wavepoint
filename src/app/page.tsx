@@ -102,7 +102,7 @@ export default function HomePage() {
         >
           {/* Geometries Card */}
           <StaggerItem>
-            <Link href={ROUTES.geometries.path} className="group block h-full">
+            <Link href={ROUTES.sacredGeometry.path} className="group block h-full">
               <AnimatedCard className="flex h-full flex-col p-6 sm:p-8">
                 <div className="mb-4 flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-gold)]/10">
