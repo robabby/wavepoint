@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Check, Sparkles, CreditCard, ExternalLink } from "lucide-react";
 import { fadeUpVariants } from "./animation-config";
-import { SUBSCRIPTION_TIERS } from "@/lib/signal/subscriptions";
+import { SUBSCRIPTION_TIERS } from "@/lib/signal/subscription-tiers";
 
 interface SubscriptionStatusProps {
   tier: "free" | "insight";

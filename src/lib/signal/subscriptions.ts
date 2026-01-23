@@ -1,13 +1,15 @@
 /**
- * Signal subscription utilities.
+ * Signal subscription utilities (server-side).
  *
  * Provides tier checking and subscription access helpers.
+ * For client-safe tier metadata, use ./subscription-tiers.ts
  */
 
-import {
-  getUserSubscription,
-  type SubscriptionTier,
-} from "@/lib/db/queries/subscriptions";
+import { getUserSubscription } from "@/lib/db/queries/subscriptions";
+import type { SubscriptionTier } from "./subscription-tiers";
+
+// Re-export for convenience
+export { SUBSCRIPTION_TIERS, type SubscriptionTier } from "./subscription-tiers";
 
 /**
  * Check if a user has Signal Insight access.
@@ -50,31 +52,3 @@ export async function getSubscriptionTier(
   const hasAccess = await hasInsightAccess(userId);
   return hasAccess ? "insight" : "free";
 }
-
-/**
- * Subscription tier metadata for UI display.
- */
-export const SUBSCRIPTION_TIERS = {
-  free: {
-    name: "Free",
-    description: "Base meanings from Numbers library",
-    features: [
-      "Unlimited sightings",
-      "Base number meanings",
-      "Activity heatmap & streaks",
-      "Your Numbers collection",
-      "Pattern insights",
-    ],
-  },
-  insight: {
-    name: "Signal Insight",
-    description: "Personalized AI interpretations",
-    features: [
-      "Everything in Free",
-      "AI-powered interpretations",
-      "Context-aware meanings",
-      "Mood & note analysis",
-      "Deeper pattern recognition",
-    ],
-  },
-} as const;
