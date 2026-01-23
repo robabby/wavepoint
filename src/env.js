@@ -21,6 +21,9 @@ export const env = createEnv({
     EMAIL_FROM_NAME: z.string().default("WavePoint"),
     // Signal (AI interpretations) - optional, AI features disabled if not set
     ANTHROPIC_API_KEY: z.string().min(1).optional(),
+    // Upstash Redis (rate limiting) - optional, falls back to in-memory
+    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+    UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
     // Invite system - server-only admin settings
     ADMIN_EMAILS: z.string().optional(), // Comma-separated admin emails
     BREVO_BETA_LIST_ID: z.string().optional(), // Beta Users list ID for invite sync
@@ -76,6 +79,8 @@ export const env = createEnv({
     EMAIL_FROM_ADDRESS: process.env.EMAIL_FROM_ADDRESS,
     EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
     ADMIN_EMAILS: process.env.ADMIN_EMAILS,
     BREVO_BETA_LIST_ID: process.env.BREVO_BETA_LIST_ID,
     BREVO_CONTACT_LIST_ID: process.env.BREVO_CONTACT_LIST_ID,

@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     }
 
     // Stricter rate limit for AI regeneration (10/min - AI calls are expensive)
-    const rateLimit = checkRateLimit(`${session.user.id}:interpret`, {
+    const rateLimit = await checkRateLimit(`${session.user.id}:interpret`, {
       limit: 10,
     });
     if (!rateLimit.allowed) {

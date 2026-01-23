@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     }
 
     // Rate limit check (30/min for sighting creation)
-    const rateLimit = checkRateLimit(`${session.user.id}:sighting:create`, {
+    const rateLimit = await checkRateLimit(`${session.user.id}:sighting:create`, {
       limit: 30,
     });
     if (!rateLimit.allowed) {
