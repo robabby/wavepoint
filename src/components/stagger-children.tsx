@@ -3,6 +3,7 @@
 import { type ReactNode } from "react";
 import { motion, type Variants } from "motion/react";
 import { EASE_STANDARD } from "@/lib/animation-constants";
+import { cn } from "@/lib/utils";
 
 interface StaggerChildrenProps {
   children: ReactNode;
@@ -104,7 +105,7 @@ export function StaggerItem({
   variant = "fadeUp",
 }: StaggerItemProps) {
   return (
-    <motion.div className={className} variants={itemVariants[variant]}>
+    <motion.div className={cn("h-full", className)} variants={itemVariants[variant]}>
       {children}
     </motion.div>
   );

@@ -165,7 +165,7 @@ export default async function PatternDetailPage({
                   Related patterns
                 </Heading>
                 <StaggerChildren
-                  className="grid grid-cols-2 gap-4 sm:grid-cols-3"
+                  className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3"
                   staggerDelay={0.05}
                 >
                   {relatedForUncovered.map((related) => (
@@ -187,7 +187,7 @@ export default async function PatternDetailPage({
 
                 {/* Signal CTA */}
                 <AnimateOnScroll delay={relatedForUncovered.length > 0 ? 0.35 : 0.25} className="mt-6">
-                  <AnimatedCard className="p-6 text-center sm:p-8">
+                  <AnimatedCard className="flex flex-col items-center p-6 text-center sm:p-8">
                     <Heading
                       size="5"
                       className="mb-3 font-display text-foreground"
@@ -364,7 +364,7 @@ export default async function PatternDetailPage({
                 Related patterns
               </Heading>
               <StaggerChildren
-                className="grid grid-cols-2 gap-4 sm:grid-cols-3"
+                className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3"
                 staggerDelay={0.05}
               >
                 {relatedPatterns.map((related) => (
@@ -389,7 +389,7 @@ export default async function PatternDetailPage({
 
               {/* Signal CTA */}
               <AnimateOnScroll delay={0.45}>
-                <AnimatedCard className="p-6 text-center sm:p-8">
+                <AnimatedCard className="flex flex-col items-center p-6 text-center sm:p-8">
                   <Heading
                     size="5"
                     className="mb-3 font-display text-foreground"
