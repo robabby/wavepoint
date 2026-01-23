@@ -1,6 +1,6 @@
 # UX Guidelines
 
-Persistent UX resources for Sacred Geometry. Reference these when designing features, writing copy, or making decisions about user experience.
+Persistent UX resources for WavePoint. Reference these when designing features, writing copy, or making decisions about user experience.
 
 ## Brand Positioning
 
