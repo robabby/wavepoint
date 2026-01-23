@@ -6,7 +6,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Privacy Policy for WavePoint Shop. Learn how we collect, use, and protect your personal information.",
+    "Privacy Policy for WavePoint. Learn how we collect, use, and protect your personal information.",
 };
 
 function Section({
@@ -49,20 +49,21 @@ export default function PrivacyPolicyPage() {
           <div className="rounded-lg border border-[var(--border-gold)]/30 bg-card p-6 sm:p-8">
             <Section title="1. Information We Collect">
               <Text as="p">
-                When you make a purchase, we collect the following information:
+                We collect the following information depending on how you use our
+                services:
               </Text>
               <ul className="ml-6 list-disc space-y-2">
                 <li>
-                  <strong>Contact Information</strong> — Email address for order
-                  confirmation and shipping updates
+                  <strong>Account Information</strong> — Email address and name
+                  when you create an account
                 </li>
                 <li>
-                  <strong>Shipping Address</strong> — Name and address for order
-                  delivery
+                  <strong>Usage Data</strong> — Information you provide through
+                  our features, such as angel number sightings and notes
                 </li>
                 <li>
                   <strong>Payment Information</strong> — Processed securely by
-                  Stripe; we never store your card details
+                  Stripe for subscriptions; we never store your card details
                 </li>
               </ul>
               <Text as="p" className="mt-4">
@@ -74,10 +75,12 @@ export default function PrivacyPolicyPage() {
             <Section title="2. How We Use Your Information">
               <Text as="p">We use your information to:</Text>
               <ul className="ml-6 list-disc space-y-2">
-                <li>Process and fulfill your orders</li>
-                <li>Send order confirmations and shipping notifications</li>
+                <li>Provide and maintain your account</li>
+                <li>Process subscription payments</li>
+                <li>Generate AI-powered interpretations for your sightings</li>
+                <li>Send transactional emails (verification, password reset)</li>
                 <li>Respond to customer service inquiries</li>
-                <li>Improve our website and product offerings</li>
+                <li>Improve our website and services</li>
                 <li>Comply with legal obligations</li>
               </ul>
               <Text as="p" className="mt-4">
@@ -92,8 +95,9 @@ export default function PrivacyPolicyPage() {
               </Text>
               <ul className="ml-6 list-disc space-y-2">
                 <li>
-                  <strong>Stripe</strong> — Payment processing. Stripe receives
-                  your payment details to process transactions securely.{" "}
+                  <strong>Stripe</strong> — Subscription payment processing.
+                  Stripe receives your payment details to process transactions
+                  securely.{" "}
                   <a
                     href="https://stripe.com/privacy"
                     target="_blank"
@@ -104,16 +108,28 @@ export default function PrivacyPolicyPage() {
                   </a>
                 </li>
                 <li>
-                  <strong>Printful</strong> — Order fulfillment. Printful
-                  receives your shipping address to produce and deliver your
-                  order.{" "}
+                  <strong>Anthropic (Claude)</strong> — AI interpretations. Your
+                  sighting data may be processed by Claude to generate
+                  personalized interpretations.{" "}
                   <a
-                    href="https://www.printful.com/policies/privacy"
+                    href="https://www.anthropic.com/privacy"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[var(--color-gold)] underline underline-offset-2 hover:text-[var(--color-gold-bright)]"
                   >
-                    View Printful&apos;s Privacy Policy
+                    View Anthropic&apos;s Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <strong>Brevo</strong> — Transactional email delivery for
+                  account verification and notifications.{" "}
+                  <a
+                    href="https://www.brevo.com/legal/privacypolicy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[var(--color-gold)] underline underline-offset-2 hover:text-[var(--color-gold-bright)]"
+                  >
+                    View Brevo&apos;s Privacy Policy
                   </a>
                 </li>
                 <li>
@@ -133,7 +149,7 @@ export default function PrivacyPolicyPage() {
             <Section title="4. Cookies">
               <Text as="p">
                 We use essential cookies to enable basic site functionality such
-                as maintaining your shopping cart. We may also use analytics
+                as maintaining your login session. We may also use analytics
                 cookies to understand how visitors interact with our site.
               </Text>
               <Text as="p" className="mt-4">
@@ -144,12 +160,13 @@ export default function PrivacyPolicyPage() {
 
             <Section title="5. Data Retention">
               <Text as="p">
-                We retain order information for as long as necessary to fulfill
-                your order, provide customer support, and comply with legal
+                We retain your information for as long as necessary to provide
+                our services, support your account, and comply with legal
                 obligations. This typically means:
               </Text>
               <ul className="ml-6 list-disc space-y-2">
-                <li>Order records — 7 years (tax/legal requirements)</li>
+                <li>Account data — Until you delete your account</li>
+                <li>Subscription records — 7 years (tax/legal requirements)</li>
                 <li>Analytics data — 26 months</li>
                 <li>Customer support inquiries — 2 years after resolution</li>
               </ul>
