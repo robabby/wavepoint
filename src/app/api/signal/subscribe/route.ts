@@ -7,7 +7,7 @@
 
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { stripe } from "@/lib/shop/stripe";
+import { stripe } from "@/lib/stripe";
 import { getUserSubscription } from "@/lib/db/queries/subscriptions";
 
 export async function POST(request: Request) {

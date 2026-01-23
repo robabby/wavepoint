@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**WavePoint** — T3 Stack Next.js 16 app for sacred geometry. Uses App Router, React 19, TypeScript, Tailwind CSS v4, shadcn/ui (New York style), Radix UI Themes (dark default), MDX content via `next-mdx-remote`, React Query (server state), Vitest, Stripe (subscriptions + checkout), Printful (print-on-demand), and Auth.js v5 (credentials auth).
+**WavePoint** — T3 Stack Next.js 16 app for sacred geometry. Uses App Router, React 19, TypeScript, Tailwind CSS v4, shadcn/ui (New York style), Radix UI Themes (dark default), MDX content via `next-mdx-remote`, React Query (server state), Vitest, Stripe (subscriptions), and Auth.js v5 (credentials auth).
 
 ## First Time Setup
 
@@ -51,22 +51,6 @@ Authenticated users capture angel number sightings with AI-powered interpretatio
 **Feature flag**: `isSignalEnabled()` — requires `NEXT_PUBLIC_SIGNAL_ENABLED=true`
 
 **Subscriptions**: Free tier + Insight tier with interpretation regeneration limits. See `src/lib/signal/subscriptions.ts`.
-
-### Shop (Print-on-Demand)
-
-Stripe checkout + Printful fulfillment for sacred geometry prints.
-
-| Entry Point | Purpose |
-|-------------|---------|
-| `src/lib/shop/` | Printful API, Stripe, cart context |
-| `src/lib/data/products.ts` | Product catalog with Printful sync IDs |
-| `src/app/shop/` | Pages: listing, product detail, success/cancel |
-
-**Key exports**: `getProductWithVariants()`, `createCheckoutSession()`, `useCart()`
-
-**Feature flag**: `isShopEnabled()` — requires `NEXT_PUBLIC_SHOP_ENABLED=true`
-
-**Product images**: Local images in `public/images/shop/{product-slug}/`. See comments in `products.ts` for variant key conventions (Unicode `″` and `×`).
 
 ### Numbers (Angel Number Content Hub)
 
@@ -129,9 +113,8 @@ Schema in `src/lib/db/schema.ts`. Tables:
 
 | Domain | Tables |
 |--------|--------|
-| Auth | `users`, `sessions`, `accounts`, `verificationTokens` |
+| Auth | `users`, `sessions`, `accounts`, `verificationTokens`, `addresses` |
 | Signal | `signalSightings`, `signalInterpretations`, `signalUserActivityStats`, `signalUserNumberStats`, `signalSubscriptions`, `signalSubscriptionUsage` |
-| Shop | `orders`, `addresses` |
 | Beta | `invites`, `waitlistSignups`, `contactSubmissions` |
 
 ```bash
@@ -208,7 +191,6 @@ Source of truth: `src/env.js`. All variables validated with Zod.
 |----------|-------------|
 | `DATABASE_URL` | Neon PostgreSQL connection string |
 | `AUTH_SECRET` | Auth.js secret (min 32 chars) |
-| `PRINTFUL_API_KEY` | Printful API token |
 | `STRIPE_SECRET_KEY` | Stripe server key (`sk_*`) |
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook verification (`whsec_*`) |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe client key (`pk_*`) |
@@ -219,7 +201,6 @@ Source of truth: `src/env.js`. All variables validated with Zod.
 |----------|---------|-------------|
 | `NEXT_PUBLIC_AUTH_ENABLED` | `false` | Enable authentication |
 | `NEXT_PUBLIC_SIGNAL_ENABLED` | `false` | Enable Signal feature |
-| `NEXT_PUBLIC_SHOP_ENABLED` | `false` | Enable Shop feature |
 | `NEXT_PUBLIC_INVITES_REQUIRED` | `false` | Require invite codes for registration |
 
 ### Optional Services
@@ -253,25 +234,23 @@ src/app/                    # App Router pages
   contact/                  # Contact form
   geometries/               # Sacred geometry content ([category]/[slug])
   numbers/                  # Angel number content hub
-  shop/                     # Shop pages
   signal/                   # Signal pages (dashboard, capture, sighting)
 src/components/
   ui/                       # shadcn/ui components
   geometry/                 # Geometry-specific components
-  shop/                     # Shop UI components
   signal/                   # Signal UI components
 src/lib/
   auth/                     # Auth.js configuration
   contact/                  # Contact form + Brevo sync
-  data/                     # Geometries + products data
+  data/                     # Geometries data
   db/                       # Drizzle ORM + schema
   email/                    # Brevo transactional emails
   features/                 # Feature access control
   invites/                  # Invite code system
   numbers/                  # Angel number patterns
   rate-limit/               # Upstash Redis rate limiting
-  shop/                     # Printful API, Stripe, cart
   signal/                   # Signal: Claude API, subscriptions
+  stripe/                   # Stripe client for subscriptions
   theme/                    # Light/dark theme context
   waitlist/                 # Waitlist signups + Brevo sync
 src/hooks/

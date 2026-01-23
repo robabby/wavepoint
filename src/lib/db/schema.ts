@@ -4,7 +4,6 @@ import {
   timestamp,
   uuid,
   integer,
-  jsonb,
   unique,
   index,
 } from "drizzle-orm/pg-core";
@@ -94,24 +93,6 @@ export const addresses = pgTable("addresses", {
   state: text("state").notNull(),
   postalCode: text("postal_code").notNull(),
   country: text("country").notNull().default("US"),
-  createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
-  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
-});
-
-/**
- * Orders - webhook-driven order tracking
- */
-export const orders = pgTable("orders", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").references(() => users.id, { onDelete: "set null" }), // Nullable for backward compat
-  stripeSessionId: text("stripe_session_id").notNull().unique(),
-  printfulOrderId: text("printful_order_id"),
-  status: text("status").notNull().default("pending"), // pending, processing, shipped, delivered, cancelled
-  items: jsonb("items").notNull(),
-  subtotal: integer("subtotal").notNull(), // cents
-  shipping: integer("shipping"), // cents
-  total: integer("total").notNull(), // cents
-  shippingAddress: jsonb("shipping_address").notNull(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow(),
 });
@@ -351,9 +332,6 @@ export type NewSession = typeof sessions.$inferInsert;
 
 export type Address = typeof addresses.$inferSelect;
 export type NewAddress = typeof addresses.$inferInsert;
-
-export type Order = typeof orders.$inferSelect;
-export type NewOrder = typeof orders.$inferInsert;
 
 export type SignalSighting = typeof signalSightings.$inferSelect;
 export type NewSignalSighting = typeof signalSightings.$inferInsert;
