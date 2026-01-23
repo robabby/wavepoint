@@ -6,7 +6,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "Terms of Service for WavePoint Shop. Read our terms and conditions for using our website and purchasing products.",
+    "Terms of Service for WavePoint. Read our terms and conditions for using our website and services.",
 };
 
 function Section({
@@ -69,31 +69,30 @@ export default function TermsOfServicePage() {
               </ul>
             </Section>
 
-            <Section title="3. Products and Purchases">
+            <Section title="3. User Accounts and Subscriptions">
               <Text as="p">
-                All products sold through our shop are print-on-demand items
-                fulfilled by our partner, Printful. By making a purchase, you
+                Some features require a user account. By creating an account, you
                 agree to:
               </Text>
               <ul className="ml-6 list-disc space-y-2">
-                <li>Provide accurate and complete payment information</li>
-                <li>Pay all charges at the prices in effect when incurred</li>
-                <li>
-                  Review product details, including size and specifications,
-                  before ordering
-                </li>
+                <li>Provide accurate and complete registration information</li>
+                <li>Maintain the security of your account credentials</li>
+                <li>Accept responsibility for all activity under your account</li>
+                <li>Notify us immediately of any unauthorized access</li>
               </ul>
               <Text as="p" className="mt-4">
-                Prices are subject to change without notice. We reserve the right
-                to refuse or cancel orders at our discretion.
+                Premium features are available through paid subscriptions.
+                Subscription prices are subject to change with notice.
+                We reserve the right to modify or discontinue features at our
+                discretion.
               </Text>
             </Section>
 
             <Section title="4. Payment Processing">
               <Text as="p">
-                All payments are processed securely through Stripe. We do not
-                store your credit card information on our servers. By making a
-                purchase, you also agree to Stripe&apos;s{" "}
+                Subscription payments are processed securely through Stripe. We
+                do not store your credit card information on our servers. By
+                subscribing, you also agree to Stripe&apos;s{" "}
                 <a
                   href="https://stripe.com/legal"
                   target="_blank"
@@ -102,7 +101,7 @@ export default function TermsOfServicePage() {
                 >
                   Terms of Service
                 </a>
-                .
+                . Subscriptions renew automatically until cancelled.
               </Text>
             </Section>
 
@@ -135,10 +134,13 @@ export default function TermsOfServicePage() {
               </Text>
               <ul className="ml-6 list-disc space-y-2">
                 <li>
-                  <strong>Printful</strong> — Order fulfillment and shipping
+                  <strong>Stripe</strong> — Subscription payment processing
                 </li>
                 <li>
-                  <strong>Stripe</strong> — Payment processing
+                  <strong>Anthropic (Claude)</strong> — AI-powered interpretations
+                </li>
+                <li>
+                  <strong>Brevo</strong> — Transactional email delivery
                 </li>
                 <li>
                   <strong>Vercel</strong> — Website hosting
