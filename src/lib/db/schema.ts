@@ -133,6 +133,7 @@ export const signalSightings = pgTable(
     number: text("number").notNull(), // "1111", "444", etc.
     note: text("note"),
     moodTags: text("mood_tags").array(),
+    tz: text("tz"), // IANA timezone at submission, e.g. "America/Los_Angeles"
     timestamp: timestamp("timestamp", { mode: "date" }).notNull().defaultNow(),
     createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
   },

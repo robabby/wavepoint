@@ -22,6 +22,12 @@ export const MOOD_OPTIONS = [
 export type MoodOption = (typeof MOOD_OPTIONS)[number];
 
 /**
+ * IANA timezone regex - matches patterns like "America/Los_Angeles" or "Europe/London"
+ * Allows for sub-regions like "America/Indiana/Indianapolis"
+ */
+const IANA_TZ_REGEX = /^[A-Za-z_]+\/[A-Za-z_]+(?:\/[A-Za-z_]+)?$/;
+
+/**
  * Schema for creating a new sighting.
  * Used for API validation and form handling.
  */
@@ -33,6 +39,7 @@ export const createSightingSchema = z.object({
     .regex(/^\d+$/, "Must contain only digits"),
   note: z.string().max(500, "Note too long").optional(),
   moodTags: z.array(z.enum(MOOD_OPTIONS)).max(3, "Maximum 3 moods").optional(),
+  tz: z.string().regex(IANA_TZ_REGEX, "Invalid timezone format").optional(),
 });
 
 export type CreateSightingInput = z.infer<typeof createSightingSchema>;
