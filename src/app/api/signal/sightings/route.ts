@@ -58,14 +58,14 @@ export async function POST(request: Request) {
       );
     }
 
-    const { number, note, moodTags } = parsed.data;
+    const { number, note, moodTags, tz } = parsed.data;
     const userId = session.user.id;
     const now = new Date();
 
     // Create sighting first
     const [sighting] = await db
       .insert(signalSightings)
-      .values({ userId, number, note, moodTags })
+      .values({ userId, number, note, moodTags, tz })
       .returning();
 
     // Upsert stats (neon-http doesn't support transactions, but stats are
@@ -92,7 +92,7 @@ export async function POST(request: Request) {
     const result = { sighting: sighting!, stats: stats!, isFirstCatch };
 
     // Update activity stats (streaks) - denormalized and recoverable if this fails
-    await updateUserActivityStats(userId, now);
+    await updateUserActivityStats(userId, now, tz);
 
     // Count recent sightings for insight generation (past 7 days, excluding current)
     const sevenDaysAgo = new Date(now);

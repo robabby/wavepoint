@@ -98,10 +98,13 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
 
   const handleSubmit = useCallback(async () => {
     try {
+      // Get client's timezone for timezone-aware streak calculation
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const response = await createSighting({
         number: state.number,
         moodTags: state.moods.length > 0 ? state.moods : undefined,
         note: state.note || undefined,
+        tz,
       });
 
       const captureResult: CaptureResult = {

@@ -61,9 +61,12 @@ export function DashboardContent() {
 
   const handleQuickCapture = useCallback(
     async (number: string, moods?: string[]) => {
+      // Get client's timezone for timezone-aware streak calculation
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const result = await createSighting({
         number,
         moodTags: moods as MoodOption[] | undefined,
+        tz,
       });
       if (result.delight) {
         setDelight(result.delight);

@@ -39,7 +39,8 @@ function formatDateShort(dateStr: string): string {
 }
 
 /**
- * Generate array of dates for past N days
+ * Generate array of dates for past N days in local timezone
+ * Uses toLocaleDateString with en-CA locale for YYYY-MM-DD format
  */
 function generateDateRange(days: number): string[] {
   const dates: string[] = [];
@@ -48,7 +49,8 @@ function generateDateRange(days: number): string[] {
   for (let i = days - 1; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(date.getDate() - i);
-    dates.push(date.toISOString().split("T")[0]!);
+    // Use en-CA locale for YYYY-MM-DD format in local timezone
+    dates.push(date.toLocaleDateString("en-CA"));
   }
 
   return dates;

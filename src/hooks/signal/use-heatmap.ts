@@ -19,7 +19,9 @@ interface HeatmapResponse {
 }
 
 async function fetchHeatmap(): Promise<HeatmapResponse> {
-  const res = await fetch("/api/signal/heatmap");
+  // Get client's timezone for timezone-aware date grouping
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const res = await fetch(`/api/signal/heatmap?tz=${encodeURIComponent(tz)}`);
   if (!res.ok) throw new Error("Failed to fetch heatmap data");
   return res.json() as Promise<HeatmapResponse>;
 }

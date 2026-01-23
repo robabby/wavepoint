@@ -42,24 +42,33 @@ export async function getUserActivityStats(
 
 /**
  * Format a Date to YYYY-MM-DD string
+ * If timezone is provided, formats in that timezone; otherwise uses UTC
  */
-function formatDateString(date: Date): string {
+function formatDateString(date: Date, tz?: string): string {
+  if (tz) {
+    // Use toLocaleDateString with en-CA locale for YYYY-MM-DD format in the specified timezone
+    return date.toLocaleDateString("en-CA", { timeZone: tz });
+  }
   return date.toISOString().split("T")[0]!;
 }
 
 /**
- * Check if two date strings are consecutive days
+ * Check if two date strings (YYYY-MM-DD format) are consecutive days
+ * Both dates should already be in the same timezone context
  */
 function isConsecutiveDay(
   previousDate: string,
   currentDate: string
 ): boolean {
-  const prev = new Date(previousDate + "T00:00:00Z");
+  // Parse dates using noon to avoid DST edge cases
+  const prev = new Date(previousDate + "T12:00:00");
 
   // Add one day to previous date
-  prev.setUTCDate(prev.getUTCDate() + 1);
+  prev.setDate(prev.getDate() + 1);
 
-  return formatDateString(prev) === currentDate;
+  // Format back to YYYY-MM-DD for comparison
+  const expectedNext = prev.toISOString().split("T")[0]!;
+  return expectedNext === currentDate;
 }
 
 /**
@@ -73,13 +82,15 @@ function isConsecutiveDay(
  *
  * @param userId - User's UUID
  * @param sightingDate - Date of the sighting (defaults to now)
+ * @param tz - IANA timezone for date calculation (e.g. "America/Los_Angeles")
  * @returns Updated activity stats
  */
 export async function updateUserActivityStats(
   userId: string,
-  sightingDate: Date = new Date()
+  sightingDate: Date = new Date(),
+  tz?: string
 ): Promise<SignalUserActivityStats> {
-  const today = formatDateString(sightingDate);
+  const today = formatDateString(sightingDate, tz);
 
   // Get existing stats
   const existing = await db.query.signalUserActivityStats.findFirst({
