@@ -46,7 +46,7 @@ function generateFloatingNumbers(count: number): FloatingNumber[] {
     number: ANGEL_NUMBERS[Math.floor(Math.random() * ANGEL_NUMBERS.length)]!,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    size: 0.75 + Math.random() * 1.25, // 0.75rem to 2rem
+    size: 0.75 + Math.random() * 3.25, // 0.75rem to 4rem
     opacity: 0.08 + Math.random() * 0.12, // 0.08 to 0.20
     duration: 20 + Math.random() * 30, // 20s to 50s
     delay: Math.random() * -20, // Stagger start times

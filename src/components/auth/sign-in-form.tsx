@@ -19,6 +19,7 @@ import { signInWithCredentials } from "@/lib/auth/actions";
 import { useAuthModal, type AuthView } from "./auth-provider";
 import { PasswordInput } from "./password-input";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 interface SignInFormProps {
   onSwitchView: (view: AuthView) => void;
@@ -48,8 +49,16 @@ export function SignInForm({ onSwitchView }: SignInFormProps) {
     const result = await signInWithCredentials(data);
 
     if (result.success) {
+      track("Sign In", {
+        login_method: "email",
+        success: true,
+      });
       closeModal();
     } else {
+      track("Sign In", {
+        login_method: "email",
+        success: false,
+      });
       setError(result.error);
     }
   };
