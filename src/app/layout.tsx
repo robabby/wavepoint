@@ -24,6 +24,7 @@ import { isAuthEnabled } from "@/lib/features/access";
 import { ThemeProvider } from "@/lib/theme";
 import { ThemeWrapper } from "@/components/theme-wrapper";
 import { QueryProvider } from "@/components/query-provider";
+import { AnalyticsProvider } from "@/lib/analytics";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://wavepoint.space";
@@ -132,7 +133,9 @@ export default function RootLayout({
                   The modal opens via URL params (?auth=sign-up&invite=...) */}
               <AuthModal />
               {/* QueryProvider for React Query hooks used across the app */}
-              <QueryProvider>{coreContent}</QueryProvider>
+              <QueryProvider>
+                <AnalyticsProvider>{coreContent}</AnalyticsProvider>
+              </QueryProvider>
             </AuthProvider>
           </ThemeWrapper>
         </ThemeProvider>

@@ -20,6 +20,7 @@ import { useAuthModal, type AuthView } from "./auth-provider";
 import { PasswordInput } from "./password-input";
 import { cn } from "@/lib/utils";
 import { env } from "@/env";
+import { track } from "@/lib/analytics";
 
 interface SignUpFormProps {
   onSwitchView: (view: AuthView) => void;
@@ -72,6 +73,9 @@ export function SignUpForm({ onSwitchView }: SignUpFormProps) {
     });
 
     if (signInResult.success) {
+      track("Sign Up", {
+        signup_method: "email",
+      });
       closeModal();
     } else {
       // Registration succeeded but sign-in failed - redirect to sign-in

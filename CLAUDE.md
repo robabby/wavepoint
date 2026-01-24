@@ -134,6 +134,21 @@ Upstash Redis with in-memory fallback. See `src/lib/rate-limit/`.
 
 **Optional**: Falls back to in-memory if Redis env vars not set.
 
+### Analytics (Mixpanel)
+
+Product analytics via `src/lib/analytics/`. Tracks user behavior, sign-ups, and sessions.
+
+| Export | Purpose |
+|--------|---------|
+| `AnalyticsProvider` | React provider (initialized in root layout) |
+| `track(event, properties)` | Track custom events |
+| `identify(userId, properties)` | Identify authenticated users |
+| `reset()` | Clear user identity on sign-out |
+
+**Features**: Autocapture, session replay (100%), automatic page views, user identification synced with auth.
+
+**Optional**: Disabled if `NEXT_PUBLIC_MIXPANEL_TOKEN` not set.
+
 ### Feature Access
 
 Centralized access control with admin overrides. See `src/lib/features/`.
@@ -220,6 +235,7 @@ Source of truth: `src/env.js`. All variables validated with Zod.
 | `UPSTASH_REDIS_REST_URL` | Upstash Redis URL (rate limiting) |
 | `UPSTASH_REDIS_REST_TOKEN` | Upstash Redis token |
 | `ADMIN_EMAILS` | Comma-separated admin emails |
+| `NEXT_PUBLIC_MIXPANEL_TOKEN` | Mixpanel project token (analytics) |
 
 ---
 
@@ -240,6 +256,7 @@ src/components/
   geometry/                 # Geometry-specific components
   signal/                   # Signal UI components
 src/lib/
+  analytics/                # Mixpanel analytics
   auth/                     # Auth.js configuration
   contact/                  # Contact form + Brevo sync
   data/                     # Geometries data
