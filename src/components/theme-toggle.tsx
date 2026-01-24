@@ -44,6 +44,7 @@ export function ThemeToggle() {
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/50"
           )}
           aria-label="Toggle theme"
+          suppressHydrationWarning
         >
           <CurrentIcon className="h-5 w-5" />
         </button>
