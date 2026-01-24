@@ -230,12 +230,13 @@ export function SightingClient({ params }: SightingClientProps) {
       <main className="container relative z-10 mx-auto max-w-2xl px-4 py-8">
         {/* Number Display */}
         <div className="mb-8 text-center">
-          <span
-            className="font-display text-6xl text-[var(--color-gold)]"
+          <Link
+            href={`/numbers/${sighting.number}`}
+            className="font-display text-6xl text-[var(--color-gold)] transition-all duration-300 hover:text-[var(--color-gold-bright)]"
             style={{ textShadow: "0 0 40px var(--glow-gold)" }}
           >
             {sighting.number}
-          </span>
+          </Link>
           <p className="mt-2 text-sm text-muted-foreground">
             {formatDistanceToNow(new Date(sighting.timestamp), {
               addSuffix: true,
