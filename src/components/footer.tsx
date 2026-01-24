@@ -93,9 +93,8 @@ export function Footer() {
               About
             </h3>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              An exploration of the geometric patterns that underlie reality.
-              From Platonic solids to sacred symbols, discover the mathematics
-              of creation.
+              Explore sacred geometry and angel numbers without the noise.
+              Just patterns, context, and space to find your own meaning.
             </p>
           </div>
 
@@ -112,6 +111,7 @@ export function Footer() {
               <FooterLink href={ROUTES.sacredPatterns.path}>
                 Sacred Patterns
               </FooterLink>
+              <FooterLink href="/about">About</FooterLink>
               <FooterLink href={ROUTES.faq.path}>FAQ</FooterLink>
             </nav>
 
