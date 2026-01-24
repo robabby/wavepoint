@@ -24,12 +24,12 @@ export function middleware(_request: NextRequest) {
     "Content-Security-Policy",
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://va.vercel-scripts.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://va.vercel-scripts.com https://cdn.mxpnl.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https: blob:",
       "font-src 'self' data:",
       "frame-src https://js.stripe.com",
-      "connect-src 'self' https://api.stripe.com https://va.vercel-scripts.com",
+      "connect-src 'self' https://api.stripe.com https://va.vercel-scripts.com https://api-js.mixpanel.com https://api.mixpanel.com",
     ].join("; ")
   );
 
