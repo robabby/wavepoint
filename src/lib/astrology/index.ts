@@ -54,3 +54,6 @@ export * from "./planets";
 
 // Zodiac sign content pages
 export * from "./signs";
+
+// Astrological house content pages
+export * from "./houses";

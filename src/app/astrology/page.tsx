@@ -119,16 +119,45 @@ export default function AstrologyHubPage() {
             </Link>
           </AnimateOnScroll>
 
-          {/* Coming Soon - Houses */}
-          <AnimateOnScroll delay={0.3} className="mt-4">
-            <div className="rounded-xl border border-dashed border-[var(--border-gold)]/30 bg-card/10 p-8 text-center">
-              <Text className="text-muted-foreground">
-                <span className="font-display text-[var(--color-gold)]/50">
-                  Houses
-                </span>{" "}
-                — Coming soon
-              </Text>
-            </div>
+          {/* Houses Section */}
+          <AnimateOnScroll delay={0.3} className="mt-8">
+            <Link href="/astrology/houses" className="block">
+              <AnimatedCard className="group relative overflow-hidden p-8 sm:p-10">
+                <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left">
+                  {/* Icon/Glyph */}
+                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--color-gold)]/40 bg-card/50 sm:mb-0 sm:mr-6">
+                    <span className="font-display text-2xl text-[var(--color-gold)]">
+                      XII
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <Heading
+                      size="6"
+                      className="mb-2 font-display text-foreground transition-colors group-hover:text-[var(--color-gold)]"
+                    >
+                      Houses
+                    </Heading>
+                    <Text className="mb-4 block text-muted-foreground">
+                      The twelve houses of the natal chart, each governing
+                      specific domains of life from identity to transcendence.
+                      Discover how houses provide the stage for planetary
+                      expression.
+                    </Text>
+                    <span className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-gold)]">
+                      Explore houses
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Decorative numerals */}
+                <div className="pointer-events-none absolute -right-4 -top-4 font-display text-5xl text-[var(--color-gold)]/5">
+                  I IV VII X
+                </div>
+              </AnimatedCard>
+            </Link>
           </AnimateOnScroll>
         </div>
       </div>
