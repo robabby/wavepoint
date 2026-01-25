@@ -24,6 +24,9 @@ export const users = pgTable("users", {
   passwordHash: text("password_hash").notNull(),
   name: text("name"),
   image: text("image"), // Required by Auth.js adapter (unused for credentials-only auth)
+  // Identity fields (Phase 5 groundwork)
+  username: text("username").unique(), // Nullable, lowercase, alphanumeric + underscores
+  displayName: text("display_name"), // Freeform display name
   failedLoginAttempts: integer("failed_login_attempts").notNull().default(0),
   lockedUntil: timestamp("locked_until", { mode: "date" }),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow(),
@@ -306,6 +309,9 @@ export const spiritualProfiles = pgTable(
     // Calculation Metadata
     calculatedAt: timestamp("calculated_at", { withTimezone: true, mode: "date" }),
     calculationVersion: text("calculation_version"),
+
+    // Visibility (Phase 5 groundwork)
+    profileVisibility: text("profile_visibility").notNull().default("private"), // 'private' | 'public'
 
     // Timestamps
     createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),

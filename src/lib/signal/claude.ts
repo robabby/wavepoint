@@ -6,6 +6,7 @@
  * - 15s timeout with fallback interpretations
  * - Upsert pattern supports regeneration
  * - Graceful degradation when API key not configured
+ * - Synthesis context integration (planetary, archetypal, elemental)
  */
 
 import Anthropic from "@anthropic-ai/sdk";
@@ -13,6 +14,14 @@ import Anthropic from "@anthropic-ai/sdk";
 import { env } from "@/env";
 import { db, signalInterpretations } from "@/lib/db";
 import { getBaseMeaning } from "./meanings";
+import {
+  getSynthesisGraph,
+  getPatternSynthesis,
+  buildSynthesisContext,
+} from "@/lib/synthesis";
+import type { PatternSynthesisQuery } from "@/lib/synthesis";
+import type { ZodiacSign } from "@/lib/astrology";
+import type { Element } from "@/lib/numbers/planetary";
 
 const INTERPRETATION_TIMEOUT_MS = 15000;
 
@@ -31,6 +40,16 @@ function getAnthropicClient(): Anthropic | null {
   return anthropicClient;
 }
 
+/**
+ * User profile subset for synthesis context
+ */
+export interface UserProfileContext {
+  sunSign?: ZodiacSign;
+  moonSign?: ZodiacSign;
+  risingSign?: ZodiacSign;
+  dominantElement?: Element;
+}
+
 export interface InterpretationContext {
   sightingId: string;
   number: string;
@@ -38,6 +57,8 @@ export interface InterpretationContext {
   moodTags?: string[];
   count: number;
   isFirstCatch: boolean;
+  /** Optional user profile for personalized synthesis */
+  profile?: UserProfileContext;
 }
 
 export interface InterpretationResult {
@@ -136,10 +157,46 @@ async function saveInterpretation(
 }
 
 /**
+ * Build synthesis context string for the prompt.
+ * Returns empty string if synthesis fails or graph unavailable.
+ *
+ * @param number - The angel number pattern
+ * @param profile - Optional user profile for personalization
+ * @returns Synthesis context string (max ~300 tokens)
+ */
+function buildPatternSynthesisContext(
+  number: string,
+  profile?: UserProfileContext
+): string {
+  try {
+    const graph = getSynthesisGraph();
+    const query: PatternSynthesisQuery = {
+      pattern: number,
+      context: "interpretation",
+    };
+
+    if (profile) {
+      query.profile = {
+        sunSign: profile.sunSign,
+        moonSign: profile.moonSign,
+        risingSign: profile.risingSign,
+        dominantElement: profile.dominantElement,
+      };
+    }
+
+    const result = getPatternSynthesis(graph, query);
+    return buildSynthesisContext(result);
+  } catch {
+    // Gracefully degrade if synthesis unavailable
+    return "";
+  }
+}
+
+/**
  * Build the prompt for Claude based on sighting context.
  */
 function buildPrompt(context: InterpretationContext): string {
-  const { number, note, moodTags, count, isFirstCatch } = context;
+  const { number, note, moodTags, count, isFirstCatch, profile } = context;
   const baseMeaning = getBaseMeaning(number);
   const ordinal = getOrdinal(count);
 
@@ -152,6 +209,13 @@ Provide a warm, insightful interpretation that:
 - Is conversational and grounded (not overly mystical)
 - Is 2-3 paragraphs maximum
 - Ends with a gentle reflection prompt`;
+
+  // Add synthesis context (planetary, archetypal, elemental connections)
+  const synthesisContext = buildPatternSynthesisContext(number, profile);
+  if (synthesisContext) {
+    prompt += `\n\n${synthesisContext}`;
+    prompt += `\n\nSubtly weave these esoteric connections into your interpretation without being heavy-handed.`;
+  }
 
   if (moodTags?.length || note || count > 1) {
     prompt += `\n\nAdditional context:`;
