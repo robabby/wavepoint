@@ -63,6 +63,7 @@
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.45.1",
     "fuse.js": "^7.1.0",
+    "geo-tz": "^8.1.5",
     "js-yaml": "^4.1.0",
     "lucide-react": "^0.544.0",
     "mixpanel-browser": "^2.73.0",

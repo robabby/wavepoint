@@ -126,7 +126,7 @@ export interface ProfileInput {
   birthCountry: string;
   birthLatitude: number;
   birthLongitude: number;
-  birthTimezone: string;
+  birthTimezone?: string; // Optional - auto-calculated from coordinates if not provided
 }
 
 /**

@@ -48,15 +48,21 @@ export async function POST(request: Request) {
 
     const { birthDate: birthDateStr, birthTime, birthLatitude, birthLongitude } = parsed.data;
 
-    const birthDate = new Date(birthDateStr);
+    // Parse date string directly to avoid timezone conversion issues
+    // Input format: "YYYY-MM-DD" from HTML date input
+    const [yearStr, monthStr, dayStr] = birthDateStr.split("-");
+    const year = parseInt(yearStr!, 10);
+    const month = parseInt(monthStr!, 10); // Already 1-indexed from HTML date input
+    const day = parseInt(dayStr!, 10);
+
     const parsedTime = parseBirthTime(birthTime ?? null);
     const hasBirthTime = !!parsedTime;
 
     // Calculate chart
     const chart = calculateChart({
-      year: birthDate.getFullYear(),
-      month: birthDate.getMonth() + 1,
-      day: birthDate.getDate(),
+      year,
+      month,
+      day,
       hour: parsedTime?.hour ?? 12, // Default to noon if no time
       minute: parsedTime?.minute ?? 0,
       location: {
