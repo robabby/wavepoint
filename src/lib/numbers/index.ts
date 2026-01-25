@@ -27,6 +27,7 @@ export type {
   NumberCategory,
   NumberPattern,
   NumberPatternId,
+  NumberPatternWithPlanetary,
   PatternDetailResponse,
   PatternStat,
   PatternsListResponse,
@@ -74,6 +75,11 @@ export {
   isKnownPattern,
   searchPatterns,
   findRelatedPatternsForUncovered,
+  // Planetary enrichment
+  getPatternWithPlanetary,
+  getAllPatternsWithPlanetary,
+  getPatternsByPlanet,
+  getPatternsByElement,
 } from "./helpers";
 
 export type { RelatedPatternWithType } from "./helpers";
@@ -83,3 +89,30 @@ export {
   generateComponentBreakdown,
   hasRecognizableElements,
 } from "./component-breakdown";
+
+// Planetary associations
+export type {
+  Planet,
+  Element,
+  PlatonicSolid,
+  ConfidenceLevel,
+  PlanetaryDigitMeta,
+  PatternPlanetaryMeta,
+} from "./planetary";
+
+export {
+  DIGIT_PLANETARY_META,
+  ZERO_META,
+  PLANET_META,
+  ELEMENT_META,
+  GEOMETRY_META,
+  AGRIPPA_MAGIC_SQUARES,
+  AGRIPPA_ANGEL_NUMBER_CONNECTIONS,
+  getDominantDigit,
+  getUniqueDigits,
+  getDigitPlanetaryMeta,
+  getPatternPlanetaryMeta,
+  getPlanetSymbol,
+  getPlanetElement,
+  hasAgrippaConnection,
+} from "./planetary";

@@ -4,10 +4,11 @@
  */
 
 import { PATTERNS } from "./data";
-import type { NumberCategory, NumberPattern, NumberPatternId } from "./types";
+import type { NumberCategory, NumberPattern, NumberPatternId, NumberPatternWithPlanetary } from "./types";
 import { NUMBER_PATTERN_IDS } from "./types";
 import { getRelationshipsForPattern } from "./relationships";
 import type { NumberRelationshipMeta } from "./relationship-types";
+import { getPatternPlanetaryMeta } from "./planetary";
 
 /**
  * Get all patterns as an array, sorted by category order then pattern order.
@@ -319,4 +320,75 @@ function isDescendingSequence(number: string): boolean {
 function isPalindromeNumber(number: string): boolean {
   if (number.length < 3) return false;
   return number === number.split("").reverse().join("");
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PLANETARY ENRICHMENT
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Get a pattern enriched with planetary metadata.
+ * Returns undefined if pattern not found.
+ */
+export function getPatternWithPlanetary(
+  number: string
+): NumberPatternWithPlanetary | undefined {
+  const pattern = PATTERNS[number as NumberPatternId];
+  if (!pattern) return undefined;
+
+  const planetary = getPatternPlanetaryMeta(pattern.id);
+
+  return {
+    ...pattern,
+    planetary: {
+      primaryPlanet: planetary.primaryPlanet,
+      primarySymbol: planetary.primarySymbol,
+      planets: planetary.planets,
+      primaryElement: planetary.primaryElement,
+      elements: planetary.elements,
+      geometry: planetary.geometry,
+      agrippaNote: planetary.agrippaNote,
+      energyDescription: planetary.energyDescription,
+    },
+  };
+}
+
+/**
+ * Get all patterns enriched with planetary metadata.
+ */
+export function getAllPatternsWithPlanetary(): NumberPatternWithPlanetary[] {
+  return getAllPatterns().map((pattern) => {
+    const planetary = getPatternPlanetaryMeta(pattern.id);
+    return {
+      ...pattern,
+      planetary: {
+        primaryPlanet: planetary.primaryPlanet,
+        primarySymbol: planetary.primarySymbol,
+        planets: planetary.planets,
+        primaryElement: planetary.primaryElement,
+        elements: planetary.elements,
+        geometry: planetary.geometry,
+        agrippaNote: planetary.agrippaNote,
+        energyDescription: planetary.energyDescription,
+      },
+    };
+  });
+}
+
+/**
+ * Get patterns filtered by planet.
+ */
+export function getPatternsByPlanet(planet: string): NumberPatternWithPlanetary[] {
+  return getAllPatternsWithPlanetary().filter(
+    (p) => p.planetary.primaryPlanet === planet || p.planetary.planets.includes(planet)
+  );
+}
+
+/**
+ * Get patterns filtered by element.
+ */
+export function getPatternsByElement(element: string): NumberPatternWithPlanetary[] {
+  return getAllPatternsWithPlanetary().filter(
+    (p) => p.planetary.primaryElement === element || p.planetary.elements.includes(element)
+  );
 }
