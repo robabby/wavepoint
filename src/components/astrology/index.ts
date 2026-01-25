@@ -21,3 +21,15 @@ export {
   SignRelatedContent,
   ZodiacTable,
 } from "./signs";
+
+// House components
+export {
+  HouseGlyph,
+  HouseCard,
+  HouseTable,
+  HouseHero,
+  HouseTraits,
+  HouseLifeAreas,
+  HouseMeanings,
+  HouseAxis,
+} from "./houses";
