@@ -1,6 +1,6 @@
 export { ArchetypeCard } from "./ArchetypeCard";
 export { ArchetypeHero } from "./ArchetypeHero";
+export { ArchetypeFramework } from "./ArchetypeFramework";
+export { ArchetypeShadow } from "./ArchetypeShadow";
 export { CorrespondenceChips } from "./CorrespondenceChips";
-export { AlternativeAttributions } from "./AlternativeAttributions";
 export { RelatedContent } from "./RelatedContent";
-export { ArchetypeNav } from "./ArchetypeNav";

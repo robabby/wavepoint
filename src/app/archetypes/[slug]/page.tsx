@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Heading, Text } from "@radix-ui/themes";
+import { Text } from "@radix-ui/themes";
 import {
   getAllArchetypes,
   isValidArchetypeSlug,
@@ -9,11 +9,11 @@ import {
 } from "@/lib/archetypes";
 import {
   ArchetypeHero,
+  ArchetypeFramework,
+  ArchetypeShadow,
   RelatedContent,
-  ArchetypeNav,
 } from "@/components/archetypes";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
-import { AnimatedCard } from "@/components/animated-card";
 
 const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
 
@@ -51,25 +51,19 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${archetype.romanNumeral} ${archetype.name}`,
-    description: archetype.description,
+    title: archetype.name,
+    description: `${archetype.name}: ${archetype.motto}. ${archetype.description.split("\n")[0]}`,
     keywords: [
-      `${archetype.name.toLowerCase()} tarot`,
-      `${archetype.name.toLowerCase()} meaning`,
-      archetype.jungianArchetype.toLowerCase(),
+      `${archetype.name.toLowerCase()} archetype`,
+      `${archetype.name.toLowerCase()} jungian`,
       ...archetype.keywords,
-      "major arcana",
-      "tarot archetypes",
+      "jungian archetype",
+      "psychological archetype",
+      "carl jung",
     ],
     openGraph: {
-      title: `${archetype.romanNumeral} ${archetype.name} | WavePoint`,
-      description: archetype.description,
-      images: [
-        {
-          url: archetype.imagePath,
-          alt: `${archetype.name} tarot card`,
-        },
-      ],
+      title: `${archetype.name} | WavePoint`,
+      description: `${archetype.motto}. ${archetype.keywords.join(", ")}`,
     },
   };
 }
@@ -95,11 +89,10 @@ export default async function ArchetypeDetailPage({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: `${archetype.romanNumeral} ${archetype.name}`,
-    description: archetype.description,
+    headline: archetype.name,
+    description: archetype.description.split("\n")[0],
     url: `${baseUrl}/archetypes/${archetype.slug}`,
     keywords: archetype.keywords.join(", "),
-    image: `${baseUrl}${archetype.imagePath}`,
     publisher: {
       "@type": "Organization",
       name: "WavePoint",
@@ -148,7 +141,7 @@ export default async function ArchetypeDetailPage({
               weight="medium"
               className="mb-3 block text-[var(--color-gold-bright)]"
             >
-              Key themes
+              Key Themes
             </Text>
             <div className="flex flex-wrap gap-2">
               {archetype.keywords.map((keyword) => (
@@ -162,63 +155,20 @@ export default async function ArchetypeDetailPage({
             </div>
           </AnimateOnScroll>
 
-          {/* Meanings Section */}
-          <AnimateOnScroll delay={0.15} className="mb-12">
-            <div className="grid gap-6 sm:grid-cols-2">
-              {/* Upright Meanings */}
-              <AnimatedCard className="p-6">
-                <Heading
-                  size="3"
-                  className="mb-4 font-display text-[var(--color-gold)]"
-                >
-                  Upright
-                </Heading>
-                <ul className="space-y-2">
-                  {archetype.uprightMeanings.map((meaning) => (
-                    <li
-                      key={meaning}
-                      className="flex items-start gap-2 text-sm text-muted-foreground"
-                    >
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[var(--color-gold)]/40" />
-                      <span className="capitalize">{meaning}</span>
-                    </li>
-                  ))}
-                </ul>
-              </AnimatedCard>
+          {/* Jungian Framework */}
+          <div className="mb-12">
+            <ArchetypeFramework archetype={archetype} />
+          </div>
 
-              {/* Reversed Meanings */}
-              <AnimatedCard className="p-6">
-                <Heading
-                  size="3"
-                  className="mb-4 font-display text-muted-foreground"
-                >
-                  Reversed
-                </Heading>
-                <ul className="space-y-2">
-                  {archetype.reversedMeanings.map((meaning) => (
-                    <li
-                      key={meaning}
-                      className="flex items-start gap-2 text-sm text-muted-foreground/80"
-                    >
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/40" />
-                      <span className="capitalize">{meaning}</span>
-                    </li>
-                  ))}
-                </ul>
-              </AnimatedCard>
-            </div>
-          </AnimateOnScroll>
+          {/* Shadow Aspect */}
+          <div className="mb-12">
+            <ArchetypeShadow archetype={archetype} />
+          </div>
 
           {/* Related Content */}
           <div className="mb-12">
             <RelatedContent archetype={archetype} />
           </div>
-
-          {/* Navigation */}
-          <ArchetypeNav
-            previous={archetype.previous}
-            next={archetype.next}
-          />
         </div>
       </div>
     </main>

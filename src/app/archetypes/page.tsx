@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Heading, Text } from "@radix-ui/themes";
-import { getAllArchetypes, getArchetypesByAttribution } from "@/lib/archetypes";
+import { getAllArchetypes } from "@/lib/archetypes";
 import { ArchetypeCard } from "@/components/archetypes";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
@@ -10,37 +10,34 @@ const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
 export const metadata: Metadata = {
   title: "Archetypes",
   description:
-    "Explore the 22 Major Arcana as archetypal patterns. Each card represents a universal theme mapped to astrological and elemental correspondences.",
+    "Explore the 12 Jungian archetypes as psychological patterns. Each archetype represents a universal theme of human experience with planetary and elemental correspondences.",
   openGraph: {
     title: "Archetypes | WavePoint",
     description:
-      "Discover the Major Arcana as archetypal patterns. Explore planetary, zodiacal, and elemental correspondences.",
+      "Discover the 12 Jungian psychological archetypes. Explore planetary and elemental correspondences.",
   },
   keywords: [
-    "major arcana",
-    "archetypes",
-    "tarot meanings",
-    "golden dawn",
-    "sacred correspondences",
     "jungian archetypes",
+    "psychological archetypes",
+    "carl jung",
+    "hero archetype",
+    "shadow archetype",
+    "carol pearson",
     "planetary correspondences",
-    "zodiac tarot",
+    "archetypal psychology",
   ],
 };
 
 export default function ArchetypesPage() {
   const allArchetypes = getAllArchetypes();
-  const elementalArchetypes = getArchetypesByAttribution("element");
-  const planetaryArchetypes = getArchetypesByAttribution("planet");
-  const zodiacalArchetypes = getArchetypesByAttribution("zodiac");
 
   // JSON-LD structured data
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Archetypes - Major Arcana",
+    name: "Jungian Archetypes",
     description:
-      "Explore the 22 Major Arcana as archetypal patterns. Each card represents a universal theme mapped to astrological and elemental correspondences.",
+      "Explore the 12 Jungian archetypes as psychological patterns. Each archetype represents a universal theme of human experience.",
     url: `${baseUrl}/archetypes`,
     mainEntity: {
       "@type": "ItemList",
@@ -49,7 +46,7 @@ export default function ArchetypesPage() {
         "@type": "ListItem",
         position: index + 1,
         url: `${baseUrl}/archetypes/${archetype.slug}`,
-        name: `${archetype.romanNumeral} - ${archetype.name}`,
+        name: archetype.name,
       })),
     },
   };
@@ -75,106 +72,28 @@ export default function ArchetypesPage() {
             size="4"
             className="mx-auto max-w-2xl text-muted-foreground"
           >
-            The 22 Major Arcana represent universal patterns of human experience.
-            Each archetype maps to planetary, zodiacal, or elemental correspondences
-            through the Golden Dawn tradition.
+            Twelve patterns of the psyche. Based on Carl Jung&apos;s archetypal psychology,
+            each archetype represents a universal theme of human experience,
+            connected through planetary and elemental correspondences.
           </Text>
         </AnimateOnScroll>
 
-        {/* Elemental Archetypes */}
-        {elementalArchetypes.length > 0 && (
-          <section className="mb-16">
-            <AnimateOnScroll className="mb-8">
-              <div className="flex items-baseline gap-3">
-                <Heading
-                  size="5"
-                  className="font-display text-[var(--color-gold)]"
-                >
-                  Elemental
-                </Heading>
-                <Text size="2" className="text-muted-foreground">
-                  Pure elemental forces
-                </Text>
-              </div>
-            </AnimateOnScroll>
+        {/* 3x4 Grid of Archetypes */}
+        <StaggerChildren
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6"
+          staggerDelay={0.04}
+        >
+          {allArchetypes.map((archetype) => (
+            <StaggerItem key={archetype.slug}>
+              <ArchetypeCard archetype={archetype} />
+            </StaggerItem>
+          ))}
+        </StaggerChildren>
 
-            <StaggerChildren
-              className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-6"
-              staggerDelay={0.05}
-            >
-              {elementalArchetypes.map((archetype) => (
-                <StaggerItem key={archetype.slug}>
-                  <ArchetypeCard archetype={archetype} />
-                </StaggerItem>
-              ))}
-            </StaggerChildren>
-          </section>
-        )}
-
-        {/* Planetary Archetypes */}
-        {planetaryArchetypes.length > 0 && (
-          <section className="mb-16">
-            <AnimateOnScroll className="mb-8">
-              <div className="flex items-baseline gap-3">
-                <Heading
-                  size="5"
-                  className="font-display text-[var(--color-gold)]"
-                >
-                  Planetary
-                </Heading>
-                <Text size="2" className="text-muted-foreground">
-                  Celestial influences
-                </Text>
-              </div>
-            </AnimateOnScroll>
-
-            <StaggerChildren
-              className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6"
-              staggerDelay={0.05}
-            >
-              {planetaryArchetypes.map((archetype) => (
-                <StaggerItem key={archetype.slug}>
-                  <ArchetypeCard archetype={archetype} />
-                </StaggerItem>
-              ))}
-            </StaggerChildren>
-          </section>
-        )}
-
-        {/* Zodiacal Archetypes */}
-        {zodiacalArchetypes.length > 0 && (
-          <section className="mb-16">
-            <AnimateOnScroll className="mb-8">
-              <div className="flex items-baseline gap-3">
-                <Heading
-                  size="5"
-                  className="font-display text-[var(--color-gold)]"
-                >
-                  Zodiacal
-                </Heading>
-                <Text size="2" className="text-muted-foreground">
-                  Signs of the zodiac
-                </Text>
-              </div>
-            </AnimateOnScroll>
-
-            <StaggerChildren
-              className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 lg:gap-6"
-              staggerDelay={0.03}
-            >
-              {zodiacalArchetypes.map((archetype) => (
-                <StaggerItem key={archetype.slug}>
-                  <ArchetypeCard archetype={archetype} />
-                </StaggerItem>
-              ))}
-            </StaggerChildren>
-          </section>
-        )}
-
-        {/* Browse all link */}
-        <AnimateOnScroll className="text-center">
+        {/* Footer note */}
+        <AnimateOnScroll className="mt-16 text-center">
           <Text size="2" className="text-muted-foreground">
-            {allArchetypes.length} archetypes in the Major Arcana
+            {allArchetypes.length} archetypes in the Jungian framework
           </Text>
         </AnimateOnScroll>
       </div>

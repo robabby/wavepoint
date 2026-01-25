@@ -3,12 +3,12 @@
  */
 
 import type { ZodiacSign } from "@/lib/astrology";
-import type { Planet, Element } from "@/lib/numbers/planetary";
+import type { Planet } from "@/lib/numbers/planetary";
 import { DIGIT_PLANETARY_META } from "@/lib/numbers/planetary";
 
 import type { Archetype, ArchetypeSlug, ArchetypeWithRelations } from "./types";
 import { ARCHETYPE_SLUGS } from "./types";
-import { ARCHETYPES, getAllArchetypes, getArchetypeBySlug } from "./data";
+import { getAllArchetypes, getArchetypeBySlug } from "./data";
 import { getGeometryForArchetype } from "./correspondences";
 
 /**
@@ -16,30 +16,6 @@ import { getGeometryForArchetype } from "./correspondences";
  */
 export function isValidArchetypeSlug(slug: string): slug is ArchetypeSlug {
   return ARCHETYPE_SLUGS.includes(slug as ArchetypeSlug);
-}
-
-/**
- * Get the previous archetype in sequence (by number)
- */
-export function getPreviousArchetype(slug: ArchetypeSlug): ArchetypeSlug | null {
-  const archetype = ARCHETYPES[slug];
-  if (!archetype || archetype.number === 0) return null;
-
-  const all = getAllArchetypes();
-  const prev = all.find((a) => a.number === archetype.number - 1);
-  return prev?.slug ?? null;
-}
-
-/**
- * Get the next archetype in sequence (by number)
- */
-export function getNextArchetype(slug: ArchetypeSlug): ArchetypeSlug | null {
-  const archetype = ARCHETYPES[slug];
-  if (!archetype || archetype.number === 21) return null;
-
-  const all = getAllArchetypes();
-  const next = all.find((a) => a.number === archetype.number + 1);
-  return next?.slug ?? null;
 }
 
 /**
@@ -70,84 +46,31 @@ export function getRelatedNumbers(archetype: Archetype): string[] {
  * Get related geometries for an archetype (via element)
  */
 export function getRelatedGeometries(archetype: Archetype): string[] {
-  // Get element from archetype (either direct or via zodiac)
-  let element: Element | null = archetype.element;
-
-  // If no direct element, try to get from zodiac's element
-  if (!element && archetype.zodiac) {
-    // Zodiac elements are defined in astrology constants
-    const zodiacElements: Record<ZodiacSign, Element> = {
-      aries: "fire",
-      taurus: "earth",
-      gemini: "air",
-      cancer: "water",
-      leo: "fire",
-      virgo: "earth",
-      libra: "air",
-      scorpio: "water",
-      sagittarius: "fire",
-      capricorn: "earth",
-      aquarius: "air",
-      pisces: "water",
-    };
-    element = zodiacElements[archetype.zodiac];
-  }
-
-  // If planet, get element from planet
-  if (!element && archetype.planet) {
-    const planetElements: Partial<Record<Planet, Element>> = {
-      sun: "fire",
-      moon: "water",
-      mercury: "air",
-      venus: "earth",
-      mars: "fire",
-      jupiter: "ether",
-      saturn: "earth",
-      uranus: "air",
-      neptune: "water",
-    };
-    element = planetElements[archetype.planet] ?? null;
-  }
-
-  if (!element) return [];
-
-  const geometry = getGeometryForArchetype(element);
+  const geometry = getGeometryForArchetype(archetype.element);
   if (!geometry) return [];
-
   return [geometry];
 }
 
 /**
- * Get related zodiac signs for an archetype
+ * Get related zodiac signs for an archetype (via planetary rulership)
  */
 export function getRelatedSigns(archetype: Archetype): ZodiacSign[] {
   const signs: ZodiacSign[] = [];
 
-  // If the archetype has a direct zodiac attribution
-  if (archetype.zodiac) {
-    signs.push(archetype.zodiac);
-  }
+  // Get signs ruled by this archetype's planet
+  const planetRulerships: Partial<Record<Planet, ZodiacSign[]>> = {
+    sun: ["leo"],
+    moon: ["cancer"],
+    mercury: ["gemini", "virgo"],
+    venus: ["taurus", "libra"],
+    mars: ["aries", "scorpio"],
+    jupiter: ["sagittarius", "pisces"],
+    saturn: ["capricorn", "aquarius"],
+  };
 
-  // If the archetype has a planetary attribution, include signs ruled by that planet
-  if (archetype.planet) {
-    const planetRulerships: Partial<Record<Planet, ZodiacSign[]>> = {
-      sun: ["leo"],
-      moon: ["cancer"],
-      mercury: ["gemini", "virgo"],
-      venus: ["taurus", "libra"],
-      mars: ["aries", "scorpio"],
-      jupiter: ["sagittarius", "pisces"],
-      saturn: ["capricorn", "aquarius"],
-    };
-
-    const ruled = planetRulerships[archetype.planet];
-    if (ruled) {
-      for (const sign of ruled) {
-        if (!signs.includes(sign)) {
-          signs.push(sign);
-        }
-      }
-    }
+  const ruled = planetRulerships[archetype.planet];
+  if (ruled) {
+    signs.push(...ruled);
   }
 
   return signs;
@@ -167,8 +90,6 @@ export function getArchetypeWithRelations(
     relatedNumbers: getRelatedNumbers(archetype),
     relatedGeometries: getRelatedGeometries(archetype),
     relatedSigns: getRelatedSigns(archetype),
-    previous: getPreviousArchetype(slug),
-    next: getNextArchetype(slug),
   };
 }
 
@@ -190,50 +111,8 @@ export function searchArchetypes(query: string): Archetype[] {
     // Search in description
     if (archetype.description.toLowerCase().includes(lowerQuery)) return true;
 
-    // Search in Jungian archetype
-    if (archetype.jungianArchetype.toLowerCase().includes(lowerQuery)) {
-      return true;
-    }
-
-    return false;
-  });
-}
-
-/**
- * Get archetypes by attribution type
- */
-export function getArchetypesByAttribution(
-  type: "element" | "planet" | "zodiac"
-): Archetype[] {
-  return getAllArchetypes().filter((a) => a.attributionType === type);
-}
-
-/**
- * Get archetypes by element (including derived elements)
- */
-export function getArchetypesByElement(element: Element): Archetype[] {
-  return getAllArchetypes().filter((archetype) => {
-    // Direct element attribution
-    if (archetype.element === element) return true;
-
-    // Zodiac-derived element
-    if (archetype.zodiac) {
-      const zodiacElements: Record<ZodiacSign, Element> = {
-        aries: "fire",
-        taurus: "earth",
-        gemini: "air",
-        cancer: "water",
-        leo: "fire",
-        virgo: "earth",
-        libra: "air",
-        scorpio: "water",
-        sagittarius: "fire",
-        capricorn: "earth",
-        aquarius: "air",
-        pisces: "water",
-      };
-      if (zodiacElements[archetype.zodiac] === element) return true;
-    }
+    // Search in motto
+    if (archetype.motto.toLowerCase().includes(lowerQuery)) return true;
 
     return false;
   });

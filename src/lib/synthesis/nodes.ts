@@ -226,24 +226,17 @@ function getOrdinalSuffix(n: number): string {
 }
 
 /**
- * Create all archetype nodes
+ * Create all archetype nodes (12 Jungian archetypes)
  */
 export function createArchetypeNodes(): ArchetypeNode[] {
   return getAllArchetypes().map((archetype) => ({
     type: "archetype" as const,
     id: archetype.slug,
     name: archetype.name,
-    number: archetype.number,
-    hebrewLetter: archetype.hebrewLetter.letter,
-    hebrewLetterMeaning: archetype.hebrewLetter.meaning,
-    primaryAttribution: archetype.primaryAttribution,
-    attributionType: archetype.attributionType,
-    elementId: archetype.element,
     planetId: archetype.planet,
-    zodiacId: archetype.zodiac,
-    confidence: archetype.confidence,
+    elementId: archetype.element,
     keywords: archetype.keywords,
-    jungianArchetype: archetype.jungianArchetype,
+    motto: archetype.motto,
   }));
 }
 

@@ -1,124 +1,72 @@
 /**
  * Type definitions for the Archetypes module.
  *
- * Archetypes represent the 22 Major Arcana of the Tarot, mapped to
- * astrological correspondences using the Golden Dawn system.
+ * Archetypes represent the 12 Jungian psychological archetypes,
+ * based on Carl Jung's archetypal psychology and the framework
+ * popularized by Carol Pearson.
  */
 
-import type { Planet, Element, ConfidenceLevel } from "@/lib/numbers/planetary";
+import type { Planet, Element } from "@/lib/numbers/planetary";
 import type { ZodiacSign } from "@/lib/astrology";
 
 /**
- * Archetype slugs for all 22 Major Arcana
+ * Archetype slugs for all 12 Jungian archetypes
  */
 export const ARCHETYPE_SLUGS = [
-  "the-fool",
+  "the-innocent",
+  "the-orphan",
+  "the-hero",
+  "the-caregiver",
+  "the-explorer",
+  "the-rebel",
+  "the-lover",
+  "the-creator",
+  "the-jester",
+  "the-sage",
   "the-magician",
-  "the-high-priestess",
-  "the-empress",
-  "the-emperor",
-  "the-hierophant",
-  "the-lovers",
-  "the-chariot",
-  "strength",
-  "the-hermit",
-  "wheel-of-fortune",
-  "justice",
-  "the-hanged-man",
-  "death",
-  "temperance",
-  "the-devil",
-  "the-tower",
-  "the-star",
-  "the-moon",
-  "the-sun",
-  "judgement",
-  "the-world",
+  "the-ruler",
 ] as const;
 
 export type ArchetypeSlug = (typeof ARCHETYPE_SLUGS)[number];
 
 /**
- * Attribution type for Golden Dawn correspondences
- */
-export type AttributionType = "element" | "planet" | "zodiac";
-
-/**
- * Hebrew letter with its meaning
- */
-export interface HebrewLetter {
-  /** Hebrew letter character */
-  letter: string;
-  /** Letter name (transliterated) */
-  name: string;
-  /** Traditional meaning */
-  meaning: string;
-  /** Numerical value (gematria) */
-  value: number;
-}
-
-/**
- * Alternative attribution from a different esoteric tradition
- */
-export interface AlternativeAttribution {
-  /** Name of the tradition (e.g., "Thoth", "Continental", "B.O.T.A.") */
-  tradition: string;
-  /** The alternative attribution value */
-  value: string;
-  /** Optional note explaining the difference */
-  note?: string;
-}
-
-/**
- * Complete archetype data for a Major Arcana card
+ * Complete archetype data for a Jungian archetype
  */
 export interface Archetype {
-  /** URL slug (e.g., "the-fool") */
+  /** URL slug (e.g., "the-innocent") */
   slug: ArchetypeSlug;
-  /** Display name (e.g., "The Fool") */
+  /** Display name (e.g., "The Innocent") */
   name: string;
-  /** Card number (0-21, Roman numerals traditional) */
-  number: number;
-  /** Roman numeral representation */
-  romanNumeral: string;
 
-  /** Hebrew letter correspondence */
-  hebrewLetter: HebrewLetter;
+  /** Jungian planetary correspondence */
+  planet: Planet;
+  /** Classical element */
+  element: Element;
 
-  /** Golden Dawn attribution type */
-  attributionType: AttributionType;
-  /** Primary attribution (planet, element, or zodiac) */
-  primaryAttribution: string;
-
-  /** Element (derived from attribution) */
-  element: Element | null;
-  /** Planet (if planetary attribution) */
-  planet: Planet | null;
-  /** Zodiac sign (if zodiacal attribution) */
-  zodiac: ZodiacSign | null;
-
-  /** Confidence level based on cross-traditional agreement */
-  confidence: ConfidenceLevel;
-
-  /** Alternative attributions from other traditions */
-  alternativeAttributions?: AlternativeAttribution[];
+  /** Core motto (e.g., "Free to be you and me") */
+  motto: string;
+  /** Core desire (e.g., "To experience paradise") */
+  coreDesire: string;
+  /** Goal (e.g., "To be happy") */
+  goal: string;
+  /** Greatest fear (e.g., "Doing something wrong") */
+  greatestFear: string;
+  /** Strategy (e.g., "Do things right") */
+  strategy: string;
+  /** Weakness (e.g., "Boring, naivety, denial") */
+  weakness: string;
+  /** Talent (e.g., "Faith and optimism") */
+  talent: string;
 
   /** Keywords for the archetype */
   keywords: string[];
-
-  /** Jungian archetype connection */
-  jungianArchetype: string;
-
   /** Brief description of the archetype's meaning */
   description: string;
 
-  /** Traditional upright meanings */
-  uprightMeanings: string[];
+  /** Shadow aspect (the archetype's dark side) */
+  shadow: string;
 
-  /** Traditional reversed meanings */
-  reversedMeanings: string[];
-
-  /** Rider-Waite-Smith image path */
+  /** Image path for card display */
   imagePath: string;
 }
 
@@ -130,12 +78,8 @@ export interface ArchetypeWithRelations extends Archetype {
   relatedNumbers: string[];
   /** Related geometries (via element) */
   relatedGeometries: string[];
-  /** Related zodiac signs */
+  /** Related zodiac signs (via planetary rulership) */
   relatedSigns: ZodiacSign[];
-  /** Previous archetype (by number) */
-  previous: ArchetypeSlug | null;
-  /** Next archetype (by number) */
-  next: ArchetypeSlug | null;
 }
 
 /**
