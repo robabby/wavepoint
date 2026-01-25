@@ -128,6 +128,7 @@ export function getMDXComponents(components: MDXComponents): MDXComponents {
     // Synthesis components for astrology/planets MDX content
     RelatedNumbers,
     RelatedGeometry,
+    RelatedPattern,
     RelatedSigns,
     SourceBadgeMDX,
 
@@ -195,6 +196,47 @@ function RelatedGeometry({ slug, context }: RelatedGeometryMDXProps) {
 
   const path = pathMap[slug.toLowerCase()] ?? `/platonic-solids/${slug}`;
   const displayName = slug.charAt(0).toUpperCase() + slug.slice(1);
+
+  return (
+    <div className="my-4 rounded-lg border border-[var(--border-gold)]/30 bg-card/30 p-4">
+      <div className="flex items-center gap-3">
+        <Link
+          href={path}
+          className={cn(
+            "font-heading text-lg text-[var(--color-gold)]",
+            "transition-colors hover:text-[var(--color-gold-bright)]"
+          )}
+        >
+          {displayName}
+        </Link>
+        {context && (
+          <Text size="2" className="text-muted-foreground">
+            {context}
+          </Text>
+        )}
+      </div>
+    </div>
+  );
+}
+
+interface RelatedPatternProps {
+  /** The pattern slug to link to (e.g., "circle-dot") */
+  slug: string;
+  /** Optional context text explaining the connection */
+  context?: string;
+}
+
+/**
+ * MDX component for linking to sacred pattern pages from planet pages.
+ * Distinct from RelatedGeometry which links to Platonic solids.
+ */
+function RelatedPattern({ slug, context }: RelatedPatternProps) {
+  const path = `/sacred-patterns/${slug}`;
+  // Convert slug to display name (e.g., "circle-dot" -> "Circle Dot")
+  const displayName = slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 
   return (
     <div className="my-4 rounded-lg border border-[var(--border-gold)]/30 bg-card/30 p-4">

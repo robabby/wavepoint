@@ -139,12 +139,27 @@ export interface NumerologyConnection {
 }
 
 /**
- * Connection to sacred geometry.
+ * Connection to sacred geometry (Platonic solids via element).
  */
 export interface GeometryConnection {
   /** The associated Platonic solid */
   geometry: PlatonicSolid;
   /** The connection rationale */
+  rationale: string;
+  /** Confidence level */
+  confidence: ConfidenceLevel;
+}
+
+/**
+ * Connection to sacred patterns (direct symbolic associations).
+ * Distinct from GeometryConnection which is derived via element.
+ */
+export interface SacredPatternConnection {
+  /** The pattern slug (e.g., "circle-dot", "vesica-piscis", "pentagram") */
+  pattern: string;
+  /** Display name for the pattern */
+  name: string;
+  /** Why this planet connects to this pattern */
   rationale: string;
   /** Confidence level */
   confidence: ConfidenceLevel;
@@ -182,8 +197,10 @@ export interface PlanetPageData {
   // Cross-domain connections
   /** Connection to numerology */
   numerology: NumerologyConnection;
-  /** Connection to sacred geometry */
+  /** Connection to Platonic solid (derived via element) */
   geometry?: GeometryConnection;
+  /** Connection to sacred pattern (direct symbolic) */
+  sacredPattern?: SacredPatternConnection;
 
   // Content sections with sourcing
   /** Core archetype description with sources */
