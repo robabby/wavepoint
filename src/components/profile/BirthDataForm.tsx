@@ -45,7 +45,6 @@ export function BirthDataForm({ initialData }: BirthDataFormProps) {
   const [birthCountry, setBirthCountry] = useState(initialData?.birthCountry ?? "");
   const [birthLatitude, setBirthLatitude] = useState(initialData?.birthLatitude?.toString() ?? "");
   const [birthLongitude, setBirthLongitude] = useState(initialData?.birthLongitude?.toString() ?? "");
-  const [birthTimezone, setBirthTimezone] = useState(initialData?.birthTimezone ?? "");
 
   // Preview state
   const [preview, setPreview] = useState<PreviewResult | null>(null);
@@ -80,7 +79,7 @@ export function BirthDataForm({ initialData }: BirthDataFormProps) {
     e.preventDefault();
     setError(null);
 
-    if (!birthDate || !birthCity || !birthCountry || !birthLatitude || !birthLongitude || !birthTimezone) {
+    if (!birthDate || !birthCity || !birthCountry || !birthLatitude || !birthLongitude) {
       setError("Please fill in all required fields");
       return;
     }
@@ -94,7 +93,6 @@ export function BirthDataForm({ initialData }: BirthDataFormProps) {
         birthCountry,
         birthLatitude: parseFloat(birthLatitude),
         birthLongitude: parseFloat(birthLongitude),
-        birthTimezone,
       });
 
       router.push("/profile");
@@ -176,7 +174,7 @@ export function BirthDataForm({ initialData }: BirthDataFormProps) {
             />
           </div>
         </div>
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <Input
               type="number"
@@ -199,18 +197,17 @@ export function BirthDataForm({ initialData }: BirthDataFormProps) {
               className="bg-background"
             />
           </div>
-          <div>
-            <Input
-              placeholder="Timezone (e.g., America/New_York)"
-              value={birthTimezone}
-              onChange={(e) => setBirthTimezone(e.target.value)}
-              required
-              className="bg-background"
-            />
-          </div>
         </div>
         <Text size="1" className="text-muted-foreground">
-          Location adjusts for timezone and coordinates. Use a service like latlong.net to find coordinates.
+          Don&apos;t know your coordinates?{" "}
+          <a
+            href="https://www.latlong.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--color-gold)] underline underline-offset-2 hover:text-[var(--color-gold)]/80"
+          >
+            Find them on latlong.net
+          </a>
         </Text>
       </div>
 

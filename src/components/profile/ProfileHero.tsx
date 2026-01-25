@@ -60,7 +60,7 @@ export function ProfileHero({ bigThree }: ProfileHeroProps) {
             {bigThree.sun.sign}
           </Heading>
           <Text size="1" className="text-muted-foreground">
-            {bigThree.sun.degree.toFixed(0)}\u00B0
+            {bigThree.sun.degree.toFixed(0)}°
           </Text>
         </AnimatedCard>
 
@@ -74,7 +74,7 @@ export function ProfileHero({ bigThree }: ProfileHeroProps) {
             {bigThree.moon.sign}
           </Heading>
           <Text size="1" className="text-muted-foreground">
-            {bigThree.moon.degree.toFixed(0)}\u00B0
+            {bigThree.moon.degree.toFixed(0)}°
           </Text>
         </AnimatedCard>
 
@@ -90,12 +90,12 @@ export function ProfileHero({ bigThree }: ProfileHeroProps) {
                 {bigThree.rising!.sign}
               </Heading>
               <Text size="1" className="text-muted-foreground">
-                {bigThree.rising!.degree.toFixed(0)}\u00B0
+                {bigThree.rising!.degree.toFixed(0)}°
               </Text>
             </>
           ) : (
             <>
-              <div className="mb-2 text-3xl text-muted-foreground/30">\u2191</div>
+              <div className="mb-2 text-3xl text-muted-foreground/30">↑</div>
               <Text size="1" weight="medium" className="mb-1 block uppercase tracking-wider text-muted-foreground">
                 Rising
               </Text>

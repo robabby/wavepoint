@@ -12,6 +12,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db, spiritualProfiles } from "@/lib/db";
 import { calculateChart } from "@/lib/astrology/chart";
+import { getTimezone } from "@/lib/location";
 import type { ZodiacSign } from "@/lib/astrology";
 import {
   calculateElementBalance,
@@ -39,7 +40,7 @@ const profileInputSchema = z.object({
   birthCountry: z.string().min(1, "Country is required"),
   birthLatitude: z.number().min(-90).max(90),
   birthLongitude: z.number().min(-180).max(180),
-  birthTimezone: z.string().min(1, "Timezone is required"),
+  birthTimezone: z.string().optional(), // Auto-calculated from coordinates if not provided
 });
 
 /**
@@ -146,18 +147,29 @@ export async function PUT(request: Request) {
       birthCountry,
       birthLatitude,
       birthLongitude,
-      birthTimezone,
+      birthTimezone: providedTimezone,
     } = parsed.data;
 
-    const birthDate = new Date(birthDateStr);
+    // Parse date string directly to avoid timezone conversion issues
+    // Input format: "YYYY-MM-DD" from HTML date input
+    const [yearStr, monthStr, dayStr] = birthDateStr.split("-");
+    const year = parseInt(yearStr!, 10);
+    const month = parseInt(monthStr!, 10); // Already 1-indexed from HTML date input
+    const day = parseInt(dayStr!, 10);
+
+    // Create Date object for database storage (use UTC to preserve the exact date)
+    const birthDate = new Date(Date.UTC(year, month - 1, day));
+
+    // Calculate timezone from coordinates (or use provided value if given)
+    const birthTimezone = providedTimezone ?? getTimezone(birthLatitude, birthLongitude);
     const parsedTime = parseBirthTime(birthTime ?? null);
     const hasBirthTime = !!parsedTime;
 
     // Calculate chart
     const chart = calculateChart({
-      year: birthDate.getFullYear(),
-      month: birthDate.getMonth() + 1,
-      day: birthDate.getDate(),
+      year,
+      month,
+      day,
       hour: parsedTime?.hour ?? 12, // Default to noon if no time
       minute: parsedTime?.minute ?? 0,
       location: {
