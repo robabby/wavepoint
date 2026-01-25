@@ -6,6 +6,11 @@ import {
   integer,
   unique,
   index,
+  date,
+  time,
+  boolean,
+  numeric,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
@@ -243,6 +248,77 @@ export const signalSubscriptionUsage = pgTable(
 );
 
 // =============================================================================
+// Spiritual Profiles - Astrology data for personalization
+// =============================================================================
+
+/**
+ * Spiritual profiles - stores birth data and calculated natal chart
+ *
+ * Each user has at most one profile. Birth time is optional but enables
+ * Rising sign calculation. Full chart data stored as JSONB with denormalized
+ * columns for fast queries on common fields.
+ */
+export const spiritualProfiles = pgTable(
+  "spiritual_profiles",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .unique()
+      .references(() => users.id, { onDelete: "cascade" }),
+
+    // Birth Date (required)
+    birthDate: date("birth_date", { mode: "date" }).notNull(),
+
+    // Birth Time (optional - many users don't know their birth time)
+    birthTime: time("birth_time"),
+    birthTimeApproximate: boolean("birth_time_approximate").notNull().default(false),
+
+    // Birth Location (required for chart calculation)
+    birthCity: text("birth_city").notNull(),
+    birthCountry: text("birth_country").notNull(),
+    birthLatitude: numeric("birth_latitude", { precision: 9, scale: 6 }).notNull(),
+    birthLongitude: numeric("birth_longitude", { precision: 10, scale: 6 }).notNull(),
+    birthTimezone: text("birth_timezone").notNull(), // IANA timezone
+
+    // The Big Three (denormalized for fast queries)
+    sunSign: text("sun_sign"), // 'aries', 'taurus', etc.
+    sunDegree: numeric("sun_degree", { precision: 5, scale: 2 }), // 0.00 to 29.99
+    moonSign: text("moon_sign"),
+    moonDegree: numeric("moon_degree", { precision: 5, scale: 2 }),
+    risingSign: text("rising_sign"), // NULL if no birth time
+    risingDegree: numeric("rising_degree", { precision: 5, scale: 2 }),
+
+    // Element Balance (pre-computed for pattern matching)
+    elementFire: integer("element_fire").notNull().default(0),
+    elementEarth: integer("element_earth").notNull().default(0),
+    elementAir: integer("element_air").notNull().default(0),
+    elementWater: integer("element_water").notNull().default(0),
+
+    // Modality Balance (pre-computed)
+    modalityCardinal: integer("modality_cardinal").notNull().default(0),
+    modalityFixed: integer("modality_fixed").notNull().default(0),
+    modalityMutable: integer("modality_mutable").notNull().default(0),
+
+    // Full Chart Data (JSONB for detailed positions)
+    chartData: jsonb("chart_data"),
+
+    // Calculation Metadata
+    calculatedAt: timestamp("calculated_at", { withTimezone: true, mode: "date" }),
+    calculationVersion: text("calculation_version"),
+
+    // Timestamps
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  },
+  (table) => [
+    index("spiritual_profiles_sun_sign_idx").on(table.sunSign),
+    index("spiritual_profiles_moon_sign_idx").on(table.moonSign),
+    index("spiritual_profiles_rising_sign_idx").on(table.risingSign),
+  ]
+);
+
+// =============================================================================
 // Invites - Closed beta access gating
 // =============================================================================
 
@@ -359,3 +435,6 @@ export type NewContactSubmission = typeof contactSubmissions.$inferInsert;
 
 export type WaitlistSignup = typeof waitlistSignups.$inferSelect;
 export type NewWaitlistSignup = typeof waitlistSignups.$inferInsert;
+
+export type SpiritualProfile = typeof spiritualProfiles.$inferSelect;
+export type NewSpiritualProfile = typeof spiritualProfiles.$inferInsert;
