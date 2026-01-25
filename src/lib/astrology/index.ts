@@ -51,3 +51,6 @@ export {
 
 // Planet content pages
 export * from "./planets";
+
+// Zodiac sign content pages
+export * from "./signs";

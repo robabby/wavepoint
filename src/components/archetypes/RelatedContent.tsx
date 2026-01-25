@@ -116,13 +116,14 @@ export function RelatedContent({ archetype }: RelatedContentProps) {
             </Text>
             <div className="flex flex-wrap gap-2">
               {archetype.relatedSigns.map((sign) => (
-                <span
+                <Link
                   key={sign}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/20 bg-card/30 px-3 py-1 text-sm text-muted-foreground"
+                  href={`/astrology/signs/${sign}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/20 bg-card/30 px-3 py-1 text-sm text-muted-foreground transition-colors hover:border-[var(--color-gold)]/40 hover:text-[var(--color-gold)]"
                 >
                   <span>{zodiacSymbols[sign]}</span>
                   <span className="capitalize">{sign}</span>
-                </span>
+                </Link>
               ))}
             </div>
             <Text size="1" className="mt-3 block text-muted-foreground/60">
