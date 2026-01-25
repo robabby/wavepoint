@@ -156,6 +156,32 @@ export interface NumberPattern {
 }
 
 /**
+ * Extended pattern with planetary/esoteric metadata.
+ * Used when displaying pattern details with full cosmic context.
+ */
+export interface NumberPatternWithPlanetary extends NumberPattern {
+  /** Planetary associations (computed from pattern) */
+  planetary: {
+    /** Primary ruling planet */
+    primaryPlanet: string;
+    /** Planet symbol for display */
+    primarySymbol: string;
+    /** All planets present in pattern */
+    planets: string[];
+    /** Dominant element */
+    primaryElement: string;
+    /** All elements present */
+    elements: string[];
+    /** Associated Platonic solid (if applicable) */
+    geometry?: string;
+    /** Special Agrippa magic square note */
+    agrippaNote?: string;
+    /** Human-readable energy description */
+    energyDescription: string;
+  };
+}
+
+/**
  * Category metadata for browse sections.
  */
 export interface CategoryMeta {
