@@ -78,16 +78,45 @@ export default function AstrologyHubPage() {
             </Link>
           </AnimateOnScroll>
 
-          {/* Coming Soon - Signs */}
+          {/* Zodiac Signs Section */}
           <AnimateOnScroll delay={0.2} className="mt-8">
-            <div className="rounded-xl border border-dashed border-[var(--border-gold)]/30 bg-card/10 p-8 text-center">
-              <Text className="text-muted-foreground">
-                <span className="font-display text-[var(--color-gold)]/50">
-                  Zodiac Signs
-                </span>{" "}
-                — Coming soon
-              </Text>
-            </div>
+            <Link href="/astrology/signs" className="block">
+              <AnimatedCard className="group relative overflow-hidden p-8 sm:p-10">
+                <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left">
+                  {/* Icon/Glyph */}
+                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--color-gold)]/40 bg-card/50 sm:mb-0 sm:mr-6">
+                    <span className="font-display text-3xl text-[var(--color-gold)]">
+                      ♈
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <Heading
+                      size="6"
+                      className="mb-2 font-display text-foreground transition-colors group-hover:text-[var(--color-gold)]"
+                    >
+                      Zodiac Signs
+                    </Heading>
+                    <Text className="mb-4 text-muted-foreground">
+                      The twelve signs of the zodiac, each carrying unique
+                      qualities based on their element, modality, and planetary
+                      ruler. Discover how sign energies connect to archetypes
+                      and number patterns.
+                    </Text>
+                    <span className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-gold)]">
+                      Explore signs
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Decorative glyphs */}
+                <div className="pointer-events-none absolute -right-4 -top-4 text-6xl text-[var(--color-gold)]/5">
+                  ♈♉♊♋
+                </div>
+              </AnimatedCard>
+            </Link>
           </AnimateOnScroll>
 
           {/* Coming Soon - Houses */}
