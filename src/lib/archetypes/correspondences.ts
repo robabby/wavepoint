@@ -1,12 +1,11 @@
 /**
- * Golden Dawn correspondence mappings for archetypes.
+ * Jungian correspondence mappings for archetypes.
  *
  * These mappings connect archetypes to the broader synthesis system
- * (planets, elements, zodiac signs, numbers, geometries).
+ * (planets, elements, numbers, geometries) via Jungian alchemical psychology.
  */
 
 import type { Planet, Element, PlatonicSolid } from "@/lib/numbers/planetary";
-import type { ZodiacSign } from "@/lib/astrology";
 import type { ArchetypeSlug } from "./types";
 
 // =============================================================================
@@ -14,18 +13,24 @@ import type { ArchetypeSlug } from "./types";
 // =============================================================================
 
 /**
- * Map planets to their corresponding archetypes
+ * Map planets to their corresponding archetypes (Jungian alchemical psychology)
+ *
+ * Sun: Consciousness, ego, gold, rubedo (Magician, Ruler)
+ * Moon: Unconscious, anima, silver, receptivity (Innocent, Caregiver)
+ * Mercury: Mercurius, trickster, transformation (Creator, Jester)
+ * Venus: Eros, beauty, conjunction (Lover)
+ * Mars: Will, aggression, separation (Hero, Rebel)
+ * Jupiter: Expansion, meaning, quest (Explorer)
+ * Saturn: Senex, limitation, lead, wisdom (Orphan, Sage)
  */
 export const PLANET_ARCHETYPES: Partial<Record<Planet, ArchetypeSlug[]>> = {
-  sun: ["the-sun"],
-  moon: ["the-high-priestess"],
-  mercury: ["the-magician"],
-  venus: ["the-empress"],
-  mars: ["the-tower"],
-  jupiter: ["wheel-of-fortune"],
-  saturn: ["the-world"],
-  // Note: Uranus and Neptune are modern attributions to The Fool and The Hanged Man
-  // but we use the classical element attributions (Air, Water) instead
+  sun: ["the-magician", "the-ruler"],
+  moon: ["the-innocent", "the-caregiver"],
+  mercury: ["the-creator", "the-jester"],
+  venus: ["the-lover"],
+  mars: ["the-hero", "the-rebel"],
+  jupiter: ["the-explorer"],
+  saturn: ["the-orphan", "the-sage"],
 };
 
 /**
@@ -36,73 +41,23 @@ export function getArchetypesForPlanet(planet: Planet): ArchetypeSlug[] {
 }
 
 // =============================================================================
-// ZODIAC TO ARCHETYPE MAPPING
-// =============================================================================
-
-/**
- * Map zodiac signs to their corresponding archetypes
- */
-export const ZODIAC_ARCHETYPES: Record<ZodiacSign, ArchetypeSlug> = {
-  aries: "the-emperor",
-  taurus: "the-hierophant",
-  gemini: "the-lovers",
-  cancer: "the-chariot",
-  leo: "strength",
-  virgo: "the-hermit",
-  libra: "justice",
-  scorpio: "death",
-  sagittarius: "temperance",
-  capricorn: "the-devil",
-  aquarius: "the-star",
-  pisces: "the-moon",
-};
-
-/**
- * Get the archetype for a zodiac sign
- */
-export function getArchetypeForZodiac(sign: ZodiacSign): ArchetypeSlug {
-  return ZODIAC_ARCHETYPES[sign];
-}
-
-// =============================================================================
-// ELEMENT TO ARCHETYPE MAPPING
-// =============================================================================
-
-/**
- * Map elements to their corresponding archetypes (mother letters)
- */
-export const ELEMENT_ARCHETYPES: Partial<Record<Element, ArchetypeSlug>> = {
-  air: "the-fool",
-  water: "the-hanged-man",
-  fire: "judgement",
-  // Earth and Ether don't have direct elemental archetypes in Golden Dawn
-};
-
-/**
- * Get the archetype for an element (mother letter cards only)
- */
-export function getArchetypeForElement(element: Element): ArchetypeSlug | null {
-  return ELEMENT_ARCHETYPES[element] ?? null;
-}
-
-// =============================================================================
 // NUMBER TO ARCHETYPE MAPPING (VIA PLANETS)
 // =============================================================================
 
 /**
- * Map digit-planet associations to archetypes
+ * Map digit-planet associations to archetypes (multiple archetypes per digit)
  * Based on planetary.ts DIGIT_PLANETARY_META
  */
 export const NUMBER_ARCHETYPES: Record<number, ArchetypeSlug[]> = {
-  1: ["the-sun"], // Sun = 1
-  2: ["the-high-priestess"], // Moon = 2
-  3: ["wheel-of-fortune"], // Jupiter = 3
+  1: ["the-magician", "the-ruler"], // Sun
+  2: ["the-innocent", "the-caregiver"], // Moon
+  3: ["the-explorer"], // Jupiter
   // 4 = Uranus (no direct archetype, modern planet)
-  5: ["the-magician"], // Mercury = 5
-  6: ["the-empress"], // Venus = 6
+  5: ["the-creator", "the-jester"], // Mercury
+  6: ["the-lover"], // Venus
   // 7 = Neptune (no direct archetype, modern planet)
-  8: ["the-world"], // Saturn = 8
-  9: ["the-tower"], // Mars = 9
+  8: ["the-orphan", "the-sage"], // Saturn
+  9: ["the-hero", "the-rebel"], // Mars
 };
 
 /**
@@ -117,7 +72,7 @@ export function getArchetypesForDigit(digit: number): ArchetypeSlug[] {
 // =============================================================================
 
 /**
- * Get related geometries for an archetype via its element
+ * Get related geometry for an archetype via its element
  */
 export function getGeometryForArchetype(
   archetypeElement: Element | null
@@ -140,24 +95,12 @@ export function getGeometryForArchetype(
 // =============================================================================
 
 /**
- * Get the planet associated with an archetype (if any)
+ * Get the planet associated with an archetype
  */
 export function getPlanetForArchetype(slug: ArchetypeSlug): Planet | null {
   for (const [planet, archetypes] of Object.entries(PLANET_ARCHETYPES)) {
     if (archetypes?.includes(slug)) {
       return planet as Planet;
-    }
-  }
-  return null;
-}
-
-/**
- * Get the zodiac sign associated with an archetype (if any)
- */
-export function getZodiacForArchetype(slug: ArchetypeSlug): ZodiacSign | null {
-  for (const [sign, archetype] of Object.entries(ZODIAC_ARCHETYPES)) {
-    if (archetype === slug) {
-      return sign as ZodiacSign;
     }
   }
   return null;

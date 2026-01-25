@@ -37,8 +37,11 @@ export function RelatedContent({ archetype }: RelatedContentProps) {
     pisces: "\u2653",
   };
 
+  const planetName = archetype.planet.charAt(0).toUpperCase() + archetype.planet.slice(1);
+  const elementName = archetype.element.charAt(0).toUpperCase() + archetype.element.slice(1);
+
   return (
-    <AnimateOnScroll delay={0.2}>
+    <AnimateOnScroll delay={0.25}>
       <Heading
         size="4"
         className="mb-6 font-display text-[var(--color-gold)]"
@@ -69,7 +72,7 @@ export function RelatedContent({ archetype }: RelatedContentProps) {
               ))}
             </div>
             <Text size="1" className="mt-3 block text-muted-foreground/60">
-              Via {archetype.planet ? `${archetype.planet.charAt(0).toUpperCase()}${archetype.planet.slice(1)} correspondence` : "planetary correspondence"}
+              Via {planetName} planetary correspondence
             </Text>
           </AnimatedCard>
         )}
@@ -96,7 +99,7 @@ export function RelatedContent({ archetype }: RelatedContentProps) {
               ))}
             </div>
             <Text size="1" className="mt-3 block text-muted-foreground/60">
-              Via {archetype.element ? `${archetype.element.charAt(0).toUpperCase()}${archetype.element.slice(1)} element` : "elemental correspondence"}
+              Via {elementName} element
             </Text>
           </AnimatedCard>
         )}
@@ -123,7 +126,7 @@ export function RelatedContent({ archetype }: RelatedContentProps) {
               ))}
             </div>
             <Text size="1" className="mt-3 block text-muted-foreground/60">
-              {archetype.zodiac ? "Direct attribution" : archetype.planet ? "Via planetary rulership" : "Via elemental affinity"}
+              Via {planetName} planetary rulership
             </Text>
           </AnimatedCard>
         )}

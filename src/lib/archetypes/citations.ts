@@ -1,102 +1,99 @@
 /**
  * Citations for archetype correspondences.
  *
- * Sources for the Golden Dawn system and cross-traditional research.
+ * Sources for Jungian archetypal psychology and the 12-archetype framework.
  */
 
 export interface Citation {
   id: string;
-  category: "traditional" | "scholarly" | "contemporary";
+  category: "primary" | "scholarly" | "contemporary";
   shortLabel: string;
   fullCitation: string;
   year?: number;
 }
 
 // =============================================================================
-// GOLDEN DAWN & HERMETIC SOURCES
+// CARL JUNG - PRIMARY SOURCES
 // =============================================================================
 
-export const GOLDEN_DAWN_TRADITION: Citation = {
-  id: "golden-dawn-tradition",
-  category: "traditional",
-  shortLabel: "Golden Dawn",
+export const JUNG_ARCHETYPES: Citation = {
+  id: "jung-archetypes",
+  category: "primary",
+  shortLabel: "Jung CW 9.1",
   fullCitation:
-    "Hermetic Order of the Golden Dawn teachings (1888-1903). Systematized by MacGregor Mathers and published in Regardie's 'The Golden Dawn' (1937).",
-  year: 1888,
+    "Jung, C. G. The Archetypes and the Collective Unconscious (Collected Works Vol. 9 Part 1). Princeton University Press, 1959.",
+  year: 1959,
 };
 
-export const CROWLEY_777: Citation = {
-  id: "crowley-777",
-  category: "traditional",
-  shortLabel: "Crowley",
+export const JUNG_AION: Citation = {
+  id: "jung-aion",
+  category: "primary",
+  shortLabel: "Jung Aion",
   fullCitation:
-    "Crowley, Aleister. 777 and Other Qabalistic Writings. Samuel Weiser, 1909.",
-  year: 1909,
+    "Jung, C. G. Aion: Researches into the Phenomenology of the Self (Collected Works Vol. 9 Part 2). Princeton University Press, 1959.",
+  year: 1959,
 };
 
-export const REGARDIE_GOLDEN_DAWN: Citation = {
-  id: "regardie-golden-dawn",
+export const JUNG_PSYCHOLOGY_ALCHEMY: Citation = {
+  id: "jung-psychology-alchemy",
+  category: "primary",
+  shortLabel: "Jung CW 12",
+  fullCitation:
+    "Jung, C. G. Psychology and Alchemy (Collected Works Vol. 12). Princeton University Press, 1953.",
+  year: 1953,
+};
+
+export const JUNG_MYSTERIUM: Citation = {
+  id: "jung-mysterium",
+  category: "primary",
+  shortLabel: "Jung CW 14",
+  fullCitation:
+    "Jung, C. G. Mysterium Coniunctionis (Collected Works Vol. 14). Princeton University Press, 1963.",
+  year: 1963,
+};
+
+// =============================================================================
+// CAROL PEARSON - 12 ARCHETYPE FRAMEWORK
+// =============================================================================
+
+export const PEARSON_HEROES: Citation = {
+  id: "pearson-heroes",
   category: "scholarly",
-  shortLabel: "Regardie",
+  shortLabel: "Pearson",
   fullCitation:
-    "Regardie, Israel. The Golden Dawn: The Original Account of the Teachings, Rites, and Ceremonies of the Hermetic Order. Llewellyn Publications, 1937.",
-  year: 1937,
+    "Pearson, Carol S. Awakening the Heroes Within: Twelve Archetypes to Help Us Find Ourselves and Transform Our World. HarperOne, 1991.",
+  year: 1991,
 };
 
-// =============================================================================
-// CONTINENTAL TRADITION
-// =============================================================================
-
-export const LEVI_TRANSCENDENTAL_MAGIC: Citation = {
-  id: "levi-transcendental-magic",
-  category: "traditional",
-  shortLabel: "Levi",
-  fullCitation:
-    "Levi, Eliphas. Dogme et Rituel de la Haute Magie. Paris, 1856. English: Transcendental Magic.",
-  year: 1856,
-};
-
-export const COURT_DE_GEBELIN: Citation = {
-  id: "court-de-gebelin",
-  category: "traditional",
-  shortLabel: "Court de Gebelin",
-  fullCitation:
-    "Court de Gebelin, Antoine. Le Monde primitif, analyse et compare avec le monde moderne, Vol. VIII. Paris, 1781.",
-  year: 1781,
-};
-
-// =============================================================================
-// KABBALISTIC SOURCES
-// =============================================================================
-
-export const SEPHER_YETZIRAH: Citation = {
-  id: "sepher-yetzirah",
-  category: "traditional",
-  shortLabel: "Sepher Yetzirah",
-  fullCitation:
-    "Sepher Yetzirah (Book of Formation). Multiple recensions, c. 3rd-6th century CE. Kaplan translation (1997).",
-};
-
-export const KAPLAN_SEPHER_YETZIRAH: Citation = {
-  id: "kaplan-sepher-yetzirah",
+export const PEARSON_MARK_HERO: Citation = {
+  id: "pearson-mark-hero",
   category: "scholarly",
-  shortLabel: "Kaplan",
+  shortLabel: "Pearson & Mark",
   fullCitation:
-    "Kaplan, Aryeh. Sefer Yetzirah: The Book of Creation in Theory and Practice. Samuel Weiser, 1997.",
-  year: 1997,
+    "Mark, Margaret, and Carol S. Pearson. The Hero and the Outlaw: Building Extraordinary Brands Through the Power of Archetypes. McGraw-Hill, 2001.",
+  year: 2001,
 };
 
 // =============================================================================
-// ANTHROPOSOPHICAL
+// CONTEMPORARY JUNGIAN PSYCHOLOGY
 // =============================================================================
 
-export const TOMBERG_MEDITATIONS: Citation = {
-  id: "tomberg-meditations",
-  category: "scholarly",
-  shortLabel: "Tomberg",
+export const HILLMAN_ARCHETYPAL: Citation = {
+  id: "hillman-archetypal",
+  category: "contemporary",
+  shortLabel: "Hillman",
   fullCitation:
-    "Tomberg, Valentin. Meditations on the Tarot: A Journey into Christian Hermeticism. Amity House, 1985 (posthumous).",
-  year: 1985,
+    "Hillman, James. Re-Visioning Psychology. Harper Perennial, 1975.",
+  year: 1975,
+};
+
+export const MOORE_KING: Citation = {
+  id: "moore-king",
+  category: "contemporary",
+  shortLabel: "Moore & Gillette",
+  fullCitation:
+    "Moore, Robert, and Douglas Gillette. King, Warrior, Magician, Lover: Rediscovering the Archetypes of the Mature Masculine. HarperOne, 1990.",
+  year: 1990,
 };
 
 // =============================================================================
@@ -104,14 +101,14 @@ export const TOMBERG_MEDITATIONS: Citation = {
 // =============================================================================
 
 export const ALL_CITATIONS: Citation[] = [
-  GOLDEN_DAWN_TRADITION,
-  CROWLEY_777,
-  REGARDIE_GOLDEN_DAWN,
-  LEVI_TRANSCENDENTAL_MAGIC,
-  COURT_DE_GEBELIN,
-  SEPHER_YETZIRAH,
-  KAPLAN_SEPHER_YETZIRAH,
-  TOMBERG_MEDITATIONS,
+  JUNG_ARCHETYPES,
+  JUNG_AION,
+  JUNG_PSYCHOLOGY_ALCHEMY,
+  JUNG_MYSTERIUM,
+  PEARSON_HEROES,
+  PEARSON_MARK_HERO,
+  HILLMAN_ARCHETYPAL,
+  MOORE_KING,
 ];
 
 /**

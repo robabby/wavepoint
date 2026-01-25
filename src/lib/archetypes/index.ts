@@ -1,5 +1,5 @@
 /**
- * Archetypes module - Major Arcana content with Golden Dawn correspondences.
+ * Archetypes module - 12 Jungian psychological archetypes.
  *
  * This module provides the data layer for the /archetypes section.
  * It's designed to be framework-agnostic and can be imported by:
@@ -12,7 +12,7 @@
  * import { getArchetypeBySlug, getAllArchetypes } from "@/lib/archetypes";
  *
  * // Get a specific archetype
- * const theFool = getArchetypeBySlug("the-fool");
+ * const theHero = getArchetypeBySlug("the-hero");
  *
  * // Get all archetypes for listing
  * const all = getAllArchetypes();
@@ -22,9 +22,6 @@
 // Types
 export type {
   ArchetypeSlug,
-  AttributionType,
-  HebrewLetter,
-  AlternativeAttribution,
   Archetype,
   ArchetypeWithRelations,
   ArchetypesListResponse,
@@ -38,46 +35,34 @@ export {
   ARCHETYPES,
   getAllArchetypes,
   getArchetypeBySlug,
-  getArchetypeByNumber,
 } from "./data";
 
 // Correspondences
 export {
   PLANET_ARCHETYPES,
-  ZODIAC_ARCHETYPES,
-  ELEMENT_ARCHETYPES,
   NUMBER_ARCHETYPES,
   getArchetypesForPlanet,
-  getArchetypeForZodiac,
-  getArchetypeForElement,
   getArchetypesForDigit,
   getGeometryForArchetype,
   getPlanetForArchetype,
-  getZodiacForArchetype,
 } from "./correspondences";
 
 // Helpers
 export {
   isValidArchetypeSlug,
-  getPreviousArchetype,
-  getNextArchetype,
   getRelatedNumbers,
   getRelatedGeometries,
   getRelatedSigns,
   getArchetypeWithRelations,
   searchArchetypes,
-  getArchetypesByAttribution,
-  getArchetypesByElement,
 } from "./helpers";
 
 // Citations
 export type { Citation } from "./citations";
 export {
-  GOLDEN_DAWN_TRADITION,
-  CROWLEY_777,
-  LEVI_TRANSCENDENTAL_MAGIC,
-  SEPHER_YETZIRAH,
-  TOMBERG_MEDITATIONS,
+  JUNG_ARCHETYPES,
+  JUNG_PSYCHOLOGY_ALCHEMY,
+  PEARSON_HEROES,
   ALL_CITATIONS,
   getCitation,
 } from "./citations";

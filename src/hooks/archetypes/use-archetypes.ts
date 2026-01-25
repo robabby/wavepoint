@@ -5,35 +5,17 @@
 import { useQuery } from "@tanstack/react-query";
 
 import type {
-  AttributionType,
   ArchetypesListResponse,
   ArchetypeDetailResponse,
 } from "@/lib/archetypes";
 import { archetypesKeys } from "./query-keys";
 
 // ============================================================================
-// Types
-// ============================================================================
-
-interface UseArchetypesOptions {
-  attribution?: AttributionType;
-}
-
-// ============================================================================
 // Fetch Functions
 // ============================================================================
 
-async function fetchArchetypes(
-  options?: UseArchetypesOptions
-): Promise<ArchetypesListResponse> {
-  const params = new URLSearchParams();
-  if (options?.attribution) params.set("attribution", options.attribution);
-
-  const url = params.toString()
-    ? `/api/archetypes?${params.toString()}`
-    : "/api/archetypes";
-
-  const res = await fetch(url);
+async function fetchArchetypes(): Promise<ArchetypesListResponse> {
+  const res = await fetch("/api/archetypes");
   if (!res.ok) {
     throw new Error("Failed to fetch archetypes");
   }
@@ -56,18 +38,17 @@ async function fetchArchetype(slug: string): Promise<ArchetypeDetailResponse> {
 // ============================================================================
 
 /**
- * Fetch all archetypes with optional filtering by attribution type.
+ * Fetch all archetypes.
  *
  * @example
  * ```tsx
  * const { archetypes, isLoading } = useArchetypes();
- * const { archetypes } = useArchetypes({ attribution: "planet" });
  * ```
  */
-export function useArchetypes(options?: UseArchetypesOptions) {
+export function useArchetypes() {
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: archetypesKeys.archetypesList(options),
-    queryFn: () => fetchArchetypes(options),
+    queryKey: archetypesKeys.archetypesList(),
+    queryFn: () => fetchArchetypes(),
   });
 
   return {
@@ -86,7 +67,7 @@ export function useArchetypes(options?: UseArchetypesOptions) {
  *
  * @example
  * ```tsx
- * const { archetype, isLoading } = useArchetype("the-fool");
+ * const { archetype, isLoading } = useArchetype("the-hero");
  * ```
  */
 export function useArchetype(slug: string, options?: { enabled?: boolean }) {

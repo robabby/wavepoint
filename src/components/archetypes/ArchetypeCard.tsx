@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { AnimatedCard } from "@/components/animated-card";
 import type { Archetype } from "@/lib/archetypes";
@@ -13,117 +11,85 @@ interface ArchetypeCardProps {
 }
 
 /**
+ * Planet symbols for display
+ */
+const PLANET_SYMBOLS: Record<string, string> = {
+  sun: "\u2609",
+  moon: "\u263D",
+  mercury: "\u263F",
+  venus: "\u2640",
+  mars: "\u2642",
+  jupiter: "\u2643",
+  saturn: "\u2644",
+  uranus: "\u26E2",
+  neptune: "\u2646",
+};
+
+/**
+ * Element-based gradient backgrounds
+ */
+const ELEMENT_GRADIENTS: Record<string, string> = {
+  fire: "from-[#1a0a0a] via-[#2d1408] to-[#1a0a0a]",
+  water: "from-[#0a0a1a] via-[#081420] to-[#0a0a1a]",
+  air: "from-[#0f0f14] via-[#14161c] to-[#0f0f14]",
+  earth: "from-[#0f0d0a] via-[#1a1610] to-[#0f0d0a]",
+  ether: "from-[#0f0a14] via-[#14101a] to-[#0f0a14]",
+};
+
+/**
  * Card for displaying an archetype in grids.
- * Features Rider-Waite imagery with sepia treatment.
+ * Features elemental gradient background and planet symbol watermark.
  */
 export function ArchetypeCard({ archetype, className }: ArchetypeCardProps) {
-  const [imageError, setImageError] = useState(false);
-
-  // Get zodiac/planet/element symbol for display
-  const getAttributionSymbol = () => {
-    if (archetype.zodiac) {
-      const zodiacSymbols: Record<string, string> = {
-        aries: "\u2648",
-        taurus: "\u2649",
-        gemini: "\u264A",
-        cancer: "\u264B",
-        leo: "\u264C",
-        virgo: "\u264D",
-        libra: "\u264E",
-        scorpio: "\u264F",
-        sagittarius: "\u2650",
-        capricorn: "\u2651",
-        aquarius: "\u2652",
-        pisces: "\u2653",
-      };
-      return zodiacSymbols[archetype.zodiac] ?? "";
-    }
-    if (archetype.planet) {
-      const planetSymbols: Record<string, string> = {
-        sun: "\u2609",
-        moon: "\u263D",
-        mercury: "\u263F",
-        venus: "\u2640",
-        mars: "\u2642",
-        jupiter: "\u2643",
-        saturn: "\u2644",
-        uranus: "\u26E2",
-        neptune: "\u2646",
-        pluto: "\u2647",
-      };
-      return planetSymbols[archetype.planet] ?? "";
-    }
-    if (archetype.element) {
-      const elementSymbols: Record<string, string> = {
-        fire: "\uD83D\uDD25",
-        water: "\uD83D\uDCA7",
-        air: "\uD83D\uDCA8",
-        earth: "\uD83C\uDF0D",
-        ether: "\u2728",
-      };
-      return elementSymbols[archetype.element] ?? "";
-    }
-    return "";
-  };
+  const planetSymbol = PLANET_SYMBOLS[archetype.planet] ?? "";
+  const gradientClass = ELEMENT_GRADIENTS[archetype.element] ?? ELEMENT_GRADIENTS.ether;
 
   return (
     <Link
       href={`/archetypes/${archetype.slug}`}
       className={cn("group block h-full focus:outline-none", className)}
-      aria-label={`${archetype.romanNumeral} ${archetype.name}: ${archetype.keywords[0]}`}
+      aria-label={`${archetype.name}: ${archetype.keywords[0]}`}
     >
-      <AnimatedCard className="h-full overflow-hidden">
+      <AnimatedCard className="h-full overflow-hidden transition-all duration-300 group-hover:border-[var(--color-gold)]/30">
         <div className="flex flex-col">
-          {/* Card image with sepia treatment or placeholder */}
-          <div className="relative aspect-[2/3] w-full overflow-hidden bg-card/50">
-            {imageError ? (
-              <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-card/80 to-card">
-                <span className="font-display text-4xl text-[var(--color-gold)]/30">
-                  {archetype.romanNumeral}
-                </span>
-                <span className="mt-2 text-xs text-muted-foreground/50">
-                  {archetype.hebrewLetter.letter}
-                </span>
-              </div>
-            ) : (
-              <Image
-                src={archetype.imagePath}
-                alt={`${archetype.name} tarot card`}
-                fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                className={cn(
-                  "object-cover transition-all duration-300",
-                  "sepia-[0.3] saturate-[0.8] contrast-[1.1]",
-                  "group-hover:sepia-0 group-hover:saturate-100 group-hover:contrast-100"
-                )}
-                onError={() => setImageError(true)}
-              />
+          {/* Elemental gradient background with planet watermark */}
+          <div
+            className={cn(
+              "relative aspect-[3/4] w-full overflow-hidden bg-gradient-to-br",
+              gradientClass
             )}
+          >
+            {/* Planet symbol watermark */}
+            <span
+              className={cn(
+                "absolute inset-0 flex items-center justify-center",
+                "font-serif text-[8rem] leading-none text-[var(--color-gold)]",
+                "opacity-10 transition-opacity duration-300 group-hover:opacity-20"
+              )}
+              aria-hidden="true"
+            >
+              {planetSymbol}
+            </span>
           </div>
 
           {/* Card info */}
-          <div className="flex flex-col gap-1 p-4">
-            {/* Number and name */}
-            <div className="flex items-baseline gap-2">
-              <span className="font-display text-sm tracking-wide text-[var(--color-gold)]">
-                {archetype.romanNumeral}
-              </span>
-              <span className="text-[10px] text-muted-foreground">·</span>
-              <span className="font-display text-sm tracking-wide text-[var(--color-gold)]">
-                {archetype.name.toUpperCase()}
-              </span>
-            </div>
+          <div className="flex flex-col gap-1.5 p-4">
+            {/* Name */}
+            <span className="font-display text-sm tracking-wide text-[var(--color-gold)]">
+              {archetype.name.toUpperCase()}
+            </span>
 
-            {/* Jungian archetype */}
-            <div className="text-xs italic text-muted-foreground/80">
-              {archetype.jungianArchetype}
-            </div>
+            {/* Motto */}
+            <span className="line-clamp-2 text-xs italic text-muted-foreground/80">
+              &ldquo;{archetype.motto}&rdquo;
+            </span>
 
-            {/* Attribution and Hebrew letter */}
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span>{getAttributionSymbol()} {archetype.primaryAttribution}</span>
-              <span>·</span>
-              <span>{archetype.hebrewLetter.name}</span>
+            {/* Planet and Element */}
+            <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <span>{planetSymbol}</span>
+              <span className="capitalize">{archetype.planet}</span>
+              <span className="text-muted-foreground/40">·</span>
+              <span className="capitalize">{archetype.element}</span>
             </div>
           </div>
         </div>

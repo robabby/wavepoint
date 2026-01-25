@@ -113,22 +113,15 @@ export interface HouseNode extends BaseNode {
 }
 
 /**
- * Archetype node (Major Arcana)
+ * Archetype node (Jungian psychological archetypes)
  */
 export interface ArchetypeNode extends BaseNode {
   type: "archetype";
   id: ArchetypeSlug;
-  number: number;
-  hebrewLetter: string;
-  hebrewLetterMeaning: string;
-  primaryAttribution: string;
-  attributionType: "element" | "planet" | "zodiac";
-  elementId: Element | null;
-  planetId: Planet | null;
-  zodiacId: ZodiacSign | null;
-  confidence: ConfidenceLevel;
+  planetId: Planet;
+  elementId: Element;
   keywords: string[];
-  jungianArchetype: string;
+  motto: string;
 }
 
 /**
@@ -187,7 +180,6 @@ export const EDGE_TYPES = [
 
   // Archetype connections
   "archetype_corresponds_to_planet",  // Archetype <-> Planet
-  "archetype_corresponds_to_zodiac",  // Archetype <-> ZodiacSign
   "archetype_expresses_element",      // Archetype <-> Element
 ] as const;
 
