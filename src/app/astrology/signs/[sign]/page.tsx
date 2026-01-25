@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { eq } from "drizzle-orm";
 import { Text } from "@radix-ui/themes";
+import { auth } from "@/lib/auth";
+import { db, spiritualProfiles } from "@/lib/db";
 import { ZODIAC_SIGNS, type ZodiacSign } from "@/lib/astrology";
 import {
   isValidSignId,
@@ -63,6 +66,25 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Determine which placement(s) match the current sign for the user
+ */
+type PlacementType = "sun" | "moon" | "rising";
+
+interface UserPlacements {
+  sun: ZodiacSign | null;
+  moon: ZodiacSign | null;
+  rising: ZodiacSign | null;
+}
+
+function getMatchingPlacements(signId: string, placements: UserPlacements): PlacementType[] {
+  const matches: PlacementType[] = [];
+  if (placements.sun === signId) matches.push("sun");
+  if (placements.moon === signId) matches.push("moon");
+  if (placements.rising === signId) matches.push("rising");
+  return matches;
+}
+
 export default async function SignDetailPage({
   params,
 }: {
@@ -83,6 +105,32 @@ export default async function SignDetailPage({
   const { previous, next } = getAdjacentSigns(signId as ZodiacSign);
   const previousSign = getSignById(previous);
   const nextSign = getSignById(next);
+
+  // Fetch user's placements if authenticated (optional - doesn't require auth)
+  let userMatchingPlacements: PlacementType[] = [];
+  try {
+    const session = await auth();
+    if (session?.user?.id) {
+      const [row] = await db
+        .select({
+          sunSign: spiritualProfiles.sunSign,
+          moonSign: spiritualProfiles.moonSign,
+          risingSign: spiritualProfiles.risingSign,
+        })
+        .from(spiritualProfiles)
+        .where(eq(spiritualProfiles.userId, session.user.id));
+
+      if (row) {
+        userMatchingPlacements = getMatchingPlacements(signId, {
+          sun: row.sunSign as ZodiacSign | null,
+          moon: row.moonSign as ZodiacSign | null,
+          rising: row.risingSign as ZodiacSign | null,
+        });
+      }
+    }
+  } catch {
+    // Auth or DB error - continue without personalization
+  }
 
   // JSON-LD structured data
   const jsonLd = {
@@ -136,6 +184,28 @@ export default async function SignDetailPage({
 
       <div className="container mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-4xl">
+          {/* Personal placement badge */}
+          {userMatchingPlacements.length > 0 && (
+            <div className="mb-6 flex justify-center">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/40 bg-[var(--color-gold)]/10 px-4 py-2 text-sm">
+                <span className="text-[var(--color-gold)]">✦</span>
+                <span className="text-foreground">
+                  This is your{" "}
+                  <span className="font-medium text-[var(--color-gold)]">
+                    {userMatchingPlacements.map((p, i) => (
+                      <span key={p}>
+                        {i > 0 && (i === userMatchingPlacements.length - 1 ? " & " : ", ")}
+                        {p.charAt(0).toUpperCase() + p.slice(1)}
+                      </span>
+                    ))}
+                  </span>
+                  {" "}sign
+                </span>
+                <span className="text-[var(--color-gold)]">✦</span>
+              </div>
+            </div>
+          )}
+
           {/* Hero Section */}
           <SignHero sign={sign} />
 

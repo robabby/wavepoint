@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Heading, Text } from "@radix-ui/themes";
 import type { ElementBalance as ElementBalanceType } from "@/lib/profile";
 import { AnimatedCard } from "@/components/animated-card";
@@ -9,10 +10,10 @@ interface ElementBalanceProps {
 }
 
 const ELEMENT_CONFIG = {
-  fire: { symbol: "\uD83D\uDD25", color: "var(--color-fire, #f97316)", label: "Fire" },
-  earth: { symbol: "\uD83C\uDF0D", color: "var(--color-earth, #84cc16)", label: "Earth" },
-  air: { symbol: "\uD83D\uDCA8", color: "var(--color-air, #06b6d4)", label: "Air" },
-  water: { symbol: "\uD83D\uDCA7", color: "var(--color-water, #3b82f6)", label: "Water" },
+  fire: { symbol: "\uD83D\uDD25", color: "var(--color-fire, #f97316)", label: "Fire", geometry: "/platonic-solids/tetrahedron" },
+  earth: { symbol: "\uD83C\uDF0D", color: "var(--color-earth, #84cc16)", label: "Earth", geometry: "/platonic-solids/hexahedron" },
+  air: { symbol: "\uD83D\uDCA8", color: "var(--color-air, #06b6d4)", label: "Air", geometry: "/platonic-solids/octahedron" },
+  water: { symbol: "\uD83D\uDCA7", color: "var(--color-water, #3b82f6)", label: "Water", geometry: "/platonic-solids/icosahedron" },
 } as const;
 
 /**
@@ -67,9 +68,12 @@ export function ElementBalance({ elementBalance }: ElementBalanceProps) {
       {elementBalance.dominant && (
         <Text size="2" className="mt-4 text-muted-foreground">
           Dominant element:{" "}
-          <span className="font-medium capitalize text-foreground">
+          <Link
+            href={ELEMENT_CONFIG[elementBalance.dominant].geometry}
+            className="font-medium capitalize text-foreground underline decoration-[var(--color-gold)]/30 underline-offset-4 transition-colors hover:text-[var(--color-gold)] hover:decoration-[var(--color-gold)]"
+          >
             {elementBalance.dominant}
-          </span>
+          </Link>
         </Text>
       )}
 

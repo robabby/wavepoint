@@ -7,9 +7,11 @@ import { NextResponse } from "next/server";
 import { and, asc, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 
 import { auth } from "@/lib/auth";
-import { db, signalSightings, signalUserNumberStats } from "@/lib/db";
+import { db, signalSightings, signalUserNumberStats, spiritualProfiles } from "@/lib/db";
 import { updateUserActivityStats } from "@/lib/db/queries";
-import { generateInterpretation } from "@/lib/signal/claude";
+import { generateInterpretation, type UserProfileContext } from "@/lib/signal/claude";
+import type { ZodiacSign } from "@/lib/astrology";
+import type { Element } from "@/lib/numbers/planetary";
 import { detectDelight, type DelightMoment } from "@/lib/signal/delight";
 import { generateInsight, type PatternInsight } from "@/lib/signal/insights";
 import { getBaseMeaning } from "@/lib/signal/meanings";
@@ -173,6 +175,46 @@ export async function POST(request: Request) {
       })),
     });
 
+    // Fetch user's spiritual profile for personalized interpretations
+    let profileContext: UserProfileContext | undefined;
+    try {
+      const [profileRow] = await db
+        .select({
+          sunSign: spiritualProfiles.sunSign,
+          moonSign: spiritualProfiles.moonSign,
+          risingSign: spiritualProfiles.risingSign,
+          elementFire: spiritualProfiles.elementFire,
+          elementEarth: spiritualProfiles.elementEarth,
+          elementAir: spiritualProfiles.elementAir,
+          elementWater: spiritualProfiles.elementWater,
+        })
+        .from(spiritualProfiles)
+        .where(eq(spiritualProfiles.userId, userId));
+
+      if (profileRow?.sunSign) {
+        // Determine dominant element
+        const elements = {
+          fire: profileRow.elementFire,
+          earth: profileRow.elementEarth,
+          air: profileRow.elementAir,
+          water: profileRow.elementWater,
+        };
+        const maxValue = Math.max(...Object.values(elements));
+        const dominantElement = maxValue > 0
+          ? (Object.entries(elements).find(([, v]) => v === maxValue)?.[0] as Element | undefined)
+          : undefined;
+
+        profileContext = {
+          sunSign: profileRow.sunSign as ZodiacSign,
+          moonSign: profileRow.moonSign as ZodiacSign | undefined,
+          risingSign: profileRow.risingSign as ZodiacSign | undefined,
+          dominantElement,
+        };
+      }
+    } catch {
+      // Profile fetch failed - continue without personalization
+    }
+
     // Generate interpretation based on subscription tier
     let interpretation: string;
     let tier: "free" | "insight";
@@ -186,6 +228,7 @@ export async function POST(request: Request) {
         moodTags: moodTags ?? undefined,
         count: result.stats.count,
         isFirstCatch: result.isFirstCatch,
+        profile: profileContext,
       });
       interpretation = content;
       tier = "insight";
