@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Plus, Settings } from "lucide-react";
 import { useSightings, useStats, useHeatmap, useCreateSighting } from "@/hooks/signal";
+import { useProfile } from "@/hooks/profile";
 import type { DelightMoment } from "@/lib/signal/delight";
 import type { MoodOption } from "@/lib/signal/schemas";
 import {
@@ -12,6 +13,7 @@ import {
   DelightToast,
   getDateRangeStart,
   InlineCaptureInput,
+  ProfilePromptCard,
   RecentSightings,
   SignalBackground,
   SightingFilters,
@@ -49,6 +51,8 @@ export function DashboardContent() {
     since: dateRangeStart,
     limit: 10,
   });
+
+  const { hasProfile, isLoading: profileLoading } = useProfile();
 
   const handleSelectNumber = useCallback(
     (number: string) => {
@@ -118,6 +122,13 @@ export function DashboardContent() {
           uniqueNumbers={uniqueNumbers}
           isLoading={statsLoading}
         />
+
+        {/* Profile prompt - show for users without a profile */}
+        {!profileLoading && !hasProfile && (
+          <section className="mb-8">
+            <ProfilePromptCard />
+          </section>
+        )}
 
         {/* Quick Capture - show for all users when not filtering */}
         {!numberFilter && (

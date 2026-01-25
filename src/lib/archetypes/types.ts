@@ -58,6 +58,18 @@ export interface HebrewLetter {
 }
 
 /**
+ * Alternative attribution from a different esoteric tradition
+ */
+export interface AlternativeAttribution {
+  /** Name of the tradition (e.g., "Thoth", "Continental", "B.O.T.A.") */
+  tradition: string;
+  /** The alternative attribution value */
+  value: string;
+  /** Optional note explaining the difference */
+  note?: string;
+}
+
+/**
  * Complete archetype data for a Major Arcana card
  */
 export interface Archetype {
@@ -87,6 +99,9 @@ export interface Archetype {
 
   /** Confidence level based on cross-traditional agreement */
   confidence: ConfidenceLevel;
+
+  /** Alternative attributions from other traditions */
+  alternativeAttributions?: AlternativeAttribution[];
 
   /** Keywords for the archetype */
   keywords: string[];

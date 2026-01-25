@@ -14,6 +14,7 @@ import {
   createZodiacSignNodes,
   createHouseNodes,
   createArchetypeNodes,
+  createModalityNodes,
 } from "./nodes";
 
 // Edge creators
@@ -27,6 +28,7 @@ import {
   createSignElementEdges,
   createSignHouseEdges,
 } from "./edges/sign-element";
+import { createSignModalityEdges } from "./edges/sign-modality";
 import { createArchetypeEdges } from "./edges/archetype-edges";
 
 /**
@@ -54,6 +56,7 @@ export function initSynthesisGraph(): SynthesisGraph {
     ...createZodiacSignNodes(),
     ...createHouseNodes(),
     ...createArchetypeNodes(),
+    ...createModalityNodes(),
   ];
 
   for (const node of allNodes) {
@@ -68,6 +71,7 @@ export function initSynthesisGraph(): SynthesisGraph {
     ...createPlanetSignEdges(),
     ...createSignElementEdges(),
     ...createSignHouseEdges(),
+    ...createSignModalityEdges(),
     ...createArchetypeEdges(),
   ];
 

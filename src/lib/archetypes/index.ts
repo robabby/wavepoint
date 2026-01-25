@@ -24,6 +24,7 @@ export type {
   ArchetypeSlug,
   AttributionType,
   HebrewLetter,
+  AlternativeAttribution,
   Archetype,
   ArchetypeWithRelations,
   ArchetypesListResponse,

@@ -47,6 +47,9 @@ export { DelightToast, type DelightToastProps } from "./delight-toast";
 export { UpgradeCta } from "./upgrade-cta";
 export { SubscriptionStatus } from "./subscription-status";
 
+// Profile prompt
+export { ProfilePromptCard } from "./profile-prompt-card";
+
 // Quick actions
 export {
   QuickCaptureBar,

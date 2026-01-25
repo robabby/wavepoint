@@ -217,3 +217,75 @@ export function getNumbersForElement(
 
   return result.nodes.filter((n) => n.type === "number");
 }
+
+/**
+ * Get number patterns that resonate with a user's natal chart placements.
+ * Traverses from zodiac signs through their ruling planets to associated numbers.
+ */
+export function getResonantPatterns(
+  graph: SynthesisGraph,
+  signs: ZodiacSign[]
+): SynthesisNode[] {
+  if (signs.length === 0) return [];
+
+  const result = query(graph, {
+    seeds: signs.map((sign) => ({ type: "zodiacSign" as const, id: sign })),
+    maxDepth: 2,
+    targetTypes: ["number"],
+  });
+
+  // Return unique number nodes
+  const seen = new Set<string>();
+  return result.nodes.filter((n) => {
+    if (n.type !== "number") return false;
+    if (seen.has(n.id)) return false;
+    seen.add(n.id);
+    return true;
+  });
+}
+
+/**
+ * Get number patterns relevant during a planetary transit.
+ * Useful for showing which patterns are "activated" when a planet
+ * transits a particular sign.
+ */
+export function getTransitPatterns(
+  graph: SynthesisGraph,
+  transitingPlanet: string,
+  throughSign: ZodiacSign
+): SynthesisNode[] {
+  // Get numbers connected to the transiting planet
+  const planetResult = query(graph, {
+    seeds: [{ type: "planet", id: transitingPlanet }],
+    maxDepth: 1,
+    edgeTypes: ["resonates_with"],
+    targetTypes: ["number"],
+  });
+
+  // Get numbers connected to the sign being transited
+  const signResult = query(graph, {
+    seeds: [{ type: "zodiacSign", id: throughSign }],
+    maxDepth: 2,
+    targetTypes: ["number"],
+  });
+
+  // Combine and deduplicate - numbers from planet are primary
+  const seen = new Set<string>();
+  const combined: SynthesisNode[] = [];
+
+  for (const node of planetResult.nodes) {
+    if (node.type === "number" && !seen.has(node.id)) {
+      seen.add(node.id);
+      combined.push(node);
+    }
+  }
+
+  for (const node of signResult.nodes) {
+    if (node.type === "number" && !seen.has(node.id)) {
+      seen.add(node.id);
+      combined.push(node);
+    }
+  }
+
+  return combined;
+}

@@ -24,6 +24,7 @@ export const NODE_TYPES = [
   "zodiacSign",
   "house",
   "archetype",
+  "modality",
 ] as const;
 
 export type NodeType = (typeof NODE_TYPES)[number];
@@ -131,6 +132,21 @@ export interface ArchetypeNode extends BaseNode {
 }
 
 /**
+ * Modality type (cardinal, fixed, mutable)
+ */
+export type Modality = "cardinal" | "fixed" | "mutable";
+
+/**
+ * Modality node (astrological quality)
+ */
+export interface ModalityNode extends BaseNode {
+  type: "modality";
+  id: Modality;
+  quality: string;
+  keywords: string[];
+}
+
+/**
  * Union of all node types
  */
 export type SynthesisNode =
@@ -140,7 +156,8 @@ export type SynthesisNode =
   | NumberNode
   | ZodiacSignNode
   | HouseNode
-  | ArchetypeNode;
+  | ArchetypeNode
+  | ModalityNode;
 
 // =============================================================================
 // EDGE TYPES
@@ -166,6 +183,7 @@ export const EDGE_TYPES = [
   // Zodiac connections
   "belongs_to_element",  // ZodiacSign <-> Element
   "naturally_rules",     // ZodiacSign <-> House
+  "has_modality",        // ZodiacSign <-> Modality
 
   // Archetype connections
   "archetype_corresponds_to_planet",  // Archetype <-> Planet

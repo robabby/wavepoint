@@ -131,6 +131,13 @@ export const ARCHETYPES: Record<ArchetypeSlug, Archetype> = {
     planet: null,
     zodiac: "aries",
     confidence: "high",
+    alternativeAttributions: [
+      {
+        tradition: "Anthroposophical",
+        value: "Jupiter",
+        note: "Emphasizes expansive leadership and wisdom over martial energy",
+      },
+    ],
     keywords: ["authority", "structure", "control", "fatherhood", "stability"],
     jungianArchetype: "The Father",
     description: "The Emperor represents order, authority, and the structuring principle. As the father figure of the Tarot, he establishes boundaries and creates stability through disciplined leadership.",
@@ -206,6 +213,18 @@ export const ARCHETYPES: Record<ArchetypeSlug, Archetype> = {
     planet: null,
     zodiac: "cancer",
     confidence: "moderate",
+    alternativeAttributions: [
+      {
+        tradition: "Anthroposophical",
+        value: "Mars",
+        note: "Emphasizes martial victory and forward drive",
+      },
+      {
+        tradition: "Continental (Lévi)",
+        value: "Gemini",
+        note: "Via Hebrew letter Zayin correspondence",
+      },
+    ],
     keywords: ["willpower", "determination", "success", "control", "victory"],
     jungianArchetype: "The Hero",
     description: "The Chariot represents the triumph of will over obstacles. The charioteer harnesses opposing forces through determination, moving forward with confidence and self-mastery.",
@@ -331,6 +350,13 @@ export const ARCHETYPES: Record<ArchetypeSlug, Archetype> = {
     planet: null,
     zodiac: null,
     confidence: "moderate",
+    alternativeAttributions: [
+      {
+        tradition: "Modern Esoteric",
+        value: "Neptune",
+        note: "Modern planetary attribution for dissolution and transcendence",
+      },
+    ],
     keywords: ["surrender", "letting go", "sacrifice", "new perspective", "pause"],
     jungianArchetype: "The Martyr",
     description: "The Hanged Man hangs suspended between worlds, gaining wisdom through surrender. His peaceful expression reveals that letting go brings enlightenment and a completely new perspective.",
@@ -531,6 +557,13 @@ export const ARCHETYPES: Record<ArchetypeSlug, Archetype> = {
     planet: null,
     zodiac: null,
     confidence: "moderate",
+    alternativeAttributions: [
+      {
+        tradition: "Modern Esoteric",
+        value: "Pluto",
+        note: "Modern planetary attribution for transformation and rebirth",
+      },
+    ],
     keywords: ["judgement", "rebirth", "inner calling", "absolution", "reflection"],
     jungianArchetype: "The Resurrection",
     description: "Judgement sounds the call to awakening and self-evaluation. The dead rise from their graves to answer this higher calling, representing spiritual rebirth and the culmination of a cycle.",

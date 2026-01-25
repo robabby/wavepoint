@@ -25,6 +25,8 @@ import type {
   ZodiacSignNode,
   HouseNode,
   ArchetypeNode,
+  ModalityNode,
+  Modality,
 } from "./types";
 
 /**
@@ -242,5 +244,38 @@ export function createArchetypeNodes(): ArchetypeNode[] {
     confidence: archetype.confidence,
     keywords: archetype.keywords,
     jungianArchetype: archetype.jungianArchetype,
+  }));
+}
+
+/**
+ * Modality metadata
+ */
+const MODALITY_DATA: Record<Modality, { quality: string; keywords: string[] }> = {
+  cardinal: {
+    quality: "Initiating",
+    keywords: ["leadership", "action", "beginnings", "drive", "ambition"],
+  },
+  fixed: {
+    quality: "Stabilizing",
+    keywords: ["persistence", "determination", "loyalty", "resistance", "depth"],
+  },
+  mutable: {
+    quality: "Adapting",
+    keywords: ["flexibility", "change", "communication", "versatility", "transition"],
+  },
+};
+
+/**
+ * Create all modality nodes
+ */
+export function createModalityNodes(): ModalityNode[] {
+  const modalities: Modality[] = ["cardinal", "fixed", "mutable"];
+
+  return modalities.map((modality) => ({
+    type: "modality" as const,
+    id: modality,
+    name: modality.charAt(0).toUpperCase() + modality.slice(1),
+    quality: MODALITY_DATA[modality].quality,
+    keywords: MODALITY_DATA[modality].keywords,
   }));
 }

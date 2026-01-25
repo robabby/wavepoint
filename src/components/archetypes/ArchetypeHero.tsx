@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Heading, Text } from "@radix-ui/themes";
 import type { ArchetypeWithRelations } from "@/lib/archetypes";
 import { CorrespondenceChips } from "./CorrespondenceChips";
+import { AlternativeAttributions } from "./AlternativeAttributions";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 interface ArchetypeHeroProps {
@@ -90,6 +91,16 @@ export function ArchetypeHero({ archetype }: ArchetypeHeroProps) {
           <div className="mb-6 flex justify-center md:justify-start">
             <CorrespondenceChips archetype={archetype} />
           </div>
+
+          {/* Alternative attributions from other traditions */}
+          {archetype.alternativeAttributions && archetype.alternativeAttributions.length > 0 && (
+            <div className="mb-6 flex justify-center md:justify-start">
+              <AlternativeAttributions
+                attributions={archetype.alternativeAttributions}
+                className="w-full max-w-sm"
+              />
+            </div>
+          )}
 
           {/* Hebrew letter detail */}
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground md:justify-start">
