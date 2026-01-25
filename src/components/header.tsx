@@ -119,6 +119,10 @@ export function Header() {
       if (path === "/astrology") {
         return pathname === "/astrology" || pathname.startsWith("/astrology/");
       }
+      // Archetypes is active on hub and all sub-paths
+      if (path === "/archetypes") {
+        return pathname === "/archetypes" || pathname.startsWith("/archetypes/");
+      }
       return pathname.startsWith(path);
     },
     [pathname]
@@ -127,7 +131,7 @@ export function Header() {
   const authEnabled = useCanAccessAuth();
 
   // Desktop nav items
-  // Order: Signal | Numbers | Astrology | Sacred Geometry
+  // Order: Signal | Numbers | Astrology | Archetypes | Sacred Geometry
   const desktopNavItems = useMemo<NavItem[]>(() => {
     return [
       // Signal appears first (before Numbers) - always visible, shows marketing when disabled
@@ -148,6 +152,12 @@ export function Header() {
         desktopLabel: "Astrology",
         mobileLabel: "Astrology",
       },
+      // Archetypes (Major Arcana)
+      {
+        path: ROUTES.archetypes.path,
+        desktopLabel: "Archetypes",
+        mobileLabel: "Archetypes",
+      },
       // Sacred Geometry (replaces dropdown)
       {
         path: ROUTES.sacredGeometry.path,
@@ -158,7 +168,7 @@ export function Header() {
   }, []);
 
   // Mobile nav items
-  // Order: Signal | Numbers | Astrology | Sacred Geometry
+  // Order: Signal | Numbers | Astrology | Archetypes | Sacred Geometry
   const mobileNavItems = useMemo<NavItem[]>(() => {
     return [
       // Signal appears first - always visible, shows marketing when disabled
@@ -178,6 +188,12 @@ export function Header() {
         path: "/astrology",
         desktopLabel: "Astrology",
         mobileLabel: "Astrology",
+      },
+      // Archetypes (Major Arcana)
+      {
+        path: ROUTES.archetypes.path,
+        desktopLabel: "Archetypes",
+        mobileLabel: "Archetypes",
       },
       // Single Sacred Geometry link (matches desktop)
       {

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { User, CircleUser, Settings, LogOut, Shield } from "lucide-react";
+import { User, CircleUser, Settings, LogOut, Shield, Sparkles } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,6 +46,19 @@ export function UserMenu({
             {email}
           </span>
         </div>
+
+        {/* Profile link */}
+        <Link
+          href="/profile"
+          className={cn(
+            "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
+            "text-foreground transition-all duration-200 ease-out",
+            "hover:bg-[var(--glass-bg-elevated)] hover:text-[var(--color-gold)]"
+          )}
+        >
+          <Sparkles className="h-5 w-5" />
+          <span>Cosmic Profile</span>
+        </Link>
 
         {/* Account link */}
         <Link
@@ -119,6 +132,15 @@ export function UserMenu({
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-[var(--border-gold)]/30" />
         <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link
+              href="/profile"
+              className="text-muted-foreground !focus:bg-card !focus:text-[var(--color-gold-text)]"
+            >
+              <Sparkles className="mr-2 h-4 w-4" />
+              Cosmic Profile
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
               href="/account"
