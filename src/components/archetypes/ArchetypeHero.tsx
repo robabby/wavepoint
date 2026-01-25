@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heading, Text } from "@radix-ui/themes";
@@ -15,26 +16,43 @@ interface ArchetypeHeroProps {
  * Hero section for archetype detail page.
  */
 export function ArchetypeHero({ archetype }: ArchetypeHeroProps) {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <AnimateOnScroll className="mb-12">
       <Link
         href="/archetypes"
         className="mb-6 inline-block text-sm text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
       >
-        \u2190 All archetypes
+        ← All archetypes
       </Link>
 
       <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
         {/* Card image */}
         <div className="relative aspect-[2/3] w-full max-w-[280px] overflow-hidden rounded-lg border border-[var(--color-gold)]/20 bg-card/30 shadow-lg">
-          <Image
-            src={archetype.imagePath}
-            alt={`${archetype.name} tarot card`}
-            fill
-            priority
-            sizes="(max-width: 768px) 280px, 280px"
-            className="object-cover"
-          />
+          {imageError ? (
+            <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-card/80 to-card">
+              <span className="font-display text-6xl text-[var(--color-gold)]/40">
+                {archetype.romanNumeral}
+              </span>
+              <span className="mt-4 text-2xl text-muted-foreground/50">
+                {archetype.hebrewLetter.letter}
+              </span>
+              <span className="mt-2 text-sm text-muted-foreground/40">
+                {archetype.hebrewLetter.name}
+              </span>
+            </div>
+          ) : (
+            <Image
+              src={archetype.imagePath}
+              alt={`${archetype.name} tarot card`}
+              fill
+              priority
+              sizes="(max-width: 768px) 280px, 280px"
+              className="object-cover"
+              onError={() => setImageError(true)}
+            />
+          )}
         </div>
 
         {/* Card info */}
@@ -43,13 +61,21 @@ export function ArchetypeHero({ archetype }: ArchetypeHeroProps) {
             <span className="font-display text-2xl tracking-wide text-[var(--color-gold)]">
               {archetype.romanNumeral}
             </span>
-            <span className="text-muted-foreground">\u00B7</span>
+            <span className="text-muted-foreground">·</span>
             <Heading
               size="8"
               className="font-display tracking-wide text-[var(--color-gold)]"
             >
               {archetype.name.toUpperCase()}
             </Heading>
+          </div>
+
+          {/* Jungian Archetype */}
+          <div className="mb-4">
+            <span className="text-sm text-muted-foreground">Jungian Archetype: </span>
+            <span className="text-sm font-medium italic text-[var(--color-gold)]">
+              {archetype.jungianArchetype}
+            </span>
           </div>
 
           {/* Description */}

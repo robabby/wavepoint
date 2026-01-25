@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,8 @@ interface ArchetypeCardProps {
  * Features Rider-Waite imagery with sepia treatment.
  */
 export function ArchetypeCard({ archetype, className }: ArchetypeCardProps) {
+  const [imageError, setImageError] = useState(false);
+
   // Get zodiac/planet/element symbol for display
   const getAttributionSymbol = () => {
     if (archetype.zodiac) {
@@ -71,19 +74,31 @@ export function ArchetypeCard({ archetype, className }: ArchetypeCardProps) {
     >
       <AnimatedCard className="h-full overflow-hidden">
         <div className="flex flex-col">
-          {/* Card image with sepia treatment */}
+          {/* Card image with sepia treatment or placeholder */}
           <div className="relative aspect-[2/3] w-full overflow-hidden bg-card/50">
-            <Image
-              src={archetype.imagePath}
-              alt={`${archetype.name} tarot card`}
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-              className={cn(
-                "object-cover transition-all duration-300",
-                "sepia-[0.3] saturate-[0.8] contrast-[1.1]",
-                "group-hover:sepia-0 group-hover:saturate-100 group-hover:contrast-100"
-              )}
-            />
+            {imageError ? (
+              <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-card/80 to-card">
+                <span className="font-display text-4xl text-[var(--color-gold)]/30">
+                  {archetype.romanNumeral}
+                </span>
+                <span className="mt-2 text-xs text-muted-foreground/50">
+                  {archetype.hebrewLetter.letter}
+                </span>
+              </div>
+            ) : (
+              <Image
+                src={archetype.imagePath}
+                alt={`${archetype.name} tarot card`}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                className={cn(
+                  "object-cover transition-all duration-300",
+                  "sepia-[0.3] saturate-[0.8] contrast-[1.1]",
+                  "group-hover:sepia-0 group-hover:saturate-100 group-hover:contrast-100"
+                )}
+                onError={() => setImageError(true)}
+              />
+            )}
           </div>
 
           {/* Card info */}
@@ -93,16 +108,21 @@ export function ArchetypeCard({ archetype, className }: ArchetypeCardProps) {
               <span className="font-display text-sm tracking-wide text-[var(--color-gold)]">
                 {archetype.romanNumeral}
               </span>
-              <span className="text-[10px] text-muted-foreground">\u00B7</span>
+              <span className="text-[10px] text-muted-foreground">·</span>
               <span className="font-display text-sm tracking-wide text-[var(--color-gold)]">
                 {archetype.name.toUpperCase()}
               </span>
             </div>
 
+            {/* Jungian archetype */}
+            <div className="text-xs italic text-muted-foreground/80">
+              {archetype.jungianArchetype}
+            </div>
+
             {/* Attribution and Hebrew letter */}
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>{getAttributionSymbol()} {archetype.primaryAttribution}</span>
-              <span>\u00B7</span>
+              <span>·</span>
               <span>{archetype.hebrewLetter.name}</span>
             </div>
           </div>
