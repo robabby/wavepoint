@@ -11,12 +11,16 @@ export function initMixpanel() {
   const token = env.NEXT_PUBLIC_MIXPANEL_TOKEN;
   if (!token) return;
 
+  const isDevelopment = process.env.NODE_ENV === "development";
+
   mixpanel.init(token, {
-    debug: process.env.NODE_ENV === "development",
+    debug: isDevelopment,
     track_pageview: true,
     persistence: "localStorage",
     autocapture: true,
-    record_sessions_percent: 100,
+    // Disable session recording in development to prevent mutex timeout errors
+    // caused by rapid HMR reloads and dev server behavior
+    record_sessions_percent: isDevelopment ? 0 : 100,
   });
 
   initialized = true;

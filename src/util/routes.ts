@@ -57,6 +57,20 @@ export const ROUTES = {
     description: "Explore the meanings behind repeating number patterns",
     order: 1,
   },
+  astrology: {
+    name: "Astrology",
+    path: "/astrology",
+    description: "Celestial bodies and their correspondences with numerology and sacred geometry",
+    order: 1.5,
+    children: {
+      planets: {
+        name: "Planets",
+        path: "/astrology/planets",
+        description: "Nine celestial bodies and their esoteric associations",
+        order: 1,
+      },
+    },
+  },
   sacredPatterns: {
     name: "Sacred Patterns",
     path: "/sacred-patterns",

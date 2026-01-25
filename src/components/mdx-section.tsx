@@ -84,6 +84,10 @@ export function MDXSection({ children }: MDXSectionProps) {
     <Card
       ref={sectionRef}
       id={fallbackId}
+      // Suppress hydration warning because we intentionally update the ID
+      // via useLayoutEffect after extracting h2 text from the DOM.
+      // The fallbackId from useId() can differ between server/client in MDX contexts.
+      suppressHydrationWarning
       className="mb-6 border-[var(--border-gold)] bg-card dark:bg-gradient-to-br dark:from-[var(--color-warm-charcoal)] dark:to-[var(--color-dark-bronze)] p-6 sm:mb-8 sm:p-8"
     >
       {children}

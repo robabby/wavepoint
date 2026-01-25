@@ -105,6 +105,8 @@ export function Footer() {
             </h3>
             <nav className="flex flex-col gap-2">
               <FooterLink href={ROUTES.home.path}>Home</FooterLink>
+              <FooterLink href={ROUTES.numbers.path}>Numbers</FooterLink>
+              <FooterLink href={ROUTES.astrology.path}>Astrology</FooterLink>
               <FooterLink href={ROUTES.platonicSolids.path}>
                 Platonic Solids
               </FooterLink>
