@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { SightingWithInterpretation } from "@/lib/signal/types";
 import type { CreateSightingInput, UpdateSightingInput } from "@/lib/signal/schemas";
+import type { CosmicContext } from "@/lib/signal/cosmic-context";
 import type { DelightMoment } from "@/lib/signal/delight";
 import type { PatternInsight } from "@/lib/signal/insights";
 import { signalKeys } from "./query-keys";
@@ -60,6 +61,7 @@ interface CreateSightingResponse {
   insight: PatternInsight | null;
   delight: DelightMoment | null;
   tier?: "free" | "insight";
+  cosmicContext?: CosmicContext | null;
 }
 
 async function createSighting(

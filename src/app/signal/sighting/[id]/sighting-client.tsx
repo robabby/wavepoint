@@ -19,7 +19,9 @@ import {
   SignalBackground,
   SacredSpinner,
   DeleteDialog,
+  CosmicContextCard,
 } from "@/components/signal";
+import type { CosmicContext } from "@/lib/signal/cosmic-context";
 
 const MOODS = [
   { id: "calm", emoji: "😌", label: "Calm" },
@@ -350,6 +352,16 @@ export function SightingClient({ params }: SightingClientProps) {
             canRegenerate={!isRegenerating}
           />
         </section>
+
+        {/* Cosmic Context */}
+        {sighting.cosmicContext && (
+          <section className="mt-8">
+            <CosmicContextCard
+              cosmicContext={sighting.cosmicContext as CosmicContext}
+              variant="expanded"
+            />
+          </section>
+        )}
       </main>
 
       {/* Delete Confirmation */}

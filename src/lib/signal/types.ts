@@ -1,3 +1,5 @@
+import type { CosmicContext } from "./cosmic-context";
+
 /**
  * A sighting with its AI-generated interpretation.
  * Used in UI components that display sighting details.
@@ -8,6 +10,8 @@ export interface SightingWithInterpretation {
   number: string;
   note: string | null;
   moodTags: string[] | null;
+  tz: string | null;
+  cosmicContext: CosmicContext | null;
   timestamp: Date;
   createdAt: Date;
   interpretation: {

@@ -9,6 +9,22 @@ export {
   type CreateSightingInput,
 } from "./schemas";
 
+// Cosmic context
+export {
+  calculateCosmicContext,
+  calculateMoonPhase,
+  getMoonPhaseEmoji,
+  getMoonPhaseName,
+  getPlanetGlyph,
+  getSignGlyph,
+  getAspectSymbol,
+  formatDegree,
+  type MoonPhase,
+  type PlanetContext,
+  type CosmicAspect,
+  type CosmicContext,
+} from "./cosmic-context";
+
 // TypeScript interfaces
 export type {
   SightingWithInterpretation,

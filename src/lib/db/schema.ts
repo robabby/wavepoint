@@ -123,6 +123,7 @@ export const signalSightings = pgTable(
     note: text("note"),
     moodTags: text("mood_tags").array(),
     tz: text("tz"), // IANA timezone at submission, e.g. "America/Los_Angeles"
+    cosmicContext: jsonb("cosmic_context"), // Planetary positions at capture time
     timestamp: timestamp("timestamp", { mode: "date" }).notNull().defaultNow(),
     createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
   },
