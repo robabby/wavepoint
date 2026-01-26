@@ -459,8 +459,8 @@ export function Header() {
               {/* Theme Toggle */}
               <ThemeToggle />
 
-              {/* Auth Section - only when auth is enabled */}
-              {authEnabled && <AuthHeaderSection variant="desktop" />}
+              {/* Auth Section - only for unauthenticated users (authenticated users use sidebar) */}
+              {authEnabled && !isAuthenticated && <AuthHeaderSection variant="desktop" />}
             </div>
           </div>
         </div>
@@ -499,8 +499,9 @@ export function Header() {
               )}
             >
               {/* Drawer Header */}
+              {/* h-[65px] matches main header: h-16 (64px) content + 1px border */}
               <div className={cn(
-                "flex h-16 items-center justify-between px-5",
+                "flex h-[65px] items-center justify-between px-5",
                 "border-b border-[var(--glass-border)]",
                 "bg-[var(--glass-bg-elevated)]"
               )}>

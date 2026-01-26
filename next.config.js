@@ -51,6 +51,23 @@ const config = {
         destination: "/sacred-patterns/:slug",
         permanent: true,
       },
+      // Account → Settings redirects
+      {
+        source: "/account",
+        destination: "/settings",
+        permanent: true,
+      },
+      {
+        source: "/account/:path*",
+        destination: "/settings/:path*",
+        permanent: true,
+      },
+      // Profile edit → Settings profile
+      {
+        source: "/profile/edit",
+        destination: "/settings/profile",
+        permanent: true,
+      },
     ];
   },
 };

@@ -74,7 +74,13 @@ export function AppSidebar({
       }}
     >
       {/* Header with logo and collapse toggle */}
-      <div className="flex h-16 shrink-0 items-center justify-between border-b border-[var(--sidebar-border)] px-4">
+      {/* h-[65px] matches main header: h-16 (64px) content + 1px border */}
+      <div
+        className={cn(
+          "flex h-[65px] shrink-0 items-center border-b border-[var(--sidebar-border)]",
+          isCollapsed ? "justify-center" : "justify-between px-4"
+        )}
+      >
         {/* Logo - collapses to icon only */}
         <Link
           href="/"

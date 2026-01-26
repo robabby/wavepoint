@@ -6,7 +6,7 @@ import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: "Overview", href: "/account", icon: User },
+  { name: "Overview", href: "/settings", icon: User },
   // Address page exists but hidden until needed for user profiles
 ];
 

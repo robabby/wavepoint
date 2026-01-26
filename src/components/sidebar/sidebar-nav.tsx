@@ -57,7 +57,7 @@ const ACCOUNT_SECTION: NavSection = {
   title: "ACCOUNT",
   items: [
     { label: "Profile", href: "/profile", icon: User },
-    { label: "Account", href: "/account", icon: Settings },
+    { label: "Settings", href: "/settings", icon: Settings },
   ],
 };
 
@@ -89,8 +89,8 @@ export function SidebarNav({
     if (href === "/profile") {
       return pathname === "/profile" || pathname.startsWith("/profile/");
     }
-    if (href === "/account") {
-      return pathname === "/account" || pathname.startsWith("/account/");
+    if (href === "/settings") {
+      return pathname === "/settings" || pathname.startsWith("/settings/");
     }
     return pathname.startsWith(href);
   };

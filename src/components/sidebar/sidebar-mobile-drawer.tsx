@@ -67,7 +67,7 @@ const ACCOUNT_SECTION: NavSection = {
   title: "ACCOUNT",
   items: [
     { label: "Profile", href: "/profile", icon: User },
-    { label: "Account", href: "/account", icon: Settings },
+    { label: "Settings", href: "/settings", icon: Settings },
   ],
 };
 
@@ -148,8 +148,8 @@ export function SidebarMobileDrawer({
     if (href === "/profile") {
       return pathname === "/profile" || pathname.startsWith("/profile/");
     }
-    if (href === "/account") {
-      return pathname === "/account" || pathname.startsWith("/account/");
+    if (href === "/settings") {
+      return pathname === "/settings" || pathname.startsWith("/settings/");
     }
     return pathname.startsWith(href);
   };
@@ -193,9 +193,10 @@ export function SidebarMobileDrawer({
             aria-label="Navigation menu"
           >
             {/* Drawer Header */}
+            {/* h-[65px] matches main header: h-16 (64px) content + 1px border */}
             <div
               className={cn(
-                "flex h-16 items-center justify-between px-5",
+                "flex h-[65px] items-center justify-between px-5",
                 "border-b border-[var(--glass-border)]",
                 "bg-[var(--glass-bg-elevated)]"
               )}

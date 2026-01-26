@@ -5,8 +5,8 @@ import { auth } from "@/lib/auth";
 import { AccountSidebar } from "@/components/account/account-sidebar";
 
 export const metadata: Metadata = {
-  title: "Account",
-  description: "Manage your WavePoint account settings.",
+  title: "Settings",
+  description: "Manage your WavePoint settings.",
 };
 
 export default async function AccountLayout({
@@ -29,7 +29,7 @@ export default async function AccountLayout({
             size="8"
             className="font-display text-foreground"
           >
-            Account
+            Settings
           </Heading>
         </div>
 

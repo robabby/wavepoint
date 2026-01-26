@@ -26,7 +26,7 @@ export function ProfileHero({ bigThree }: ProfileHeroProps) {
           Your Cosmic Blueprint
         </Heading>
         <Link
-          href="/profile/edit"
+          href="/settings/profile"
           className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/5 px-4 py-2 text-sm text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/10"
         >
           <Pencil className="h-4 w-4" />

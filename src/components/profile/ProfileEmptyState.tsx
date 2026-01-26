@@ -28,7 +28,7 @@ export function ProfileEmptyState() {
         </Text>
 
         <Link
-          href="/profile/edit"
+          href="/settings/profile"
           className="inline-flex items-center justify-center rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
         >
           Set up your profile
