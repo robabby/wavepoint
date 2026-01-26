@@ -162,6 +162,27 @@ Centralized access control with admin overrides. See `src/lib/features/`.
 - **Sub-agent model**: All sub-agents must use Claude Opus (`model: "opus"`)
 - **Code review**: After implementations, use `feature-dev:code-reviewer` agent
 
+### Parallel Development with Git Worktrees
+
+Use git worktrees when implementing plans or working on features that should be isolated from the main workspace. This enables multiple Claude Code instances to work on different branches concurrently.
+
+**When to use worktrees**:
+- Before executing an implementation plan
+- When starting feature work that needs isolation
+- When you want parallel Claude Code instances on different features
+
+**How**: Use `/superpowers:using-git-worktrees` skill to create worktrees with proper setup.
+
+**Worktree location**: `~/Workbench/.worktrees/wavepoint/<branch-name>/`
+
+**Setup in new worktree**:
+```bash
+pnpm install              # Install dependencies
+cp ../.env .env           # Copy env from sibling worktree (or main)
+```
+
+**After completion**: Merge or create PR, then remove worktree with `git worktree remove <path>`.
+
 ---
 
 ## Resources
