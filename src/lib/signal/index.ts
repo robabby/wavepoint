@@ -12,9 +12,11 @@ export {
 // Cosmic context
 export {
   calculateCosmicContext,
+  calculateDashboardCosmicContext,
   calculateMoonPhase,
   getMoonPhaseEmoji,
   getMoonPhaseName,
+  getMoonPhaseGlow,
   getPlanetGlyph,
   getSignGlyph,
   getAspectSymbol,
@@ -23,7 +25,12 @@ export {
   type PlanetContext,
   type CosmicAspect,
   type CosmicContext,
+  type SignTransition,
+  type DashboardCosmicContext,
 } from "./cosmic-context";
+
+// Sign transitions
+export { calculateNextSignTransition } from "./sign-transitions";
 
 // TypeScript interfaces
 export type {

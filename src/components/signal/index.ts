@@ -39,6 +39,10 @@ export {
   CosmicContextCard,
   type CosmicContextCardProps,
 } from "./cosmic-context-card";
+export {
+  DashboardCosmicContextCard,
+  type DashboardCosmicContextCardProps,
+} from "./dashboard-cosmic-context-card";
 
 // Celebration
 export {
