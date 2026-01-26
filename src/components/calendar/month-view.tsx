@@ -27,6 +27,8 @@ interface MonthDay {
   isCurrentMonth: boolean;
   isToday: boolean;
   moonPhase: MoonPhase | null;
+  isPeakFullMoon: boolean;
+  isPeakNewMoon: boolean;
 }
 
 interface MonthViewProps {
@@ -99,6 +101,8 @@ function getMonthDays(year: number, month: number): MonthDay[] {
       isCurrentMonth: false,
       isToday: formatDateString(date) === todayStr,
       moonPhase: null,
+      isPeakFullMoon: false,
+      isPeakNewMoon: false,
     });
   }
 
@@ -111,6 +115,8 @@ function getMonthDays(year: number, month: number): MonthDay[] {
       isCurrentMonth: true,
       isToday: formatDateString(date) === todayStr,
       moonPhase: null,
+      isPeakFullMoon: false,
+      isPeakNewMoon: false,
     });
   }
 
@@ -124,6 +130,8 @@ function getMonthDays(year: number, month: number): MonthDay[] {
       isCurrentMonth: false,
       isToday: formatDateString(date) === todayStr,
       moonPhase: null,
+      isPeakFullMoon: false,
+      isPeakNewMoon: false,
     });
   }
 
@@ -212,19 +220,80 @@ export function MonthView({ initialMonth, className }: MonthViewProps) {
     [journalEntries]
   );
 
-  // Generate days with moon phase data
+  // Generate days with moon phase data and peak moon indicators
   const days = useMemo(() => {
     const baseDays = getMonthDays(year, month);
 
-    // Enrich with moon phase data from ephemeris
-    if (ephemeris?.days) {
-      return baseDays.map((day) => ({
-        ...day,
-        moonPhase: (ephemeris.days[day.date]?.moon?.phase as MoonPhase) ?? null,
-      }));
+    if (!ephemeris?.days) {
+      return baseDays;
     }
 
-    return baseDays;
+    // Find peak days for each distinct run of full/new moon phases
+    // This handles cases where two lunar cycles are visible in the same month view
+    const peakDates = new Set<string>();
+
+    // Group consecutive days by phase to find distinct lunar cycles
+    let currentRun: { phase: string; days: { date: string; elongation: number }[] } | null = null;
+
+    const processRun = (run: { phase: string; days: { date: string; elongation: number }[] }) => {
+      if (run.days.length === 0) return;
+
+      let peakDate = run.days[0]!.date;
+      let bestDistance = Infinity;
+
+      for (const day of run.days) {
+        let distance: number;
+        if (run.phase === "full_moon") {
+          distance = Math.abs(180 - day.elongation);
+        } else {
+          // new_moon: distance from 0° (handle wrap-around)
+          distance = Math.min(day.elongation, 360 - day.elongation);
+        }
+
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          peakDate = day.date;
+        }
+      }
+
+      peakDates.add(peakDate);
+    };
+
+    for (const day of baseDays) {
+      const dayData = ephemeris.days[day.date];
+      const phase = dayData?.moon?.phase;
+      const elongation = dayData?.lunarElongation ?? 0;
+
+      if (phase === "full_moon" || phase === "new_moon") {
+        if (currentRun && currentRun.phase === phase) {
+          // Continue current run
+          currentRun.days.push({ date: day.date, elongation });
+        } else {
+          // End previous run and start new one
+          if (currentRun) processRun(currentRun);
+          currentRun = { phase, days: [{ date: day.date, elongation }] };
+        }
+      } else {
+        // Not a full/new moon day - end current run if any
+        if (currentRun) {
+          processRun(currentRun);
+          currentRun = null;
+        }
+      }
+    }
+    // Process final run if any
+    if (currentRun) processRun(currentRun);
+
+    // Enrich days with moon phase data and peak indicators
+    return baseDays.map((day) => {
+      const phase = ephemeris.days[day.date]?.moon?.phase as MoonPhase | undefined;
+      return {
+        ...day,
+        moonPhase: phase ?? null,
+        isPeakFullMoon: phase === "full_moon" && peakDates.has(day.date),
+        isPeakNewMoon: phase === "new_moon" && peakDates.has(day.date),
+      };
+    });
   }, [year, month, ephemeris]);
 
   // Navigation handlers
@@ -451,6 +520,8 @@ export function MonthView({ initialMonth, className }: MonthViewProps) {
                   isToday={day.isToday}
                   isSelected={selectedDate === day.date}
                   moonPhase={day.moonPhase}
+                  isPeakFullMoon={day.isPeakFullMoon}
+                  isPeakNewMoon={day.isPeakNewMoon}
                   hasSightings={(sightingsByDate.get(day.date) ?? 0) > 0}
                   hasJournal={journalByDate.has(day.date)}
                   onClick={() => handleDayClick(day.date)}

@@ -86,6 +86,9 @@ export interface DashboardCosmicContext extends Omit<CosmicContext, "jupiter" | 
     moon: SignTransition | null;
     sun: SignTransition | null;
   };
+  // Lunar elongation (Sun-Moon angle, 0-360°)
+  // 0° = New Moon peak, 180° = Full Moon peak
+  lunarElongation: number;
 }
 
 // =============================================================================
@@ -363,10 +366,12 @@ export function calculateDashboardCosmicContext(
   const neptunePos = chart.planets.neptune;
   const plutoPos = chart.planets.pluto;
 
-  // Calculate moon phase
+  // Calculate moon phase and lunar elongation
   const sunLon = sunPos?.position.longitude ?? 0;
   const moonLon = moonPos?.position.longitude ?? 0;
   const moonPhase = calculateMoonPhase(sunLon, moonLon);
+  // Lunar elongation: 0° = New Moon peak, 180° = Full Moon peak
+  const lunarElongation = ((moonLon - sunLon + 360) % 360);
 
   // Filter for tight aspects (orb <= 2°) between planets
   const relevantPlanets = new Set([
@@ -444,6 +449,7 @@ export function calculateDashboardCosmicContext(
       moon: moonTransition,
       sun: sunTransition,
     },
+    lunarElongation: Math.round(lunarElongation * 100) / 100,
     aspects: tightAspects,
     calculatedAt: timestamp.toISOString(),
   };

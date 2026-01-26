@@ -2,8 +2,11 @@
  * GET /api/calendar/ephemeris - Get cosmic context for calendar
  *
  * Supports two query modes:
- * - Single day: ?date=YYYY-MM-DD
- * - Date range: ?start=YYYY-MM-DD&end=YYYY-MM-DD
+ * - Single day: ?date=YYYY-MM-DD&tz=IANA_TIMEZONE
+ * - Date range: ?start=YYYY-MM-DD&end=YYYY-MM-DD&tz=IANA_TIMEZONE
+ *
+ * The `tz` parameter (optional) specifies the user's timezone for accurate
+ * lunar peak detection. Defaults to UTC if not provided.
  *
  * No authentication required - cosmic context is universal.
  * Rate limited to 60 requests per minute.
@@ -21,6 +24,41 @@ import {
   type EphemerisRange,
 } from "@/lib/calendar";
 import { checkRateLimit } from "@/lib/rate-limit";
+
+/**
+ * Get a Date object representing noon on a given date in a specific timezone.
+ * This ensures "January 3" means noon on January 3 in the user's local time.
+ */
+function getNoonInTimezone(dateStr: string, timezone: string): Date {
+  // Parse the date components
+  const [year, month, day] = dateStr.split("-").map(Number);
+  if (!year || !month || !day) {
+    return new Date(`${dateStr}T12:00:00Z`);
+  }
+
+  // Create a date at noon UTC as starting point
+  const noonUtc = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+
+  // Get the timezone offset at this moment
+  // We use Intl.DateTimeFormat to find what hour it is in the target timezone
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    hour: "numeric",
+    hour12: false,
+  });
+
+  try {
+    const hourInTz = parseInt(formatter.format(noonUtc), 10);
+    // If it's showing 12, we're at noon in that timezone (offset = 0 from our goal)
+    // If it's showing 4, we need to add 8 hours (noon - 4 = 8)
+    // If it's showing 20, we need to subtract 8 hours (noon - 20 = -8)
+    const offsetHours = 12 - hourInTz;
+    return new Date(noonUtc.getTime() + offsetHours * 60 * 60 * 1000);
+  } catch {
+    // Invalid timezone, fall back to UTC noon
+    return noonUtc;
+  }
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -48,6 +86,7 @@ export async function GET(request: NextRequest) {
     const date = searchParams.get("date");
     const start = searchParams.get("start");
     const end = searchParams.get("end");
+    const tz = searchParams.get("tz") ?? "UTC";
 
     // Single day mode
     if (date) {
@@ -59,7 +98,8 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      const dateObj = new Date(`${date}T12:00:00Z`); // Noon UTC for consistency
+      // Calculate at noon in the user's timezone for accurate day attribution
+      const dateObj = getNoonInTimezone(date, tz);
       const cosmicContext = calculateDashboardCosmicContext(
         dateObj,
         calculateNextSignTransition
@@ -87,8 +127,8 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      const startDate = new Date(`${start}T12:00:00Z`);
-      const endDate = new Date(`${end}T12:00:00Z`);
+      const startDate = new Date(`${start}T00:00:00Z`);
+      const endDate = new Date(`${end}T00:00:00Z`);
 
       // Validate range (max 45 days to cover a month + buffer)
       const daysDiff = Math.ceil(
@@ -107,14 +147,16 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      // Calculate cosmic context for each day
+      // Calculate cosmic context for each day at noon in the user's timezone
+      // This ensures lunar events are attributed to the correct calendar day
       const days: Record<string, EphemerisDay> = {};
       const current = new Date(startDate);
 
       while (current <= endDate) {
         const dateKey = current.toISOString().split("T")[0]!;
+        const noonLocal = getNoonInTimezone(dateKey, tz);
         days[dateKey] = calculateDashboardCosmicContext(
-          current,
+          noonLocal,
           calculateNextSignTransition
         );
         current.setDate(current.getDate() + 1);

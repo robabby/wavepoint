@@ -10,6 +10,7 @@ import { CosmicWeather } from "@/components/calendar/cosmic-weather";
 import { PersonalTransits } from "@/components/calendar/personal-transits";
 import { JournalSection } from "@/components/calendar/journal-section";
 import { SightingsSection } from "@/components/calendar/sightings-section";
+import { DayNavigation } from "@/components/calendar/day-navigation";
 import type { MoonPhase } from "@/lib/signal/cosmic-context";
 
 interface DayViewContentProps {
@@ -85,10 +86,18 @@ export function DayViewContent({ date }: DayViewContentProps) {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto max-w-2xl px-4 py-8">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
-          <BackLink monthKey={monthKey} />
-          <h1 className="font-heading text-lg text-foreground">{formattedDate}</h1>
-        </div>
+        <header className="mb-6">
+          {/* Top row: Back link and day navigation */}
+          <div className="flex items-center justify-between mb-3">
+            <BackLink monthKey={monthKey} />
+            <DayNavigation date={date} />
+          </div>
+
+          {/* Date heading - centered */}
+          <h1 className="font-heading text-xl text-center text-foreground">
+            {formattedDate}
+          </h1>
+        </header>
 
         {/* Moon Phase Hero */}
         <div className="relative mb-8 overflow-hidden rounded-xl border border-[var(--border-gold)]/20 bg-card/40 backdrop-blur-sm">

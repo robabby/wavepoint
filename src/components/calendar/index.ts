@@ -10,3 +10,4 @@ export { CosmicWeather } from "./cosmic-weather";
 export { PersonalTransits } from "./personal-transits";
 export { JournalSection } from "./journal-section";
 export { SightingsSection } from "./sightings-section";
+export { DayNavigation } from "./day-navigation";
