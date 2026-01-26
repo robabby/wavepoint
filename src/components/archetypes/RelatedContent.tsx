@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Heading, Text } from "@radix-ui/themes";
 import type { ArchetypeWithRelations } from "@/lib/archetypes";
+import { getLinkedTarotCard, getMajorArcanaBySlug } from "@/lib/tarot";
 import { AnimatedCard } from "@/components/animated-card";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
@@ -18,7 +19,12 @@ export function RelatedContent({ archetype }: RelatedContentProps) {
   const hasRelatedGeometries = archetype.relatedGeometries.length > 0;
   const hasRelatedSigns = archetype.relatedSigns.length > 0;
 
-  if (!hasRelatedNumbers && !hasRelatedGeometries && !hasRelatedSigns) {
+  // Check for related tarot card
+  const linkedTarotSlug = getLinkedTarotCard(archetype.slug);
+  const linkedTarotCard = linkedTarotSlug ? getMajorArcanaBySlug(linkedTarotSlug) : undefined;
+  const hasRelatedTarot = !!linkedTarotCard;
+
+  if (!hasRelatedNumbers && !hasRelatedGeometries && !hasRelatedSigns && !hasRelatedTarot) {
     return null;
   }
 
@@ -128,6 +134,31 @@ export function RelatedContent({ archetype }: RelatedContentProps) {
             </div>
             <Text size="1" className="mt-3 block text-muted-foreground/60">
               Via {planetName} planetary rulership
+            </Text>
+          </AnimatedCard>
+        )}
+
+        {/* Related Tarot Card */}
+        {hasRelatedTarot && linkedTarotCard && (
+          <AnimatedCard className="p-5">
+            <Text
+              size="2"
+              weight="medium"
+              className="mb-3 block text-[var(--color-gold-bright)]"
+            >
+              Related Tarot Card
+            </Text>
+            <Link
+              href={`/archetypes/tarot/${linkedTarotCard.slug}`}
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/20 bg-card/30 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-[var(--color-gold)]/40 hover:text-[var(--color-gold)]"
+            >
+              <span className="font-display tracking-wider text-[var(--color-gold)]">
+                {linkedTarotCard.romanNumeral}
+              </span>
+              <span>{linkedTarotCard.name}</span>
+            </Link>
+            <Text size="1" className="mt-3 block text-muted-foreground/60">
+              Shared archetypal themes
             </Text>
           </AnimatedCard>
         )}
