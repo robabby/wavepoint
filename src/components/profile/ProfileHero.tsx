@@ -51,60 +51,64 @@ export function ProfileHero({ bigThree }: ProfileHeroProps) {
       {/* Big Three cards */}
       <div className="grid gap-4 sm:grid-cols-3">
         {/* Sun */}
-        <AnimatedCard className="p-5 text-center">
-          <div className="mb-2 text-3xl">{sunMeta.glyph}</div>
-          <Text size="1" weight="medium" className="mb-1 block uppercase tracking-wider text-muted-foreground">
-            Sun
-          </Text>
-          <Heading size="4" className="font-display capitalize text-[var(--color-gold)]">
-            {bigThree.sun.sign}
-          </Heading>
-          <Text size="1" className="text-muted-foreground">
-            {bigThree.sun.degree.toFixed(0)}°
-          </Text>
-        </AnimatedCard>
+        <Link href={`/astrology/signs/${bigThree.sun.sign}`} className="block">
+          <AnimatedCard className="p-5 text-center transition-colors hover:border-[var(--color-gold)]/40">
+            <div className="mb-2 text-3xl">{sunMeta.glyph}</div>
+            <Text size="1" weight="medium" className="mb-1 block uppercase tracking-wider text-muted-foreground">
+              Sun
+            </Text>
+            <Heading size="4" className="font-display capitalize text-[var(--color-gold)]">
+              {bigThree.sun.sign}
+            </Heading>
+            <Text size="1" className="text-muted-foreground">
+              {bigThree.sun.degree.toFixed(0)}°
+            </Text>
+          </AnimatedCard>
+        </Link>
 
         {/* Moon */}
-        <AnimatedCard className="p-5 text-center">
-          <div className="mb-2 text-3xl">{moonMeta.glyph}</div>
-          <Text size="1" weight="medium" className="mb-1 block uppercase tracking-wider text-muted-foreground">
-            Moon
-          </Text>
-          <Heading size="4" className="font-display capitalize text-[var(--color-gold)]">
-            {bigThree.moon.sign}
-          </Heading>
-          <Text size="1" className="text-muted-foreground">
-            {bigThree.moon.degree.toFixed(0)}°
-          </Text>
-        </AnimatedCard>
+        <Link href={`/astrology/signs/${bigThree.moon.sign}`} className="block">
+          <AnimatedCard className="p-5 text-center transition-colors hover:border-[var(--color-gold)]/40">
+            <div className="mb-2 text-3xl">{moonMeta.glyph}</div>
+            <Text size="1" weight="medium" className="mb-1 block uppercase tracking-wider text-muted-foreground">
+              Moon
+            </Text>
+            <Heading size="4" className="font-display capitalize text-[var(--color-gold)]">
+              {bigThree.moon.sign}
+            </Heading>
+            <Text size="1" className="text-muted-foreground">
+              {bigThree.moon.degree.toFixed(0)}°
+            </Text>
+          </AnimatedCard>
+        </Link>
 
         {/* Rising */}
-        <AnimatedCard className="p-5 text-center">
-          {risingMeta ? (
-            <>
+        {risingMeta && bigThree.rising ? (
+          <Link href={`/astrology/signs/${bigThree.rising.sign}`} className="block">
+            <AnimatedCard className="p-5 text-center transition-colors hover:border-[var(--color-gold)]/40">
               <div className="mb-2 text-3xl">{risingMeta.glyph}</div>
               <Text size="1" weight="medium" className="mb-1 block uppercase tracking-wider text-muted-foreground">
                 Rising
               </Text>
               <Heading size="4" className="font-display capitalize text-[var(--color-gold)]">
-                {bigThree.rising!.sign}
+                {bigThree.rising.sign}
               </Heading>
               <Text size="1" className="text-muted-foreground">
-                {bigThree.rising!.degree.toFixed(0)}°
+                {bigThree.rising.degree.toFixed(0)}°
               </Text>
-            </>
-          ) : (
-            <>
-              <div className="mb-2 text-3xl text-muted-foreground/30">↑</div>
-              <Text size="1" weight="medium" className="mb-1 block uppercase tracking-wider text-muted-foreground">
-                Rising
-              </Text>
-              <Text size="2" className="text-muted-foreground/60">
-                Add birth time to reveal
-              </Text>
-            </>
-          )}
-        </AnimatedCard>
+            </AnimatedCard>
+          </Link>
+        ) : (
+          <AnimatedCard className="p-5 text-center">
+            <div className="mb-2 text-3xl text-muted-foreground/30">↑</div>
+            <Text size="1" weight="medium" className="mb-1 block uppercase tracking-wider text-muted-foreground">
+              Rising
+            </Text>
+            <Text size="2" className="text-muted-foreground/60">
+              Add birth time to reveal
+            </Text>
+          </AnimatedCard>
+        )}
       </div>
     </div>
   );
