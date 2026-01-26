@@ -1,8 +1,17 @@
-import { cn } from "@/lib/utils";
+"use client";
 
-interface PlanetGlyphProps {
+import { cn } from "@/lib/utils";
+import type { Element } from "@/lib/numbers/planetary";
+import {
+  ELEMENT_STYLES,
+  DEFAULT_ELEMENT_STYLE,
+} from "@/lib/theme/element-styles";
+
+interface ArchetypeGlyphProps {
   /** The Unicode glyph symbol (e.g., "♄") */
   glyph: string;
+  /** Element for tinting (fire, water, air, earth) */
+  element: Element;
   /** Size variant */
   size?: "sm" | "md" | "lg" | "xl" | "hero";
   /** Optional className */
@@ -26,25 +35,30 @@ const frameSizes = {
 };
 
 /**
- * Reusable planet glyph display with circular frame.
- * Follows "Celestial Observatory" aesthetic with gold ring border.
+ * Archetype glyph display with element-tinted circular frame.
+ * Variant of PlanetGlyph with element-colored border and glow.
  */
-export function PlanetGlyph({
+export function ArchetypeGlyph({
   glyph,
+  element,
   size = "md",
   className,
-}: PlanetGlyphProps) {
+}: ArchetypeGlyphProps) {
+  const styles = ELEMENT_STYLES[element] ?? DEFAULT_ELEMENT_STYLE;
+
   return (
     <div
       className={cn(
         "flex items-center justify-center rounded-full",
-        "border-2 border-[var(--color-gold)]/40",
+        "border-2",
         "bg-gradient-to-br from-card/80 to-card/40",
-        // Subtle planetary aura effect
-        "shadow-[0_0_20px_rgba(212,168,75,0.1)]",
         frameSizes[size],
         className
       )}
+      style={{
+        borderColor: styles.accentBorder,
+        boxShadow: `0 0 20px ${styles.glowColor}`,
+      }}
       aria-hidden="true"
     >
       <span
@@ -52,6 +66,9 @@ export function PlanetGlyph({
           "flex translate-y-[2px] items-center justify-center font-display leading-none text-[var(--color-gold)]",
           sizeClasses[size]
         )}
+        style={{
+          filter: styles.symbolGlow,
+        }}
       >
         {glyph}
       </span>
