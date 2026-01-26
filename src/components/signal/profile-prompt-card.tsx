@@ -6,14 +6,26 @@ import { Sparkles, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ProfilePromptCardProps {
+  /** Optional custom title (default: "Unlock Personalized Insights") */
+  title?: string;
+  /** Optional custom description */
+  description?: string;
+  /** Optional custom link text (default: "Create your profile") */
+  linkText?: string;
+  /** Optional className */
   className?: string;
 }
 
 /**
  * Inviting card prompting users without a profile to create one.
- * Displays on Signal dashboard for users who haven't set up their cosmic profile.
+ * Used across features (Signal, Calendar) for users who haven't set up their cosmic profile.
  */
-export function ProfilePromptCard({ className }: ProfilePromptCardProps) {
+export function ProfilePromptCard({
+  title = "Unlock Personalized Insights",
+  description = "Add your birth details to see how angel numbers connect to your cosmic blueprint.",
+  linkText = "Create your profile",
+  className,
+}: ProfilePromptCardProps) {
   return (
     <div
       className={cn(
@@ -41,11 +53,10 @@ export function ProfilePromptCard({ className }: ProfilePromptCardProps) {
 
         <div className="flex-1">
           <h3 className="font-heading text-base text-[var(--color-gold)]">
-            Unlock Personalized Insights
+            {title}
           </h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Add your birth details to see how angel numbers connect to your
-            cosmic blueprint.
+            {description}
           </p>
           <Link
             href="/profile"
@@ -55,7 +66,7 @@ export function ProfilePromptCard({ className }: ProfilePromptCardProps) {
               "hover:text-[var(--color-gold-bright)]"
             )}
           >
-            Create your profile
+            {linkText}
             <ArrowRight className="h-3 w-3" />
           </Link>
         </div>

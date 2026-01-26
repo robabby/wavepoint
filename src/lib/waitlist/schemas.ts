@@ -10,7 +10,7 @@ import { z } from "zod";
  * Available waitlist sources
  * Extensible for future features
  */
-export const waitlistSources = ["signal"] as const;
+export const waitlistSources = ["signal", "calendar"] as const;
 export type WaitlistSource = (typeof waitlistSources)[number];
 
 /**
