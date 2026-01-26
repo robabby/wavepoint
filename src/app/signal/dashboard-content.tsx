@@ -4,12 +4,13 @@ import { useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Plus, Settings } from "lucide-react";
-import { useSightings, useStats, useHeatmap, useCreateSighting } from "@/hooks/signal";
+import { useSightings, useStats, useHeatmap, useCreateSighting, useCurrentCosmicContext } from "@/hooks/signal";
 import { useProfile } from "@/hooks/profile";
 import type { DelightMoment } from "@/lib/signal/delight";
 import type { MoodOption } from "@/lib/signal/schemas";
 import {
   ActivityHeatmap,
+  DashboardCosmicContextCard,
   DelightToast,
   getDateRangeStart,
   InlineCaptureInput,
@@ -53,6 +54,15 @@ export function DashboardContent() {
   });
 
   const { hasProfile, isLoading: profileLoading } = useProfile();
+
+  const {
+    cosmicContext,
+    isLoading: cosmicLoading,
+    isFetching: cosmicFetching,
+    isError: cosmicError,
+    error: cosmicErrorMsg,
+    refetch: refetchCosmic,
+  } = useCurrentCosmicContext();
 
   const handleSelectNumber = useCallback(
     (number: string) => {
@@ -99,22 +109,49 @@ export function DashboardContent() {
       <div className="container relative z-10 mx-auto max-w-4xl px-4 py-8">
         {/* Header */}
         <header className="mb-8">
-          <div className="flex items-center justify-center gap-3">
-            <h1 className="font-display text-4xl text-[var(--color-gold)]">
-              Signal
-            </h1>
+          <div className="flex items-center justify-between">
+            {/* Left spacer for centering */}
+            <div className="w-24" />
+
+            {/* Center: Title */}
+            <div className="flex items-center gap-3">
+              <h1 className="font-display text-4xl text-[var(--color-gold)]">
+                Signal
+              </h1>
+              <Link
+                href="/signal/settings"
+                aria-label="Settings"
+                className="text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Settings className="h-5 w-5" />
+              </Link>
+            </div>
+
+            {/* Right: Capture button */}
             <Link
-              href="/signal/settings"
-              aria-label="Settings"
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              href="/signal/capture"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-4 py-2 text-sm font-medium text-[var(--color-gold)] transition-all hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/20"
             >
-              <Settings className="h-5 w-5" />
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Capture</span>
             </Link>
           </div>
           <p className="mt-2 text-center text-muted-foreground">
             Your angel number collection
           </p>
         </header>
+
+        {/* Cosmic Context Card */}
+        <section className="mb-8">
+          <DashboardCosmicContextCard
+            cosmicContext={cosmicContext}
+            isLoading={cosmicLoading}
+            isFetching={cosmicFetching}
+            isError={cosmicError}
+            error={cosmicErrorMsg}
+            onRefresh={refetchCosmic}
+          />
+        </section>
 
         {/* Stats Summary */}
         <StatsSummary
@@ -205,7 +242,7 @@ export function DashboardContent() {
 
             {/* Your Numbers - only show when not filtered */}
             {!numberFilter && (
-              <section className="mb-24">
+              <section className="mb-8">
                 <h2 className="mb-4 font-heading text-xl text-foreground">
                   Your Numbers
                 </h2>
@@ -219,19 +256,7 @@ export function DashboardContent() {
           </>
         )}
 
-        {/* Fixed CTA button */}
-        {!isEmpty && (
-          <div className="fixed bottom-8 left-0 right-0 flex justify-center">
-            <Link
-              href="/signal/capture"
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)] px-6 py-3 font-heading text-sm uppercase tracking-wide text-primary-foreground shadow-lg transition-all hover:bg-[var(--color-gold-bright)] hover:shadow-xl"
-            >
-              <Plus className="h-4 w-4" />
-              Capture Signal
-            </Link>
-          </div>
-        )}
-      </div>
+              </div>
     </div>
   );
 }

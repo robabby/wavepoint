@@ -61,6 +61,33 @@ export interface CosmicContext {
   calculatedAt: string; // ISO timestamp
 }
 
+/**
+ * Sign transition info - when a luminary enters a new sign
+ */
+export interface SignTransition {
+  nextSign: ZodiacSign;
+  timestamp: string; // ISO UTC timestamp
+}
+
+/**
+ * Extended cosmic context for dashboard display.
+ * Includes generational planets and sign transitions.
+ */
+export interface DashboardCosmicContext extends Omit<CosmicContext, "jupiter" | "saturn"> {
+  // Social planets with degree info for dashboard
+  jupiter: PlanetContext;
+  saturn: PlanetContext;
+  // Generational planets (sign only)
+  uranus: Pick<PlanetContext, "sign">;
+  neptune: Pick<PlanetContext, "sign">;
+  pluto: Pick<PlanetContext, "sign">;
+  // Sign transitions for luminaries
+  transitions: {
+    moon: SignTransition | null;
+    sun: SignTransition | null;
+  };
+}
+
 // =============================================================================
 // Constants
 // =============================================================================
@@ -272,4 +299,152 @@ export function formatDegree(degree: number): string {
   const wholeDegrees = Math.floor(degree);
   const minutes = Math.round((degree - wholeDegrees) * 60);
   return `${wholeDegrees}° ${minutes}'`;
+}
+
+/**
+ * Get glow color for a moon phase.
+ * Returns CSS rgba values for atmospheric glow effects.
+ */
+export function getMoonPhaseGlow(phase: MoonPhase): string {
+  switch (phase) {
+    case "new_moon":
+      return "rgba(212, 168, 75, 0.2)"; // subtle - new beginnings
+    case "waxing_crescent":
+    case "first_quarter":
+      return "rgba(212, 168, 75, 0.35)"; // building
+    case "waxing_gibbous":
+      return "rgba(212, 168, 75, 0.45)"; // approaching peak
+    case "full_moon":
+      return "rgba(232, 192, 104, 0.6)"; // bright peak
+    case "waning_gibbous":
+    case "last_quarter":
+      return "rgba(166, 138, 60, 0.35)"; // muted release
+    case "waning_crescent":
+      return "rgba(166, 138, 60, 0.25)"; // fading
+    default:
+      return "rgba(212, 168, 75, 0.3)";
+  }
+}
+
+/**
+ * Calculate extended cosmic context for dashboard display.
+ *
+ * Includes generational planets (Uranus, Neptune, Pluto) and
+ * sign transitions for Moon and Sun.
+ *
+ * @param timestamp - The moment to calculate for (defaults to now)
+ * @param calculateTransitions - Function to calculate sign transitions (injected for testability)
+ * @returns The dashboard cosmic context with all planets and transitions
+ */
+export function calculateDashboardCosmicContext(
+  timestamp: Date = new Date(),
+  calculateTransitions?: (body: "sun" | "moon", longitude: number, fromDate: Date) => SignTransition | null
+): DashboardCosmicContext {
+  // Calculate chart for Greenwich at the given timestamp
+  const chart = calculateChart({
+    year: timestamp.getUTCFullYear(),
+    month: timestamp.getUTCMonth() + 1, // 1-indexed
+    day: timestamp.getUTCDate(),
+    hour: timestamp.getUTCHours(),
+    minute: timestamp.getUTCMinutes(),
+    second: timestamp.getUTCSeconds(),
+    location: GREENWICH,
+  });
+
+  // Extract planet positions
+  const sunPos = chart.planets.sun;
+  const moonPos = chart.planets.moon;
+  const mercuryPos = chart.planets.mercury;
+  const venusPos = chart.planets.venus;
+  const marsPos = chart.planets.mars;
+  const jupiterPos = chart.planets.jupiter;
+  const saturnPos = chart.planets.saturn;
+  const uranusPos = chart.planets.uranus;
+  const neptunePos = chart.planets.neptune;
+  const plutoPos = chart.planets.pluto;
+
+  // Calculate moon phase
+  const sunLon = sunPos?.position.longitude ?? 0;
+  const moonLon = moonPos?.position.longitude ?? 0;
+  const moonPhase = calculateMoonPhase(sunLon, moonLon);
+
+  // Filter for tight aspects (orb <= 2°) between planets
+  const relevantPlanets = new Set([
+    "sun", "moon", "mercury", "venus", "mars",
+    "jupiter", "saturn", "uranus", "neptune", "pluto"
+  ]);
+  const tightAspects: CosmicAspect[] = chart.aspects.all
+    .filter((aspect) => {
+      if (aspect.orb > MAX_ASPECT_ORB) return false;
+      const p1 = aspect.point1.id.toLowerCase();
+      const p2 = aspect.point2.id.toLowerCase();
+      return relevantPlanets.has(p1) && relevantPlanets.has(p2);
+    })
+    .map((aspect) => ({
+      planet1: aspect.point1.id.toLowerCase(),
+      planet2: aspect.point2.id.toLowerCase(),
+      type: aspect.type,
+      orb: Math.round(aspect.orb * 10) / 10,
+    }));
+
+  // Calculate sign transitions if function provided
+  let moonTransition: SignTransition | null = null;
+  let sunTransition: SignTransition | null = null;
+
+  if (calculateTransitions) {
+    moonTransition = calculateTransitions("moon", moonLon, timestamp);
+    sunTransition = calculateTransitions("sun", sunLon, timestamp);
+  }
+
+  return {
+    sun: {
+      sign: sunPos?.position.sign ?? "aries",
+      degree: Math.round((sunPos?.position.signDegrees ?? 0) * 100) / 100,
+    },
+    moon: {
+      sign: moonPos?.position.sign ?? "aries",
+      degree: Math.round((moonPos?.position.signDegrees ?? 0) * 100) / 100,
+      phase: moonPhase,
+    },
+    mercury: {
+      sign: mercuryPos?.position.sign ?? "aries",
+      degree: Math.round((mercuryPos?.position.signDegrees ?? 0) * 100) / 100,
+      isRetrograde: mercuryPos?.isRetrograde ?? false,
+    },
+    venus: {
+      sign: venusPos?.position.sign ?? "aries",
+      degree: Math.round((venusPos?.position.signDegrees ?? 0) * 100) / 100,
+      isRetrograde: venusPos?.isRetrograde ?? false,
+    },
+    mars: {
+      sign: marsPos?.position.sign ?? "aries",
+      degree: Math.round((marsPos?.position.signDegrees ?? 0) * 100) / 100,
+      isRetrograde: marsPos?.isRetrograde ?? false,
+    },
+    jupiter: {
+      sign: jupiterPos?.position.sign ?? "aries",
+      degree: Math.round((jupiterPos?.position.signDegrees ?? 0) * 100) / 100,
+      isRetrograde: jupiterPos?.isRetrograde ?? false,
+    },
+    saturn: {
+      sign: saturnPos?.position.sign ?? "aries",
+      degree: Math.round((saturnPos?.position.signDegrees ?? 0) * 100) / 100,
+      isRetrograde: saturnPos?.isRetrograde ?? false,
+    },
+    uranus: {
+      sign: uranusPos?.position.sign ?? "aries",
+    },
+    neptune: {
+      sign: neptunePos?.position.sign ?? "aries",
+    },
+    pluto: {
+      sign: plutoPos?.position.sign ?? "aries",
+    },
+    transitions: {
+      moon: moonTransition,
+      sun: sunTransition,
+    },
+    aspects: tightAspects,
+    calculatedAt: timestamp.toISOString(),
+  };
 }
