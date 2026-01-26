@@ -103,21 +103,24 @@ export function TarotCard({ card, className }: TarotCardProps) {
             </div>
           </div>
 
-          {/* Card name */}
-          <h3
-            className="mb-1 text-center font-display text-sm tracking-wide sm:text-base"
-            style={{ color: TAROT_STYLES.colors.goldBright }}
-          >
-            {card.name.toUpperCase()}
-          </h3>
+          {/* Card info - fixed height to ensure consistent card sizes */}
+          <div className="flex min-h-[3.5rem] flex-col justify-center sm:min-h-[4rem]">
+            {/* Card name */}
+            <h3
+              className="mb-1 text-center font-display text-sm leading-tight tracking-wide sm:text-base"
+              style={{ color: TAROT_STYLES.colors.goldBright }}
+            >
+              {card.name.toUpperCase()}
+            </h3>
 
-          {/* Keywords (first 2) */}
-          <p
-            className="text-center text-xs"
-            style={{ color: TAROT_STYLES.colors.gold, opacity: 0.8 }}
-          >
-            {card.keywords.slice(0, 2).join(" · ")}
-          </p>
+            {/* Keywords (first 2) */}
+            <p
+              className="text-center text-xs"
+              style={{ color: TAROT_STYLES.colors.gold, opacity: 0.8 }}
+            >
+              {card.keywords.slice(0, 2).join(" · ")}
+            </p>
+          </div>
         </TarotCardFrame>
 
         {/* Hover glow effect */}
