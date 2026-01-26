@@ -30,7 +30,7 @@ interface Particle {
   delay: number;       // seconds
   duration: number;    // seconds (15-28)
   opacity: number;     // 0.04-0.12
-  fontSize: number;    // rem (0.75-2)
+  fontSize: number;    // rem (1.5-4)
   blur: number;        // px (0-2)
   drift: number;       // horizontal drift vw
   rotation: number;    // degrees (-8 to 8)
@@ -47,9 +47,9 @@ function getWeightedPosition(): number {
 
 function generateParticles(count: number): Particle[] {
   return Array.from({ length: count }, (_, i) => {
-    const fontSize = 0.75 + Math.random() * 1.25;
+    const fontSize = 1.5 + Math.random() * 2.5;
     // Larger = sharper (closer), smaller = blurrier (farther)
-    const blur = fontSize < 1 ? 1 + Math.random() : fontSize < 1.5 ? Math.random() * 0.5 : 0;
+    const blur = fontSize < 2 ? 1 + Math.random() : fontSize < 3 ? Math.random() * 0.5 : 0;
 
     return {
       id: i,
