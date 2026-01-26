@@ -89,6 +89,29 @@ Invite code system for gated registration during closed beta.
 
 **Feature flag**: Requires `NEXT_PUBLIC_INVITES_REQUIRED=true`
 
+### Calendar (Cosmic Calendar)
+
+Multi-scale cosmic calendar with moon phases, personal transits, journal entries, and sightings integration.
+
+| Entry Point | Purpose |
+|-------------|---------|
+| `src/lib/calendar/index.ts` | Lib exports: schemas, types, feature flag |
+| `src/lib/transits/index.ts` | Transit calculations for natal chart aspects |
+| `src/hooks/calendar/index.ts` | React Query hooks |
+| `src/app/calendar/` | Pages: month view, day view |
+| `src/app/api/calendar/` | API routes: ephemeris, journal, transits |
+
+**Hooks**: `useEphemeris`, `useEphemerisRange`, `useTransits`, `useJournalEntries`, `useJournalEntry`, `useCreateJournalEntry`, `useUpdateJournalEntry`, `useDeleteJournalEntry`
+
+**Feature flag**: `isCalendarEnabled()` — requires `NEXT_PUBLIC_CALENDAR_ENABLED=true`
+
+**Key features**:
+- Month view with moon phase indicators (FULL/NEW labels on peak days)
+- Day view with cosmic weather, personal transits, journal, and sightings
+- Day-to-day navigation with moon phase previews
+- Timezone-aware ephemeris calculations
+- Journal entries with cosmic snapshots
+
 ### Geometries (Sacred Geometry Content)
 
 MDX content pages for Platonic solids and patterns with relationship graphs.
@@ -105,6 +128,41 @@ MDX content pages for Platonic solids and patterns with relationship graphs.
 
 ---
 
+## UI Components
+
+### Authenticated Sidebar
+
+Collapsible sidebar for authenticated users with navigation and cosmic context.
+
+| Entry Point | Purpose |
+|-------------|---------|
+| `src/components/sidebar/app-sidebar.tsx` | Main sidebar component |
+| `src/components/sidebar/sidebar-nav.tsx` | Navigation sections |
+| `src/lib/sidebar/index.ts` | Sidebar state context (`useSidebar`) |
+
+**Features**:
+- User identity section with avatar
+- Live moon phase display with glow effects
+- Quick capture CTA button
+- Practice section: Signal, Calendar
+- Account section: Profile, Settings, Admin (if admin)
+- Collapsible to icon rail (state persisted)
+- Mobile drawer variant
+
+**Navigation structure**:
+```
+PRACTICE
+├── Signal (/signal)
+└── Calendar (/calendar)
+
+ACCOUNT
+├── Profile (/profile)
+├── Settings (/settings)
+└── Admin (/admin) — admins only
+```
+
+---
+
 ## Infrastructure
 
 ### Database (Drizzle + Neon)
@@ -115,6 +173,8 @@ Schema in `src/lib/db/schema.ts`. Tables:
 |--------|--------|
 | Auth | `users`, `sessions`, `accounts`, `verificationTokens`, `addresses` |
 | Signal | `signalSightings`, `signalInterpretations`, `signalUserActivityStats`, `signalUserNumberStats`, `signalSubscriptions`, `signalSubscriptionUsage` |
+| Calendar | `calendarJournalEntries` |
+| Profile | `spiritualProfiles` (natal chart data for transits) |
 | Beta | `invites`, `waitlistSignups`, `contactSubmissions` |
 
 ```bash
@@ -193,6 +253,7 @@ cp ../.env .env           # Copy env from sibling worktree (or main)
 |---------|-----|--------|
 | Signal | `docs/prds/signal.md` | In Development |
 | Numbers | `docs/prds/numbers.md` | Shipped |
+| Calendar | `docs/plans/2026-01-26-calendar-implementation.md` | Shipped |
 
 ### UX Guidelines
 
@@ -237,6 +298,7 @@ Source of truth: `src/env.js`. All variables validated with Zod.
 |----------|---------|-------------|
 | `NEXT_PUBLIC_AUTH_ENABLED` | `false` | Enable authentication |
 | `NEXT_PUBLIC_SIGNAL_ENABLED` | `false` | Enable Signal feature |
+| `NEXT_PUBLIC_CALENDAR_ENABLED` | `false` | Enable Calendar feature |
 | `NEXT_PUBLIC_INVITES_REQUIRED` | `false` | Require invite codes for registration |
 
 ### Optional Services
@@ -264,21 +326,28 @@ Source of truth: `src/env.js`. All variables validated with Zod.
 
 ```
 src/app/                    # App Router pages
-  account/                  # User account pages
   admin/                    # Admin pages
   api/                      # API routes
+    calendar/               # Calendar API (ephemeris, journal, transits)
+    signal/                 # Signal API
   auth/                     # Auth pages (sign-in, register, verify)
+  calendar/                 # Calendar pages (month view, day/[date])
   contact/                  # Contact form
   geometries/               # Sacred geometry content ([category]/[slug])
   numbers/                  # Angel number content hub
+  profile/                  # User profile page
+  settings/                 # User settings (profile, address)
   signal/                   # Signal pages (dashboard, capture, sighting)
 src/components/
   ui/                       # shadcn/ui components
+  calendar/                 # Calendar UI components
   geometry/                 # Geometry-specific components
+  sidebar/                  # Authenticated user sidebar
   signal/                   # Signal UI components
 src/lib/
   analytics/                # Mixpanel analytics
   auth/                     # Auth.js configuration
+  calendar/                 # Calendar: types, schemas, feature flag
   contact/                  # Contact form + Brevo sync
   data/                     # Geometries data
   db/                       # Drizzle ORM + schema
@@ -287,11 +356,14 @@ src/lib/
   invites/                  # Invite code system
   numbers/                  # Angel number patterns
   rate-limit/               # Upstash Redis rate limiting
+  sidebar/                  # Sidebar state context
   signal/                   # Signal: Claude API, subscriptions
   stripe/                   # Stripe client for subscriptions
   theme/                    # Light/dark theme context
+  transits/                 # Personal transit calculations
   waitlist/                 # Waitlist signups + Brevo sync
 src/hooks/
+  calendar/                 # Calendar React Query hooks
   numbers/                  # Numbers React Query hooks
   signal/                   # Signal React Query hooks
 src/content/                # MDX files (platonic-solids/, patterns/)
@@ -325,3 +397,7 @@ docs/
 **API routes**: Follow `src/app/api/*/` structure. All use `src/lib/` modules.
 
 **Adding features**: Create `src/lib/*/` module, add feature flag, create hooks if client-side state needed.
+
+**Sidebar context**: Use `useSidebar()` from `@/lib/sidebar` for collapse state.
+
+**Transit calculations**: Use `src/lib/transits/` for natal chart transit aspects. Requires user's `spiritualProfiles` data.
