@@ -13,8 +13,8 @@ interface AnimateOnScrollProps {
   delay?: number;
   /** Duration of the animation (in seconds) */
   duration?: number;
-  /** How much of the element should be visible before triggering (0-1) */
-  threshold?: number;
+  /** Margin around viewport to trigger earlier (e.g., "-100px" triggers 100px before entering) */
+  margin?: string;
 }
 
 const variants: Record<string, Variants> = {
@@ -54,14 +54,14 @@ export function AnimateOnScroll({
   variant = "fadeUp",
   delay = 0,
   duration = 0.5,
-  threshold = 0.2,
+  margin = "0px 0px 100px 0px",
 }: AnimateOnScrollProps) {
   return (
     <motion.div
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: threshold }}
+      viewport={{ once: true, amount: "some", margin }}
       variants={variants[variant]}
       transition={{
         duration,
