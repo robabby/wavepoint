@@ -15,6 +15,7 @@ import {
   InterpretationCard,
   FirstCatchCelebration,
   PatternInsightCard,
+  CosmicContextCard,
   SignalBackground,
   SubmitButton,
   DelightToast,
@@ -22,6 +23,7 @@ import {
   stepTransition,
   getOrdinal,
 } from "@/components/signal";
+import type { CosmicContext } from "@/lib/signal/cosmic-context";
 import type { DelightMoment } from "@/lib/signal/delight";
 import type { PatternInsight } from "@/lib/signal/insights";
 
@@ -41,6 +43,7 @@ interface CaptureResult {
   insight: PatternInsight | null;
   delight: DelightMoment | null;
   tier: "free" | "insight";
+  cosmicContext: CosmicContext | null;
 }
 
 const stepTransitionVariants = {
@@ -115,6 +118,7 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
         insight: response.insight ?? null,
         delight: response.delight ?? null,
         tier: response.tier ?? "insight", // Default to insight for backwards compatibility
+        cosmicContext: response.cosmicContext ?? null,
       };
 
       setResult(captureResult);
@@ -276,6 +280,14 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
               {/* Pattern Insight */}
               {result.insight && (
                 <PatternInsightCard insight={result.insight} />
+              )}
+
+              {/* Cosmic Context */}
+              {result.cosmicContext && (
+                <CosmicContextCard
+                  cosmicContext={result.cosmicContext}
+                  variant="compact"
+                />
               )}
 
               {/* Interpretation - different display for free vs insight tier */}

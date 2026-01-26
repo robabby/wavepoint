@@ -35,6 +35,10 @@ export {
   PatternInsightCard,
   type PatternInsightProps,
 } from "./pattern-insight";
+export {
+  CosmicContextCard,
+  type CosmicContextCardProps,
+} from "./cosmic-context-card";
 
 // Celebration
 export {

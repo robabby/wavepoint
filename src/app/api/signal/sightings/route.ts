@@ -12,6 +12,7 @@ import { updateUserActivityStats } from "@/lib/db/queries";
 import { generateInterpretation, type UserProfileContext } from "@/lib/signal/claude";
 import type { ZodiacSign } from "@/lib/astrology";
 import type { Element } from "@/lib/numbers/planetary";
+import { calculateCosmicContext } from "@/lib/signal/cosmic-context";
 import { detectDelight, type DelightMoment } from "@/lib/signal/delight";
 import { generateInsight, type PatternInsight } from "@/lib/signal/insights";
 import { getBaseMeaning } from "@/lib/signal/meanings";
@@ -64,10 +65,13 @@ export async function POST(request: Request) {
     const userId = session.user.id;
     const now = new Date();
 
+    // Calculate cosmic context for this moment
+    const cosmicContext = calculateCosmicContext(now);
+
     // Create sighting first
     const [sighting] = await db
       .insert(signalSightings)
-      .values({ userId, number, note, moodTags, tz })
+      .values({ userId, number, note, moodTags, tz, cosmicContext })
       .returning();
 
     // Upsert stats (neon-http doesn't support transactions, but stats are
@@ -246,6 +250,7 @@ export async function POST(request: Request) {
       insight,
       delight,
       tier,
+      cosmicContext,
     });
   } catch (error) {
     console.error("Create sighting error:", error);
