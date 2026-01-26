@@ -60,9 +60,9 @@ export function UserMenu({
           <span>Profile</span>
         </Link>
 
-        {/* Account link */}
+        {/* Settings link */}
         <Link
-          href="/account"
+          href="/settings"
           className={cn(
             "flex items-center gap-4 rounded-lg px-4 py-4 text-lg font-medium",
             "text-foreground transition-all duration-200 ease-out",
@@ -70,7 +70,7 @@ export function UserMenu({
           )}
         >
           <Settings className="h-5 w-5" />
-          <span>Account</span>
+          <span>Settings</span>
         </Link>
 
         {/* Admin link - only for admins */}
@@ -143,11 +143,11 @@ export function UserMenu({
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
-              href="/account"
+              href="/settings"
               className="text-muted-foreground !focus:bg-card !focus:text-[var(--color-gold-text)]"
             >
               <Settings className="mr-2 h-4 w-4" />
-              Account
+              Settings
             </Link>
           </DropdownMenuItem>
           {isAdmin && (

@@ -136,9 +136,6 @@ export function DashboardContent() {
               <span className="hidden sm:inline">Capture</span>
             </Link>
           </div>
-          <p className="mt-2 text-center text-muted-foreground">
-            Your angel number collection
-          </p>
         </header>
 
         {/* Cosmic Context Card */}

@@ -60,12 +60,12 @@ const selectItemClassName = cn(
  * Validate returnTo is a safe internal path (prevents open redirect attacks)
  */
 function getSafeReturnTo(url: string | null): string {
-  if (!url) return "/account";
+  if (!url) return "/settings";
   // Must start with / and not contain protocol or double slashes
   if (url.startsWith("/") && !url.startsWith("//") && !url.includes(":")) {
     return url;
   }
-  return "/account";
+  return "/settings";
 }
 
 export function AddressForm({ defaultValues, onCancel }: AddressFormProps) {
