@@ -20,10 +20,10 @@ interface PlanetCardProps {
  */
 export function PlanetCard({ planet, className }: PlanetCardProps) {
   return (
-    <Link href={`/astrology/planets/${planet.id}`} className="block">
+    <Link href={`/astrology/planets/${planet.id}`} className="block h-full">
       <motion.article
         className={cn(
-          "group relative flex flex-col items-center rounded-xl p-6",
+          "group relative flex h-full flex-col items-center rounded-xl p-6",
           "border border-[var(--border-gold)]/20 bg-card/30",
           "transition-colors duration-300",
           "hover:border-[var(--color-gold)]/40 hover:bg-card/50",
@@ -42,17 +42,19 @@ export function PlanetCard({ planet, className }: PlanetCardProps) {
           {planet.name}
         </h3>
 
-        {/* Keywords */}
-        <p className="mb-4 text-center text-sm text-[var(--color-gold-bright)]">
+        {/* Keywords - fixed height with single line truncation */}
+        <p className="mb-4 h-5 w-full truncate text-center text-sm text-[var(--color-gold-bright)]">
           {planet.keywords.slice(0, 2).join(" · ")}
         </p>
 
-        {/* Correspondence badges */}
-        <div className="flex flex-wrap justify-center gap-2">
+        {/* Correspondence badges - pushed to bottom with mt-auto */}
+        <div className="mt-auto flex min-h-[26px] flex-wrap items-center justify-center gap-2">
           {/* Digit badge */}
-          <span className="rounded-full border border-[var(--color-gold)]/20 bg-card/50 px-2 py-0.5 text-xs text-muted-foreground">
-            {planet.numerology.digit}
-          </span>
+          {planet.numerology.digit !== null && (
+            <span className="rounded-full border border-[var(--color-gold)]/20 bg-card/50 px-2 py-0.5 text-xs text-muted-foreground">
+              {planet.numerology.digit}
+            </span>
+          )}
 
           {/* Element badge */}
           <span className="rounded-full border border-[var(--color-gold)]/20 bg-card/50 px-2 py-0.5 text-xs capitalize text-muted-foreground">

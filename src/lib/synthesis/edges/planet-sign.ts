@@ -32,6 +32,9 @@ const EXALTATIONS: Record<string, ZodiacSign> = {
   mars: "capricorn",
   jupiter: "cancer",
   saturn: "libra",
+  uranus: "scorpio",
+  neptune: "leo",
+  pluto: "leo",
 };
 
 /**
@@ -45,6 +48,9 @@ const DETRIMENTS: Record<string, ZodiacSign[]> = {
   mars: ["taurus", "libra"],
   jupiter: ["gemini", "virgo"],
   saturn: ["cancer", "leo"],
+  uranus: ["leo"],
+  neptune: ["virgo"],
+  pluto: ["taurus"],
 };
 
 /**
@@ -58,6 +64,9 @@ const FALLS: Record<string, ZodiacSign> = {
   mars: "cancer",
   jupiter: "capricorn",
   saturn: "aries",
+  uranus: "taurus",
+  neptune: "aquarius",
+  pluto: "aquarius",
 };
 
 /**

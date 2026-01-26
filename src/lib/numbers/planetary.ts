@@ -17,7 +17,7 @@
 // ═══════════════════════════════════════════════════════════════════════════
 
 /**
- * Classical planets plus modern additions for 4 and 7.
+ * Classical planets plus modern additions for 4 and 7, and Pluto.
  */
 export type Planet =
   | "sun"
@@ -28,7 +28,8 @@ export type Planet =
   | "jupiter"
   | "saturn"
   | "uranus" // Modern (4) - or Rahu in Vedic
-  | "neptune"; // Modern (7) - or Ketu in Vedic
+  | "neptune" // Modern (7) - or Ketu in Vedic
+  | "pluto"; // Modern - no classical digit
 
 /**
  * Classical elements mapped from Platonic solids.
@@ -371,6 +372,13 @@ export const PLANET_META: Record<Planet, {
     color: "sea green",
     archetype: "The Mystic/Dreamer",
   },
+  pluto: {
+    name: "Pluto",
+    symbol: "♇",
+    element: "water",
+    color: "deep burgundy",
+    archetype: "The Transformer",
+  },
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -453,7 +461,7 @@ export const GEOMETRY_META: Record<PlatonicSolid, {
     name: "Icosahedron",
     faces: 20,
     element: "water",
-    planets: ["moon", "neptune"],
+    planets: ["moon", "neptune", "pluto"],
     description: "The most complex regular solid. Represents emotion, intuition, and the unconscious.",
   },
   dodecahedron: {
@@ -490,6 +498,7 @@ export const AGRIPPA_MAGIC_SQUARES: Record<Planet, {
   // Modern planets don't have classical magic squares
   uranus: undefined,
   neptune: undefined,
+  pluto: undefined,
 };
 
 /**

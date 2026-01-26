@@ -16,12 +16,13 @@ const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
 export const metadata: Metadata = {
   title: "The Planets | Astrology | WavePoint",
   description:
-    "Explore the nine planets in astrology: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, and Neptune. Discover their connections to numerology and sacred geometry.",
+    "Explore the ten planets in astrology: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, and Pluto. Discover their connections to numerology and sacred geometry.",
   keywords: [
     "planets astrology",
     "sun astrology",
     "moon astrology",
     "saturn astrology",
+    "pluto astrology",
     "planet meanings",
     "planet numerology",
     "classical planets",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Planets | WavePoint",
     description:
-      "Nine celestial bodies and their correspondences with numbers, elements, and sacred geometry.",
+      "Ten celestial bodies and their correspondences with numbers, elements, and sacred geometry.",
   },
 };
 
@@ -44,7 +45,7 @@ export default function PlanetsIndexPage() {
     "@type": "CollectionPage",
     name: "The Planets",
     description:
-      "Explore the nine planets in astrology and their correspondences with numerology and sacred geometry.",
+      "Explore the ten planets in astrology and their correspondences with numerology and sacred geometry.",
     url: `${baseUrl}/astrology/planets`,
     mainEntity: {
       "@type": "ItemList",
@@ -144,7 +145,7 @@ export default function PlanetsIndexPage() {
           )}
 
           {/* Coming Soon Notice (when not all planets available) */}
-          {allPlanets.length < 9 && (
+          {allPlanets.length < 10 && (
             <AnimateOnScroll delay={0.25} className="mb-12">
               <div className="rounded-xl border border-dashed border-[var(--border-gold)]/30 bg-card/10 p-6 text-center">
                 <Text className="text-muted-foreground">

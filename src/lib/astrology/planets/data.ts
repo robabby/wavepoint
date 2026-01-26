@@ -921,6 +921,94 @@ const NEPTUNE: PlanetPageData = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
+// PLUTO
+// ═══════════════════════════════════════════════════════════════════════════
+
+const PLUTO: PlanetPageData = {
+  id: "pluto",
+  name: "Pluto",
+  glyph: "♇",
+  archetype: "The Transformer",
+  keywords: ["transformation", "death/rebirth", "power", "shadow", "regeneration", "depth"],
+  element: "water",
+  type: "transpersonal",
+
+  rulerships: [
+    {
+      sign: "Scorpio",
+      traditional: false,
+      modern: true,
+      source: MODERN_WESTERN_CONSENSUS,
+    },
+  ],
+
+  dignities: [
+    {
+      sign: "Leo",
+      type: "exaltation",
+      source: MODERN_WESTERN_CONSENSUS,
+    },
+    {
+      sign: "Taurus",
+      type: "detriment",
+      source: MODERN_WESTERN_CONSENSUS,
+    },
+    {
+      sign: "Aquarius",
+      type: "fall",
+      source: MODERN_WESTERN_CONSENSUS,
+    },
+  ],
+
+  numerology: {
+    digit: null, // Pluto has no classical numerological digit
+    traditions: [],
+    confidence: "wavepoint-only",
+    relatedPatterns: [],
+  },
+
+  geometry: {
+    geometry: "icosahedron",
+    rationale:
+      "Through Scorpio's water element, Pluto connects to the icosahedron—the solid of emotional depth and dissolution of boundaries. Where the icosahedron typically represents flow and merging, Pluto adds the dimension of transformation through destruction and rebirth.",
+    confidence: "wavepoint-only",
+  },
+
+  coreArchetype: {
+    primaryClaim:
+      "Pluto represents the principle of transformation through death and rebirth, the encounter with power, and the journey into shadow. In the natal chart, Pluto shows where we experience profound change, face our deepest fears, and access regenerative power.",
+    sources: [
+      RUDHYAR_ASTROLOGY_PERSONALITY,
+      PSYCHOLOGICAL_ASTROLOGY,
+      MODERN_WESTERN_CONSENSUS,
+    ],
+    confidence: "consensus",
+    wavepointNote:
+      "In our synthesis, Pluto represents transformation without numerical correspondence—a reminder that not all cosmic forces map neatly to the 1-9 digit system. Pluto operates beyond conventional categories, as befits the lord of the underworld.",
+  },
+
+  elementalNature: {
+    primaryClaim:
+      "Pluto is associated with the water element through its rulership of Scorpio. This manifests as emotional intensity, psychological depth, and the capacity to penetrate beneath surfaces to hidden truths. Pluto's water is not gentle—it is the water that erodes mountains and carves canyons.",
+    sources: [PSYCHOLOGICAL_ASTROLOGY, MODERN_WESTERN_CONSENSUS],
+    confidence: "consensus",
+  },
+
+  metaDescription:
+    "Explore Pluto in astrology: transformation, power, and the shadow. Discover connections to the water element, Scorpio, and the icosahedron in sacred geometry.",
+  seoKeywords: [
+    "pluto astrology",
+    "pluto meaning",
+    "pluto transformation",
+    "pluto scorpio",
+    "pluto shadow",
+    "pluto power",
+    "pluto transit",
+    "pluto death rebirth",
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
 // PLANET PAGE DATA COLLECTION
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -940,6 +1028,7 @@ export const PLANET_PAGE_DATA: Record<ContentPlanetId, PlanetPageData> = {
   saturn: SATURN,
   uranus: URANUS,
   neptune: NEPTUNE,
+  pluto: PLUTO,
 };
 
 /**
