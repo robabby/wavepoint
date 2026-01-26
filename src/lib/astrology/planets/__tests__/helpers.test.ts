@@ -74,9 +74,13 @@ describe("isValidPlanetId", () => {
   });
 
   it("should return false for invalid IDs", () => {
-    expect(isValidPlanetId("pluto")).toBe(false);
     expect(isValidPlanetId("invalid")).toBe(false);
     expect(isValidPlanetId("")).toBe(false);
+    expect(isValidPlanetId("ceres")).toBe(false);
+  });
+
+  it("should return true for Pluto", () => {
+    expect(isValidPlanetId("pluto")).toBe(true);
   });
 });
 
@@ -96,8 +100,13 @@ describe("getOuterPlanets", () => {
   it("should return only outer planets with content", () => {
     const outer = getOuterPlanets();
     for (const planet of outer) {
-      expect(["uranus", "neptune"]).toContain(planet.id);
+      expect(["uranus", "neptune", "pluto"]).toContain(planet.id);
     }
+  });
+
+  it("should include Pluto", () => {
+    const outer = getOuterPlanets();
+    expect(outer.some((p) => p.id === "pluto")).toBe(true);
   });
 });
 
@@ -142,6 +151,10 @@ describe("getPlanetNumberPatterns", () => {
 describe("getPlanetDigit", () => {
   it("should return 8 for Saturn", () => {
     expect(getPlanetDigit("saturn")).toBe(8);
+  });
+
+  it("should return null for Pluto (no classical digit)", () => {
+    expect(getPlanetDigit("pluto")).toBeNull();
   });
 
   it("should return undefined for planets without content", () => {

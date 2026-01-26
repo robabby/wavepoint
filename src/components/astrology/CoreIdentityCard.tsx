@@ -30,12 +30,14 @@ export function CoreIdentityCard({ planet, className }: CoreIdentityCardProps) {
         </div>
 
         {/* Number */}
-        <div>
-          <dt className="text-xs text-muted-foreground">Number</dt>
-          <dd className="font-medium text-foreground">
-            {planet.numerology.digit}
-          </dd>
-        </div>
+        {planet.numerology.digit !== null && (
+          <div>
+            <dt className="text-xs text-muted-foreground">Number</dt>
+            <dd className="font-medium text-foreground">
+              {planet.numerology.digit}
+            </dd>
+          </div>
+        )}
 
         {/* Day */}
         {planet.dayOfWeek && (

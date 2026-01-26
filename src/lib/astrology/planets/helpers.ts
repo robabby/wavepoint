@@ -93,13 +93,12 @@ export function getPlanetWithNumerology(
   const planet = getPlanet(id);
   if (!planet) return undefined;
 
-  // Get corresponding digit metadata
-  const digitMeta = planet.numerology.digit > 0
+  // Get corresponding digit metadata (only for planets with classical digits)
+  const digitMeta = planet.numerology.digit !== null && planet.numerology.digit > 0
     ? DIGIT_PLANETARY_META[planet.numerology.digit]
     : undefined;
 
   // Get corresponding planet metadata from numerology module
-  // ContentPlanetId already excludes "pluto", so this always works
   const planetMeta = NUMEROLOGY_PLANET_META[id as keyof typeof NUMEROLOGY_PLANET_META];
 
   return {
@@ -120,8 +119,9 @@ export function getPlanetNumberPatterns(id: ContentPlanetId): string[] {
 
 /**
  * Get the digit associated with a planet.
+ * Returns undefined if the planet has no digit (e.g., Pluto).
  */
-export function getPlanetDigit(id: ContentPlanetId): number | undefined {
+export function getPlanetDigit(id: ContentPlanetId): number | null | undefined {
   const planet = getPlanet(id);
   return planet?.numerology.digit;
 }

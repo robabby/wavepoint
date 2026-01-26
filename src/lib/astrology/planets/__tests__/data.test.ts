@@ -15,6 +15,52 @@ describe("PLANET_PAGE_DATA", () => {
     expect(PLANET_PAGE_DATA.saturn).toBeDefined();
   });
 
+  it("should have Pluto data", () => {
+    expect(PLANET_PAGE_DATA.pluto).toBeDefined();
+  });
+
+  it("should have complete Pluto structure with null digit", () => {
+    const pluto = PLANET_PAGE_DATA.pluto;
+    expect(pluto).toBeDefined();
+    if (!pluto) return;
+
+    // Core fields
+    expect(pluto.id).toBe("pluto");
+    expect(pluto.name).toBe("Pluto");
+    expect(pluto.glyph).toBe("♇");
+    expect(pluto.archetype).toBe("The Transformer");
+    expect(pluto.element).toBe("water");
+    expect(pluto.type).toBe("transpersonal");
+
+    // No dayOfWeek or metal (not classical)
+    expect(pluto.dayOfWeek).toBeUndefined();
+    expect(pluto.metal).toBeUndefined();
+
+    // Rulerships
+    expect(pluto.rulerships).toBeInstanceOf(Array);
+    expect(pluto.rulerships.length).toBe(1);
+    expect(pluto.rulerships[0]?.sign).toBe("Scorpio");
+    expect(pluto.rulerships[0]?.modern).toBe(true);
+    expect(pluto.rulerships[0]?.traditional).toBe(false);
+
+    // Dignities
+    expect(pluto.dignities).toBeInstanceOf(Array);
+    expect(pluto.dignities.some((d) => d.type === "exaltation" && d.sign === "Leo")).toBe(true);
+    expect(pluto.dignities.some((d) => d.type === "detriment" && d.sign === "Taurus")).toBe(true);
+    expect(pluto.dignities.some((d) => d.type === "fall" && d.sign === "Aquarius")).toBe(true);
+
+    // Numerology connection - Pluto has NULL digit
+    expect(pluto.numerology).toBeDefined();
+    expect(pluto.numerology.digit).toBeNull();
+    expect(pluto.numerology.traditions).toHaveLength(0);
+    expect(pluto.numerology.relatedPatterns).toHaveLength(0);
+    expect(pluto.numerology.confidence).toBe("wavepoint-only");
+
+    // Geometry connection
+    expect(pluto.geometry).toBeDefined();
+    expect(pluto.geometry?.geometry).toBe("icosahedron");
+  });
+
   it("should have complete Saturn structure", () => {
     const saturn = PLANET_PAGE_DATA.saturn;
     expect(saturn).toBeDefined();
@@ -74,8 +120,8 @@ describe("PLANET_PAGE_DATA", () => {
 });
 
 describe("CONTENT_PLANET_IDS", () => {
-  it("should have 9 planet IDs (excluding Pluto)", () => {
-    expect(CONTENT_PLANET_IDS).toHaveLength(9);
+  it("should have 10 planet IDs (including Pluto)", () => {
+    expect(CONTENT_PLANET_IDS).toHaveLength(10);
   });
 
   it("should include all expected planets", () => {
@@ -89,14 +135,11 @@ describe("CONTENT_PLANET_IDS", () => {
       "saturn",
       "uranus",
       "neptune",
+      "pluto",
     ];
     for (const planet of expected) {
       expect(CONTENT_PLANET_IDS).toContain(planet);
     }
-  });
-
-  it("should NOT include pluto", () => {
-    expect(CONTENT_PLANET_IDS).not.toContain("pluto");
   });
 });
 
@@ -119,13 +162,14 @@ describe("CLASSICAL_PLANETS", () => {
 });
 
 describe("OUTER_PLANETS", () => {
-  it("should have 2 outer planets", () => {
-    expect(OUTER_PLANETS).toHaveLength(2);
+  it("should have 3 outer planets", () => {
+    expect(OUTER_PLANETS).toHaveLength(3);
   });
 
-  it("should include Uranus and Neptune", () => {
+  it("should include Uranus, Neptune, and Pluto", () => {
     expect(OUTER_PLANETS).toContain("uranus");
     expect(OUTER_PLANETS).toContain("neptune");
+    expect(OUTER_PLANETS).toContain("pluto");
   });
 });
 

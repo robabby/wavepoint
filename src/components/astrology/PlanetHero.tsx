@@ -56,7 +56,9 @@ export function PlanetHero({ planet, className }: PlanetHeroProps) {
       {/* Quick facts bar */}
       <div className="flex flex-wrap justify-center gap-3">
         {/* Digit */}
-        <QuickFactBadge label="Number" value={planet.numerology.digit.toString()} />
+        {planet.numerology.digit !== null && (
+          <QuickFactBadge label="Number" value={planet.numerology.digit.toString()} />
+        )}
 
         {/* Element */}
         <QuickFactBadge label="Element" value={planet.element} />

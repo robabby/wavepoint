@@ -13,8 +13,8 @@ import type { Element, PlatonicSolid } from "@/lib/numbers/planetary";
 // ═══════════════════════════════════════════════════════════════════════════
 
 /**
- * Planet IDs for content pages (excludes Pluto).
- * 9 planets: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune
+ * Planet IDs for content pages.
+ * 10 planets: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto
  */
 export const CONTENT_PLANET_IDS = [
   "sun",
@@ -26,12 +26,13 @@ export const CONTENT_PLANET_IDS = [
   "saturn",
   "uranus",
   "neptune",
+  "pluto",
 ] as const;
 
 export type ContentPlanetId = (typeof CONTENT_PLANET_IDS)[number];
 
 /**
- * Type guard to check if a PlanetId is a ContentPlanetId (excludes Pluto).
+ * Type guard to check if a PlanetId is a ContentPlanetId.
  */
 export function isContentPlanetId(id: PlanetId): id is ContentPlanetId {
   return CONTENT_PLANET_IDS.includes(id as ContentPlanetId);
@@ -128,8 +129,8 @@ export interface PlanetaryDignity {
  * Connection to numerology.
  */
 export interface NumerologyConnection {
-  /** The associated digit (1-9) */
-  digit: number;
+  /** The associated digit (1-9), or null for planets without classical digits */
+  digit: number | null;
   /** Traditions that agree on this association */
   traditions: string[];
   /** Confidence level */
@@ -249,4 +250,4 @@ export const CLASSICAL_PLANETS: ContentPlanetId[] = [
 /**
  * The outer/modern planets (discovered in modern era).
  */
-export const OUTER_PLANETS: ContentPlanetId[] = ["uranus", "neptune"];
+export const OUTER_PLANETS: ContentPlanetId[] = ["uranus", "neptune", "pluto"];

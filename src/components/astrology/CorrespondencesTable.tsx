@@ -70,12 +70,16 @@ export function CorrespondencesTable({
 
               {/* Number */}
               <td className="py-3 text-center">
-                <Link
-                  href={`/numbers/${planet.numerology.digit}`}
-                  className="text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
-                >
-                  {planet.numerology.digit}
-                </Link>
+                {planet.numerology.digit !== null ? (
+                  <Link
+                    href={`/numbers/${planet.numerology.digit}`}
+                    className="text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
+                  >
+                    {planet.numerology.digit}
+                  </Link>
+                ) : (
+                  <span className="text-muted-foreground">—</span>
+                )}
               </td>
 
               {/* Element */}

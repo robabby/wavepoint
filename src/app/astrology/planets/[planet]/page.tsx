@@ -189,6 +189,27 @@ export default async function PlanetDetailPage({
             </AnimatedCard>
           </AnimateOnScroll>
 
+          {/* Associated Themes (Keywords) */}
+          {planet.keywords.length > 0 && (
+            <AnimateOnScroll delay={0.15}>
+              <div className="mb-8">
+                <h3 className="mb-4 text-base font-medium text-[var(--color-gold-bright)]">
+                  Associated themes
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {planet.keywords.map((keyword) => (
+                    <span
+                      key={keyword}
+                      className="rounded-full border border-[var(--color-gold)]/20 bg-card/30 px-3 py-1 text-xs text-muted-foreground"
+                    >
+                      {keyword}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </AnimateOnScroll>
+          )}
+
           {/* MDX Content */}
           {mdxContent && (
             <AnimateOnScroll delay={0.2}>
@@ -202,31 +223,6 @@ export default async function PlanetDetailPage({
           {!mdxContent && (
             <AnimateOnScroll delay={0.2}>
               <CoreIdentityCard planet={planet} className="mb-8" />
-            </AnimateOnScroll>
-          )}
-
-          {/* Keywords */}
-          {planet.keywords.length > 0 && (
-            <AnimateOnScroll delay={0.25}>
-              <div className="mb-12">
-                <Text
-                  size="2"
-                  weight="medium"
-                  className="mb-3 block text-[var(--color-gold-bright)]"
-                >
-                  Associated themes
-                </Text>
-                <div className="flex flex-wrap gap-2">
-                  {planet.keywords.map((keyword) => (
-                    <span
-                      key={keyword}
-                      className="rounded-full border border-[var(--color-gold)]/20 bg-card/30 px-3 py-1 text-xs text-muted-foreground"
-                    >
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
-              </div>
             </AnimateOnScroll>
           )}
 
