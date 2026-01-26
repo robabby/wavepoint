@@ -103,8 +103,13 @@ export function ZodiacTable({ signs }: ZodiacTableProps) {
                 </td>
 
                 {/* Ruler (hidden on mobile) */}
-                <td className="hidden px-3 py-3 text-muted-foreground sm:table-cell">
-                  {planetName}
+                <td className="hidden px-3 py-3 sm:table-cell">
+                  <Link
+                    href={`/astrology/planets/${sign.ruler}`}
+                    className="text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
+                  >
+                    {planetName}
+                  </Link>
                 </td>
 
                 {/* Dates (hidden on mobile/tablet) */}
