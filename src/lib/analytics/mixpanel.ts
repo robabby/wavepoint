@@ -17,9 +17,11 @@ export function initMixpanel() {
     debug: isDevelopment,
     track_pageview: true,
     persistence: "localStorage",
-    autocapture: true,
-    // Disable session recording in development to prevent mutex timeout errors
-    // caused by rapid HMR reloads and dev server behavior
+    autocapture: !isDevelopment,
+    // Disable persistence in development to prevent mutex timeout errors
+    // caused by IndexedDB lock contention during HMR reloads
+    disable_persistence: isDevelopment,
+    // Disable session recording in development
     record_sessions_percent: isDevelopment ? 0 : 100,
   });
 
