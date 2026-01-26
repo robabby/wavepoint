@@ -13,6 +13,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion-provider";
 import { SkipToContent } from "@/components/skip-to-content";
+import { SidebarLayout } from "@/components/sidebar";
 import {
   StructuredData,
   createWebSiteSchema,
@@ -134,7 +135,10 @@ export default function RootLayout({
               <AuthModal />
               {/* QueryProvider for React Query hooks used across the app */}
               <QueryProvider>
-                <AnalyticsProvider>{coreContent}</AnalyticsProvider>
+                <AnalyticsProvider>
+                  {/* SidebarLayout conditionally renders sidebar for authenticated users */}
+                  <SidebarLayout>{coreContent}</SidebarLayout>
+                </AnalyticsProvider>
               </QueryProvider>
             </AuthProvider>
           </ThemeWrapper>

@@ -19,6 +19,7 @@ import { EASE_STANDARD } from "@/lib/animation-constants";
 import { useCanAccessAuth } from "@/lib/features/access";
 import { AuthHeaderSection } from "@/components/auth/auth-header-section";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useSidebarLayoutContext } from "@/components/sidebar";
 
 type NavItem = {
   path: string;
@@ -86,6 +87,7 @@ function AnimatedNavLink({
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated, openMobileDrawer } = useSidebarLayoutContext();
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -131,15 +133,10 @@ export function Header() {
   const authEnabled = useCanAccessAuth();
 
   // Desktop nav items
-  // Order: Signal | Numbers | Astrology | Archetypes | Sacred Geometry
+  // Order: Signal (unauthenticated only) | Numbers | Astrology | Archetypes | Sacred Geometry
+  // Signal is moved to sidebar for authenticated users
   const desktopNavItems = useMemo<NavItem[]>(() => {
-    return [
-      // Signal appears first (before Numbers) - always visible, shows marketing when disabled
-      {
-        path: "/signal",
-        desktopLabel: "Signal",
-        mobileLabel: "Signal",
-      },
+    const items: NavItem[] = [
       // Numbers is always present
       {
         path: ROUTES.numbers.path,
@@ -165,13 +162,25 @@ export function Header() {
         mobileLabel: "Sacred Geometry",
       },
     ];
-  }, []);
 
-  // Mobile nav items
-  // Order: Signal | Numbers | Astrology | Archetypes | Sacred Geometry
+    // Signal only appears in header for unauthenticated users
+    // Authenticated users access Signal via the sidebar
+    if (!isAuthenticated) {
+      items.unshift({
+        path: "/signal",
+        desktopLabel: "Signal",
+        mobileLabel: "Signal",
+      });
+    }
+
+    return items;
+  }, [isAuthenticated]);
+
+  // Mobile nav items (for unauthenticated users only)
+  // Authenticated users use the sidebar mobile drawer instead
   const mobileNavItems = useMemo<NavItem[]>(() => {
     return [
-      // Signal appears first - always visible, shows marketing when disabled
+      // Signal appears first - shows marketing for unauthenticated
       {
         path: "/signal",
         desktopLabel: "Signal",
@@ -330,11 +339,15 @@ export function Header() {
 
       <header className="sticky top-0 z-50 w-full border-b border-[var(--border-gold)] bg-background/95 backdrop-blur-xl">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Logo */}
+          {/* Logo - hidden on desktop when authenticated (sidebar shows it) */}
           <Link
             href={ROUTES.home.path}
             ref={homeRef}
-            className="flex flex-shrink-0 items-center gap-1.5 transition-opacity hover:opacity-80 sm:gap-2"
+            className={cn(
+              "flex flex-shrink-0 items-center gap-1.5 transition-opacity hover:opacity-80 sm:gap-2",
+              // Hide on desktop when authenticated (sidebar has the logo)
+              isAuthenticated && "lg:hidden"
+            )}
             onKeyDown={handleHomeKeyDown}
           >
             <motion.div
@@ -377,7 +390,15 @@ export function Header() {
             <div className="h-6 w-px bg-[var(--border-gold)]/30" />
 
             <button
-              onClick={() => setMobileMenuOpen(true)}
+              onClick={() => {
+                // Authenticated users get the sidebar mobile drawer
+                // Unauthenticated users get the standard mobile menu
+                if (isAuthenticated) {
+                  openMobileDrawer();
+                } else {
+                  setMobileMenuOpen(true);
+                }
+              }}
               className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-card hover:text-[var(--color-gold)]"
               aria-label="Open menu"
               aria-expanded={mobileMenuOpen}
@@ -387,7 +408,11 @@ export function Header() {
           </div>
 
           {/* Desktop: Navigation + Utility Actions */}
-          <div className="hidden items-center gap-6 sm:flex">
+          <div className={cn(
+            "hidden items-center gap-6 sm:flex",
+            // Push to right when logo is hidden (authenticated on desktop)
+            isAuthenticated && "lg:ml-auto"
+          )}>
             {/* Navigation: Signal | Numbers | Sacred Geometry */}
             <nav
               aria-label="Primary"
@@ -441,9 +466,10 @@ export function Header() {
         </div>
       </header>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Drawer (unauthenticated users only) */}
+      {/* Authenticated users use the SidebarMobileDrawer instead */}
       <AnimatePresence>
-        {mobileMenuOpen && (
+        {mobileMenuOpen && !isAuthenticated && (
           <>
             {/* Backdrop */}
             <motion.div
