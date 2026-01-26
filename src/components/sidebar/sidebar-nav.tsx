@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Radio,
+  Calendar,
   User,
   Settings,
   Shield,
@@ -48,8 +49,7 @@ const PRACTICE_SECTION: NavSection = {
   title: "PRACTICE",
   items: [
     { label: "Signal", href: "/signal", icon: Radio },
-    // Calendar placeholder for future
-    // { label: "Calendar", href: "/calendar", icon: Calendar },
+    { label: "Calendar", href: "/calendar", icon: Calendar },
   ],
 };
 
@@ -85,6 +85,9 @@ export function SidebarNav({
   const isActive = (href: string) => {
     if (href === "/signal") {
       return pathname === "/signal" || pathname.startsWith("/signal/");
+    }
+    if (href === "/calendar") {
+      return pathname === "/calendar" || pathname.startsWith("/calendar/");
     }
     if (href === "/profile") {
       return pathname === "/profile" || pathname.startsWith("/profile/");

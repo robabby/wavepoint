@@ -400,6 +400,37 @@ export const waitlistSignups = pgTable(
   ]
 );
 
+// =============================================================================
+// Calendar - Cosmic calendar journal
+// =============================================================================
+
+/**
+ * Calendar journal entries - one entry per user per day
+ *
+ * Stores daily reflections, milestones, and notes tied to cosmic context.
+ */
+export const calendarJournalEntries = pgTable(
+  "calendar_journal_entries",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    entryDate: date("entry_date", { mode: "date" }).notNull(),
+    tz: text("tz"), // IANA timezone at creation
+    content: text("content"), // 500 char max (enforced at API level)
+    eventType: text("event_type").notNull().default("note"), // 'reflection' | 'milestone' | 'note'
+    cosmicSnapshot: jsonb("cosmic_snapshot"), // { moonPhase, moonSign, sunSign }
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  },
+  (table) => [
+    unique("calendar_journal_user_date_unique").on(table.userId, table.entryDate),
+    index("calendar_journal_user_id_idx").on(table.userId),
+    index("calendar_journal_entry_date_idx").on(table.entryDate),
+  ]
+);
+
 // Type exports for use in application code
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -445,3 +476,6 @@ export type NewWaitlistSignup = typeof waitlistSignups.$inferInsert;
 
 export type SpiritualProfile = typeof spiritualProfiles.$inferSelect;
 export type NewSpiritualProfile = typeof spiritualProfiles.$inferInsert;
+
+export type CalendarJournalEntry = typeof calendarJournalEntries.$inferSelect;
+export type NewCalendarJournalEntry = typeof calendarJournalEntries.$inferInsert;

@@ -1,0 +1,122 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "motion/react";
+import { Calendar, Moon, Stars } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { SignalBackground } from "@/components/signal/signal-background";
+import { WaitlistModal } from "@/components/signal/waitlist-modal";
+
+/**
+ * Calendar Marketing Page
+ *
+ * Hero-only landing page for Calendar feature when disabled.
+ * Design concept: "The Cosmic Observatory" - unified temporal view.
+ */
+export function CalendarMarketingPage() {
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+
+  return (
+    <div className="relative min-h-screen">
+      {/* Layered backgrounds - reuse Signal's atmospheric background */}
+      <SignalBackground pulse />
+
+      {/* Floating celestial elements */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.3 }}
+          transition={{ delay: 0.5, duration: 1 }}
+          className="absolute left-[10%] top-[20%]"
+        >
+          <Moon className="h-8 w-8 text-[var(--color-gold)]" />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.2 }}
+          transition={{ delay: 0.7, duration: 1 }}
+          className="absolute right-[15%] top-[30%]"
+        >
+          <Stars className="h-6 w-6 text-[var(--color-copper)]" />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.25 }}
+          transition={{ delay: 0.9, duration: 1 }}
+          className="absolute bottom-[25%] left-[20%]"
+        >
+          <Stars className="h-5 w-5 text-[var(--color-gold)]" />
+        </motion.div>
+      </div>
+
+      {/* Hero Section - Full screen centered */}
+      <section className="relative flex min-h-screen flex-col items-center justify-center px-4 text-center">
+        {/* Coming Soon badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-6"
+        >
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-gold)]/40 bg-card/50 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm">
+            <Calendar className="h-3 w-3 text-[var(--color-gold)]" />
+            Coming Soon
+          </span>
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="font-display text-4xl tracking-tight text-foreground sm:text-5xl md:text-6xl"
+          style={{ textShadow: "0 0 60px var(--glow-gold)" }}
+        >
+          Your{" "}
+          <span className="text-[var(--color-gold)]">Cosmic Calendar</span>
+        </motion.h1>
+
+        {/* Tagline */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mt-4 max-w-md text-lg text-muted-foreground"
+        >
+          Moon phases, planetary transits, and your synchronicities
+          <br />
+          unified in one celestial view.
+        </motion.p>
+
+        {/* Primary CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-8"
+        >
+          <button
+            onClick={() => setWaitlistOpen(true)}
+            className={cn(
+              "rounded-lg px-8 py-3 font-medium",
+              "bg-[var(--color-gold)] text-primary-foreground",
+              "transition-all duration-300",
+              "hover:scale-[1.02] hover:bg-[var(--color-gold-bright)]",
+              "hover:shadow-[0_0_30px_var(--glow-gold)]",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]"
+            )}
+          >
+            Join the Waitlist
+          </button>
+        </motion.div>
+      </section>
+
+      {/* Waitlist Modal */}
+      <WaitlistModal
+        open={waitlistOpen}
+        onOpenChange={setWaitlistOpen}
+        source="calendar"
+      />
+    </div>
+  );
+}

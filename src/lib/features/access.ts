@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 
 import { isAuthEnabled } from "@/lib/auth/feature-flags";
 import { isSignalEnabled } from "@/lib/signal/feature-flags";
+import { isCalendarEnabled } from "@/lib/calendar/feature-flags";
 
 // =============================================================================
 // Server-side access checks (for layouts, API routes, server components)
@@ -32,6 +33,13 @@ export function canAccessAuth(session: Session | null): boolean {
  */
 export function canAccessSignal(session: Session | null): boolean {
   return isSignalEnabled() || (session?.user?.isAdmin ?? false);
+}
+
+/**
+ * Check if user can access Calendar (cosmic calendar)
+ */
+export function canAccessCalendar(session: Session | null): boolean {
+  return isCalendarEnabled() || (session?.user?.isAdmin ?? false);
 }
 
 // =============================================================================
@@ -54,8 +62,16 @@ export function useCanAccessSignal(): boolean {
   return isSignalEnabled() || (session?.user?.isAdmin ?? false);
 }
 
+/**
+ * Hook to check if current user can access Calendar
+ */
+export function useCanAccessCalendar(): boolean {
+  const { data: session } = useSession();
+  return isCalendarEnabled() || (session?.user?.isAdmin ?? false);
+}
+
 // =============================================================================
 // Re-export base flags for cases where admin override isn't needed
 // =============================================================================
 
-export { isAuthEnabled, isSignalEnabled };
+export { isAuthEnabled, isSignalEnabled, isCalendarEnabled };

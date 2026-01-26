@@ -49,6 +49,10 @@ export const env = createEnv({
       .string()
       .transform((val) => val === "true")
       .default("false"),
+    NEXT_PUBLIC_CALENDAR_ENABLED: z
+      .string()
+      .transform((val) => val === "true")
+      .default("false"),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_"),
     NEXT_PUBLIC_MIXPANEL_TOKEN: z.string().min(1).optional(),
   },
@@ -81,6 +85,7 @@ export const env = createEnv({
     BREVO_WAITLIST_LIST_ID: process.env.BREVO_WAITLIST_LIST_ID,
     CONTACT_NOTIFICATION_EMAIL: process.env.CONTACT_NOTIFICATION_EMAIL,
     NEXT_PUBLIC_INVITES_REQUIRED: process.env.NEXT_PUBLIC_INVITES_REQUIRED,
+    NEXT_PUBLIC_CALENDAR_ENABLED: process.env.NEXT_PUBLIC_CALENDAR_ENABLED,
     NEXT_PUBLIC_MIXPANEL_TOKEN: process.env.NEXT_PUBLIC_MIXPANEL_TOKEN,
   },
   /**
