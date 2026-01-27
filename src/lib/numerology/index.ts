@@ -78,3 +78,38 @@ export {
   isMasterNumber,
   formatDigit,
 } from "./helpers";
+
+// Position Types
+export type { PositionSlug, PositionType } from "./position-types";
+export {
+  POSITION_TYPES,
+  getPositionBySlug,
+  getPositionByType,
+  typeToSlug,
+  slugToType,
+  isValidPositionSlug,
+  getAllPositionSlugs,
+  getAllPositionTypes,
+} from "./position-types";
+
+// Position Meanings
+export type { PositionMeaning } from "./position-meanings";
+export {
+  POSITION_MEANINGS,
+  getPositionMeaning,
+  getAllMeaningsForDigit,
+  getAllMeaningsForPosition,
+} from "./position-meanings";
+
+// Personalization
+export type { PartialNumerologyProfile } from "./personalization";
+export {
+  findMatchingPositions,
+  extractDominantDigit,
+  formatPositionList,
+  isValidNumerologyDigit,
+  getUserDigits,
+  hasNumerologyProfile,
+  hasCompleteNumerology,
+  getPositionSlugForDigit,
+} from "./personalization";

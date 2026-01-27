@@ -235,7 +235,6 @@ export function NumerologyNumberDisplay({
           open={dialogOpen}
           onOpenChange={setDialogOpen}
           digit={digit!}
-          type={type}
           label={label}
           typeDescription={typeDescription}
           meaning={meaning}
