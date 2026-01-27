@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { DayCell } from "./day-cell";
 import { useEphemerisRange, useJournalEntries, createJournalEntriesMap } from "@/hooks/calendar";
 import { useHeatmap } from "@/hooks/signal";
+import { getMonthEclipseContext } from "@/lib/eclipses";
 import type { MoonPhase } from "@/lib/signal/cosmic-context";
 
 // =============================================================================
@@ -218,6 +219,12 @@ export function MonthView({ initialMonth, className }: MonthViewProps) {
   const journalByDate = useMemo(
     () => createJournalEntriesMap(journalEntries),
     [journalEntries]
+  );
+
+  // Get eclipse context for the month (static data, no API call)
+  const eclipseContext = useMemo(
+    () => getMonthEclipseContext(year, month),
+    [year, month]
   );
 
   // Generate days with moon phase data and peak moon indicators
@@ -511,25 +518,36 @@ export function MonthView({ initialMonth, className }: MonthViewProps) {
           onTouchEnd={handleTouchEnd}
         >
           <div className="grid grid-cols-7 gap-1">
-            {days.map((day, index) => (
-              <div key={day.date} role="gridcell">
-                <DayCell
-                  date={day.date}
-                  day={day.day}
-                  isCurrentMonth={day.isCurrentMonth}
-                  isToday={day.isToday}
-                  isSelected={selectedDate === day.date}
-                  moonPhase={day.moonPhase}
-                  isPeakFullMoon={day.isPeakFullMoon}
-                  isPeakNewMoon={day.isPeakNewMoon}
-                  hasSightings={(sightingsByDate.get(day.date) ?? 0) > 0}
-                  hasJournal={journalByDate.has(day.date)}
-                  onClick={() => handleDayClick(day.date)}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  tabIndex={index === 0 ? 0 : -1}
-                />
-              </div>
-            ))}
+            {days.map((day, index) => {
+              const eclipse = eclipseContext.eclipsesByDate.get(day.date);
+              const isInPortal = eclipseContext.portalDates.has(day.date);
+
+              return (
+                <div key={day.date} role="gridcell">
+                  <DayCell
+                    date={day.date}
+                    day={day.day}
+                    isCurrentMonth={day.isCurrentMonth}
+                    isToday={day.isToday}
+                    isSelected={selectedDate === day.date}
+                    moonPhase={day.moonPhase}
+                    isPeakFullMoon={day.isPeakFullMoon}
+                    isPeakNewMoon={day.isPeakNewMoon}
+                    hasSightings={(sightingsByDate.get(day.date) ?? 0) > 0}
+                    hasJournal={journalByDate.has(day.date)}
+                    isInEclipsePortal={isInPortal}
+                    eclipse={
+                      eclipse
+                        ? { category: eclipse.category, isPenumbral: eclipse.isPenumbral }
+                        : null
+                    }
+                    onClick={() => handleDayClick(day.date)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    tabIndex={index === 0 ? 0 : -1}
+                  />
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       </AnimatePresence>

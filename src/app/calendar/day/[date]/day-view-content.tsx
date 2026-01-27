@@ -11,6 +11,7 @@ import { PersonalTransits } from "@/components/calendar/personal-transits";
 import { JournalSection } from "@/components/calendar/journal-section";
 import { SightingsSection } from "@/components/calendar/sightings-section";
 import { DayNavigation } from "@/components/calendar/day-navigation";
+import { EclipseSection } from "@/components/calendar/eclipse-section";
 import type { MoonPhase } from "@/lib/signal/cosmic-context";
 
 interface DayViewContentProps {
@@ -108,11 +109,14 @@ export function DayViewContent({ date }: DayViewContentProps) {
           />
         </div>
 
+        {/* Eclipse Section - shown when eclipse or portal is active */}
+        <EclipseSection date={date} className="mb-8" />
+
         {/* Two-column layout on larger screens */}
         <div className="grid gap-6 md:grid-cols-2">
           {/* Cosmic Weather + Personal Transits */}
           <div className="space-y-6">
-            <CosmicWeather context={ephemeris} />
+            <CosmicWeather context={ephemeris} date={date} />
             <PersonalTransits date={date} />
           </div>
 

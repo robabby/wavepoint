@@ -182,6 +182,7 @@ export function SidebarMobileDrawer({
             transition={{ duration: 0.25, ease: EASE_STANDARD }}
             className={cn(
               "fixed left-0 top-0 z-50 h-full w-80 lg:hidden",
+              "flex flex-col",
               // Glassmorphic background
               "bg-[var(--glass-bg)] backdrop-blur-xl",
               // Border and glow
@@ -196,7 +197,7 @@ export function SidebarMobileDrawer({
             {/* h-[65px] matches main header: h-16 (64px) content + 1px border */}
             <div
               className={cn(
-                "flex h-[65px] items-center justify-between px-5",
+                "flex h-[65px] flex-shrink-0 items-center justify-between px-5",
                 "border-b border-[var(--glass-border)]",
                 "bg-[var(--glass-bg-elevated)]"
               )}
@@ -227,7 +228,7 @@ export function SidebarMobileDrawer({
             </div>
 
             {/* Drawer Content */}
-            <div className="flex flex-col overflow-y-auto pb-safe">
+            <div className="relative flex flex-1 flex-col overflow-y-auto pb-safe">
               {/* User section */}
               <SidebarUserSection email={email} className="pt-4" />
 
