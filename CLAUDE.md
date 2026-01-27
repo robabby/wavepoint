@@ -112,6 +112,28 @@ Multi-scale cosmic calendar with moon phases, personal transits, journal entries
 - Timezone-aware ephemeris calculations
 - Journal entries with cosmic snapshots
 
+### Spiritual Fingerprint (Profile Personalization)
+
+Evolving user profile based on sighting patterns, resonance feedback, and geometry affinities.
+
+| Entry Point | Purpose |
+|-------------|---------|
+| `src/lib/templates/index.ts` | Template-based interpretation assembly |
+| `src/lib/patterns/index.ts` | Pattern computation (time, mood, activity, trends) |
+| `src/lib/resonance/index.ts` | Resonance feedback types and schemas |
+| `src/lib/geometry/index.ts` | Geometry affinity types and schemas |
+| `src/hooks/patterns/index.ts` | `usePatterns` hook |
+| `src/hooks/resonance/index.ts` | `useResonance`, `useResonanceSummary` hooks |
+| `src/hooks/geometry/index.ts` | `useGeometryAffinities`, `useUpdateGeometryAffinity` hooks |
+| `src/components/profile/` | ResonanceSummary, PatternsSection, GeometryAffinities |
+
+**Key features**:
+- Template system: base templates + modifiers (moon/mood/activity/element) + pattern injections
+- Pattern insights: peak hours, day distribution, mood/activity correlations, frequency trends
+- Resonance tracking: users mark if interpretations resonate (yes/no/not sure)
+- Geometry affinities: 1-5 ratings for Platonic solids with optimistic UI
+- Profile integration: "Your Signal Fingerprint" section on /profile
+
 ### Geometries (Sacred Geometry Content)
 
 MDX content pages for Platonic solids and patterns with relationship graphs.
@@ -175,6 +197,7 @@ Schema in `src/lib/db/schema.ts`. Tables:
 | Signal | `signalSightings`, `signalInterpretations`, `signalUserActivityStats`, `signalUserNumberStats`, `signalSubscriptions`, `signalSubscriptionUsage` |
 | Calendar | `calendarJournalEntries` |
 | Profile | `spiritualProfiles` (natal chart data for transits) |
+| Fingerprint | `interpretationResonance`, `geometryAffinities`, `userPatternInsights` |
 | Beta | `invites`, `waitlistSignups`, `contactSubmissions` |
 
 ```bash
@@ -254,6 +277,7 @@ cp ../.env .env           # Copy env from sibling worktree (or main)
 | Signal | `docs/prds/signal.md` | In Development |
 | Numbers | `docs/prds/numbers.md` | Shipped |
 | Calendar | `docs/plans/2026-01-26-calendar-implementation.md` | Shipped |
+| Fingerprint | `docs/plans/2026-01-26-fingerprint-core.md` | In Development |
 
 ### UX Guidelines
 
@@ -329,7 +353,8 @@ src/app/                    # App Router pages
   admin/                    # Admin pages
   api/                      # API routes
     calendar/               # Calendar API (ephemeris, journal, transits)
-    signal/                 # Signal API
+    profile/                # Profile API (geometry-affinities, resonance-summary)
+    signal/                 # Signal API (sightings, patterns, resonance)
   auth/                     # Auth pages (sign-in, register, verify)
   calendar/                 # Calendar pages (month view, day/[date])
   contact/                  # Contact form
@@ -341,7 +366,9 @@ src/app/                    # App Router pages
 src/components/
   ui/                       # shadcn/ui components
   calendar/                 # Calendar UI components
+  dashboard/                # Modular dashboard sections
   geometry/                 # Geometry-specific components
+  profile/                  # Profile components (Fingerprint section)
   sidebar/                  # Authenticated user sidebar
   signal/                   # Signal UI components
 src/lib/
@@ -353,18 +380,25 @@ src/lib/
   db/                       # Drizzle ORM + schema
   email/                    # Brevo transactional emails
   features/                 # Feature access control
+  geometry/                 # Geometry affinity types/schemas
   invites/                  # Invite code system
   numbers/                  # Angel number patterns
+  patterns/                 # Pattern computation for fingerprint
+  resonance/                # Resonance feedback types/schemas
   rate-limit/               # Upstash Redis rate limiting
   sidebar/                  # Sidebar state context
   signal/                   # Signal: Claude API, subscriptions
   stripe/                   # Stripe client for subscriptions
+  templates/                # Interpretation template system
   theme/                    # Light/dark theme context
   transits/                 # Personal transit calculations
   waitlist/                 # Waitlist signups + Brevo sync
 src/hooks/
   calendar/                 # Calendar React Query hooks
+  geometry/                 # Geometry affinity hooks
   numbers/                  # Numbers React Query hooks
+  patterns/                 # Pattern insights hooks
+  resonance/                # Resonance feedback hooks
   signal/                   # Signal React Query hooks
 src/content/                # MDX files (platonic-solids/, patterns/)
 docs/
