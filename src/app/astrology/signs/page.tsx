@@ -11,7 +11,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard } from "@/components/animated-card";
 
-const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
+const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
 export const metadata: Metadata = {
   title: "Zodiac Signs | Astrology | WavePoint",
@@ -159,14 +159,21 @@ export default function SignsIndexPage() {
                 href="/astrology/planets"
                 className="text-sm text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
               >
-                Explore the planets &rarr;
+                Explore the planets →
+              </Link>
+              <span className="text-muted-foreground/30">|</span>
+              <Link
+                href="/astrology/nodes"
+                className="text-sm text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
+              >
+                Explore sensitive points →
               </Link>
               <span className="text-muted-foreground/30">|</span>
               <Link
                 href="/numbers"
                 className="text-sm text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
               >
-                Explore number meanings &rarr;
+                Explore number meanings →
               </Link>
             </div>
           </AnimateOnScroll>
