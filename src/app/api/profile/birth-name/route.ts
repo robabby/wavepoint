@@ -59,25 +59,27 @@ export async function PATCH(request: Request) {
       birthName
     );
 
-    // Update profile
-    const [updatedRow] = await db
+    // Update profile - also set date-based numbers if they were missing (for pre-existing profiles)
+    await db
       .update(spiritualProfiles)
       .set({
         birthName: birthName,
+        // Always update all numerology numbers (ensures date-based numbers are set for legacy profiles)
+        lifePathNumber: numerologyNumbers.lifePath,
+        birthdayNumber: numerologyNumbers.birthday,
         expressionNumber: numerologyNumbers.expression,
         soulUrgeNumber: numerologyNumbers.soulUrge,
         personalityNumber: numerologyNumbers.personality,
         maturityNumber: numerologyNumbers.maturity,
         updatedAt: new Date(),
       })
-      .where(eq(spiritualProfiles.userId, session.user.id))
-      .returning();
+      .where(eq(spiritualProfiles.userId, session.user.id));
 
     // Build numerology response
     const numerology = toNumerologyData(
       {
-        lifePathNumber: updatedRow!.lifePathNumber,
-        birthdayNumber: updatedRow!.birthdayNumber,
+        lifePathNumber: numerologyNumbers.lifePath,
+        birthdayNumber: numerologyNumbers.birthday,
         expressionNumber: numerologyNumbers.expression,
         soulUrgeNumber: numerologyNumbers.soulUrge,
         personalityNumber: numerologyNumbers.personality,
