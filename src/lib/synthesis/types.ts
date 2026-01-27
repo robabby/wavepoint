@@ -279,10 +279,15 @@ export interface PatternSynthesisQuery {
   pattern: string;
   /** User profile data (optional) */
   profile?: {
+    // Astrology
     sunSign?: ZodiacSign;
     moonSign?: ZodiacSign;
     risingSign?: ZodiacSign;
     dominantElement?: Element;
+    // Numerology
+    lifePath?: number;
+    expression?: number;
+    personalYear?: number;
   };
   /** Query context */
   context?: "interpretation" | "pattern_page" | "dashboard";

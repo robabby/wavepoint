@@ -22,6 +22,7 @@ import {
 import type { PatternSynthesisQuery } from "@/lib/synthesis";
 import type { ZodiacSign } from "@/lib/astrology";
 import type { Element } from "@/lib/numbers/planetary";
+import { getNumberMeaning } from "@/lib/numerology";
 
 const INTERPRETATION_TIMEOUT_MS = 15000;
 
@@ -44,10 +45,15 @@ function getAnthropicClient(): Anthropic | null {
  * User profile subset for synthesis context
  */
 export interface UserProfileContext {
+  // Astrology
   sunSign?: ZodiacSign;
   moonSign?: ZodiacSign;
   risingSign?: ZodiacSign;
   dominantElement?: Element;
+  // Numerology
+  lifePath?: number;
+  expression?: number;
+  personalYear?: number;
 }
 
 export interface InterpretationContext {
@@ -177,10 +183,15 @@ function buildPatternSynthesisContext(
 
     if (profile) {
       query.profile = {
+        // Astrology
         sunSign: profile.sunSign,
         moonSign: profile.moonSign,
         risingSign: profile.risingSign,
         dominantElement: profile.dominantElement,
+        // Numerology
+        lifePath: profile.lifePath,
+        expression: profile.expression,
+        personalYear: profile.personalYear,
       };
     }
 
@@ -215,6 +226,25 @@ Provide a warm, insightful interpretation that:
   if (synthesisContext) {
     prompt += `\n\n${synthesisContext}`;
     prompt += `\n\nSubtly weave these esoteric connections into your interpretation without being heavy-handed.`;
+  }
+
+  // Add numerology context if available
+  if (profile?.lifePath || profile?.personalYear) {
+    prompt += `\n\n[User's Numerology Context]`;
+    if (profile.lifePath) {
+      const lifePathMeaning = getNumberMeaning(profile.lifePath);
+      const archetype = lifePathMeaning?.name ?? `Life Path ${profile.lifePath}`;
+      prompt += `\n- Life Path: ${profile.lifePath} (${archetype})`;
+    }
+    if (profile.expression) {
+      const expressionMeaning = getNumberMeaning(profile.expression);
+      const archetype = expressionMeaning?.name ?? `Expression ${profile.expression}`;
+      prompt += `\n- Expression: ${profile.expression} (${archetype})`;
+    }
+    if (profile.personalYear) {
+      prompt += `\n- Personal Year: ${profile.personalYear}`;
+    }
+    prompt += `\n\nIf the pattern's digits resonate with the user's numerology, subtly note the personal significance.`;
   }
 
   if (moodTags?.length || note || count > 1) {

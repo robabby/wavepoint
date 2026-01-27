@@ -5,6 +5,7 @@
  */
 
 import type { ZodiacSign, CelestialBodyId, AngleId, AspectType } from "@/lib/astrology";
+import type { NumerologyData } from "@/lib/numerology";
 import type {
   PlanetPosition,
   AnglePosition,
@@ -104,6 +105,15 @@ export interface SpiritualProfile {
   modalityFixed: number;
   modalityMutable: number;
 
+  // Numerology
+  birthName: string | null;
+  lifePathNumber: number | null;
+  birthdayNumber: number | null;
+  expressionNumber: number | null;
+  soulUrgeNumber: number | null;
+  personalityNumber: number | null;
+  maturityNumber: number | null;
+
   // Full chart data
   chartData: StoredChartData | null;
 
@@ -137,6 +147,7 @@ export interface ProfileResponse {
   bigThree: BigThree | null;
   elementBalance: ElementBalance | null;
   modalityBalance: ModalityBalance | null;
+  numerology: NumerologyData | null;
 }
 
 /**

@@ -12,6 +12,7 @@ import { updateUserActivityStats } from "@/lib/db/queries";
 import { generateInterpretation, type UserProfileContext } from "@/lib/signal/claude";
 import type { ZodiacSign } from "@/lib/astrology";
 import type { Element } from "@/lib/numbers/planetary";
+import { personalYearNumber } from "@/lib/numerology";
 import { calculateCosmicContext } from "@/lib/signal/cosmic-context";
 import { detectDelight, type DelightMoment } from "@/lib/signal/delight";
 import { generateInsight, type PatternInsight } from "@/lib/signal/insights";
@@ -191,6 +192,10 @@ export async function POST(request: Request) {
           elementEarth: spiritualProfiles.elementEarth,
           elementAir: spiritualProfiles.elementAir,
           elementWater: spiritualProfiles.elementWater,
+          // Numerology fields
+          birthDate: spiritualProfiles.birthDate,
+          lifePathNumber: spiritualProfiles.lifePathNumber,
+          expressionNumber: spiritualProfiles.expressionNumber,
         })
         .from(spiritualProfiles)
         .where(eq(spiritualProfiles.userId, userId));
@@ -208,11 +213,21 @@ export async function POST(request: Request) {
           ? (Object.entries(elements).find(([, v]) => v === maxValue)?.[0] as Element | undefined)
           : undefined;
 
+        // Calculate personal year if birth date is available
+        const personalYear = profileRow.birthDate
+          ? personalYearNumber(profileRow.birthDate, now)
+          : undefined;
+
         profileContext = {
+          // Astrology
           sunSign: profileRow.sunSign as ZodiacSign,
           moonSign: profileRow.moonSign as ZodiacSign | undefined,
           risingSign: profileRow.risingSign as ZodiacSign | undefined,
           dominantElement,
+          // Numerology
+          lifePath: profileRow.lifePathNumber ?? undefined,
+          expression: profileRow.expressionNumber ?? undefined,
+          personalYear,
         };
       }
     } catch {

@@ -6,6 +6,7 @@ import { Heading } from "@radix-ui/themes";
 import { auth } from "@/lib/auth";
 import { db, spiritualProfiles } from "@/lib/db";
 import { BirthDataForm } from "@/components/profile";
+import { BirthNameForm } from "@/components/numerology";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 export const metadata: Metadata = {
@@ -56,10 +57,17 @@ export default async function ProfileEditPage() {
             </Heading>
           </AnimateOnScroll>
 
-          {/* Form */}
+          {/* Birth Data Form */}
           <AnimateOnScroll delay={0.1}>
             <BirthDataForm initialData={initialData} />
           </AnimateOnScroll>
+
+          {/* Birth Name Form (only show if profile exists) */}
+          {row && (
+            <AnimateOnScroll delay={0.2} className="mt-8">
+              <BirthNameForm initialBirthName={row.birthName} />
+            </AnimateOnScroll>
+          )}
         </div>
       </div>
     </main>
