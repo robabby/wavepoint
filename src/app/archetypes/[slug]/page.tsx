@@ -15,7 +15,7 @@ import {
 } from "@/components/archetypes";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
-const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
+const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
 /**
  * Generate static params for all archetypes.

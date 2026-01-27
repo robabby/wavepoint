@@ -133,15 +133,15 @@ export function Header() {
   const authEnabled = useCanAccessAuth();
 
   // Desktop nav items
-  // Order: Signal (unauthenticated only) | Numbers | Astrology | Archetypes | Sacred Geometry
+  // Order: Signal (unauthenticated only) | Archetypes | Astrology | Numbers | Sacred Geometry
   // Signal is moved to sidebar for authenticated users
   const desktopNavItems = useMemo<NavItem[]>(() => {
     const items: NavItem[] = [
-      // Numbers is always present
+      // Archetypes (Major Arcana)
       {
-        path: ROUTES.numbers.path,
-        desktopLabel: "Numbers",
-        mobileLabel: "Numbers",
+        path: ROUTES.archetypes.path,
+        desktopLabel: "Archetypes",
+        mobileLabel: "Archetypes",
       },
       // Astrology section
       {
@@ -149,13 +149,13 @@ export function Header() {
         desktopLabel: "Astrology",
         mobileLabel: "Astrology",
       },
-      // Archetypes (Major Arcana)
+      // Numbers
       {
-        path: ROUTES.archetypes.path,
-        desktopLabel: "Archetypes",
-        mobileLabel: "Archetypes",
+        path: ROUTES.numbers.path,
+        desktopLabel: "Numbers",
+        mobileLabel: "Numbers",
       },
-      // Sacred Geometry (replaces dropdown)
+      // Sacred Geometry
       {
         path: ROUTES.sacredGeometry.path,
         desktopLabel: "Sacred Geometry",
@@ -186,11 +186,11 @@ export function Header() {
         desktopLabel: "Signal",
         mobileLabel: "Signal",
       },
-      // Numbers section
+      // Archetypes (Major Arcana)
       {
-        path: ROUTES.numbers.path,
-        desktopLabel: "Numbers",
-        mobileLabel: "Numbers",
+        path: ROUTES.archetypes.path,
+        desktopLabel: "Archetypes",
+        mobileLabel: "Archetypes",
       },
       // Astrology section
       {
@@ -198,13 +198,13 @@ export function Header() {
         desktopLabel: "Astrology",
         mobileLabel: "Astrology",
       },
-      // Archetypes (Major Arcana)
+      // Numbers
       {
-        path: ROUTES.archetypes.path,
-        desktopLabel: "Archetypes",
-        mobileLabel: "Archetypes",
+        path: ROUTES.numbers.path,
+        desktopLabel: "Numbers",
+        mobileLabel: "Numbers",
       },
-      // Single Sacred Geometry link (matches desktop)
+      // Sacred Geometry
       {
         path: ROUTES.sacredGeometry.path,
         desktopLabel: "Sacred Geometry",

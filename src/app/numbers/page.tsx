@@ -8,7 +8,7 @@ import {
 } from "@/lib/numbers";
 import { NumbersPageClient } from "./NumbersPageClient";
 
-const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
+const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
 export const metadata: Metadata = {
   title: "Number Meanings",

@@ -100,7 +100,17 @@ export function CorrespondencesTable({
               {/* Signs ruled */}
               <td className="py-3 text-muted-foreground">
                 {planet.rulerships.length > 0
-                  ? planet.rulerships.map((r) => r.sign).join(", ")
+                  ? planet.rulerships.map((r, index) => (
+                      <span key={r.sign}>
+                        <Link
+                          href={`/astrology/signs/${r.sign.toLowerCase()}`}
+                          className="transition-colors hover:text-[var(--color-gold)]"
+                        >
+                          {r.sign}
+                        </Link>
+                        {index < planet.rulerships.length - 1 && ", "}
+                      </span>
+                    ))
                   : "—"}
               </td>
             </tr>
