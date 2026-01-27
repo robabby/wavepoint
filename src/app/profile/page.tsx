@@ -10,7 +10,14 @@ import {
   type SpiritualProfile,
 } from "@/lib/profile";
 import { toNumerologyData } from "@/lib/numerology";
-import { ProfileHero, ElementBalance, ProfileEmptyState } from "@/components/profile";
+import {
+  ProfileHero,
+  ElementBalance,
+  ProfileEmptyState,
+  ResonanceSummary,
+  PatternsSection,
+  GeometryAffinities,
+} from "@/components/profile";
 import { NumerologyProfileCard } from "@/components/numerology";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
@@ -140,8 +147,36 @@ export default async function ProfilePage() {
             </AnimateOnScroll>
           )}
 
+          {/* Signal Fingerprint Section Divider */}
+          <AnimateOnScroll delay={0.4} className="my-12">
+            <div className="flex items-center gap-4">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--color-gold)]/30 to-transparent" />
+              <AnimateOnScroll delay={0.5}>
+                <span className="font-heading text-sm uppercase tracking-widest text-muted-foreground">
+                  Your Signal Fingerprint
+                </span>
+              </AnimateOnScroll>
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--color-gold)]/30 to-transparent" />
+            </div>
+          </AnimateOnScroll>
+
+          {/* Resonance Summary */}
+          <AnimateOnScroll delay={0.6}>
+            <ResonanceSummary />
+          </AnimateOnScroll>
+
+          {/* Patterns Section */}
+          <AnimateOnScroll delay={0.7} className="mt-8">
+            <PatternsSection />
+          </AnimateOnScroll>
+
+          {/* Geometry Affinities */}
+          <AnimateOnScroll delay={0.9} className="mt-8">
+            <GeometryAffinities />
+          </AnimateOnScroll>
+
           {/* Birth data summary */}
-          <AnimateOnScroll delay={0.3} className="mt-8 text-center">
+          <AnimateOnScroll delay={1.0} className="mt-12 text-center">
             <p className="text-sm text-muted-foreground">
               Born in {profile.birthCity}, {profile.birthCountry}
               {profile.birthTime && ` at ${profile.birthTime.slice(0, 5)}`}
