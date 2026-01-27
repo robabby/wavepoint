@@ -204,11 +204,11 @@ function GeometryAffinitiesSkeleton() {
         {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
-            className="min-w-[140px] flex-shrink-0 animate-pulse rounded-xl border border-[var(--border-gold)]/10 bg-card/20 p-5 lg:min-w-0"
+            className="min-w-[140px] flex-shrink-0 animate-pulse rounded-xl border border-[var(--border-gold)]/10 bg-card/20 px-3 py-4 lg:min-w-0"
           >
-            <div className="mb-3 h-12 w-12 mx-auto rounded-lg bg-muted/20" />
-            <div className="mb-2 h-5 w-20 mx-auto rounded bg-muted/20" />
-            <div className="mb-3 h-4 w-12 mx-auto rounded bg-muted/20" />
+            <div className="mb-2 h-14 w-14 mx-auto rounded-lg bg-muted/20" />
+            <div className="mb-1 h-4 w-20 mx-auto rounded bg-muted/20" />
+            <div className="mb-2 h-3 w-10 mx-auto rounded bg-muted/20" />
             <div className="flex justify-center gap-1.5">
               {[1, 2, 3, 4, 5].map((j) => (
                 <div
@@ -289,43 +289,43 @@ export function GeometryAffinities({ className }: GeometryAffinitiesProps) {
               variants={prefersReducedMotion ? undefined : fadeUpVariants}
               custom={index}
               className={cn(
-                "group relative min-w-[140px] flex-shrink-0 rounded-xl p-5 lg:min-w-0",
+                "group relative min-w-[140px] flex-shrink-0 rounded-xl px-3 py-4 lg:min-w-0",
                 "border border-[var(--border-gold)]/20 bg-card/30",
                 "hover:border-[var(--color-gold)]/40 hover:bg-[var(--color-gold)]/5",
                 "transition-all duration-300"
               )}
             >
-              {/* Geometry Icon */}
+              {/* Geometry Icon - gold tinted via CSS filters */}
               <Link
                 href={`/geometries/platonic-solids/${geometry.slug}`}
-                className="mx-auto mb-3 block h-12 w-12 transition-transform duration-300 group-hover:scale-110"
+                className="mx-auto mb-2 block h-14 w-14 transition-transform duration-300 group-hover:scale-110"
               >
                 <Image
-                  src={getPlatonicImagePath(geometry.slug, "primary")}
+                  src={getPlatonicImagePath(geometry.slug, "3d")}
                   alt={geometry.name}
-                  width={48}
-                  height={48}
-                  className="h-full w-full object-contain opacity-80 transition-opacity group-hover:opacity-100"
+                  width={56}
+                  height={56}
+                  className="h-full w-full object-contain transition-all [filter:invert(75%)_sepia(50%)_saturate(600%)_hue-rotate(5deg)_brightness(100%)] group-hover:[filter:invert(80%)_sepia(60%)_saturate(800%)_hue-rotate(5deg)_brightness(110%)_drop-shadow(0_0_8px_var(--glow-gold))]"
                 />
               </Link>
 
-              {/* Name */}
+              {/* Name - fluid sizing to fit all names */}
               <Link
                 href={`/geometries/platonic-solids/${geometry.slug}`}
-                className="mb-1 block text-center"
+                className="mb-0.5 block text-center"
               >
-                <Text
-                  weight="medium"
-                  className="font-display text-foreground transition-colors group-hover:text-[var(--color-gold)]"
+                <span
+                  className="whitespace-nowrap font-display font-medium text-foreground transition-colors group-hover:text-[var(--color-gold)]"
+                  style={{ fontSize: "clamp(0.7rem, 1.5vw + 0.3rem, 0.875rem)" }}
                 >
                   {geometry.name}
-                </Text>
+                </span>
               </Link>
 
               {/* Element */}
               <Text
                 size="1"
-                className="mb-3 block text-center uppercase tracking-wider"
+                className="mb-2 block text-center uppercase tracking-wider"
                 style={{ color: geometry.elementColor }}
               >
                 {geometry.element}
