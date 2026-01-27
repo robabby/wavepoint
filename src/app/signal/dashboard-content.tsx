@@ -4,25 +4,25 @@ import { useCallback, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Plus, Settings } from "lucide-react";
-import { useSightings, useStats, useHeatmap, useCreateSighting, useCurrentCosmicContext } from "@/hooks/signal";
-import { useProfile } from "@/hooks/profile";
+import { useSightings, useStats, useCreateSighting } from "@/hooks/signal";
 import type { DelightMoment } from "@/lib/signal/delight";
-import type { MoodOption } from "@/lib/signal/schemas";
+import type { MoodOption, ActivityOption } from "@/lib/signal/schemas";
 import {
-  ActivityHeatmap,
-  DashboardCosmicContextCard,
   DelightToast,
   getDateRangeStart,
   InlineCaptureInput,
-  ProfilePromptCard,
   RecentSightings,
   SignalBackground,
   SightingFilters,
-  StatsSummary,
-  StreakStats,
-  YourNumbers,
   type DateRangeId,
 } from "@/components/signal";
+import {
+  CosmicContextSection,
+  PersonalFocusSection,
+  QuickActionsSection,
+  RecentActivitySection,
+  FingerprintSummarySection,
+} from "@/components/dashboard";
 
 export function DashboardContent() {
   const router = useRouter();
@@ -34,18 +34,11 @@ export function DashboardContent() {
 
   const {
     totalSightings,
-    uniqueNumbers,
     numberCounts,
     isLoading: statsLoading,
   } = useStats();
 
   const { createSighting, isCreating } = useCreateSighting();
-
-  const {
-    dailyCounts,
-    streaks,
-    isLoading: heatmapLoading,
-  } = useHeatmap();
 
   const { sightings, isLoading: sightingsLoading } = useSightings({
     number: numberFilter ?? undefined,
@@ -53,33 +46,13 @@ export function DashboardContent() {
     limit: 10,
   });
 
-  const { hasProfile, isLoading: profileLoading } = useProfile();
-
-  const {
-    cosmicContext,
-    isLoading: cosmicLoading,
-    isFetching: cosmicFetching,
-    isError: cosmicError,
-    error: cosmicErrorMsg,
-    refetch: refetchCosmic,
-  } = useCurrentCosmicContext();
-
-  const handleSelectNumber = useCallback(
-    (number: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("number", number);
-      router.push(`/signal?${params.toString()}`, { scroll: false });
-    },
-    [router, searchParams]
-  );
-
   const handleQuickCapture = useCallback(
-    async (number: string, moods?: string[]) => {
-      // Get client's timezone for timezone-aware streak calculation
+    async (number: string, moods?: string[], activity?: string) => {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const result = await createSighting({
         number,
         moodTags: moods as MoodOption[] | undefined,
+        activity: activity as ActivityOption | undefined,
         tz,
       });
       if (result.delight) {
@@ -93,14 +66,8 @@ export function DashboardContent() {
     setDelight(null);
   }, []);
 
-  // Transform numberCounts for CollectionGrid
-  const gridStats = numberCounts.map((nc) => ({
-    number: nc.number,
-    count: nc.count,
-    lastSeen: nc.lastSeen,
-  }));
-
   const isEmpty = totalSightings === 0 && !statsLoading;
+  const isFiltering = !!numberFilter || dateRange !== "all";
 
   return (
     <div className="relative min-h-screen">
@@ -110,10 +77,7 @@ export function DashboardContent() {
         {/* Header */}
         <header className="mb-8">
           <div className="flex items-center justify-between">
-            {/* Left spacer for centering */}
             <div className="w-24" />
-
-            {/* Center: Title */}
             <div className="flex items-center gap-3">
               <h1 className="font-display text-4xl text-[var(--color-gold)]">
                 Signal
@@ -126,8 +90,6 @@ export function DashboardContent() {
                 <Settings className="h-5 w-5" />
               </Link>
             </div>
-
-            {/* Right: Capture button */}
             <Link
               href="/signal/capture"
               className="inline-flex items-center gap-1.5 rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-4 py-2 text-sm font-medium text-[var(--color-gold)] transition-all hover:border-[var(--color-gold)]/50 hover:bg-[var(--color-gold)]/20"
@@ -138,92 +100,42 @@ export function DashboardContent() {
           </div>
         </header>
 
-        {/* Cosmic Context Card */}
-        <section className="mb-8">
-          <DashboardCosmicContextCard
-            cosmicContext={cosmicContext}
-            isLoading={cosmicLoading}
-            isFetching={cosmicFetching}
-            isError={cosmicError}
-            error={cosmicErrorMsg}
-            onRefresh={refetchCosmic}
-          />
-        </section>
-
-        {/* Stats Summary */}
-        <StatsSummary
-          totalSightings={totalSightings}
-          uniqueNumbers={uniqueNumbers}
-          isLoading={statsLoading}
-        />
-
-        {/* Profile prompt - show for users without a profile */}
-        {!profileLoading && !hasProfile && (
-          <section className="mb-8">
-            <ProfilePromptCard />
-          </section>
-        )}
-
-        {/* Quick Capture - show for all users when not filtering */}
-        {!numberFilter && (
-          <section className="mb-8">
-            <InlineCaptureInput
-              userNumbers={numberCounts}
-              onCapture={handleQuickCapture}
-              isCapturing={isCreating}
-            />
-          </section>
-        )}
-
         {/* Delight Toast */}
         <DelightToast delight={delight} onDismiss={handleDismissDelight} />
 
-        {/* Activity Section - only show when user has data */}
-        {!isEmpty && !numberFilter && (
-          <section className="mb-8">
-            <h2 className="mb-4 font-heading text-xl text-foreground">
-              Activity
-            </h2>
-            <div className="rounded-lg border border-[var(--border-gold)]/20 bg-card/50 p-4">
-              <StreakStats
-                currentStreak={streaks.current}
-                longestStreak={streaks.longest}
-                totalActiveDays={streaks.totalActiveDays}
-                isLoading={heatmapLoading}
-              />
-              <div className="mt-4 border-t border-[var(--border-gold)]/10 pt-4">
-                <ActivityHeatmap
-                  dailyCounts={dailyCounts}
-                  isLoading={heatmapLoading}
-                />
-              </div>
-            </div>
-          </section>
-        )}
-
         {isEmpty ? (
           // Empty state - first time user
-          <div className="py-12 text-center">
-            <p className="mb-6 text-muted-foreground">
-              You haven&apos;t captured any signals yet.
-            </p>
-            <Link
-              href="/signal/capture"
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)] px-6 py-3 font-heading text-sm uppercase tracking-wide text-primary-foreground transition-colors hover:bg-[var(--color-gold-bright)]"
-            >
-              <Plus className="h-4 w-4" />
-              Capture Your First Signal
-            </Link>
+          <div className="space-y-8">
+            {/* Section 1: Cosmic Context */}
+            <CosmicContextSection />
+
+            {/* Empty state CTA */}
+            <div className="py-12 text-center">
+              <p className="mb-6 text-muted-foreground">
+                You haven&apos;t captured any signals yet.
+              </p>
+              <Link
+                href="/signal/capture"
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)] px-6 py-3 font-heading text-sm uppercase tracking-wide text-primary-foreground transition-colors hover:bg-[var(--color-gold-bright)]"
+              >
+                <Plus className="h-4 w-4" />
+                Capture Your First Signal
+              </Link>
+            </div>
           </div>
-        ) : (
-          <>
+        ) : isFiltering ? (
+          // Filtered view - show search results
+          <div className="space-y-8">
+            {/* Section 1: Cosmic Context */}
+            <CosmicContextSection />
+
             {/* Search and Filters */}
-            <section className="mb-6">
+            <section>
               <SightingFilters />
             </section>
 
-            {/* Recent Sightings */}
-            <section className="mb-8">
+            {/* Filtered Sightings */}
+            <section>
               <h2 className="mb-4 font-heading text-xl text-foreground">
                 {numberFilter
                   ? `Sightings of ${numberFilter}`
@@ -236,24 +148,41 @@ export function DashboardContent() {
                 isLoading={sightingsLoading}
               />
             </section>
+          </div>
+        ) : (
+          // Default dashboard - 5 sections
+          <div className="space-y-8">
+            {/* Section 1: Today's Cosmic Context */}
+            <CosmicContextSection />
 
-            {/* Your Numbers - only show when not filtered */}
-            {!numberFilter && (
-              <section className="mb-8">
-                <h2 className="mb-4 font-heading text-xl text-foreground">
-                  Your Numbers
-                </h2>
-                <YourNumbers
-                  stats={gridStats}
-                  onSelectNumber={handleSelectNumber}
-                  isLoading={statsLoading}
-                />
-              </section>
-            )}
-          </>
+            {/* Section 2: Personal Focus */}
+            <PersonalFocusSection />
+
+            {/* Section 3: Quick Actions */}
+            <QuickActionsSection />
+
+            {/* Inline capture (bonus) */}
+            <section>
+              <InlineCaptureInput
+                userNumbers={numberCounts}
+                onCapture={handleQuickCapture}
+                isCapturing={isCreating}
+              />
+            </section>
+
+            {/* Section 4: Recent Activity */}
+            <RecentActivitySection />
+
+            {/* Section 5: Fingerprint Summary */}
+            <FingerprintSummarySection />
+
+            {/* Search and Filters (collapsed by default) */}
+            <section>
+              <SightingFilters />
+            </section>
+          </div>
         )}
-
-              </div>
+      </div>
     </div>
   );
 }

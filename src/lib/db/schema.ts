@@ -122,6 +122,7 @@ export const signalSightings = pgTable(
     number: text("number").notNull(), // "1111", "444", etc.
     note: text("note"),
     moodTags: text("mood_tags").array(),
+    activity: text("activity"), // 'working' | 'transit' | 'resting' | 'socializing' | 'other'
     tz: text("tz"), // IANA timezone at submission, e.g. "America/Los_Angeles"
     cosmicContext: jsonb("cosmic_context"), // Planetary positions at capture time
     timestamp: timestamp("timestamp", { mode: "date" }).notNull().defaultNow(),
@@ -135,7 +136,8 @@ export const signalSightings = pgTable(
 );
 
 /**
- * Signal interpretations - AI-generated meanings (1:1 with sightings)
+ * Signal interpretations - meanings for sightings (1:1 with sightings)
+ * Can be AI-generated or assembled from templates.
  */
 export const signalInterpretations = pgTable(
   "signal_interpretations",
@@ -146,7 +148,8 @@ export const signalInterpretations = pgTable(
       .unique() // 1:1 relationship
       .references(() => signalSightings.id, { onDelete: "cascade" }),
     content: text("content").notNull(),
-    model: text("model").notNull(), // "claude-3-haiku", "fallback", etc.
+    model: text("model").notNull(), // "claude-3-haiku", "fallback", "template", etc.
+    source: text("source").notNull().default("ai"), // "ai" | "template" - for A/B tracking
     createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
   },
   (table) => [index("signal_interpretations_sighting_id_idx").on(table.sightingId)]
@@ -442,6 +445,80 @@ export const calendarJournalEntries = pgTable(
   ]
 );
 
+// =============================================================================
+// Spiritual Fingerprint - Resonance, affinities, and pattern insights
+// =============================================================================
+
+/**
+ * Interpretation resonance - tracks whether interpretations resonate with users
+ */
+export const interpretationResonance = pgTable(
+  "interpretation_resonance",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    sightingId: uuid("sighting_id")
+      .notNull()
+      .references(() => signalSightings.id, { onDelete: "cascade" }),
+    resonated: boolean("resonated"), // true = yes, false = no, null = "not sure yet"
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  },
+  (table) => [
+    unique("interpretation_resonance_user_sighting_unique").on(table.userId, table.sightingId),
+    index("interpretation_resonance_user_id_idx").on(table.userId),
+  ]
+);
+
+/**
+ * Geometry affinities - user-reported or inferred connections to sacred geometries
+ */
+export const geometryAffinities = pgTable(
+  "geometry_affinities",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    geometrySlug: text("geometry_slug").notNull(),
+    affinityScore: integer("affinity_score").notNull().default(3), // 1-5
+    source: text("source").notNull().default("self_reported"), // 'self_reported' | 'inferred'
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  },
+  (table) => [
+    unique("geometry_affinities_user_geometry_unique").on(table.userId, table.geometrySlug),
+    index("geometry_affinities_user_id_idx").on(table.userId),
+  ]
+);
+
+/**
+ * User pattern insights - cached pattern analysis results
+ */
+export const userPatternInsights = pgTable(
+  "user_pattern_insights",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    insightType: text("insight_type").notNull(), // 'time_distribution' | 'mood_correlation' | 'activity_correlation' | 'frequency_trend'
+    insightKey: text("insight_key").notNull(), // e.g., 'peak_hour', 'top_mood_444'
+    insightValue: jsonb("insight_value").notNull(),
+    computedAt: timestamp("computed_at", { withTimezone: true, mode: "date" }).defaultNow(),
+    sightingCountAtComputation: integer("sighting_count_at_computation"),
+  },
+  (table) => [
+    unique("user_pattern_insights_user_type_key_unique").on(
+      table.userId,
+      table.insightType,
+      table.insightKey
+    ),
+    index("user_pattern_insights_user_id_idx").on(table.userId),
+  ]
+);
+
 // Type exports for use in application code
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -490,3 +567,12 @@ export type NewSpiritualProfile = typeof spiritualProfiles.$inferInsert;
 
 export type CalendarJournalEntry = typeof calendarJournalEntries.$inferSelect;
 export type NewCalendarJournalEntry = typeof calendarJournalEntries.$inferInsert;
+
+export type InterpretationResonance = typeof interpretationResonance.$inferSelect;
+export type NewInterpretationResonance = typeof interpretationResonance.$inferInsert;
+
+export type GeometryAffinity = typeof geometryAffinities.$inferSelect;
+export type NewGeometryAffinity = typeof geometryAffinities.$inferInsert;
+
+export type UserPatternInsight = typeof userPatternInsights.$inferSelect;
+export type NewUserPatternInsight = typeof userPatternInsights.$inferInsert;

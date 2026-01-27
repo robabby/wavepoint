@@ -143,7 +143,8 @@ Keep responses grounded and conversational—avoid grandiose language.`,
 async function saveInterpretation(
   sightingId: string,
   content: string,
-  model: string
+  model: string,
+  source: "ai" | "template" = "ai"
 ): Promise<void> {
   await db
     .insert(signalInterpretations)
@@ -151,12 +152,14 @@ async function saveInterpretation(
       sightingId,
       content,
       model,
+      source,
     })
     .onConflictDoUpdate({
       target: signalInterpretations.sightingId,
       set: {
         content,
         model,
+        source,
         createdAt: new Date(),
       },
     });

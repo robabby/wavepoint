@@ -20,6 +20,7 @@ import {
   SacredSpinner,
   DeleteDialog,
   CosmicContextCard,
+  ResonanceFeedback,
 } from "@/components/signal";
 import type { CosmicContext } from "@/lib/signal/cosmic-context";
 
@@ -352,6 +353,13 @@ export function SightingClient({ params }: SightingClientProps) {
             canRegenerate={!isRegenerating}
           />
         </section>
+
+        {/* Resonance Feedback */}
+        {sighting.interpretation?.content && (
+          <section className="mt-6">
+            <ResonanceFeedback sightingId={id} />
+          </section>
+        )}
 
         {/* Cosmic Context */}
         {sighting.cosmicContext && (

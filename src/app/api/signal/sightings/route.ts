@@ -9,14 +9,14 @@ import { and, asc, count, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db, signalSightings, signalUserNumberStats, spiritualProfiles } from "@/lib/db";
 import { updateUserActivityStats } from "@/lib/db/queries";
-import { generateInterpretation, type UserProfileContext } from "@/lib/signal/claude";
+import { type UserProfileContext } from "@/lib/signal/claude";
+import { generateInterpretation } from "@/lib/signal/interpret";
 import type { ZodiacSign } from "@/lib/astrology";
 import type { Element } from "@/lib/numbers/planetary";
 import { personalYearNumber } from "@/lib/numerology";
-import { calculateCosmicContext } from "@/lib/signal/cosmic-context";
+import { calculateCosmicContext, type CosmicContext } from "@/lib/signal/cosmic-context";
 import { detectDelight, type DelightMoment } from "@/lib/signal/delight";
 import { generateInsight, type PatternInsight } from "@/lib/signal/insights";
-import { getBaseMeaning } from "@/lib/signal/meanings";
 import { checkRateLimit } from "@/lib/signal/rate-limit";
 import { createSightingSchema, type MoodOption } from "@/lib/signal/schemas";
 import { hasInsightAccess } from "@/lib/signal/subscriptions";
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { number, note, moodTags, tz } = parsed.data;
+    const { number, note, moodTags, activity, tz } = parsed.data;
     const userId = session.user.id;
     const now = new Date();
 
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     // Create sighting first
     const [sighting] = await db
       .insert(signalSightings)
-      .values({ userId, number, note, moodTags, tz, cosmicContext })
+      .values({ userId, number, note, moodTags, activity, tz, cosmicContext })
       .returning();
 
     // Upsert stats (neon-http doesn't support transactions, but stats are
@@ -234,32 +234,32 @@ export async function POST(request: Request) {
       // Profile fetch failed - continue without personalization
     }
 
-    // Generate interpretation based on subscription tier
-    let interpretation: string;
-    let tier: "free" | "insight";
-
-    if (hasAiAccess) {
-      // Insight tier: Generate AI interpretation
-      const { content } = await generateInterpretation({
-        sightingId: result.sighting.id,
+    // Generate interpretation using template system (all tiers)
+    // Templates are used for ~90% of interpretations, AI for edge cases
+    const interpretResult = await generateInterpretation(
+      {
+        id: result.sighting.id,
         number,
         note: note ?? undefined,
         moodTags: moodTags ?? undefined,
-        count: result.stats.count,
-        isFirstCatch: result.isFirstCatch,
+        activity: activity ?? undefined,
+        cosmicContext: cosmicContext as CosmicContext | null,
+      },
+      result.stats.count,
+      result.isFirstCatch,
+      {
+        userId,
         profile: profileContext,
-      });
-      interpretation = content;
-      tier = "insight";
-    } else {
-      // Free tier: Return base meaning from Numbers library
-      interpretation = getBaseMeaning(number);
-      tier = "free";
-    }
+      }
+    );
+
+    // Tier determines regeneration access, not interpretation quality
+    const tier: "free" | "insight" = hasAiAccess ? "insight" : "free";
 
     return NextResponse.json({
       sighting: result.sighting,
-      interpretation,
+      interpretation: interpretResult.content,
+      interpretationSource: interpretResult.source,
       isFirstCatch: result.isFirstCatch,
       count: result.stats.count,
       insight,
