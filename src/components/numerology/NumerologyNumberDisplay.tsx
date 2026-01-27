@@ -119,12 +119,9 @@ export function NumerologyNumberDisplay({
                 </Heading>
               )}
               {meaning && (
-                <Text
-                  size="2"
-                  className="mt-2 block max-w-md text-muted-foreground"
-                >
+                <p className="mx-auto mt-2 max-w-md text-center text-sm text-muted-foreground">
                   {meaning.brief}
-                </Text>
+                </p>
               )}
             </>
           )}

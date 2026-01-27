@@ -175,9 +175,10 @@ export function consonantsOnly(name: string): string {
  * @returns Life Path number (1-9 or 11, 22, 33)
  */
 export function lifePathNumber(birthDate: Date): number {
-  const month = birthDate.getMonth() + 1; // 0-indexed
-  const day = birthDate.getDate();
-  const year = birthDate.getFullYear();
+  // Use UTC methods to avoid timezone shifting the date
+  const month = birthDate.getUTCMonth() + 1; // 0-indexed
+  const day = birthDate.getUTCDate();
+  const year = birthDate.getUTCFullYear();
 
   // Reduce each component first (this is the traditional method)
   const monthReduced = reduceToDigit(month);
@@ -196,7 +197,8 @@ export function lifePathNumber(birthDate: Date): number {
  * @returns Birthday number (1-9, or 11, 22 for those days)
  */
 export function birthdayNumber(birthDate: Date): number {
-  const day = birthDate.getDate();
+  // Use UTC to avoid timezone shifting the date
+  const day = birthDate.getUTCDate();
   // Birthday number preserves 11 and 22 (days of month)
   // but 33 isn't possible (max day is 31)
   return reduceToDigit(day);
@@ -261,8 +263,10 @@ export function personalYearNumber(
   birthDate: Date,
   currentDate: Date = new Date()
 ): number {
-  const birthMonth = birthDate.getMonth() + 1;
-  const birthDay = birthDate.getDate();
+  // Use UTC for birth date to avoid timezone shifting
+  const birthMonth = birthDate.getUTCMonth() + 1;
+  const birthDay = birthDate.getUTCDate();
+  // Current date uses local time (user's actual current date)
   const currentYear = currentDate.getFullYear();
 
   // Reduce and sum
