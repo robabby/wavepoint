@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
 import {
   getPlanetGlyph,
@@ -8,11 +10,14 @@ import {
   formatDegree,
   type DashboardCosmicContext,
 } from "@/lib/signal/cosmic-context";
+import { getEclipseContext } from "@/lib/eclipses";
 import type { ZodiacSign } from "@/lib/astrology/constants";
 
 interface CosmicWeatherProps {
   /** Cosmic context data */
   context: DashboardCosmicContext;
+  /** Date in YYYY-MM-DD format (for eclipse countdown) */
+  date: string;
   /** Optional className */
   className?: string;
 }
@@ -49,11 +54,16 @@ function PlanetRow({ glyph, name, sign, degree, isRetrograde }: PlanetRowProps) 
 /**
  * Cosmic weather display for day view.
  *
- * Shows planetary positions and tight aspects for the day.
+ * Shows planetary positions, tight aspects, and approaching eclipse countdown.
  */
-export function CosmicWeather({ context, className }: CosmicWeatherProps) {
+export function CosmicWeather({ context, date, className }: CosmicWeatherProps) {
   const { sun, moon, mercury, venus, mars, jupiter, saturn, uranus, neptune, pluto, aspects } =
     context;
+
+  // Get eclipse context for countdown (only show within 30 days)
+  const eclipseContext = getEclipseContext(date);
+  const { nextEclipse, daysUntilNext } = eclipseContext;
+  const showEclipseCountdown = daysUntilNext !== null && daysUntilNext <= 30 && daysUntilNext > 0;
 
   return (
     <div className={cn("space-y-6", className)}>
@@ -181,6 +191,58 @@ export function CosmicWeather({ context, className }: CosmicWeatherProps) {
               </div>
             ))}
           </div>
+        </section>
+      )}
+
+      {/* Approaching Eclipse Countdown */}
+      {showEclipseCountdown && nextEclipse && (
+        <section>
+          <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground/50">
+            Approaching Eclipse
+          </h3>
+          <Link
+            href={`/calendar/day/${nextEclipse.date}`}
+            className={cn(
+              "group block rounded-xl",
+              "border border-[var(--border-eclipse)]/30 bg-[var(--color-eclipse)]/5",
+              "p-4 transition-all duration-200",
+              "hover:border-[var(--border-eclipse)]/50 hover:bg-[var(--color-eclipse)]/10",
+              "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-eclipse)]/60"
+            )}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-[var(--color-eclipse)]"
+                    style={{ filter: "drop-shadow(0 0 4px var(--glow-eclipse))" }}
+                  >
+                    {nextEclipse.category === "solar" ? "☉" : "☽"}
+                  </span>
+                  <span className="text-sm text-foreground group-hover:text-[var(--color-eclipse-bright)] transition-colors">
+                    {nextEclipse.title}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {format(parseISO(nextEclipse.date), "MMMM d, yyyy")}
+                </p>
+              </div>
+              <div className="text-right">
+                <span
+                  className={cn(
+                    "text-2xl font-display tabular-nums",
+                    "text-[var(--color-eclipse)]",
+                    daysUntilNext !== null && daysUntilNext <= 7 && "animate-pulse"
+                  )}
+                >
+                  {daysUntilNext}
+                </span>
+                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {daysUntilNext === 1 ? "day" : "days"}
+                </p>
+              </div>
+            </div>
+          </Link>
         </section>
       )}
     </div>

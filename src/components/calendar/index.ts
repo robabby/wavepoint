@@ -11,3 +11,8 @@ export { PersonalTransits } from "./personal-transits";
 export { JournalSection } from "./journal-section";
 export { SightingsSection } from "./sightings-section";
 export { DayNavigation } from "./day-navigation";
+
+// Eclipse Portal components
+export { EclipseCard } from "./eclipse-card";
+export { PortalBanner } from "./portal-banner";
+export { EclipseSection } from "./eclipse-section";

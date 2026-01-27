@@ -8,6 +8,7 @@ import {
   getMoonPhaseName,
   type MoonPhase,
 } from "@/lib/signal/cosmic-context";
+import type { EclipseCategory } from "@/lib/eclipses";
 
 export interface DayCellProps {
   /** Date in YYYY-MM-DD format */
@@ -30,6 +31,10 @@ export interface DayCellProps {
   hasSightings: boolean;
   /** Whether user has journal entry on this day */
   hasJournal: boolean;
+  /** Whether this day is within an Eclipse Portal (but not an eclipse day) */
+  isInEclipsePortal?: boolean;
+  /** Eclipse on this day (if any) */
+  eclipse?: { category: EclipseCategory; isPenumbral: boolean } | null;
   /** Click handler */
   onClick: () => void;
   /** Keyboard focus handler */
@@ -45,6 +50,8 @@ export interface DayCellProps {
  * - Moon phase emoji with atmospheric glow
  * - Gold indicator dot for sightings
  * - Copper indicator dot for journal entries
+ * - Violet indicator dot and treatment for eclipse portal days
+ * - Eclipse badge for eclipse days
  * - Today ring highlight
  * - Selected state styling
  */
@@ -59,6 +66,8 @@ export function DayCell({
   isPeakNewMoon = false,
   hasSightings,
   hasJournal,
+  isInEclipsePortal = false,
+  eclipse = null,
   onClick,
   onKeyDown,
   tabIndex = 0,
@@ -68,11 +77,20 @@ export function DayCell({
   const isFullMoon = moonPhase === "full_moon";
   const isNewMoon = moonPhase === "new_moon";
 
+  // Eclipse states
+  const isEclipseDay = eclipse !== null;
+  const isPenumbral = eclipse?.isPenumbral ?? false;
+
   // Build accessible label with human-readable date and context
   const parsedDate = parseISO(date);
   const readableDate = format(parsedDate, "EEEE, MMMM d, yyyy");
   const ariaLabel = [
     readableDate,
+    isEclipseDay
+      ? `${eclipse.category} eclipse`
+      : isInEclipsePortal
+        ? "eclipse portal"
+        : null,
     moonPhase ? getMoonPhaseName(moonPhase) : null,
     isToday ? "today" : null,
     isSelected ? "selected" : null,
@@ -97,10 +115,26 @@ export function DayCell({
         "transition-all duration-200 ease-out",
         // Base state
         "bg-card/40 border border-white/5",
-        // Full moon - radiant golden border and tint
-        isFullMoon && "border-[var(--color-gold)]/40 bg-[var(--color-gold)]/5",
-        // New moon - subtle silver/dark border
-        isNewMoon && "border-slate-400/30 bg-slate-900/30",
+        // Eclipse day - violet treatment (takes precedence over moon phases)
+        isEclipseDay &&
+          !isPenumbral &&
+          "border-[var(--color-eclipse)]/50 bg-[var(--color-eclipse)]/15",
+        // Penumbral eclipse - lighter treatment
+        isEclipseDay &&
+          isPenumbral &&
+          "border-[var(--color-eclipse)]/35 bg-[var(--color-eclipse)]/10",
+        // Eclipse portal day (non-eclipse) - visible violet tint
+        !isEclipseDay &&
+          isInEclipsePortal &&
+          "border-[var(--color-eclipse)]/25 bg-[var(--color-eclipse)]/10",
+        // Full moon - radiant golden border and tint (only if not eclipse)
+        !isEclipseDay &&
+          isFullMoon &&
+          "border-[var(--color-gold)]/40 bg-[var(--color-gold)]/5",
+        // New moon - subtle silver/dark border (only if not eclipse)
+        !isEclipseDay &&
+          isNewMoon &&
+          "border-slate-400/30 bg-slate-900/30",
         // Today - prominent ring
         isToday && "ring-2 ring-[var(--color-gold)]/60",
         // Selected - stronger gold tint
@@ -109,25 +143,101 @@ export function DayCell({
         !isCurrentMonth && "opacity-40",
         // Hover - additive effects that enhance existing styles
         "hover:scale-[1.02] hover:brightness-110",
-        // Hover border glow - contextual to moon phase
-        isFullMoon && "hover:border-[var(--color-gold)]/60 hover:shadow-[0_0_12px_rgba(212,168,75,0.25)]",
-        isNewMoon && "hover:border-slate-400/50 hover:shadow-[0_0_12px_rgba(148,163,184,0.2)]",
-        !isFullMoon && !isNewMoon && "hover:border-[var(--border-gold)]/40 hover:shadow-[0_0_8px_rgba(212,168,75,0.15)]",
+        // Hover border glow - contextual to eclipse/moon phase
+        isEclipseDay &&
+          "hover:border-[var(--color-eclipse)]/70 hover:shadow-[0_0_12px_var(--glow-eclipse)]",
+        !isEclipseDay &&
+          isInEclipsePortal &&
+          "hover:border-[var(--color-eclipse)]/45 hover:shadow-[0_0_10px_var(--glow-eclipse)]",
+        !isEclipseDay &&
+          !isInEclipsePortal &&
+          isFullMoon &&
+          "hover:border-[var(--color-gold)]/60 hover:shadow-[0_0_12px_rgba(212,168,75,0.25)]",
+        !isEclipseDay &&
+          !isInEclipsePortal &&
+          isNewMoon &&
+          "hover:border-slate-400/50 hover:shadow-[0_0_12px_rgba(148,163,184,0.2)]",
+        !isEclipseDay &&
+          !isInEclipsePortal &&
+          !isFullMoon &&
+          !isNewMoon &&
+          "hover:border-[var(--border-gold)]/40 hover:shadow-[0_0_8px_rgba(212,168,75,0.15)]",
         // Focus visible
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-gold)]/80"
       )}
     >
+      {/* Eclipse day pulsing aura - only for non-penumbral eclipses */}
+      {isEclipseDay && !isPenumbral && (
+        <span
+          className={cn(
+            "pointer-events-none absolute inset-0 rounded-lg",
+            "animate-eclipse-pulse",
+            "bg-[radial-gradient(ellipse_at_center,var(--color-eclipse)/20_0%,transparent_70%)]"
+          )}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Hover overlay - subtle radial gradient that enhances existing treatment */}
       <span
         className={cn(
           "pointer-events-none absolute inset-0 rounded-lg opacity-0 transition-opacity duration-200",
           "group-hover:opacity-100",
-          isFullMoon && "bg-[radial-gradient(ellipse_at_center,rgba(212,168,75,0.12)_0%,transparent_70%)]",
-          isNewMoon && "bg-[radial-gradient(ellipse_at_center,rgba(148,163,184,0.1)_0%,transparent_70%)]",
-          !isFullMoon && !isNewMoon && "bg-[radial-gradient(ellipse_at_center,rgba(212,168,75,0.08)_0%,transparent_70%)]"
+          isEclipseDay &&
+            "bg-[radial-gradient(ellipse_at_center,var(--color-eclipse)/20_0%,transparent_70%)]",
+          !isEclipseDay &&
+            isInEclipsePortal &&
+            "bg-[radial-gradient(ellipse_at_center,var(--color-eclipse)/15_0%,transparent_70%)]",
+          !isEclipseDay &&
+            !isInEclipsePortal &&
+            isFullMoon &&
+            "bg-[radial-gradient(ellipse_at_center,rgba(212,168,75,0.12)_0%,transparent_70%)]",
+          !isEclipseDay &&
+            !isInEclipsePortal &&
+            isNewMoon &&
+            "bg-[radial-gradient(ellipse_at_center,rgba(148,163,184,0.1)_0%,transparent_70%)]",
+          !isEclipseDay &&
+            !isInEclipsePortal &&
+            !isFullMoon &&
+            !isNewMoon &&
+            "bg-[radial-gradient(ellipse_at_center,rgba(212,168,75,0.08)_0%,transparent_70%)]"
         )}
         aria-hidden="true"
       />
+
+      {/* Eclipse badge - top position */}
+      {isEclipseDay && (
+        <span
+          className={cn(
+            "absolute top-1 text-[10px] font-medium",
+            isPenumbral
+              ? "text-[var(--color-eclipse)]/60"
+              : "text-[var(--color-eclipse)]"
+          )}
+          style={{
+            filter: isPenumbral
+              ? undefined
+              : "drop-shadow(0 0 4px var(--glow-eclipse))",
+          }}
+          aria-hidden="true"
+        >
+          {eclipse.category === "solar" ? "☉" : "☽"}
+        </span>
+      )}
+
+      {/* Full/New Moon label - only on peak days, hidden if eclipse badge shown */}
+      {!isEclipseDay && (isPeakFullMoon || isPeakNewMoon) && (
+        <span
+          className={cn(
+            "absolute top-1 text-[8px] font-medium uppercase tracking-[0.1em]",
+            isPeakFullMoon && "text-[var(--color-gold)]",
+            isPeakNewMoon && "text-slate-400"
+          )}
+          aria-hidden="true"
+        >
+          {isPeakFullMoon ? "Full" : "New"}
+        </span>
+      )}
 
       {/* Moon phase with glow - enhanced for full/new moon, intensifies on hover */}
       {moonPhase && (
@@ -157,25 +267,15 @@ export function DayCell({
       <span
         className={cn(
           "text-sm mt-0.5",
-          isToday ? "text-[var(--color-gold)] font-medium" : "text-muted-foreground"
+          isToday
+            ? "text-[var(--color-gold)] font-medium"
+            : isEclipseDay
+              ? "text-[var(--color-eclipse-text)]"
+              : "text-muted-foreground"
         )}
       >
         {day}
       </span>
-
-      {/* Full/New Moon label - only on peak days */}
-      {(isPeakFullMoon || isPeakNewMoon) && (
-        <span
-          className={cn(
-            "absolute top-1 text-[8px] font-medium uppercase tracking-[0.1em]",
-            isPeakFullMoon && "text-[var(--color-gold)]",
-            isPeakNewMoon && "text-slate-400"
-          )}
-          aria-hidden="true"
-        >
-          {isPeakFullMoon ? "Full" : "New"}
-        </span>
-      )}
 
       {/* Indicator dots */}
       <div className="absolute bottom-2 flex gap-1">
@@ -190,6 +290,14 @@ export function DayCell({
           <span
             className="h-2 w-2 rounded-full bg-[var(--color-copper)]"
             style={{ boxShadow: "0 0 4px var(--color-copper)" }}
+            aria-hidden="true"
+          />
+        )}
+        {/* Eclipse portal indicator - shown for portal days without an eclipse */}
+        {isInEclipsePortal && !isEclipseDay && (
+          <span
+            className="h-2 w-2 rounded-full bg-[var(--color-eclipse)]"
+            style={{ boxShadow: "0 0 4px var(--color-eclipse)" }}
             aria-hidden="true"
           />
         )}

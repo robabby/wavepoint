@@ -165,6 +165,14 @@
   --color-gold-text: #876b24;
   --color-gold-decorative: #a38230;
   --color-copper-text: #8f5a28;
+
+  /* Eclipse Portal - Warm Violet (twilight, threshold moments) */
+  --color-eclipse: #7c5a9e;
+  --color-eclipse-bright: #9b7ab8;
+  --color-eclipse-muted: #6b4a8a;
+  --color-eclipse-text: #6b4a8a;
+  --glow-eclipse: rgba(124, 90, 158, 0.18);
+  --border-eclipse: rgba(124, 90, 158, 0.25);
 }
 
 /* ==========================================================================
@@ -243,6 +251,14 @@
   --color-gold-text: #d4a84b;
   --color-gold-decorative: #d4a84b;
   --color-copper-text: #b87333;
+
+  /* Eclipse Portal - Warm Violet (brighter for dark backgrounds) */
+  --color-eclipse: #a78bcd;
+  --color-eclipse-bright: #c4a8e8;
+  --color-eclipse-muted: #8a6fb0;
+  --color-eclipse-text: #a78bcd;
+  --glow-eclipse: rgba(167, 139, 205, 0.25);
+  --border-eclipse: rgba(167, 139, 205, 0.35);
 }
 
 /* ==========================================================================
@@ -408,6 +424,23 @@ body::after {
   .scrollbar-none::-webkit-scrollbar {
     display: none; /* Chrome/Safari/Opera */
   }
+
+  /* Eclipse Portal styles */
+  .text-eclipse {
+    color: var(--color-eclipse);
+  }
+
+  .text-eclipse-bright {
+    color: var(--color-eclipse-bright);
+  }
+
+  .glow-eclipse {
+    box-shadow: 0 0 20px var(--glow-eclipse);
+  }
+
+  .border-eclipse {
+    border-color: var(--border-eclipse);
+  }
 }
 
 /* ==========================================================================
@@ -461,6 +494,29 @@ body::after {
 
   .animate-number-fall {
     animation: number-fall linear infinite;
+    will-change: transform, opacity;
+  }
+}
+
+/* ==========================================================================
+   Eclipse Portal Animation
+   Subtle pulsing aura for eclipse day cells
+   ========================================================================== */
+@layer utilities {
+  @keyframes eclipse-pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+  }
+
+  .animate-eclipse-pulse {
+    animation: eclipse-pulse 3s ease-in-out infinite;
     will-change: transform, opacity;
   }
 }
