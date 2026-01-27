@@ -159,6 +159,47 @@ export default function AstrologyHubPage() {
               </AnimatedCard>
             </Link>
           </AnimateOnScroll>
+
+          {/* Sensitive Points Section */}
+          <AnimateOnScroll delay={0.4} className="mt-8">
+            <Link href="/astrology/nodes" className="block">
+              <AnimatedCard className="group relative overflow-hidden p-8 sm:p-10">
+                <div className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left">
+                  {/* Icon/Glyph */}
+                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--color-gold)]/40 bg-card/50 sm:mb-0 sm:mr-6">
+                    <span className="font-display text-3xl text-[var(--color-gold)]">
+                      ☊
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <Heading
+                      size="6"
+                      className="mb-2 font-display text-foreground transition-colors group-hover:text-[var(--color-gold)]"
+                    >
+                      Sensitive Points
+                    </Heading>
+                    <Text className="mb-4 block text-muted-foreground">
+                      Calculated chart positions representing karmic direction,
+                      shadow integration, wounds, fortune, and fated encounters.
+                      Discover how these points reveal hidden dimensions of the
+                      chart.
+                    </Text>
+                    <span className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-gold)]">
+                      Explore sensitive points
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Decorative glyphs */}
+                <div className="pointer-events-none absolute -right-4 -top-4 text-6xl text-[var(--color-gold)]/5">
+                  ☊☋⚷⊕
+                </div>
+              </AnimatedCard>
+            </Link>
+          </AnimateOnScroll>
         </div>
       </div>
     </main>

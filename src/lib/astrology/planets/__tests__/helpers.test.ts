@@ -189,7 +189,7 @@ describe("getPlanetPath", () => {
 
 describe("getPlanetCanonicalUrl", () => {
   it("should return full URL", () => {
-    const url = getPlanetCanonicalUrl("saturn", "https://wavepoint.guide");
-    expect(url).toBe("https://wavepoint.guide/astrology/planets/saturn");
+    const url = getPlanetCanonicalUrl("saturn", "https://wavepoint.space");
+    expect(url).toBe("https://wavepoint.space/astrology/planets/saturn");
   });
 });

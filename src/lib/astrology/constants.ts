@@ -168,14 +168,29 @@ export const CELESTIAL_BODIES = [
 export type CelestialBodyId = (typeof CELESTIAL_BODIES)[number];
 
 /**
+ * Sensitive points for content pages.
+ * Includes lunar nodes, Lilith, Chiron, Part of Fortune, and Vertex.
+ */
+export const SENSITIVE_POINTS = [
+  "northnode",
+  "southnode",
+  "lilith",
+  "chiron",
+  "partoffortune",
+  "vertex",
+] as const;
+
+export type SensitivePointId = (typeof SENSITIVE_POINTS)[number];
+
+/**
  * Planet metadata including symbols
  */
 export const PLANET_META: Record<
-  CelestialBodyId,
+  CelestialBodyId | "partoffortune" | "vertex",
   {
     name: string;
     glyph: string;
-    type: "luminary" | "personal" | "social" | "transpersonal" | "point" | "asteroid";
+    type: "luminary" | "personal" | "social" | "transpersonal" | "point" | "asteroid" | "arabic-part" | "angle";
   }
 > = {
   sun: { name: "Sun", glyph: "\u2609", type: "luminary" },
@@ -192,6 +207,8 @@ export const PLANET_META: Record<
   northnode: { name: "North Node", glyph: "\u260A", type: "point" },
   southnode: { name: "South Node", glyph: "\u260B", type: "point" },
   lilith: { name: "Black Moon Lilith", glyph: "\u26B8", type: "point" },
+  partoffortune: { name: "Part of Fortune", glyph: "\u2295", type: "arabic-part" },
+  vertex: { name: "Vertex", glyph: "Vx", type: "angle" },
 };
 
 /**

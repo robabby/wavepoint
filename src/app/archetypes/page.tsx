@@ -9,7 +9,7 @@ import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { TAROT_STYLES } from "@/lib/theme/tarot-styles";
 
-const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
+const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
 export const metadata: Metadata = {
   title: "Archetypes",

@@ -19,7 +19,7 @@ import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard } from "@/components/animated-card";
 import { isSignalEnabled } from "@/lib/signal/feature-flags";
 
-const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
+const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
 /**
  * Generate static params for all known patterns.

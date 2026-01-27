@@ -17,7 +17,7 @@ import { PatternCard } from "@/components/numbers";
 import { getPatternByNumber } from "@/lib/numbers";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 
-const baseUrl = process.env.APP_URL ?? "https://wavepoint.guide";
+const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
 /**
  * Generate static params for all planets with content.

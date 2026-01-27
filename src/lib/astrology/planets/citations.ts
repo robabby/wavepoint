@@ -68,6 +68,59 @@ export const RUDHYAR_ASTROLOGY_PERSONALITY: Citation = {
   year: 1936,
 };
 
+export const REINHART_CHIRON: Citation = {
+  id: "reinhart-chiron",
+  category: "scholarly",
+  shortLabel: "Reinhart",
+  fullCitation:
+    "Reinhart, Melanie. Chiron and the Healing Journey. Penguin/Arkana, 1989.",
+  year: 1989,
+};
+
+export const GEORGE_LILITH: Citation = {
+  id: "george-lilith",
+  category: "scholarly",
+  shortLabel: "George",
+  fullCitation:
+    "George, Demetra. Mysteries of the Dark Moon. HarperOne, 1992.",
+  year: 1992,
+};
+
+export const SCHULMAN_NODES: Citation = {
+  id: "schulman-nodes",
+  category: "scholarly",
+  shortLabel: "Schulman",
+  fullCitation:
+    "Schulman, Martin. Karmic Astrology: The Moon's Nodes and Reincarnation. Samuel Weiser, 1975.",
+  year: 1975,
+};
+
+export const SPILLER_NODES: Citation = {
+  id: "spiller-nodes",
+  category: "scholarly",
+  shortLabel: "Spiller",
+  fullCitation:
+    "Spiller, Jan. Astrology for the Soul. Bantam Books, 1997.",
+  year: 1997,
+};
+
+export const ARABIC_PARTS_TRADITION: Citation = {
+  id: "arabic-parts-tradition",
+  category: "traditional",
+  shortLabel: "Arabic Parts",
+  fullCitation:
+    "Arabic parts tradition. Medieval Islamic astrology, developed 8th-12th century CE.",
+};
+
+export const BONATTI_LIBER_ASTRONOMIAE: Citation = {
+  id: "bonatti-liber-astronomiae",
+  category: "traditional",
+  shortLabel: "Bonatti",
+  fullCitation:
+    "Bonatti, Guido. Liber Astronomiae (Book of Astronomy). 13th century.",
+  year: 1277,
+};
+
 // ═══════════════════════════════════════════════════════════════════════════
 // TRADITIONAL SOURCES
 // ═══════════════════════════════════════════════════════════════════════════
@@ -167,6 +220,13 @@ export const CITATIONS: Record<string, Citation> = {
   [MODERN_WESTERN_CONSENSUS.id]: MODERN_WESTERN_CONSENSUS,
   [PSYCHOLOGICAL_ASTROLOGY.id]: PSYCHOLOGICAL_ASTROLOGY,
   [WAVEPOINT_SYNTHESIS.id]: WAVEPOINT_SYNTHESIS,
+  // Node-specific citations
+  [REINHART_CHIRON.id]: REINHART_CHIRON,
+  [GEORGE_LILITH.id]: GEORGE_LILITH,
+  [SCHULMAN_NODES.id]: SCHULMAN_NODES,
+  [SPILLER_NODES.id]: SPILLER_NODES,
+  [ARABIC_PARTS_TRADITION.id]: ARABIC_PARTS_TRADITION,
+  [BONATTI_LIBER_ASTRONOMIAE.id]: BONATTI_LIBER_ASTRONOMIAE,
 };
 
 /**
