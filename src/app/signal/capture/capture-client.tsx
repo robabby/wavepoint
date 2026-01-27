@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft } from "lucide-react";
 import { useCreateSighting, useStats } from "@/hooks/signal";
-import type { MoodOption } from "@/lib/signal/schemas";
+import type { MoodOption, ActivityOption } from "@/lib/signal/schemas";
 import {
   NumberPad,
   MoodSelector,
@@ -32,6 +32,7 @@ type WizardStep = "number" | "mood" | "note" | "result";
 interface WizardState {
   number: string;
   moods: MoodOption[];
+  activity?: ActivityOption;
   note: string;
 }
 
@@ -86,12 +87,16 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
     setState((prev) => ({ ...prev, moods: moods as MoodOption[] }));
   }, []);
 
+  const handleActivityChange = useCallback((activity: ActivityOption | undefined) => {
+    setState((prev) => ({ ...prev, activity }));
+  }, []);
+
   const handleMoodContinue = useCallback(() => {
     setStep("note");
   }, []);
 
   const handleMoodSkip = useCallback(() => {
-    setState((prev) => ({ ...prev, moods: [] }));
+    setState((prev) => ({ ...prev, moods: [], activity: undefined }));
     setStep("note");
   }, []);
 
@@ -106,6 +111,7 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
       const response = await createSighting({
         number: state.number,
         moodTags: state.moods.length > 0 ? state.moods : undefined,
+        activity: state.activity,
         note: state.note || undefined,
         tz,
       });
@@ -221,9 +227,11 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
               <MoodSelector
                 selected={state.moods}
                 onChange={handleMoodChange}
+                activity={state.activity}
+                onActivityChange={handleActivityChange}
                 onSkip={handleMoodSkip}
               />
-              {state.moods.length > 0 && (
+              {(state.moods.length > 0 || state.activity) && (
                 <div className="mt-6">
                   <SubmitButton onClick={handleMoodContinue}>
                     Continue

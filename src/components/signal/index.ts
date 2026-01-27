@@ -58,6 +58,9 @@ export { SubscriptionStatus } from "./subscription-status";
 // Profile prompt
 export { ProfilePromptCard } from "./profile-prompt-card";
 
+// Resonance feedback
+export { ResonanceFeedback } from "./resonance-feedback";
+
 // Quick actions
 export {
   QuickCaptureBar,

@@ -42,12 +42,22 @@ export type {
 // Base meanings
 export { getBaseMeaning } from "./meanings";
 
-// Claude API integration
+// Claude API integration (AI fallback)
+export {
+  generateInterpretation as generateAIInterpretation,
+  type InterpretationContext,
+  type InterpretationResult as AIInterpretationResult,
+  type UserProfileContext,
+} from "./claude";
+
+// Interpretation orchestrator (templates + AI fallback)
 export {
   generateInterpretation,
-  type InterpretationContext,
-  type InterpretationResult,
-} from "./claude";
+  regenerateInterpretation,
+  type InterpretOptions,
+  type SightingData,
+  type InterpretResult,
+} from "./interpret";
 
 // Rate limiting
 export { checkRateLimit } from "./rate-limit";
