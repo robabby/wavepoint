@@ -304,6 +304,17 @@ export const spiritualProfiles = pgTable(
     modalityFixed: integer("modality_fixed").notNull().default(0),
     modalityMutable: integer("modality_mutable").notNull().default(0),
 
+    // Numerology - Birth Name (optional, for name-based numbers)
+    birthName: text("birth_name"),
+
+    // Numerology - Core Numbers (pre-computed, stable values)
+    lifePathNumber: integer("life_path_number"), // 1-9, 11, 22, 33
+    birthdayNumber: integer("birthday_number"), // 1-9, 11, 22
+    expressionNumber: integer("expression_number"), // NULL if no birthName
+    soulUrgeNumber: integer("soul_urge_number"), // NULL if no birthName
+    personalityNumber: integer("personality_number"), // NULL if no birthName
+    maturityNumber: integer("maturity_number"), // NULL if no birthName
+
     // Full Chart Data (JSONB for detailed positions)
     chartData: jsonb("chart_data"),
 

@@ -9,7 +9,9 @@ import {
   getBigThreeFromProfile,
   type SpiritualProfile,
 } from "@/lib/profile";
+import { toNumerologyData } from "@/lib/numerology";
 import { ProfileHero, ElementBalance, ProfileEmptyState } from "@/components/profile";
+import { NumerologyProfileCard } from "@/components/numerology";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 export const metadata: Metadata = {
@@ -45,6 +47,13 @@ function rowToProfile(row: typeof spiritualProfiles.$inferSelect): SpiritualProf
     modalityCardinal: row.modalityCardinal,
     modalityFixed: row.modalityFixed,
     modalityMutable: row.modalityMutable,
+    birthName: row.birthName,
+    lifePathNumber: row.lifePathNumber,
+    birthdayNumber: row.birthdayNumber,
+    expressionNumber: row.expressionNumber,
+    soulUrgeNumber: row.soulUrgeNumber,
+    personalityNumber: row.personalityNumber,
+    maturityNumber: row.maturityNumber,
     chartData: row.chartData as SpiritualProfile["chartData"],
     calculatedAt: row.calculatedAt,
     calculationVersion: row.calculationVersion,
@@ -81,6 +90,21 @@ export default async function ProfilePage() {
   const bigThree = getBigThreeFromProfile(profile);
   const elementBalance = getElementBalanceFromProfile(profile);
 
+  // Calculate numerology data
+  const numerology = profile.birthDate
+    ? toNumerologyData(
+        {
+          lifePathNumber: profile.lifePathNumber,
+          birthdayNumber: profile.birthdayNumber,
+          expressionNumber: profile.expressionNumber,
+          soulUrgeNumber: profile.soulUrgeNumber,
+          personalityNumber: profile.personalityNumber,
+          maturityNumber: profile.maturityNumber,
+        },
+        profile.birthDate
+      )
+    : null;
+
   // If no bigThree (shouldn't happen with a saved profile, but handle gracefully)
   if (!bigThree) {
     return (
@@ -106,8 +130,18 @@ export default async function ProfilePage() {
             <ElementBalance elementBalance={elementBalance} />
           </AnimateOnScroll>
 
+          {/* Numerology */}
+          {numerology && (
+            <AnimateOnScroll delay={0.2} className="mt-6">
+              <NumerologyProfileCard
+                numerology={numerology}
+                hasBirthName={!!profile.birthName}
+              />
+            </AnimateOnScroll>
+          )}
+
           {/* Birth data summary */}
-          <AnimateOnScroll delay={0.2} className="mt-8 text-center">
+          <AnimateOnScroll delay={0.3} className="mt-8 text-center">
             <p className="text-sm text-muted-foreground">
               Born in {profile.birthCity}, {profile.birthCountry}
               {profile.birthTime && ` at ${profile.birthTime.slice(0, 5)}`}

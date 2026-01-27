@@ -1,2 +1,2 @@
 export { profileKeys } from "./query-keys";
-export { useProfile, useUpdateProfile, useCalculateChart } from "./use-profile";
+export { useProfile, useUpdateProfile, useCalculateChart, useUpdateBirthName } from "./use-profile";

@@ -26,6 +26,7 @@ import {
   CALCULATION_VERSION,
   type SpiritualProfile,
 } from "@/lib/profile";
+import { calculateStableNumbers, toNumerologyData } from "@/lib/numerology";
 
 /**
  * Schema for profile input validation
@@ -41,6 +42,7 @@ const profileInputSchema = z.object({
   birthLatitude: z.number().min(-90).max(90),
   birthLongitude: z.number().min(-180).max(180),
   birthTimezone: z.string().optional(), // Auto-calculated from coordinates if not provided
+  birthName: z.string().nullable().optional(), // Full name at birth for numerology
 });
 
 /**
@@ -71,6 +73,13 @@ function rowToProfile(row: typeof spiritualProfiles.$inferSelect): SpiritualProf
     modalityCardinal: row.modalityCardinal,
     modalityFixed: row.modalityFixed,
     modalityMutable: row.modalityMutable,
+    birthName: row.birthName,
+    lifePathNumber: row.lifePathNumber,
+    birthdayNumber: row.birthdayNumber,
+    expressionNumber: row.expressionNumber,
+    soulUrgeNumber: row.soulUrgeNumber,
+    personalityNumber: row.personalityNumber,
+    maturityNumber: row.maturityNumber,
     chartData: row.chartData as SpiritualProfile["chartData"],
     calculatedAt: row.calculatedAt,
     calculationVersion: row.calculationVersion,
@@ -97,16 +106,33 @@ export async function GET() {
         bigThree: null,
         elementBalance: null,
         modalityBalance: null,
+        numerology: null,
       });
     }
 
     const profile = rowToProfile(row);
+
+    // Calculate numerology data (dynamic cycles need current date)
+    const numerology = profile.birthDate
+      ? toNumerologyData(
+          {
+            lifePathNumber: profile.lifePathNumber,
+            birthdayNumber: profile.birthdayNumber,
+            expressionNumber: profile.expressionNumber,
+            soulUrgeNumber: profile.soulUrgeNumber,
+            personalityNumber: profile.personalityNumber,
+            maturityNumber: profile.maturityNumber,
+          },
+          profile.birthDate
+        )
+      : null;
 
     return NextResponse.json({
       profile,
       bigThree: getBigThreeFromProfile(profile),
       elementBalance: getElementBalanceFromProfile(profile),
       modalityBalance: getModalityBalanceFromProfile(profile),
+      numerology,
     });
   } catch (error) {
     console.error("Get profile error:", error);
@@ -148,6 +174,7 @@ export async function PUT(request: Request) {
       birthLatitude,
       birthLongitude,
       birthTimezone: providedTimezone,
+      birthName,
     } = parsed.data;
 
     // Parse date string directly to avoid timezone conversion issues
@@ -184,6 +211,9 @@ export async function PUT(request: Request) {
     const bigThree = extractBigThree(chart, hasBirthTime);
     const chartData = extractStoredChartData(chart);
 
+    // Calculate numerology numbers
+    const numerologyNumbers = calculateStableNumbers(birthDate, birthName);
+
     const now = new Date();
 
     // Upsert profile
@@ -212,6 +242,13 @@ export async function PUT(request: Request) {
         modalityCardinal: modalityBalance.cardinal,
         modalityFixed: modalityBalance.fixed,
         modalityMutable: modalityBalance.mutable,
+        birthName: birthName ?? null,
+        lifePathNumber: numerologyNumbers.lifePath,
+        birthdayNumber: numerologyNumbers.birthday,
+        expressionNumber: numerologyNumbers.expression,
+        soulUrgeNumber: numerologyNumbers.soulUrge,
+        personalityNumber: numerologyNumbers.personality,
+        maturityNumber: numerologyNumbers.maturity,
         chartData,
         calculatedAt: now,
         calculationVersion: CALCULATION_VERSION,
@@ -242,6 +279,13 @@ export async function PUT(request: Request) {
           modalityCardinal: modalityBalance.cardinal,
           modalityFixed: modalityBalance.fixed,
           modalityMutable: modalityBalance.mutable,
+          birthName: birthName ?? null,
+          lifePathNumber: numerologyNumbers.lifePath,
+          birthdayNumber: numerologyNumbers.birthday,
+          expressionNumber: numerologyNumbers.expression,
+          soulUrgeNumber: numerologyNumbers.soulUrge,
+          personalityNumber: numerologyNumbers.personality,
+          maturityNumber: numerologyNumbers.maturity,
           chartData,
           calculatedAt: now,
           calculationVersion: CALCULATION_VERSION,
@@ -252,11 +296,25 @@ export async function PUT(request: Request) {
 
     const profile = rowToProfile(row!);
 
+    // Calculate numerology data for response (includes dynamic cycles)
+    const numerology = toNumerologyData(
+      {
+        lifePathNumber: numerologyNumbers.lifePath,
+        birthdayNumber: numerologyNumbers.birthday,
+        expressionNumber: numerologyNumbers.expression,
+        soulUrgeNumber: numerologyNumbers.soulUrge,
+        personalityNumber: numerologyNumbers.personality,
+        maturityNumber: numerologyNumbers.maturity,
+      },
+      birthDate
+    );
+
     return NextResponse.json({
       profile,
       bigThree,
       elementBalance,
       modalityBalance,
+      numerology,
     });
   } catch (error) {
     console.error("Update profile error:", error);

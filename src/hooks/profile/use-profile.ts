@@ -50,6 +50,30 @@ async function calculateChart(input: ChartCalculationInput): Promise<ChartCalcul
   return res.json() as Promise<ChartCalculationResponse>;
 }
 
+interface BirthNameResponse {
+  birthName: string | null;
+  numerology: ProfileResponse["numerology"];
+}
+
+async function updateBirthName(birthName: string | null): Promise<BirthNameResponse> {
+  const res = await fetch("/api/profile/birth-name", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ birthName }),
+  });
+  if (!res.ok) {
+    if (res.status === 401) {
+      throw new Error("Not authenticated");
+    }
+    if (res.status === 404) {
+      throw new Error("Please create a profile first");
+    }
+    const error = await res.json().catch(() => ({ error: "Failed to update birth name" }));
+    throw new Error((error as { error?: string }).error ?? "Failed to update birth name");
+  }
+  return res.json() as Promise<BirthNameResponse>;
+}
+
 // ============================================================================
 // Hooks
 // ============================================================================
@@ -83,6 +107,7 @@ export function useProfile(options?: { enabled?: boolean }) {
     bigThree: data?.bigThree ?? null,
     elementBalance: data?.elementBalance ?? null,
     modalityBalance: data?.modalityBalance ?? null,
+    numerology: data?.numerology ?? null,
     hasProfile: !!data?.profile,
     isLoading,
     isError: !!error,
@@ -145,6 +170,48 @@ export function useCalculateChart() {
     calculateChart: mutateAsync,
     isCalculating: isPending,
     chartResult: data ?? null,
+    error,
+    reset,
+  };
+}
+
+/**
+ * Update the current user's birth name for numerology calculations.
+ * Updates the profile cache with new numerology data on success.
+ *
+ * @example
+ * ```tsx
+ * const { updateBirthName, isUpdating } = useUpdateBirthName();
+ *
+ * const handleSubmit = async (name: string) => {
+ *   await updateBirthName(name);
+ * };
+ * ```
+ */
+export function useUpdateBirthName() {
+  const queryClient = useQueryClient();
+
+  const { mutateAsync, isPending, error, reset } = useMutation({
+    mutationFn: updateBirthName,
+    onSuccess: (data) => {
+      // Update the profile cache with new numerology data
+      queryClient.setQueryData(profileKeys.current(), (old: ProfileResponse | undefined) => {
+        if (!old || !old.profile) return old;
+        return {
+          ...old,
+          profile: {
+            ...old.profile,
+            birthName: data.birthName,
+          },
+          numerology: data.numerology,
+        };
+      });
+    },
+  });
+
+  return {
+    updateBirthName: mutateAsync,
+    isUpdating: isPending,
     error,
     reset,
   };
