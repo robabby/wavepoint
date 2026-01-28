@@ -22,6 +22,10 @@ import {
 } from "./claude";
 import type { MoonPhase } from "./cosmic-context";
 import type { Activity, Element } from "@/lib/templates";
+import { isAIEnabled } from "./feature-flags";
+import { getBaseMeaning } from "./meanings";
+import { getPatternPlanetaryMeta } from "@/lib/numbers/planetary";
+import { getSynthesisGraph, getPatternSynthesis } from "@/lib/synthesis";
 
 // =============================================================================
 // Types
@@ -54,8 +58,8 @@ export interface InterpretResult {
   content: string;
   /** Essence/summary (templates only) */
   essence?: string;
-  /** Source: "ai" or "template" */
-  source: "ai" | "template";
+  /** Source: "ai", "template", or "synthesis" */
+  source: "ai" | "template" | "synthesis";
   /** Whether this used a fallback */
   fallback: boolean;
   /** Template IDs used (for debugging/analytics) */
@@ -156,6 +160,11 @@ export async function generateInterpretation(
   const { forceAI, profile } = options;
   // Note: options.userId will be used for pattern insights when Track A integrates
 
+  // 0. Short-circuit to synthesis when AI is disabled
+  if (!isAIEnabled()) {
+    return generateSynthesisInterpretation(sighting, profile);
+  }
+
   // 1. Force AI for regeneration requests
   if (forceAI) {
     return generateAIInterpretation(sighting, count, isFirstCatch, profile);
@@ -227,7 +236,7 @@ async function saveInterpretation(
   sightingId: string,
   content: string,
   model: string,
-  source: "ai" | "template"
+  source: "ai" | "template" | "synthesis"
 ): Promise<void> {
   await db
     .insert(signalInterpretations)
@@ -249,6 +258,74 @@ async function saveInterpretation(
 }
 
 // =============================================================================
+// Synthesis Interpretation (deterministic, no AI)
+// =============================================================================
+
+/**
+ * Generate a deterministic interpretation from the synthesis knowledge graph.
+ * Used when AI is disabled to avoid Claude API calls.
+ */
+async function generateSynthesisInterpretation(
+  sighting: SightingData,
+  profile?: UserProfileContext
+): Promise<InterpretResult> {
+  const paragraphs: string[] = [];
+
+  // Paragraph 1: Core angel number meaning
+  const baseMeaning = getBaseMeaning(sighting.number);
+  paragraphs.push(baseMeaning);
+
+  // Paragraph 2: Planetary energy and geometry
+  const meta = getPatternPlanetaryMeta(sighting.number);
+  if (meta.energyDescription) {
+    let energyParagraph = meta.energyDescription;
+    if (meta.geometry) {
+      energyParagraph += ` This pattern resonates with the ${meta.geometry}, grounding its energy in sacred form.`;
+    }
+    paragraphs.push(energyParagraph);
+  }
+
+  // Paragraph 3: Personal resonance from synthesis graph (if profile available)
+  const graph = getSynthesisGraph();
+  const synthesis = getPatternSynthesis(graph, {
+    pattern: sighting.number,
+    profile: profile
+      ? {
+          sunSign: profile.sunSign as Parameters<typeof getPatternSynthesis>[1]["profile"] extends { sunSign?: infer T } ? T : never,
+          moonSign: profile.moonSign as Parameters<typeof getPatternSynthesis>[1]["profile"] extends { moonSign?: infer T } ? T : never,
+          risingSign: profile.risingSign as Parameters<typeof getPatternSynthesis>[1]["profile"] extends { risingSign?: infer T } ? T : never,
+          dominantElement: profile.dominantElement as Parameters<typeof getPatternSynthesis>[1]["profile"] extends { dominantElement?: infer T } ? T : never,
+        }
+      : undefined,
+  });
+
+  if (synthesis.personalConnections) {
+    const alignment = synthesis.personalConnections.elementAlignment;
+    const alignmentText =
+      alignment === "harmonious"
+        ? "This number flows naturally with your elemental nature."
+        : alignment === "complementary"
+          ? "This number brings a complementary energy to your chart."
+          : "This number invites growth through creative tension with your elemental makeup.";
+    paragraphs.push(alignmentText);
+  } else {
+    paragraphs.push(
+      "Take a moment to notice what drew your attention to this number. The patterns you recognize often reflect what you're ready to understand."
+    );
+  }
+
+  const content = paragraphs.join("\n\n");
+
+  await saveInterpretation(sighting.id, content, "synthesis", "synthesis");
+
+  return {
+    content,
+    source: "synthesis",
+    fallback: false,
+  };
+}
+
+// =============================================================================
 // Regeneration
 // =============================================================================
 
@@ -267,6 +344,10 @@ export async function regenerateInterpretation(
   isFirstCatch: boolean,
   profile?: UserProfileContext
 ): Promise<InterpretResult> {
+  if (!isAIEnabled()) {
+    return generateSynthesisInterpretation(sighting, profile);
+  }
+
   return generateInterpretation(sighting, count, isFirstCatch, {
     forceAI: true,
     userId: "", // Not needed for regeneration

@@ -9,3 +9,12 @@ import { env } from "@/env";
 export function isSignalEnabled(): boolean {
   return env.NEXT_PUBLIC_SIGNAL_ENABLED;
 }
+
+/**
+ * Check if AI-powered interpretations are enabled.
+ * When disabled, interpretations use deterministic synthesis instead of Claude API calls.
+ * Defaults to true — set NEXT_PUBLIC_AI_ENABLED=false to disable.
+ */
+export function isAIEnabled(): boolean {
+  return env.NEXT_PUBLIC_AI_ENABLED;
+}
