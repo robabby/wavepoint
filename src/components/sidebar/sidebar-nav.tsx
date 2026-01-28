@@ -57,8 +57,13 @@ const ACCOUNT_SECTION: NavSection = {
   title: "ACCOUNT",
   items: [
     { label: "Profile", href: "/profile", icon: User },
-    { label: "Settings", href: "/settings", icon: Settings },
   ],
+};
+
+const SETTINGS_ITEM: NavItem = {
+  label: "Settings",
+  href: "/settings",
+  icon: Settings,
 };
 
 const ADMIN_ITEM: NavItem = {
@@ -122,43 +127,53 @@ export function SidebarNav({
         isActive={isActive}
       />
 
-      {/* Divider */}
-      <div className="my-2 border-t border-[var(--sidebar-border)]" />
+      {/* Spacer to push footer items to bottom */}
+      <div className="flex-1" />
 
-      {/* Sign Out */}
-      {isCollapsed ? (
-        <TooltipProvider delayDuration={300}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={onSignOut}
-                className={cn(
-                  "mx-3 flex h-10 w-10 items-center justify-center rounded-lg",
-                  "text-muted-foreground transition-colors",
-                  "hover:bg-[var(--sidebar-accent)] hover:text-foreground"
-                )}
-              >
-                <LogOut className="h-4 w-4" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="font-body">
-              Sign Out
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      ) : (
-        <button
-          onClick={onSignOut}
-          className={cn(
-            "mx-4 flex items-center gap-3 rounded-lg px-3 py-2.5",
-            "text-sm text-muted-foreground transition-colors",
-            "hover:bg-[var(--sidebar-accent)] hover:text-foreground"
-          )}
-        >
-          <LogOut className="h-4 w-4 shrink-0" />
-          <span>Sign Out</span>
-        </button>
-      )}
+      {/* Footer: Settings and Sign Out */}
+      <div className="flex flex-col gap-1">
+        {/* Settings */}
+        <NavItemComponent
+          item={SETTINGS_ITEM}
+          isCollapsed={isCollapsed}
+          isActive={isActive(SETTINGS_ITEM.href)}
+        />
+
+        {/* Sign Out */}
+        {isCollapsed ? (
+          <TooltipProvider delayDuration={300}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={onSignOut}
+                  className={cn(
+                    "mx-3 flex h-10 w-10 items-center justify-center rounded-lg",
+                    "text-muted-foreground transition-colors",
+                    "hover:bg-[var(--sidebar-accent)] hover:text-foreground"
+                  )}
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="font-body">
+                Sign Out
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          <button
+            onClick={onSignOut}
+            className={cn(
+              "mx-4 flex items-center gap-3 rounded-lg px-3 py-2.5",
+              "text-sm text-muted-foreground transition-colors",
+              "hover:bg-[var(--sidebar-accent)] hover:text-foreground"
+            )}
+          >
+            <LogOut className="h-4 w-4 shrink-0" />
+            <span>Sign Out</span>
+          </button>
+        )}
+      </div>
     </nav>
   );
 }

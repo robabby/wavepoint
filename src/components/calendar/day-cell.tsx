@@ -115,24 +115,42 @@ export function DayCell({
         "transition-all duration-200 ease-out",
         // Base state
         "bg-card/40 border border-white/5",
-        // Eclipse day - violet treatment (takes precedence over moon phases)
+
+        // === ECLIPSE DAY STYLES (actual eclipse) ===
         isEclipseDay &&
           !isPenumbral &&
-          "border-[var(--color-eclipse)]/50 bg-[var(--color-eclipse)]/15",
-        // Penumbral eclipse - lighter treatment
+          "border-[var(--color-eclipse-muted)]/40 bg-[var(--color-eclipse)]/12 shadow-[inset_0_0_20px_var(--glow-eclipse),0_0_12px_var(--glow-eclipse)]",
         isEclipseDay &&
           isPenumbral &&
-          "border-[var(--color-eclipse)]/35 bg-[var(--color-eclipse)]/10",
-        // Eclipse portal day (non-eclipse) - visible violet tint
+          "border-[var(--color-eclipse-muted)]/25 bg-[var(--color-eclipse)]/8 shadow-[inset_0_0_16px_var(--glow-eclipse)]",
+
+        // === ECLIPSE PORTAL + MOON PHASE BLENDED STYLES ===
+        // Portal + Full Moon: violet atmosphere with golden border accent
         !isEclipseDay &&
           isInEclipsePortal &&
-          "border-[var(--color-eclipse)]/25 bg-[var(--color-eclipse)]/10",
-        // Full moon - radiant golden border and tint (only if not eclipse)
+          isFullMoon &&
+          "border-[var(--color-gold)]/30 bg-[var(--color-eclipse)]/8 shadow-[inset_0_0_12px_var(--glow-eclipse),0_0_8px_rgba(212,168,75,0.15)]",
+        // Portal + New Moon: violet atmosphere with silver border accent
         !isEclipseDay &&
+          isInEclipsePortal &&
+          isNewMoon &&
+          "border-slate-400/20 bg-[var(--color-eclipse)]/8 shadow-[inset_0_0_14px_var(--glow-eclipse)]",
+        // Portal only (regular days): subtle violet atmosphere
+        !isEclipseDay &&
+          isInEclipsePortal &&
+          !isFullMoon &&
+          !isNewMoon &&
+          "border-[var(--color-eclipse-muted)]/15 bg-[var(--color-eclipse)]/6 shadow-[inset_0_0_12px_var(--glow-eclipse)]",
+
+        // === STANDALONE MOON PHASE STYLES (outside portal) ===
+        // Full moon - radiant golden border and tint
+        !isEclipseDay &&
+          !isInEclipsePortal &&
           isFullMoon &&
           "border-[var(--color-gold)]/40 bg-[var(--color-gold)]/5",
-        // New moon - subtle silver/dark border (only if not eclipse)
+        // New moon - subtle silver/dark border
         !isEclipseDay &&
+          !isInEclipsePortal &&
           isNewMoon &&
           "border-slate-400/30 bg-slate-900/30",
         // Today - prominent ring
@@ -144,19 +162,36 @@ export function DayCell({
         // Hover - additive effects that enhance existing styles
         "hover:scale-[1.02] hover:brightness-110",
         // Hover border glow - contextual to eclipse/moon phase
+        // Eclipse day hover
         isEclipseDay &&
-          "hover:border-[var(--color-eclipse)]/70 hover:shadow-[0_0_12px_var(--glow-eclipse)]",
+          "hover:border-[var(--color-eclipse-muted)]/50 hover:shadow-[inset_0_0_24px_var(--glow-eclipse),0_0_16px_var(--glow-eclipse)]",
+        // Portal + Full Moon hover: enhanced gold + violet
         !isEclipseDay &&
           isInEclipsePortal &&
-          "hover:border-[var(--color-eclipse)]/45 hover:shadow-[0_0_10px_var(--glow-eclipse)]",
+          isFullMoon &&
+          "hover:border-[var(--color-gold)]/50 hover:shadow-[inset_0_0_16px_var(--glow-eclipse),0_0_12px_rgba(212,168,75,0.25)]",
+        // Portal + New Moon hover: enhanced silver + violet
+        !isEclipseDay &&
+          isInEclipsePortal &&
+          isNewMoon &&
+          "hover:border-slate-400/35 hover:shadow-[inset_0_0_18px_var(--glow-eclipse),0_0_10px_rgba(148,163,184,0.2)]",
+        // Portal only hover
+        !isEclipseDay &&
+          isInEclipsePortal &&
+          !isFullMoon &&
+          !isNewMoon &&
+          "hover:border-[var(--color-eclipse-muted)]/25 hover:bg-[var(--color-eclipse)]/10 hover:shadow-[inset_0_0_18px_var(--glow-eclipse),0_0_10px_var(--glow-eclipse)]",
+        // Standalone full moon hover
         !isEclipseDay &&
           !isInEclipsePortal &&
           isFullMoon &&
           "hover:border-[var(--color-gold)]/60 hover:shadow-[0_0_12px_rgba(212,168,75,0.25)]",
+        // Standalone new moon hover
         !isEclipseDay &&
           !isInEclipsePortal &&
           isNewMoon &&
           "hover:border-slate-400/50 hover:shadow-[0_0_12px_rgba(148,163,184,0.2)]",
+        // Regular day hover
         !isEclipseDay &&
           !isInEclipsePortal &&
           !isFullMoon &&

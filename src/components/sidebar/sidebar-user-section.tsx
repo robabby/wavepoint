@@ -1,6 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SidebarUserSectionProps {
   email: string;
@@ -9,8 +16,8 @@ interface SidebarUserSectionProps {
 }
 
 /**
- * User identity section at top of sidebar.
- * Shows avatar (or initial circle) and email.
+ * User identity section in sidebar.
+ * Shows avatar (or initial circle) and email, links to profile.
  */
 export function SidebarUserSection({
   email,
@@ -22,21 +29,45 @@ export function SidebarUserSection({
 
   if (isCollapsed) {
     return (
-      <div className={cn("flex justify-center py-3", className)}>
-        <div
-          className={cn(
-            "flex h-9 w-9 items-center justify-center rounded-full",
-            "bg-[var(--sidebar-accent)] text-sm font-medium text-foreground"
-          )}
-        >
-          {initial}
-        </div>
-      </div>
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link
+              href="/profile"
+              className={cn(
+                "mx-3 flex h-10 w-10 items-center justify-center rounded-lg",
+                "transition-colors",
+                "hover:bg-[var(--sidebar-accent)]"
+              )}
+            >
+              <div
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-full",
+                  "bg-[var(--sidebar-accent)] text-sm font-medium text-foreground"
+                )}
+              >
+                {initial}
+              </div>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent side="right" className="font-body">
+            Profile
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     );
   }
 
   return (
-    <div className={cn("flex items-center gap-3 px-4 py-3", className)}>
+    <Link
+      href="/profile"
+      className={cn(
+        "mx-4 flex items-center gap-3 rounded-lg px-3 py-2.5",
+        "transition-colors",
+        "hover:bg-[var(--sidebar-accent)]",
+        className
+      )}
+    >
       {/* Avatar circle with initial */}
       <div
         className={cn(
@@ -51,6 +82,6 @@ export function SidebarUserSection({
       <span className="font-body truncate text-sm text-muted-foreground">
         {email}
       </span>
-    </div>
+    </Link>
   );
 }
