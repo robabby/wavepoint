@@ -12,6 +12,7 @@ import { generateInterpretation } from "@/lib/signal/claude";
 import { checkRateLimit } from "@/lib/signal/rate-limit";
 import { canRegenerate, incrementRegenerations } from "@/lib/signal/subscriptions";
 import { isAIEnabled } from "@/lib/signal/feature-flags";
+import { getResonanceSummary } from "@/lib/resonance";
 
 const regenerateSchema = z.object({
   sightingId: z.string().uuid(),
@@ -115,6 +116,14 @@ export async function POST(request: Request) {
       ),
     });
 
+    // Fetch resonance for tone calibration
+    let resonance;
+    try {
+      resonance = await getResonanceSummary(session.user.id);
+    } catch {
+      // Gracefully degrade
+    }
+
     const { content } = await generateInterpretation({
       sightingId: sighting.id,
       number: sighting.number,
@@ -122,6 +131,7 @@ export async function POST(request: Request) {
       moodTags: sighting.moodTags ?? undefined,
       count: stats?.count ?? 1,
       isFirstCatch: false, // Regeneration is never first catch
+      resonance,
     });
 
     // Increment regeneration counter after successful generation

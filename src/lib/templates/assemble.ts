@@ -7,7 +7,7 @@
  * @module templates/assemble
  */
 
-import type { AssemblyContext, AssembledInterpretation } from "./types";
+import type { AssemblyContext, AssembledInterpretation, BaseTemplate } from "./types";
 import {
   getMoonModifier,
   getMoodModifier,
@@ -88,8 +88,9 @@ export function assembleInterpretation(
   // Track template IDs used
   const templateIds: string[] = [base.number];
 
-  // 2. Start with expanded interpretation
-  const parts: string[] = [base.expanded];
+  // 2. Start with expanded interpretation (use variant if available)
+  const { essence, expanded } = selectVariant(base, context.sightingId);
+  const parts: string[] = [expanded];
 
   // 3. Apply modifiers
   applyMoonModifier(context, parts, templateIds);
@@ -109,7 +110,7 @@ export function assembleInterpretation(
 
   // 5. Assemble final interpretation
   return {
-    essence: base.essence,
+    essence,
     interpretation: parts.join("\n\n"),
     source: "template",
     templateIds,
@@ -226,4 +227,51 @@ function applyElementModifier(
 
   parts.push(modifierText);
   templateIds.push(`element:${modifier.key}`);
+}
+
+// =============================================================================
+// Variant Selection
+// =============================================================================
+
+/**
+ * Select essence and expanded text from a base template,
+ * using variants when available and a sighting ID is provided.
+ *
+ * Hash-based selection ensures the same sighting always gets the same variant.
+ */
+function selectVariant(
+  base: BaseTemplate,
+  sightingId?: string
+): { essence: string; expanded: string } {
+  if (!sightingId) {
+    return { essence: base.essence, expanded: base.expanded };
+  }
+
+  const essence =
+    base.essenceVariants && base.essenceVariants.length > 0
+      ? hashSelect(sightingId, [base.essence, ...base.essenceVariants])
+      : base.essence;
+
+  const expanded =
+    base.expandedVariants && base.expandedVariants.length > 0
+      ? hashSelect(sightingId, [base.expanded, ...base.expandedVariants])
+      : base.expanded;
+
+  return { essence, expanded };
+}
+
+/**
+ * Deterministic hash-based selection from an array.
+ */
+function hashSelect(seed: string, options: string[]): string {
+  if (options.length === 0) return "";
+  if (options.length === 1) return options[0]!;
+
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash;
+  }
+  return options[Math.abs(hash) % options.length]!;
 }

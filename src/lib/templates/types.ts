@@ -34,6 +34,10 @@ export interface BaseTemplate {
   keywords: string[];
   /** Optional elemental affinity */
   elementalAffinity?: Element;
+  /** Alternate essence texts for repeat users (hash-selected by sighting ID) */
+  essenceVariants?: string[];
+  /** Alternate expanded texts for repeat users (hash-selected by sighting ID) */
+  expandedVariants?: string[];
 }
 
 // =============================================================================
@@ -106,6 +110,8 @@ export interface PatternInsight {
 
 /** Context for assembling an interpretation */
 export interface AssemblyContext {
+  /** Sighting ID for deterministic variant selection */
+  sightingId?: string;
   /** Current moon phase */
   moonPhase?: MoonPhase;
   /** User's mood tags */

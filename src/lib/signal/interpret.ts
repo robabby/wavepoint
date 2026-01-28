@@ -14,6 +14,7 @@ import {
   assembleInterpretation,
   meetsQualityThreshold,
   type AssemblyContext,
+  type PatternInsight as TemplatePatternInsight,
 } from "@/lib/templates";
 import {
   generateInterpretation as generateWithClaude,
@@ -26,6 +27,17 @@ import { isAIEnabled } from "./feature-flags";
 import { getBaseMeaning } from "./meanings";
 import { getPatternPlanetaryMeta } from "@/lib/numbers/planetary";
 import { getSynthesisGraph, getPatternSynthesis } from "@/lib/synthesis";
+import { getCachedPatterns, type ComputedPatterns } from "@/lib/patterns";
+import { getResonanceSummary } from "@/lib/resonance";
+import type { ResonanceSummary } from "@/lib/resonance";
+import {
+  pickVariant,
+  MOOD_SENTENCES,
+  NOTE_SENTENCES,
+  FIRST_CATCH_SENTENCES,
+  REPEAT_SIGHTING_SENTENCES,
+  MOON_SENTENCES,
+} from "./synthesis-variants";
 
 // =============================================================================
 // Types
@@ -38,6 +50,8 @@ export interface InterpretOptions {
   userId: string;
   /** User's spiritual profile for personalization */
   profile?: UserProfileContext;
+  /** Total sighting count for the user (for pattern cache lookup) */
+  sightingCount?: number;
 }
 
 export interface SightingData {
@@ -117,19 +131,96 @@ function mapElement(profile?: UserProfileContext): Element | undefined {
 }
 
 /**
- * Gather context for template assembly from sighting and profile data.
+ * Map ComputedPatterns from the patterns module into the template system's PatternInsight[] shape.
+ * Extracts the most useful insights: peak hour, top mood correlation, frequency trend.
  */
-function gatherAssemblyContext(
+function mapToTemplateInsights(
+  computed: ComputedPatterns
+): TemplatePatternInsight[] {
+  const insights: TemplatePatternInsight[] = [];
+
+  // Peak hour
+  const peakHour = computed.timeDistribution.find((i) => i.key === "peak_hour");
+  if (peakHour) {
+    insights.push({
+      type: "peak_hour",
+      value: {
+        hour: peakHour.value.hour,
+        label: peakHour.value.label,
+        percentage: peakHour.value.percentage,
+      },
+      dataPoints: peakHour.sightingCountAtComputation,
+    });
+  }
+
+  // Top mood correlation (first one found)
+  const topMood = computed.moodCorrelation.find((i) =>
+    i.key.startsWith("top_mood_")
+  );
+  if (topMood && "number" in topMood.value) {
+    const val = topMood.value as { mood: string; number: string; count: number; percentage: number };
+    insights.push({
+      type: "top_mood",
+      value: {
+        mood: val.mood,
+        number: val.number,
+        percentage: val.percentage,
+      },
+      dataPoints: topMood.sightingCountAtComputation,
+    });
+  }
+
+  // Overall frequency trend
+  const overallTrend = computed.frequencyTrend.find(
+    (i) => i.key === "overall_trend"
+  );
+  if (overallTrend && "averagePerDay" in overallTrend.value) {
+    insights.push({
+      type: "frequency_trend",
+      value: {
+        trend: overallTrend.value.trend,
+        averagePerDay: overallTrend.value.averagePerDay,
+        percentageChange: overallTrend.value.percentageChange,
+      },
+      dataPoints: overallTrend.sightingCountAtComputation,
+    });
+  }
+
+  return insights;
+}
+
+/**
+ * Gather context for template assembly from sighting and profile data.
+ * Fetches cached pattern insights when userId and sightingCount are available.
+ */
+async function gatherAssemblyContext(
   sighting: SightingData,
-  profile?: UserProfileContext
-): AssemblyContext {
+  profile?: UserProfileContext,
+  userId?: string,
+  sightingCount?: number
+): Promise<AssemblyContext> {
+  let patterns: TemplatePatternInsight[] | undefined;
+
+  if (userId && sightingCount && sightingCount > 0) {
+    try {
+      const cached = await getCachedPatterns(userId, sightingCount);
+      if (cached) {
+        const mapped = mapToTemplateInsights(cached);
+        if (mapped.length > 0) {
+          patterns = mapped;
+        }
+      }
+    } catch {
+      // Gracefully degrade - patterns are optional
+    }
+  }
+
   return {
     moonPhase: sighting.cosmicContext?.moon?.phase,
     moodTags: sighting.moodTags,
     activity: mapActivity(sighting.activity),
     userElement: mapElement(profile),
-    // Pattern insights will come from Track A when ready
-    patterns: undefined,
+    patterns,
   };
 }
 
@@ -157,31 +248,44 @@ export async function generateInterpretation(
   isFirstCatch: boolean,
   options: InterpretOptions
 ): Promise<InterpretResult> {
-  const { forceAI, profile } = options;
-  // Note: options.userId will be used for pattern insights when Track A integrates
+  const { forceAI, profile, userId, sightingCount } = options;
 
-  // 0. Short-circuit to synthesis when AI is disabled
+  // 0. When AI is disabled, try templates first, then fall back to synthesis
   if (!isAIEnabled()) {
-    return generateSynthesisInterpretation(sighting, profile);
+    const context = await gatherAssemblyContext(sighting, profile, userId, sightingCount);
+    context.sightingId = sighting.id;
+    const assembled = assembleInterpretation(sighting.number, context);
+    if (meetsQualityThreshold(assembled)) {
+      await saveInterpretation(sighting.id, assembled.interpretation, "template", "template");
+      return {
+        content: assembled.interpretation,
+        essence: assembled.essence,
+        source: "template",
+        fallback: false,
+        templateIds: assembled.templateIds,
+      };
+    }
+    return generateSynthesisInterpretation(sighting, count, isFirstCatch, profile, userId);
   }
 
   // 1. Force AI for regeneration requests
   if (forceAI) {
-    return generateAIInterpretation(sighting, count, isFirstCatch, profile);
+    return generateAIInterpretation(sighting, count, isFirstCatch, profile, userId);
   }
 
   // 2. Check A/B test assignment
   if (!shouldUseTemplates(sighting.id)) {
-    return generateAIInterpretation(sighting, count, isFirstCatch, profile);
+    return generateAIInterpretation(sighting, count, isFirstCatch, profile, userId);
   }
 
   // 3. Attempt template assembly
-  const context = gatherAssemblyContext(sighting, profile);
+  const context = await gatherAssemblyContext(sighting, profile, userId, sightingCount);
+  context.sightingId = sighting.id;
   const assembled = assembleInterpretation(sighting.number, context);
 
   // 4. Quality check - fall back to AI if assembly is weak
   if (!meetsQualityThreshold(assembled)) {
-    return generateAIInterpretation(sighting, count, isFirstCatch, profile);
+    return generateAIInterpretation(sighting, count, isFirstCatch, profile, userId);
   }
 
   // Save template interpretation
@@ -208,8 +312,19 @@ async function generateAIInterpretation(
   sighting: SightingData,
   count: number,
   isFirstCatch: boolean,
-  profile?: UserProfileContext
+  profile?: UserProfileContext,
+  userId?: string
 ): Promise<InterpretResult> {
+  // Fetch resonance summary for tone calibration
+  let resonance: ResonanceSummary | undefined;
+  if (userId) {
+    try {
+      resonance = await getResonanceSummary(userId);
+    } catch {
+      // Gracefully degrade - resonance is optional
+    }
+  }
+
   const claudeContext: InterpretationContext = {
     sightingId: sighting.id,
     number: sighting.number,
@@ -218,6 +333,7 @@ async function generateAIInterpretation(
     count,
     isFirstCatch,
     profile,
+    resonance,
   };
 
   const result = await generateWithClaude(claudeContext);
@@ -263,11 +379,15 @@ async function saveInterpretation(
 
 /**
  * Generate a deterministic interpretation from the synthesis knowledge graph.
- * Used when AI is disabled to avoid Claude API calls.
+ * Used when AI is disabled and templates fail to meet quality threshold.
+ * Enhanced with context-aware sentences for mood, notes, count, and moon phase.
  */
 async function generateSynthesisInterpretation(
   sighting: SightingData,
-  profile?: UserProfileContext
+  count: number,
+  isFirstCatch: boolean,
+  profile?: UserProfileContext,
+  userId?: string
 ): Promise<InterpretResult> {
   const paragraphs: string[] = [];
 
@@ -314,6 +434,54 @@ async function generateSynthesisInterpretation(
     );
   }
 
+  // Context-aware sentences: mood, note, count, moon phase
+  if (sighting.moodTags && sighting.moodTags.length > 0) {
+    const primaryMood = sighting.moodTags[0];
+    if (primaryMood && MOOD_SENTENCES[primaryMood]) {
+      paragraphs.push(pickVariant(sighting.id, MOOD_SENTENCES[primaryMood]!));
+    }
+  }
+
+  if (sighting.note && sighting.note.trim().length > 0) {
+    paragraphs.push(pickVariant(sighting.id, NOTE_SENTENCES));
+  }
+
+  if (isFirstCatch) {
+    paragraphs.push(pickVariant(sighting.id, FIRST_CATCH_SENTENCES));
+  } else if (count > 2) {
+    paragraphs.push(pickVariant(sighting.id, REPEAT_SIGHTING_SENTENCES));
+  }
+
+  const moonPhase = sighting.cosmicContext?.moon?.phase;
+  if (moonPhase && MOON_SENTENCES[moonPhase]) {
+    paragraphs.push(pickVariant(sighting.id, MOON_SENTENCES[moonPhase]!));
+  }
+
+  // Closing paragraph: vary tone based on resonance feedback
+  let resonance: ResonanceSummary | undefined;
+  if (userId) {
+    try {
+      resonance = await getResonanceSummary(userId);
+    } catch {
+      // Gracefully degrade
+    }
+  }
+
+  if (resonance && resonance.totalResponses >= 5) {
+    if (resonance.resonanceRate < 50) {
+      // Low resonance — more practical, grounded closing
+      paragraphs.push(
+        "Consider what's happening in your day right now. This number often appears when there's a practical step waiting to be taken — something concrete you can act on today."
+      );
+    } else if (resonance.resonanceRate >= 75) {
+      // High resonance — lean into the mystical
+      paragraphs.push(
+        "Trust what you're sensing. The fact that this number caught your eye says something about where your awareness is right now — stay open to what unfolds."
+      );
+    }
+    // 50-74%: no extra paragraph, the existing content stands on its own
+  }
+
   const content = paragraphs.join("\n\n");
 
   await saveInterpretation(sighting.id, content, "synthesis", "synthesis");
@@ -345,7 +513,7 @@ export async function regenerateInterpretation(
   profile?: UserProfileContext
 ): Promise<InterpretResult> {
   if (!isAIEnabled()) {
-    return generateSynthesisInterpretation(sighting, profile);
+    return generateSynthesisInterpretation(sighting, count, isFirstCatch, profile);
   }
 
   return generateInterpretation(sighting, count, isFirstCatch, {
