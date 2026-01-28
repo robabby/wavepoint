@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Heading, Text } from "@radix-ui/themes";
 import { cn } from "@/lib/utils";
 import { getNumberMeaning, isMasterNumber } from "@/lib/numerology";
@@ -55,6 +56,34 @@ const TYPE_DESCRIPTIONS: Record<NumerologyNumberDisplayProps["type"], string> = 
   personalDay: "Your Personal Day reveals the subtle energy and opportunities available today.",
 };
 
+// URL segments for position types that have dedicated pages
+const TYPE_URL_SEGMENTS: Partial<
+  Record<NumerologyNumberDisplayProps["type"], string>
+> = {
+  lifePath: "life-path",
+  expression: "expression",
+  soulUrge: "soul-urge",
+  personality: "personality",
+  birthday: "birthday",
+  maturity: "maturity",
+};
+
+// Cycle types keep dialog behavior (no dedicated pages)
+const CYCLE_TYPES: NumerologyNumberDisplayProps["type"][] = [
+  "personalYear",
+  "personalMonth",
+  "personalDay",
+];
+
+function getNumberPageUrl(
+  type: NumerologyNumberDisplayProps["type"],
+  digit: number
+): string | null {
+  const segment = TYPE_URL_SEGMENTS[type];
+  if (!segment) return null;
+  return `/numbers/${segment}/${digit}`;
+}
+
 /**
  * Display a single numerology number with its archetype name and meaning.
  * Supports hero (Life Path), standard (grid items), and compact (cycles) variants.
@@ -74,8 +103,71 @@ export function NumerologyNumberDisplay({
   const isMaster = digit ? isMasterNumber(digit) : false;
   const isClickable = !locked && digit !== null && meaning;
 
+  // Determine if this type should link to a page or use a dialog
+  const isCycleType = CYCLE_TYPES.includes(type);
+  const pageUrl = digit !== null ? getNumberPageUrl(type, digit) : null;
+  const shouldLink = isClickable && !isCycleType && pageUrl;
+
   // Hero variant - large centered display for Life Path
   if (variant === "hero") {
+    const heroContent = (
+      <>
+        <Text
+          size="1"
+          weight="medium"
+          className="mb-2 block uppercase tracking-wider text-muted-foreground"
+        >
+          {label}
+        </Text>
+        {locked || digit === null ? (
+          <div className="text-7xl font-display text-muted-foreground/30">—</div>
+        ) : (
+          <>
+            <div
+              className={cn(
+                "font-display text-7xl text-foreground",
+                isMaster && "text-[var(--color-gold)]"
+              )}
+              style={{
+                textShadow: "0 0 40px var(--glow-gold)",
+              }}
+            >
+              {digit}
+            </div>
+            {meaning && (
+              <Heading
+                size="4"
+                className="mt-2 font-display text-[var(--color-gold)]"
+              >
+                {meaning.name}
+              </Heading>
+            )}
+            {meaning && (
+              <p className="mx-auto mt-2 max-w-md text-center text-sm text-muted-foreground">
+                {meaning.brief}
+              </p>
+            )}
+          </>
+        )}
+      </>
+    );
+
+    // Link to dedicated page for position types
+    if (shouldLink) {
+      return (
+        <Link
+          href={pageUrl}
+          className={cn(
+            "block w-full text-center transition-opacity hover:opacity-80",
+            className
+          )}
+        >
+          {heroContent}
+        </Link>
+      );
+    }
+
+    // Dialog for cycle types
     return (
       <>
         <button
@@ -88,46 +180,10 @@ export function NumerologyNumberDisplay({
             className
           )}
         >
-          <Text
-            size="1"
-            weight="medium"
-            className="mb-2 block uppercase tracking-wider text-muted-foreground"
-          >
-            {label}
-          </Text>
-          {locked || digit === null ? (
-            <div className="text-7xl font-display text-muted-foreground/30">—</div>
-          ) : (
-            <>
-              <div
-                className={cn(
-                  "font-display text-7xl text-foreground",
-                  isMaster && "text-[var(--color-gold)]"
-                )}
-                style={{
-                  textShadow: "0 0 40px var(--glow-gold)",
-                }}
-              >
-                {digit}
-              </div>
-              {meaning && (
-                <Heading
-                  size="4"
-                  className="mt-2 font-display text-[var(--color-gold)]"
-                >
-                  {meaning.name}
-                </Heading>
-              )}
-              {meaning && (
-                <p className="mx-auto mt-2 max-w-md text-center text-sm text-muted-foreground">
-                  {meaning.brief}
-                </p>
-              )}
-            </>
-          )}
+          {heroContent}
         </button>
 
-        {meaning && (
+        {meaning && isCycleType && (
           <NumberMeaningDialog
             open={dialogOpen}
             onOpenChange={setDialogOpen}
@@ -143,6 +199,38 @@ export function NumerologyNumberDisplay({
 
   // Compact variant - inline display for cycles (clickable)
   if (variant === "compact") {
+    const compactContent = (
+      <>
+        <span className="text-xs uppercase tracking-wider text-muted-foreground">
+          {label}
+        </span>
+        <span
+          className={cn(
+            "font-display text-lg font-medium",
+            digit === null ? "text-muted-foreground/30" : "text-foreground"
+          )}
+        >
+          {digit ?? "—"}
+        </span>
+      </>
+    );
+
+    // Link to dedicated page for position types
+    if (shouldLink) {
+      return (
+        <Link
+          href={pageUrl}
+          className={cn(
+            "inline-flex items-center gap-1 transition-opacity hover:opacity-80",
+            className
+          )}
+        >
+          {compactContent}
+        </Link>
+      );
+    }
+
+    // Dialog for cycle types
     return (
       <>
         <button
@@ -155,22 +243,10 @@ export function NumerologyNumberDisplay({
             className
           )}
         >
-          <span className="text-xs uppercase tracking-wider text-muted-foreground">
-            {label}
-          </span>
-          <span
-            className={cn(
-              "font-display text-lg font-medium",
-              digit === null
-                ? "text-muted-foreground/30"
-                : "text-foreground"
-            )}
-          >
-            {digit ?? "—"}
-          </span>
+          {compactContent}
         </button>
 
-        {meaning && (
+        {meaning && isCycleType && (
           <NumberMeaningDialog
             open={dialogOpen}
             onOpenChange={setDialogOpen}
@@ -185,6 +261,53 @@ export function NumerologyNumberDisplay({
   }
 
   // Standard variant - card-style display
+  const standardContent = (
+    <>
+      <Text
+        size="1"
+        weight="medium"
+        className="mb-1 block uppercase tracking-wider text-muted-foreground"
+      >
+        {label}
+      </Text>
+      {locked || digit === null ? (
+        <div className="text-4xl font-display text-muted-foreground/30">—</div>
+      ) : (
+        <>
+          <div
+            className={cn(
+              "font-display text-4xl",
+              isMaster ? "text-[var(--color-gold)]" : "text-foreground"
+            )}
+          >
+            {digit}
+          </div>
+          {meaning && (
+            <Text size="1" className="mt-1 text-muted-foreground">
+              {meaning.name}
+            </Text>
+          )}
+        </>
+      )}
+    </>
+  );
+
+  // Link to dedicated page for position types
+  if (shouldLink) {
+    return (
+      <Link
+        href={pageUrl}
+        className={cn(
+          "block w-full text-center transition-opacity hover:opacity-80",
+          className
+        )}
+      >
+        {standardContent}
+      </Link>
+    );
+  }
+
+  // Dialog for cycle types or locked/empty states
   return (
     <>
       <button
@@ -199,35 +322,10 @@ export function NumerologyNumberDisplay({
         )}
         aria-disabled={locked}
       >
-        <Text
-          size="1"
-          weight="medium"
-          className="mb-1 block uppercase tracking-wider text-muted-foreground"
-        >
-          {label}
-        </Text>
-        {locked || digit === null ? (
-          <div className="text-4xl font-display text-muted-foreground/30">—</div>
-        ) : (
-          <>
-            <div
-              className={cn(
-                "font-display text-4xl",
-                isMaster ? "text-[var(--color-gold)]" : "text-foreground"
-              )}
-            >
-              {digit}
-            </div>
-            {meaning && (
-              <Text size="1" className="mt-1 text-muted-foreground">
-                {meaning.name}
-              </Text>
-            )}
-          </>
-        )}
+        {standardContent}
       </button>
 
-      {meaning && (
+      {meaning && isCycleType && (
         <NumberMeaningDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
