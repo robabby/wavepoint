@@ -101,13 +101,12 @@ export function DayViewContent({ date }: DayViewContentProps) {
         </header>
 
         {/* Moon Phase Hero */}
-        <div className="relative mb-8 overflow-hidden rounded-xl border border-[var(--border-gold)]/20 bg-card/40 backdrop-blur-sm">
-          <MoonPhaseHero
-            phase={ephemeris.moon.phase as MoonPhase}
-            sign={ephemeris.moon.sign}
-            degree={ephemeris.moon.degree}
-          />
-        </div>
+        <MoonPhaseHero
+          phase={ephemeris.moon.phase as MoonPhase}
+          sign={ephemeris.moon.sign}
+          degree={ephemeris.moon.degree}
+          className="mb-8"
+        />
 
         {/* Eclipse Section - shown when eclipse or portal is active */}
         <EclipseSection date={date} className="mb-8" />
