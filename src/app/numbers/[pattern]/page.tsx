@@ -198,7 +198,7 @@ export default async function PatternDetailPage({
                       Track this sighting in Signal to discover patterns over time.
                     </Text>
                     <Link
-                      href={`/signal/capture?number=${patternParam}`}
+                      href={`/capture?number=${patternParam}`}
                       className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
                     >
                       Log this sighting
@@ -400,7 +400,7 @@ export default async function PatternDetailPage({
                     Track this sighting in Signal to discover patterns over time.
                   </Text>
                   <Link
-                    href={`/signal/capture?number=${pattern.id}`}
+                    href={`/capture?number=${pattern.id}`}
                     className="inline-flex items-center gap-2 rounded-full bg-[var(--color-gold)]/10 px-6 py-3 text-sm font-medium text-[var(--color-gold)] transition-colors hover:bg-[var(--color-gold)]/20"
                   >
                     Log this sighting

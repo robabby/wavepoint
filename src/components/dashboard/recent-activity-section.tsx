@@ -95,7 +95,7 @@ export function RecentActivitySection() {
         <div className="rounded-xl border border-[var(--border-gold)]/10 bg-card/20 p-6 text-center">
           <p className="text-sm text-muted-foreground">No recent activity</p>
           <Link
-            href="/signal/capture"
+            href="/capture"
             className="mt-2 inline-block text-sm text-[var(--color-gold)] hover:underline"
           >
             Capture your first signal →
@@ -130,7 +130,7 @@ function SightingRow({ sighting }: { sighting: SightingWithInterpretation }) {
 
   return (
     <Link
-      href={`/signal/sighting/${sighting.id}`}
+      href={`/sightings/${sighting.id}`}
       className={cn(
         "flex items-center gap-3 rounded-xl p-3",
         "border border-[var(--border-gold)]/10 bg-card/20",

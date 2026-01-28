@@ -1,23 +1,14 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { canAccessSignal } from "@/lib/features/access";
-import { DashboardContent } from "./dashboard-content";
-import { SacredSpinner, SignalMarketingPage } from "@/components/signal";
+import { SignalMarketingPage } from "@/components/signal";
+import { SignalFeatureHub } from "./signal-feature-hub";
 
 export const metadata: Metadata = {
   title: "Signal",
   description: "Track your angel number synchronicities.",
 };
-
-function DashboardLoading() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <SacredSpinner size="lg" label="Loading..." />
-    </div>
-  );
-}
 
 export default async function SignalPage() {
   const session = await auth();
@@ -32,9 +23,5 @@ export default async function SignalPage() {
     redirect("/?auth=sign-in");
   }
 
-  return (
-    <Suspense fallback={<DashboardLoading />}>
-      <DashboardContent />
-    </Suspense>
-  );
+  return <SignalFeatureHub />;
 }

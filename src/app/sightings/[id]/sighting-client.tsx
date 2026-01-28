@@ -102,7 +102,7 @@ export function SightingClient({ params }: SightingClientProps) {
   const handleDelete = useCallback(async () => {
     try {
       await deleteSighting(id);
-      router.push("/signal");
+      router.push("/sightings");
     } catch {
       // Error is exposed via hook's error state
       // Dialog remains open so user can retry or cancel
@@ -122,7 +122,7 @@ export function SightingClient({ params }: SightingClientProps) {
       <div className="flex min-h-screen flex-col items-center justify-center gap-4">
         <p className="text-muted-foreground">Sighting not found</p>
         <Link
-          href="/signal"
+          href="/sightings"
           className="text-[var(--color-gold)] hover:underline"
         >
           Return to Signal
@@ -140,7 +140,7 @@ export function SightingClient({ params }: SightingClientProps) {
         <div className="container mx-auto flex items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
             <Link
-              href="/signal"
+              href="/sightings"
               className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
             >
               <ArrowLeft className="h-5 w-5" />
@@ -151,7 +151,7 @@ export function SightingClient({ params }: SightingClientProps) {
             <div className="ml-4 flex items-center gap-1 border-l border-[var(--border-gold)]/20 pl-4">
               {prevId ? (
                 <Link
-                  href={`/signal/sighting/${prevId}`}
+                  href={`/sightings/${prevId}`}
                   className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-card/50 hover:text-foreground"
                   aria-label="Previous sighting"
                 >
@@ -164,7 +164,7 @@ export function SightingClient({ params }: SightingClientProps) {
               )}
               {nextId ? (
                 <Link
-                  href={`/signal/sighting/${nextId}`}
+                  href={`/sightings/${nextId}`}
                   className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-card/50 hover:text-foreground"
                   aria-label="Next sighting"
                 >

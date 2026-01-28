@@ -8,7 +8,10 @@ import {
   X,
   CircleDot,
   Plus,
+  Home,
   Radio,
+  List,
+  Calendar,
   User,
   Settings,
   Shield,
@@ -60,7 +63,12 @@ const EXPLORE_SECTION: NavSection = {
 
 const PRACTICE_SECTION: NavSection = {
   title: "PRACTICE",
-  items: [{ label: "Signal", href: "/signal", icon: Radio }],
+  items: [
+    { label: "Home", href: "/home", icon: Home },
+    { label: "Signal", href: "/signal", icon: Radio },
+    { label: "Sightings", href: "/sightings", icon: List },
+    { label: "Calendar", href: "/calendar", icon: Calendar },
+  ],
 };
 
 const ACCOUNT_SECTION: NavSection = {
@@ -126,8 +134,20 @@ export function SidebarMobileDrawer({
   }, [isOpen, onClose]);
 
   const isActive = (href: string) => {
+    if (href === "/home") {
+      return pathname === "/home";
+    }
     if (href === "/signal") {
-      return pathname === "/signal" || pathname.startsWith("/signal/");
+      return pathname === "/signal";
+    }
+    if (href === "/sightings") {
+      return pathname === "/sightings" || pathname.startsWith("/sightings/");
+    }
+    if (href === "/capture") {
+      return pathname === "/capture";
+    }
+    if (href === "/calendar") {
+      return pathname === "/calendar" || pathname.startsWith("/calendar/");
     }
     if (href === "/sacred-geometry") {
       return (
@@ -241,7 +261,7 @@ export function SidebarMobileDrawer({
               {/* Capture button */}
               <div className="px-4 py-2">
                 <Link
-                  href="/signal/capture"
+                  href="/capture"
                   className={cn(
                     "flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5",
                     "bg-[var(--color-gold)] text-[var(--color-obsidian)]",

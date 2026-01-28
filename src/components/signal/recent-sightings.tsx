@@ -48,7 +48,7 @@ export function RecentSightings({ sightings, isLoading }: RecentSightingsProps) 
       {sightings.map((sighting) => (
         <motion.div key={sighting.id} variants={fadeUpVariants}>
           <Link
-            href={`/signal/sighting/${sighting.id}`}
+            href={`/sightings/${sighting.id}`}
             className={cn(
               "flex items-center justify-between rounded-lg p-4",
               "border border-[var(--border-gold)]/20 bg-card/30",

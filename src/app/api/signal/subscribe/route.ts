@@ -81,8 +81,8 @@ export async function POST(request: Request) {
           quantity: 1,
         },
       ],
-      success_url: `${origin}/signal/settings?session_id={CHECKOUT_SESSION_ID}&success=true`,
-      cancel_url: `${origin}/signal/settings?cancelled=true`,
+      success_url: `${origin}/settings?session_id={CHECKOUT_SESSION_ID}&success=true`,
+      cancel_url: `${origin}/settings?cancelled=true`,
       subscription_data: {
         metadata: {
           userId: session.user.id,

@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Heading } from "@radix-ui/themes";
 import { auth } from "@/lib/auth";
-import { AccountSidebar } from "@/components/account/account-sidebar";
 
 export const metadata: Metadata = {
   title: "Settings",
   description: "Manage your WavePoint settings.",
 };
 
-export default async function AccountLayout({
+export default async function SettingsLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -22,7 +21,7 @@ export default async function AccountLayout({
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+      <div className="container mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         {/* Header */}
         <div className="mb-8 lg:mb-12">
           <Heading
@@ -33,11 +32,7 @@ export default async function AccountLayout({
           </Heading>
         </div>
 
-        {/* Two-column layout */}
-        <div className="flex flex-col lg:flex-row lg:gap-12">
-          <AccountSidebar />
-          <main className="min-w-0 flex-1">{children}</main>
-        </div>
+        <main>{children}</main>
       </div>
     </div>
   );

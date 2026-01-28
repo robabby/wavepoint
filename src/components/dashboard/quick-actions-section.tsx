@@ -25,7 +25,7 @@ export function QuickActionsSection() {
       <div className="grid grid-cols-3 gap-3">
         {/* Capture Sighting */}
         <Link
-          href="/signal/capture"
+          href="/capture"
           className={cn(
             "flex flex-col items-center gap-2 rounded-xl p-4",
             "border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10",
