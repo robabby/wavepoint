@@ -21,12 +21,14 @@ const categorySchema = z.enum(["repetition", "sequence", "mirror", "classic"]);
 // =============================================================================
 
 export const baseTemplateSchema = z.object({
-  number: z.string().min(1).max(10),
+  number: z.string().min(1).max(30),
   category: categorySchema,
   essence: z.string().min(20).max(300),
   expanded: z.string().min(100).max(2000),
   keywords: z.array(z.string()).min(3).max(8),
   elementalAffinity: elementSchema.optional(),
+  essenceVariants: z.array(z.string().min(20).max(300)).optional(),
+  expandedVariants: z.array(z.string().min(100).max(2000)).optional(),
 });
 
 export type BaseTemplateInput = z.infer<typeof baseTemplateSchema>;

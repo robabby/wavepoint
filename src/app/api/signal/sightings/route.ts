@@ -250,6 +250,7 @@ export async function POST(request: Request) {
       {
         userId,
         profile: profileContext,
+        sightingCount: totalResult?.count,
       }
     );
 

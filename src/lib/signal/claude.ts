@@ -23,6 +23,7 @@ import type { PatternSynthesisQuery } from "@/lib/synthesis";
 import type { ZodiacSign } from "@/lib/astrology";
 import type { Element } from "@/lib/numbers/planetary";
 import { getNumberMeaning } from "@/lib/numerology";
+import type { ResonanceSummary } from "@/lib/resonance";
 
 const INTERPRETATION_TIMEOUT_MS = 15000;
 
@@ -65,6 +66,8 @@ export interface InterpretationContext {
   isFirstCatch: boolean;
   /** Optional user profile for personalized synthesis */
   profile?: UserProfileContext;
+  /** Optional resonance feedback summary for tone calibration */
+  resonance?: ResonanceSummary;
 }
 
 export interface InterpretationResult {
@@ -248,6 +251,18 @@ Provide a warm, insightful interpretation that:
       prompt += `\n- Personal Year: ${profile.personalYear}`;
     }
     prompt += `\n\nIf the pattern's digits resonate with the user's numerology, subtly note the personal significance.`;
+  }
+
+  // Add resonance feedback context when sufficient data exists
+  if (context.resonance && context.resonance.totalResponses >= 5) {
+    const { resonanceRate, trend } = context.resonance;
+    prompt += `\n\n[User Feedback Context]`;
+    prompt += `\n- Resonance rate: ${resonanceRate}% of interpretations resonated (trend: ${trend})`;
+    if (resonanceRate < 50) {
+      prompt += `\n- Guidance: Try a more grounded, practical tone. Focus on actionable reflection rather than abstract meaning.`;
+    } else if (resonanceRate >= 75) {
+      prompt += `\n- Guidance: Your current approach is landing well. Maintain this balance of warmth and insight.`;
+    }
   }
 
   if (moodTags?.length || note || count > 1) {

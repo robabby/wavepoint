@@ -9,3 +9,6 @@ export type {
 
 // Schemas
 export { recordResonanceSchema, getResonanceSchema } from "./schemas";
+
+// Queries
+export { getResonanceSummary } from "./queries";
