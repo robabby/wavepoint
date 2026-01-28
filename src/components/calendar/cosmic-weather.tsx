@@ -30,6 +30,134 @@ interface PlanetRowProps {
   isRetrograde?: boolean;
 }
 
+// Violet color palette for eclipse theming (matches eclipse-card.tsx)
+const ECLIPSE_VIOLET = "#a78bcd";
+const ECLIPSE_VIOLET_BRIGHT = "#c4a8e8";
+
+interface ApproachingEclipseCardProps {
+  eclipse: {
+    date: string;
+    title: string;
+    category: "solar" | "lunar";
+    sign: ZodiacSign;
+  };
+  daysUntil: number;
+}
+
+/**
+ * Approaching Eclipse countdown card.
+ *
+ * Atmospheric violet card that previews an upcoming eclipse with countdown.
+ * Matches the Eclipse Card's visual language but in a more compact form.
+ */
+function ApproachingEclipseCard({ eclipse, daysUntil }: ApproachingEclipseCardProps) {
+  const isImminent = daysUntil <= 7;
+
+  return (
+    <section>
+      <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground/50">
+        Approaching Eclipse
+      </h3>
+      <Link
+        href={`/calendar/day/${eclipse.date}`}
+        className="group relative block overflow-hidden rounded-xl backdrop-blur-md transition-all duration-300"
+        style={{
+          border: `1px solid ${ECLIPSE_VIOLET}50`,
+          backgroundColor: `${ECLIPSE_VIOLET}15`,
+          boxShadow: `inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 40px ${ECLIPSE_VIOLET}18`,
+        }}
+      >
+        {/* Static atmospheric glow */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          {/* Primary glow - soft ambient */}
+          <div
+            className="absolute left-1/2 top-0 h-32 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[60px]"
+            style={{
+              backgroundColor: ECLIPSE_VIOLET,
+              opacity: 0.35,
+            }}
+          />
+          {/* Secondary glow - brighter accent on right for countdown emphasis */}
+          <div
+            className="absolute right-0 top-1/2 h-24 w-24 -translate-y-1/2 translate-x-1/4 rounded-full blur-3xl"
+            style={{
+              backgroundColor: ECLIPSE_VIOLET_BRIGHT,
+              opacity: isImminent ? 0.45 : 0.3,
+            }}
+          />
+        </div>
+
+        {/* Gradient overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(135deg, ${ECLIPSE_VIOLET}12 0%, transparent 50%, ${ECLIPSE_VIOLET}08 100%)`,
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Content */}
+        <div className="relative z-10 flex items-center justify-between p-4">
+          {/* Left: Eclipse info */}
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <span
+                className="text-lg"
+                style={{
+                  color: ECLIPSE_VIOLET_BRIGHT,
+                  filter: `drop-shadow(0 0 8px ${ECLIPSE_VIOLET})`,
+                }}
+              >
+                {eclipse.category === "solar" ? "☉" : "☽"}
+              </span>
+              <span
+                className="text-sm font-medium truncate transition-colors duration-200"
+                style={{ color: "var(--foreground)" }}
+              >
+                {eclipse.title}
+              </span>
+            </div>
+            <p
+              className="text-xs mt-1.5"
+              style={{ color: `${ECLIPSE_VIOLET}cc` }}
+            >
+              {format(parseISO(eclipse.date), "MMMM d, yyyy")}
+            </p>
+          </div>
+
+          {/* Right: Countdown */}
+          <div className="flex flex-col items-center ml-4 pl-4" style={{ borderLeft: `1px solid ${ECLIPSE_VIOLET}25` }}>
+            <span
+              className="text-3xl font-display tabular-nums leading-none"
+              style={{
+                color: isImminent ? ECLIPSE_VIOLET_BRIGHT : ECLIPSE_VIOLET,
+                filter: isImminent ? `drop-shadow(0 0 12px ${ECLIPSE_VIOLET})` : `drop-shadow(0 0 6px ${ECLIPSE_VIOLET}80)`,
+              }}
+            >
+              {daysUntil}
+            </span>
+            <p
+              className="text-[9px] uppercase tracking-[0.15em] mt-1"
+              style={{ color: `${ECLIPSE_VIOLET}99` }}
+            >
+              {daysUntil === 1 ? "day" : "days"}
+            </p>
+          </div>
+        </div>
+
+        {/* Hover enhancement overlay */}
+        <div
+          className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: `linear-gradient(135deg, ${ECLIPSE_VIOLET}08 0%, ${ECLIPSE_VIOLET}15 100%)`,
+          }}
+          aria-hidden="true"
+        />
+      </Link>
+    </section>
+  );
+}
+
 function PlanetRow({ glyph, name, sign, degree, isRetrograde }: PlanetRowProps) {
   return (
     <div className="flex items-center justify-between py-1.5">
@@ -196,54 +324,10 @@ export function CosmicWeather({ context, date, className }: CosmicWeatherProps) 
 
       {/* Approaching Eclipse Countdown */}
       {showEclipseCountdown && nextEclipse && (
-        <section>
-          <h3 className="mb-3 text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground/50">
-            Approaching Eclipse
-          </h3>
-          <Link
-            href={`/calendar/day/${nextEclipse.date}`}
-            className={cn(
-              "group block rounded-xl",
-              "border border-[var(--border-eclipse)]/30 bg-[var(--color-eclipse)]/5",
-              "p-4 transition-all duration-200",
-              "hover:border-[var(--border-eclipse)]/50 hover:bg-[var(--color-eclipse)]/10",
-              "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-eclipse)]/60"
-            )}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className="text-[var(--color-eclipse)]"
-                    style={{ filter: "drop-shadow(0 0 4px var(--glow-eclipse))" }}
-                  >
-                    {nextEclipse.category === "solar" ? "☉" : "☽"}
-                  </span>
-                  <span className="text-sm text-foreground group-hover:text-[var(--color-eclipse-bright)] transition-colors">
-                    {nextEclipse.title}
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {format(parseISO(nextEclipse.date), "MMMM d, yyyy")}
-                </p>
-              </div>
-              <div className="text-right">
-                <span
-                  className={cn(
-                    "text-2xl font-display tabular-nums",
-                    "text-[var(--color-eclipse)]",
-                    daysUntilNext !== null && daysUntilNext <= 7 && "animate-pulse"
-                  )}
-                >
-                  {daysUntilNext}
-                </span>
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                  {daysUntilNext === 1 ? "day" : "days"}
-                </p>
-              </div>
-            </div>
-          </Link>
-        </section>
+        <ApproachingEclipseCard
+          eclipse={nextEclipse}
+          daysUntil={daysUntilNext ?? 0}
+        />
       )}
     </div>
   );
