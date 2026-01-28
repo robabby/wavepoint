@@ -359,6 +359,7 @@ Source of truth: `src/env.js`. All variables validated with Zod.
 | `NEXT_PUBLIC_SIGNAL_ENABLED` | `false` | Enable Signal feature |
 | `NEXT_PUBLIC_CALENDAR_ENABLED` | `false` | Enable Calendar feature |
 | `NEXT_PUBLIC_INVITES_REQUIRED` | `false` | Require invite codes for registration |
+| `NEXT_PUBLIC_AI_ENABLED` | `true` | Enable Claude API interpretations (when `false`, uses deterministic synthesis) |
 
 ### Optional Services
 
