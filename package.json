@@ -23,6 +23,7 @@
     "typecheck": "tsc --noEmit",
     "print-assets": "npx tsx scripts/generate-print-assets.ts",
     "db:push": "drizzle-kit push",
+    "db:push:prod": "npx tsx scripts/db-push-prod.ts",
     "db:generate": "drizzle-kit generate",
     "db:studio": "drizzle-kit studio",
     "db:seed": "npx tsx scripts/seed.ts",
