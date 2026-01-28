@@ -53,6 +53,10 @@ export const env = createEnv({
       .string()
       .transform((val) => val === "true")
       .default("false"),
+    NEXT_PUBLIC_AI_ENABLED: z
+      .string()
+      .transform((val) => val === "true")
+      .default("true"),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_"),
     NEXT_PUBLIC_MIXPANEL_TOKEN: z.string().min(1).optional(),
   },
@@ -86,6 +90,7 @@ export const env = createEnv({
     CONTACT_NOTIFICATION_EMAIL: process.env.CONTACT_NOTIFICATION_EMAIL,
     NEXT_PUBLIC_INVITES_REQUIRED: process.env.NEXT_PUBLIC_INVITES_REQUIRED,
     NEXT_PUBLIC_CALENDAR_ENABLED: process.env.NEXT_PUBLIC_CALENDAR_ENABLED,
+    NEXT_PUBLIC_AI_ENABLED: process.env.NEXT_PUBLIC_AI_ENABLED,
     NEXT_PUBLIC_MIXPANEL_TOKEN: process.env.NEXT_PUBLIC_MIXPANEL_TOKEN,
   },
   /**

@@ -11,6 +11,7 @@ import { db, signalSightings, signalUserNumberStats } from "@/lib/db";
 import { generateInterpretation } from "@/lib/signal/claude";
 import { checkRateLimit } from "@/lib/signal/rate-limit";
 import { canRegenerate, incrementRegenerations } from "@/lib/signal/subscriptions";
+import { isAIEnabled } from "@/lib/signal/feature-flags";
 
 const regenerateSchema = z.object({
   sightingId: z.string().uuid(),
@@ -38,6 +39,14 @@ export async function POST(request: Request) {
             ),
           },
         }
+      );
+    }
+
+    // Block regeneration when AI is disabled (deterministic output makes re-rolling meaningless)
+    if (!isAIEnabled()) {
+      return NextResponse.json(
+        { error: "Regeneration is temporarily unavailable", code: "AI_DISABLED" },
+        { status: 403 }
       );
     }
 

@@ -23,6 +23,7 @@ import {
   ResonanceFeedback,
 } from "@/components/signal";
 import type { CosmicContext } from "@/lib/signal/cosmic-context";
+import { isAIEnabled } from "@/lib/signal/feature-flags";
 
 const MOODS = [
   { id: "calm", emoji: "😌", label: "Calm" },
@@ -206,17 +207,19 @@ export function SightingClient({ params }: SightingClientProps) {
                 >
                   <Pencil className="h-5 w-5" aria-hidden="true" />
                 </button>
-                <button
-                  onClick={handleRegenerate}
-                  disabled={isRegenerating}
-                  className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-card/50 hover:text-[var(--color-gold)] disabled:opacity-50"
-                  aria-label="Regenerate interpretation"
-                >
-                  <RefreshCw
-                    className={`h-5 w-5 ${isRegenerating ? "animate-spin" : ""}`}
-                    aria-hidden="true"
-                  />
-                </button>
+                {isAIEnabled() && (
+                  <button
+                    onClick={handleRegenerate}
+                    disabled={isRegenerating}
+                    className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-card/50 hover:text-[var(--color-gold)] disabled:opacity-50"
+                    aria-label="Regenerate interpretation"
+                  >
+                    <RefreshCw
+                      className={`h-5 w-5 ${isRegenerating ? "animate-spin" : ""}`}
+                      aria-hidden="true"
+                    />
+                  </button>
+                )}
                 <button
                   onClick={() => setDeleteOpen(true)}
                   className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-red-500/10 hover:text-red-400"
@@ -350,7 +353,7 @@ export function SightingClient({ params }: SightingClientProps) {
             isLoading={isRegenerating}
             isFallback={sighting.interpretation?.model === "fallback"}
             onRegenerate={handleRegenerate}
-            canRegenerate={!isRegenerating}
+            canRegenerate={!isRegenerating && isAIEnabled()}
           />
         </section>
 
