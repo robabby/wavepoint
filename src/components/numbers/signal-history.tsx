@@ -50,7 +50,7 @@ export function SignalHistory({ number }: SignalHistoryProps) {
         {sightings.map((sighting) => (
           <Link
             key={sighting.id}
-            href={`/signal/sighting/${sighting.id}`}
+            href={`/sightings/${sighting.id}`}
             className="group flex items-start gap-3 rounded-lg bg-background/50 p-3 transition-colors hover:bg-[var(--color-gold)]/5"
           >
             {/* Date */}
@@ -81,7 +81,7 @@ export function SignalHistory({ number }: SignalHistoryProps) {
       {/* View all link */}
       <div className="mt-4 text-center">
         <Link
-          href={`/signal?number=${number}`}
+          href={`/sightings?number=${number}`}
           className="text-sm text-muted-foreground transition-colors hover:text-[var(--color-gold)]"
         >
           View all sightings of {number} →

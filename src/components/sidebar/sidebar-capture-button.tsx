@@ -30,7 +30,7 @@ export function SidebarCaptureButton({
           <TooltipTrigger asChild>
             <div className={cn("px-3", className)}>
               <Link
-                href="/signal/capture"
+                href="/capture"
                 className={cn(
                   "flex h-10 w-10 items-center justify-center rounded-lg",
                   "bg-[var(--color-gold)] text-[var(--color-obsidian)]",
@@ -53,7 +53,7 @@ export function SidebarCaptureButton({
   return (
     <div className={cn("px-4", className)}>
       <Link
-        href="/signal/capture"
+        href="/capture"
         className={cn(
           "flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5",
           "bg-[var(--color-gold)] text-[var(--color-obsidian)]",

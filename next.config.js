@@ -51,6 +51,33 @@ const config = {
         destination: "/sacred-patterns/:slug",
         permanent: true,
       },
+      // Signal route reorganization
+      {
+        source: "/signal/capture",
+        destination: "/capture",
+        permanent: true,
+      },
+      {
+        source: "/signal/sighting/:id",
+        destination: "/sightings/:id",
+        permanent: true,
+      },
+      {
+        source: "/signal/settings",
+        destination: "/settings",
+        permanent: true,
+      },
+      // Settings consolidation
+      {
+        source: "/settings/profile",
+        destination: "/settings",
+        permanent: true,
+      },
+      {
+        source: "/settings/address",
+        destination: "/settings",
+        permanent: true,
+      },
       // Account → Settings redirects
       {
         source: "/account",
@@ -59,13 +86,13 @@ const config = {
       },
       {
         source: "/account/:path*",
-        destination: "/settings/:path*",
+        destination: "/settings",
         permanent: true,
       },
-      // Profile edit → Settings profile
+      // Profile edit → Settings
       {
         source: "/profile/edit",
-        destination: "/settings/profile",
+        destination: "/settings",
         permanent: true,
       },
     ];

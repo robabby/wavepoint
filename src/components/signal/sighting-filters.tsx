@@ -43,7 +43,7 @@ export function SightingFilters({ className }: SightingFiltersProps) {
       }
 
       const queryString = params.toString();
-      router.push(queryString ? `/signal?${queryString}` : "/signal", {
+      router.push(queryString ? `/sightings?${queryString}` : "/sightings", {
         scroll: false,
       });
     },
@@ -65,7 +65,7 @@ export function SightingFilters({ className }: SightingFiltersProps) {
   );
 
   const handleClearAll = useCallback(() => {
-    router.push("/signal", { scroll: false });
+    router.push("/sightings", { scroll: false });
   }, [router]);
 
   const hasFilters = numberFilter || dateRange !== "all";

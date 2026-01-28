@@ -65,7 +65,7 @@ export function SightingsSection({ date, className }: SightingsSectionProps) {
               No angel numbers captured this day
             </p>
             <Link
-              href="/signal/capture"
+              href="/capture"
               className={cn(
                 "inline-flex items-center gap-2 rounded-full",
                 "border border-[var(--color-gold)]/30 bg-card/50",
@@ -89,7 +89,7 @@ export function SightingsSection({ date, className }: SightingsSectionProps) {
             {daySightings.map((sighting) => (
               <motion.div key={sighting.id} variants={fadeUpVariants}>
                 <Link
-                  href={`/signal/sighting/${sighting.id}`}
+                  href={`/sightings/${sighting.id}`}
                   className={cn(
                     "flex items-center justify-between rounded-lg p-3",
                     "border border-[var(--border-gold)]/10 bg-card/30",

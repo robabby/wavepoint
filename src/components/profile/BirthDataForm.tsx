@@ -22,6 +22,8 @@ interface BirthDataFormProps {
     birthLongitude?: number;
     birthTimezone?: string;
   };
+  /** Called after successful save instead of navigating to /profile */
+  onSuccess?: () => void;
 }
 
 interface PreviewResult {
@@ -32,7 +34,7 @@ interface PreviewResult {
 /**
  * Birth data form for creating/editing spiritual profile.
  */
-export function BirthDataForm({ initialData }: BirthDataFormProps) {
+export function BirthDataForm({ initialData, onSuccess }: BirthDataFormProps) {
   const router = useRouter();
   const { updateProfile, isUpdating } = useUpdateProfile();
   const { calculateChart, isCalculating } = useCalculateChart();
@@ -95,7 +97,11 @@ export function BirthDataForm({ initialData }: BirthDataFormProps) {
         birthLongitude: parseFloat(birthLongitude),
       });
 
-      router.push("/profile");
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        router.push("/profile");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save profile");
     }

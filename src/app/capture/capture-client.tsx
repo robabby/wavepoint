@@ -156,15 +156,19 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
     setShowDelight(null);
   }, []);
 
-  const handleViewCollection = useCallback(() => {
-    router.push("/signal");
+  const handleViewAllSightings = useCallback(() => {
+    router.push("/sightings");
   }, [router]);
 
   const handleViewSighting = useCallback(() => {
     if (result?.sightingId) {
-      router.push(`/signal/sighting/${result.sightingId}`);
+      router.push(`/sightings/${result.sightingId}`);
     }
   }, [router, result]);
+
+  const handleBackToHome = useCallback(() => {
+    router.push("/home");
+  }, [router]);
 
   const stepNumber = {
     number: 0,
@@ -181,8 +185,8 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
       <header className="sticky top-0 z-20 border-b border-[var(--border-gold)]/20 bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex items-center gap-4 px-4 py-4">
           <Link
-            href="/signal"
-            aria-label="Back to Signal dashboard"
+            href="/home"
+            aria-label="Back to home"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="h-5 w-5" aria-hidden="true" />
@@ -319,14 +323,20 @@ export function CaptureClient({ initialNumber }: CaptureClientProps) {
 
               {/* Actions */}
               <div className="space-y-3 pt-4">
-                <SubmitButton onClick={handleViewCollection}>
-                  View Collection
+                <SubmitButton onClick={handleViewSighting}>
+                  View Sighting
                 </SubmitButton>
                 <button
-                  onClick={handleViewSighting}
+                  onClick={handleViewAllSightings}
                   className="w-full text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  View this sighting
+                  View All Sightings
+                </button>
+                <button
+                  onClick={handleBackToHome}
+                  className="w-full text-center text-sm text-muted-foreground/60 transition-colors hover:text-foreground"
+                >
+                  Back to Home
                 </button>
               </div>
             </motion.div>

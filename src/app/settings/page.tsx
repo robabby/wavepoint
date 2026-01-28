@@ -1,19 +1,28 @@
 import { redirect } from "next/navigation";
-import { Heading, Text } from "@radix-ui/themes";
-import { User } from "lucide-react";
+import { eq } from "drizzle-orm";
+import { CheckCircle } from "lucide-react";
 import { auth } from "@/lib/auth";
+import { db, spiritualProfiles } from "@/lib/db";
 import { getUserSubscription } from "@/lib/db/queries/subscriptions";
 import { isSignalEnabled } from "@/lib/signal";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { AccountActions } from "@/components/account/account-actions";
-import { SubscriptionStatus } from "@/components/signal/subscription-status";
+import { SettingsClient } from "@/components/settings/settings-client";
 
-export default async function AccountOverviewPage() {
+interface SettingsPageProps {
+  searchParams: Promise<{ success?: string; cancelled?: string }>;
+}
+
+export default async function SettingsPage({ searchParams }: SettingsPageProps) {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     redirect("/?auth=sign-in");
   }
+
+  // Fetch profile data
+  const [profile] = await db
+    .select()
+    .from(spiritualProfiles)
+    .where(eq(spiritualProfiles.userId, session.user.id));
 
   // Fetch subscription data if Signal is enabled
   const signalEnabled = isSignalEnabled();
@@ -21,62 +30,61 @@ export default async function AccountOverviewPage() {
     ? await getUserSubscription(session.user.id)
     : null;
 
-  return (
-    <div className="space-y-8">
-      {/* User info card */}
-      <Card className="border-[var(--border-gold)]/30 bg-background">
-        <CardHeader>
-          <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-gold)]/10">
-              <User className="h-7 w-7 text-[var(--color-gold)]" />
-            </div>
-            <div>
-              <CardTitle className="text-lg text-foreground">
-                Welcome back
-              </CardTitle>
-              <Text className="text-muted-foreground">
-                {session.user.email}
-              </Text>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
+  const tier =
+    subscription?.tier === "insight" && subscription?.status === "active"
+      ? "insight"
+      : "free";
 
-      {/* Signal subscription section - only show if Signal is enabled */}
-      {signalEnabled && (
-        <div>
-          <Heading
-            as="h2"
-            size="5"
-            className="mb-4 font-heading text-foreground"
-          >
-            Signal Subscription
-          </Heading>
-          <SubscriptionStatus
-            tier={(subscription?.tier as "free" | "insight") ?? "free"}
-            status={
-              subscription?.status as
-                | "active"
-                | "cancelled"
-                | "past_due"
-                | undefined
-            }
-            currentPeriodEnd={subscription?.currentPeriodEnd}
-          />
+  // Check for Stripe success/cancelled query params
+  const params = await searchParams;
+  const showSuccess = params.success === "true";
+  const showCancelled = params.cancelled === "true";
+
+  const birthData = profile
+    ? {
+        birthDate: profile.birthDate.toISOString().split("T")[0],
+        birthTime: profile.birthTime,
+        birthTimeApproximate: profile.birthTimeApproximate,
+        birthCity: profile.birthCity,
+        birthCountry: profile.birthCountry,
+        birthLatitude: parseFloat(profile.birthLatitude),
+        birthLongitude: parseFloat(profile.birthLongitude),
+        birthTimezone: profile.birthTimezone,
+      }
+    : undefined;
+
+  return (
+    <>
+      {/* Stripe success banner */}
+      {showSuccess && (
+        <div className="mb-6 flex items-center gap-3 rounded-lg border border-green-500/30 bg-green-500/10 p-4">
+          <CheckCircle className="h-5 w-5 text-green-400" />
+          <p className="text-sm text-green-400">
+            Welcome to Signal Insight! Your subscription is now active.
+          </p>
         </div>
       )}
 
-      {/* Actions section */}
-      <div>
-        <Heading
-          as="h2"
-          size="5"
-          className="mb-4 font-heading text-foreground"
-        >
-          Manage Account
-        </Heading>
-        <AccountActions />
-      </div>
-    </div>
+      {/* Stripe cancelled banner */}
+      {showCancelled && (
+        <div className="mb-6 rounded-lg border border-muted-foreground/30 bg-muted/10 p-4">
+          <p className="text-sm text-muted-foreground">
+            Checkout was cancelled. No charges were made.
+          </p>
+        </div>
+      )}
+
+      <SettingsClient
+        birthData={birthData}
+        birthName={profile?.birthName}
+        hasProfile={!!profile}
+        showSubscription={signalEnabled}
+        subscriptionTier={tier}
+        subscriptionStatus={
+          subscription?.status as "active" | "cancelled" | "past_due" | undefined
+        }
+        subscriptionPeriodEnd={subscription?.currentPeriodEnd}
+      />
+    </>
   );
 }
