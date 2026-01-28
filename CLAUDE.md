@@ -43,7 +43,10 @@ Authenticated users capture angel number sightings with AI-powered interpretatio
 |-------------|---------|
 | `src/lib/signal/index.ts` | Lib exports: schemas, Claude API, subscriptions |
 | `src/hooks/signal/index.ts` | React Query hooks |
-| `src/app/signal/` | Pages: dashboard, capture, sighting detail |
+| `src/app/signal/` | Signal feature preview hub |
+| `src/app/home/` | Authenticated dashboard (moved from Signal) |
+| `src/app/capture/` | Capture wizard (top-level) |
+| `src/app/sightings/` | Sighting list and detail (`[id]`) |
 | `src/app/api/signal/` | API routes |
 
 **Hooks**: `useSightings`, `useSighting`, `useCreateSighting`, `useUpdateSighting`, `useDeleteSighting`, `useAdjacentSightings`, `useStats`, `useHeatmap`, `useRegenerateInterpretation`
@@ -166,22 +169,54 @@ Collapsible sidebar for authenticated users with navigation and cosmic context.
 - User identity section with avatar
 - Live moon phase display with glow effects
 - Quick capture CTA button
-- Practice section: Signal, Calendar
-- Account section: Profile, Settings, Admin (if admin)
+- Practice section: Home, Signal, Sightings, Calendar
+- Account section: Profile, Admin (if admin)
+- Footer: Settings, Sign Out
 - Collapsible to icon rail (state persisted)
 - Mobile drawer variant
 
 **Navigation structure**:
 ```
 PRACTICE
+├── Home (/home)
 ├── Signal (/signal)
+├── Sightings (/sightings)
 └── Calendar (/calendar)
 
 ACCOUNT
 ├── Profile (/profile)
-├── Settings (/settings)
 └── Admin (/admin) — admins only
+
+FOOTER
+├── Settings (/settings)
+└── Sign Out
 ```
+
+### Authenticated Route Map
+
+| Route | Purpose | Access |
+|-------|---------|--------|
+| `/home` | Dashboard: cosmic context, quick actions, recent activity | `canAccessSignal()` |
+| `/signal` | Feature preview hub: stats summary + quick links | `canAccessSignal()` |
+| `/sightings` | Full sighting list with filters | `canAccessSignal()` |
+| `/sightings/[id]` | Sighting detail with edit/delete | `canAccessSignal()` |
+| `/capture` | Capture wizard (supports `?number=` pre-fill) | `canAccessSignal()` |
+| `/calendar` | Cosmic calendar (month + day views) | `isCalendarEnabled()` |
+| `/profile` | User profile (big three, numerology, fingerprint) | Auth required |
+| `/settings` | Unified settings (5 sections, supports `#hash` navigation) | Auth required |
+
+**Settings sections** (top to bottom): Appearance, Birth Data (`#birth-data`), Subscription & Billing (`#subscription`), Data & Personalization (`#data-personalization`), Account (`#account`)
+
+**Redirects** (permanent, in `next.config.js`):
+- `/signal/capture` → `/capture`
+- `/signal/sighting/:id` → `/sightings/:id`
+- `/signal/settings` → `/settings`
+- `/settings/profile` → `/settings`
+- `/settings/address` → `/settings`
+- `/profile/edit` → `/settings`
+- `/account/*` → `/settings`
+
+**API routes** remain at `src/app/api/signal/` — no changes to API paths.
 
 ---
 
@@ -360,15 +395,20 @@ src/app/                    # App Router pages
   contact/                  # Contact form
   geometries/               # Sacred geometry content ([category]/[slug])
   numbers/                  # Angel number content hub
+  capture/                  # Capture wizard (top-level)
+  home/                     # Authenticated dashboard
   profile/                  # User profile page
-  settings/                 # User settings (profile, address)
-  signal/                   # Signal pages (dashboard, capture, sighting)
+  settings/                 # Unified settings (single-page, 5 sections)
+  sightings/                # Sighting list + detail ([id])
+  signal/                   # Signal feature preview hub
 src/components/
   ui/                       # shadcn/ui components
   calendar/                 # Calendar UI components
   dashboard/                # Modular dashboard sections
   geometry/                 # Geometry-specific components
+  home/                     # Home dashboard content
   profile/                  # Profile components (Fingerprint section)
+  settings/                 # Settings page components (theme, birth data, subscription, etc.)
   sidebar/                  # Authenticated user sidebar
   signal/                   # Signal UI components
 src/lib/
