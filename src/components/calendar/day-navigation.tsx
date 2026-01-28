@@ -54,6 +54,11 @@ export function DayNavigation({ date, className }: DayNavigationProps) {
         return;
       }
 
+      // Don't intercept browser shortcuts (CMD+Arrow for back/forward)
+      if (e.metaKey || e.ctrlKey || e.altKey) {
+        return;
+      }
+
       if (e.key === "ArrowLeft") {
         e.preventDefault();
         router.push(`/calendar/day/${prevDateStr}`);

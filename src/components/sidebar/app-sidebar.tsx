@@ -139,17 +139,17 @@ export function AppSidebar({
 
       {/* Scrollable content */}
       <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden py-4">
-        {/* User section */}
-        <SidebarUserSection email={email} isCollapsed={isCollapsed} />
-
-        {/* Moon phase */}
-        <SidebarMoonPhase isCollapsed={isCollapsed} />
+        {/* Capture button */}
+        <SidebarCaptureButton isCollapsed={isCollapsed} />
 
         {/* Divider */}
         <div className="my-3 border-t border-[var(--sidebar-border)]" />
 
-        {/* Capture button */}
-        <SidebarCaptureButton isCollapsed={isCollapsed} />
+        {/* Moon phase (links to today's calendar) */}
+        <SidebarMoonPhase isCollapsed={isCollapsed} />
+
+        {/* User section (links to profile) */}
+        <SidebarUserSection email={email} isCollapsed={isCollapsed} />
 
         {/* Divider */}
         <div className="my-3 border-t border-[var(--sidebar-border)]" />
