@@ -519,6 +519,34 @@ export const userPatternInsights = pgTable(
   ]
 );
 
+/**
+ * Archetype constellations - personalized Jungian archetypes and tarot birth cards
+ */
+export const archetypeConstellations = pgTable(
+  "archetype_constellations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    system: text("system").notNull(), // 'jungian' | 'tarot'
+    identifier: text("identifier").notNull(), // ArchetypeSlug | MajorArcanaSlug
+    source: text("source").notNull().default("computed"), // 'computed' | 'user_added'
+    status: text("status").notNull().default("active"), // 'active' | 'dismissed'
+    derivedFrom: text("derived_from"), // e.g. 'life-path:9', 'birth-date:1990-07-15'
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).defaultNow(),
+  },
+  (table) => [
+    unique("archetype_constellations_user_system_identifier_unique").on(
+      table.userId,
+      table.system,
+      table.identifier
+    ),
+    index("archetype_constellations_user_id_idx").on(table.userId),
+  ]
+);
+
 // Type exports for use in application code
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -576,3 +604,6 @@ export type NewGeometryAffinity = typeof geometryAffinities.$inferInsert;
 
 export type UserPatternInsight = typeof userPatternInsights.$inferSelect;
 export type NewUserPatternInsight = typeof userPatternInsights.$inferInsert;
+
+export type ArchetypeConstellation = typeof archetypeConstellations.$inferSelect;
+export type NewArchetypeConstellation = typeof archetypeConstellations.$inferInsert;

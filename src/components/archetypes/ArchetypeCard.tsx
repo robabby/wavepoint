@@ -14,6 +14,7 @@ import { EASE_STANDARD } from "@/lib/animation-constants";
 interface ArchetypeCardProps {
   archetype: Archetype;
   className?: string;
+  isInConstellation?: boolean;
 }
 
 /**
@@ -36,7 +37,7 @@ const PLANET_SYMBOLS: Record<string, string> = {
  * Follows PlanetCard/SignCard design: centered layout with
  * element-tinted circular glyph frame and correspondence badge.
  */
-export function ArchetypeCard({ archetype, className }: ArchetypeCardProps) {
+export function ArchetypeCard({ archetype, className, isInConstellation }: ArchetypeCardProps) {
   const planetSymbol = PLANET_SYMBOLS[archetype.planet] ?? "";
   const styles = ELEMENT_STYLES[archetype.element] ?? DEFAULT_ELEMENT_STYLE;
 
@@ -101,11 +102,23 @@ export function ArchetypeCard({ archetype, className }: ArchetypeCardProps) {
           </span>
         </div>
 
+        {/* Constellation indicator */}
+        {isInConstellation && (
+          <span
+            className="absolute right-2 top-2 text-[var(--color-gold)]"
+            style={{ filter: "drop-shadow(0 0 6px rgba(212,168,75,0.5))" }}
+          >
+            ✦
+          </span>
+        )}
+
         {/* Hover glow effect with element color */}
         <div
           className={cn(
-            "pointer-events-none absolute inset-0 rounded-xl opacity-0",
-            "transition-opacity duration-300 group-hover:opacity-100"
+            "pointer-events-none absolute inset-0 rounded-xl",
+            isInConstellation
+              ? "opacity-30 transition-opacity duration-300 group-hover:opacity-100"
+              : "opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           )}
           style={{
             background: `radial-gradient(ellipse at center, ${styles.glowColor} 0%, transparent 70%)`,

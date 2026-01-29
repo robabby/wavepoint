@@ -8,6 +8,7 @@ import { useProfile } from "@/hooks/profile";
 import { useTransits } from "@/hooks/calendar";
 import { usePatterns } from "@/hooks/patterns";
 import { ProfilePromptCard } from "@/components/signal";
+import { ConstellationDashboardCard } from "@/components/constellation";
 import { PLANET_META, ASPECT_META } from "@/lib/astrology/constants";
 import { getNumberMeaning } from "@/lib/numerology";
 import type { Transit } from "@/lib/transits";
@@ -136,6 +137,9 @@ export function PersonalFocusSection() {
           lifePath={numerology.lifePath}
         />
       )}
+
+      {/* Archetypal Constellation */}
+      <ConstellationDashboardCard />
 
       {/* Pattern-based guidance */}
       {patternGuidance && (

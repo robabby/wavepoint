@@ -14,6 +14,7 @@ import {
   RelatedContent,
 } from "@/components/archetypes";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
+import { ConstellationBadge } from "@/components/constellation";
 
 const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
@@ -133,6 +134,11 @@ export default async function ArchetypeDetailPage({
         <div className="mx-auto max-w-4xl">
           {/* Hero Section */}
           <ArchetypeHero archetype={archetype} />
+
+          {/* Constellation Badge */}
+          <div className="mb-6 mt-4">
+            <ConstellationBadge slug={archetype.slug} type="archetype" />
+          </div>
 
           {/* Keywords */}
           <AnimateOnScroll delay={0.1} className="mb-12">

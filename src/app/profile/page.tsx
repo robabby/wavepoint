@@ -19,6 +19,7 @@ import {
   GeometryAffinities,
 } from "@/components/profile";
 import { NumerologyProfileCard } from "@/components/numerology";
+import { ConstellationSection } from "@/components/constellation";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 
 export const metadata: Metadata = {
@@ -147,11 +148,16 @@ export default async function ProfilePage() {
             </AnimateOnScroll>
           )}
 
+          {/* Archetypal Constellation */}
+          <AnimateOnScroll delay={0.3} className="mt-6">
+            <ConstellationSection />
+          </AnimateOnScroll>
+
           {/* Signal Fingerprint Section Divider */}
-          <AnimateOnScroll delay={0.4} className="my-12">
+          <AnimateOnScroll delay={0.5} className="my-12">
             <div className="flex items-center gap-4">
               <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[var(--color-gold)]/30 to-transparent" />
-              <AnimateOnScroll delay={0.5}>
+              <AnimateOnScroll delay={0.6}>
                 <span className="font-heading text-sm uppercase tracking-widest text-muted-foreground">
                   Your Signal Fingerprint
                 </span>
@@ -161,22 +167,22 @@ export default async function ProfilePage() {
           </AnimateOnScroll>
 
           {/* Resonance Summary */}
-          <AnimateOnScroll delay={0.6}>
+          <AnimateOnScroll delay={0.7}>
             <ResonanceSummary />
           </AnimateOnScroll>
 
           {/* Patterns Section */}
-          <AnimateOnScroll delay={0.7} className="mt-8">
+          <AnimateOnScroll delay={0.8} className="mt-8">
             <PatternsSection />
           </AnimateOnScroll>
 
           {/* Geometry Affinities */}
-          <AnimateOnScroll delay={0.9} className="mt-8">
+          <AnimateOnScroll delay={1.0} className="mt-8">
             <GeometryAffinities />
           </AnimateOnScroll>
 
           {/* Birth data summary */}
-          <AnimateOnScroll delay={1.0} className="mt-12 text-center">
+          <AnimateOnScroll delay={1.1} className="mt-12 text-center">
             <p className="text-sm text-muted-foreground">
               Born in {profile.birthCity}, {profile.birthCountry}
               {profile.birthTime && ` at ${profile.birthTime.slice(0, 5)}`}

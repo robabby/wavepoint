@@ -11,6 +11,7 @@ import {
   TarotMeanings,
   TarotRelated,
 } from "@/components/tarot";
+import { ConstellationBadge } from "@/components/constellation";
 
 const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
@@ -144,6 +145,11 @@ export default async function TarotDetailPage({
         <div className="mx-auto max-w-4xl">
           {/* Hero Section */}
           <TarotHero card={card} />
+
+          {/* Constellation Badge */}
+          <div className="mb-6 mt-4">
+            <ConstellationBadge slug={card.slug} type="tarot" />
+          </div>
 
           {/* Interpretations */}
           <div className="mb-12">

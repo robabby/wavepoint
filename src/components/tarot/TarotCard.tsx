@@ -12,6 +12,7 @@ import { TarotCardFrame } from "./TarotCardFrame";
 interface TarotCardProps {
   card: MajorArcanaCard;
   className?: string;
+  isInConstellation?: boolean;
 }
 
 /**
@@ -19,7 +20,7 @@ interface TarotCardProps {
  * Portrait aspect ratio with ornate gold frame, 3D hover tilt effect,
  * and warm gold styling to complement Rider-Waite illustrations.
  */
-export function TarotCard({ card, className }: TarotCardProps) {
+export function TarotCard({ card, className, isInConstellation }: TarotCardProps) {
   return (
     <Link
       href={`/archetypes/tarot/${card.slug}`}
@@ -123,11 +124,23 @@ export function TarotCard({ card, className }: TarotCardProps) {
           </div>
         </TarotCardFrame>
 
+        {/* Constellation indicator */}
+        {isInConstellation && (
+          <span
+            className="absolute right-3 top-3 z-20 text-[var(--color-gold)]"
+            style={{ filter: "drop-shadow(0 0 6px rgba(212,168,75,0.5))" }}
+          >
+            ✦
+          </span>
+        )}
+
         {/* Hover glow effect */}
         <div
           className={cn(
-            "pointer-events-none absolute inset-0 rounded-xl opacity-0",
-            "transition-opacity duration-300 group-hover:opacity-100"
+            "pointer-events-none absolute inset-0 rounded-xl",
+            isInConstellation
+              ? "opacity-[0.15] transition-opacity duration-300 group-hover:opacity-100"
+              : "opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           )}
           style={{
             background: `radial-gradient(ellipse at center, ${TAROT_STYLES.card.glowColor} 0%, transparent 70%)`,
