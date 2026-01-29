@@ -10,64 +10,29 @@ import {
   NumberSearchResults,
   NumberRain,
 } from "@/components/numbers";
-import {
-  YourNumbersSection,
-  NumerologyDigitCard,
-  NumerologyPositionCard,
-} from "@/components/numerology";
 import { cn } from "@/lib/utils";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
 import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { AnimatedCard } from "@/components/animated-card";
+import { SectionNav } from "@/components/section-nav";
 import { searchPatterns, type NumberPattern, type CategoryMeta } from "@/lib/numbers";
-import {
-  type PartialNumerologyProfile,
-  type PositionSlug,
-  type CoreNumberType,
-  getAllPositionSlugs,
-  getUserDigits,
-  findMatchingPositions,
-} from "@/lib/numerology";
-
-/** All numerology digits in display order */
-const NUMEROLOGY_DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
-const MASTER_NUMBERS = [11, 22, 33] as const;
-
-/** Get user's digit for a specific numerology position */
-function getUserDigitForPosition(
-  numerology: PartialNumerologyProfile,
-  slug: PositionSlug
-): number | null {
-  const mapping: Record<PositionSlug, keyof PartialNumerologyProfile> = {
-    "life-path": "lifePath",
-    birthday: "birthday",
-    expression: "expression",
-    "soul-urge": "soulUrge",
-    personality: "personality",
-    maturity: "maturity",
-  };
-  return numerology[mapping[slug]] ?? null;
-}
 
 interface NumbersPageClientProps {
   featuredPatterns: NumberPattern[];
   categories: CategoryMeta[];
   patternsByCategory: Record<string, NumberPattern[]>;
   signalEnabled: boolean;
-  userNumerology: PartialNumerologyProfile | null;
-  isAuthenticated: boolean;
 }
 
 /**
  * Client component for the Numbers page with live search functionality.
+ * Focused on angel number patterns only.
  */
 export function NumbersPageClient({
   featuredPatterns,
   categories,
   patternsByCategory,
   signalEnabled,
-  userNumerology,
-  isAuthenticated,
 }: NumbersPageClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -79,22 +44,17 @@ export function NumbersPageClient({
 
   const isSearching = searchQuery.trim().length > 0;
 
-  // Get user's digits for highlighting in the grid
-  const userDigits = useMemo(
-    () => getUserDigits(userNumerology),
-    [userNumerology]
-  );
-
-  // Get positions for each digit (for tooltip explanations)
-  const getPositionsForDigit = useMemo(() => {
-    return (digit: number): CoreNumberType[] => {
-      if (!userNumerology) return [];
-      return findMatchingPositions(userNumerology, digit);
-    };
-  }, [userNumerology]);
-
-  // Get position slugs for the grid
-  const positionSlugs = getAllPositionSlugs();
+  // Build section nav items for category jump nav
+  const sectionNavItems = useMemo(() => {
+    const items = [{ id: "featured", label: "Featured" }];
+    for (const category of categories) {
+      const patterns = patternsByCategory[category.id];
+      if (patterns && patterns.length > 0) {
+        items.push({ id: category.id, label: category.pluralLabel });
+      }
+    }
+    return items;
+  }, [categories, patternsByCategory]);
 
   return (
     <>
@@ -157,7 +117,7 @@ export function NumbersPageClient({
       <div className="container mx-auto px-4 pb-16 sm:px-6 lg:px-8">
         {/* Signal relationship banner - only when Signal is enabled and not searching */}
         {signalEnabled && !isSearching && (
-          <AnimateOnScroll className="mb-12">
+          <AnimateOnScroll className="mb-8">
             <div className="mx-auto max-w-2xl rounded-lg border border-[var(--border-gold)]/20 bg-card/30 px-4 py-3 text-center">
               <Text size="2" className="text-muted-foreground">
                 This is your reference guide.{" "}
@@ -172,6 +132,23 @@ export function NumbersPageClient({
           </AnimateOnScroll>
         )}
 
+        {/* Numerology cross-link banner */}
+        {!isSearching && (
+          <AnimateOnScroll className="mb-12">
+            <div className="mx-auto max-w-2xl rounded-lg border border-[var(--border-gold)]/20 bg-card/30 px-4 py-3 text-center">
+              <Text size="2" className="text-muted-foreground">
+                Looking for numerology?{" "}
+                <Link
+                  href="/numerology"
+                  className="text-[var(--color-gold)] transition-colors hover:underline"
+                >
+                  Explore digit archetypes, positions & cycles →
+                </Link>
+              </Text>
+            </div>
+          </AnimateOnScroll>
+        )}
+
         {/* Show search results when searching */}
         {isSearching ? (
           <section className="mb-16">
@@ -179,97 +156,11 @@ export function NumbersPageClient({
           </section>
         ) : (
           <>
-            {/* Your Numbers - personalized section for authenticated users */}
-            <YourNumbersSection
-              numerology={userNumerology}
-              isAuthenticated={isAuthenticated}
-            />
-
-            {/* The Digits - core archetypes grid */}
-            <section id="featured" className="mb-12 scroll-mt-8 lg:mb-16">
-              <AnimateOnScroll className="mb-6">
-                <Heading
-                  size="5"
-                  className="font-display text-[var(--color-gold)]"
-                >
-                  The Digits
-                </Heading>
-                <Text size="2" className="text-muted-foreground mt-1">
-                  Core archetypes that form all number meanings
-                </Text>
-              </AnimateOnScroll>
-
-              {/* Single digits 1-9 */}
-              <StaggerChildren
-                className="grid grid-cols-3 gap-3 sm:grid-cols-3 md:grid-cols-6 lg:gap-4 mb-4"
-                staggerDelay={0.03}
-              >
-                {NUMEROLOGY_DIGITS.map((digit) => (
-                  <StaggerItem key={digit}>
-                    <NumerologyDigitCard
-                      digit={digit}
-                      isUserDigit={userDigits.has(digit)}
-                      userPositions={getPositionsForDigit(digit)}
-                    />
-                  </StaggerItem>
-                ))}
-              </StaggerChildren>
-
-              {/* Master numbers 11, 22, 33 */}
-              <StaggerChildren
-                className="grid grid-cols-3 gap-3 lg:gap-4 max-w-md mx-auto sm:max-w-lg"
-                staggerDelay={0.03}
-              >
-                {MASTER_NUMBERS.map((digit) => (
-                  <StaggerItem key={digit}>
-                    <NumerologyDigitCard
-                      digit={digit}
-                      isUserDigit={userDigits.has(digit)}
-                      userPositions={getPositionsForDigit(digit)}
-                    />
-                  </StaggerItem>
-                ))}
-              </StaggerChildren>
-            </section>
-
-            {/* Numerology Positions */}
-            <section className="mb-12 lg:mb-16">
-              <AnimateOnScroll className="mb-6">
-                <Heading
-                  size="5"
-                  className="font-display text-[var(--color-gold)]"
-                >
-                  Numerology Positions
-                </Heading>
-                <Text size="2" className="text-muted-foreground mt-1">
-                  Different lenses for understanding your numbers
-                </Text>
-              </AnimateOnScroll>
-
-              <StaggerChildren
-                className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-                staggerDelay={0.05}
-              >
-                {positionSlugs.map((slug) => {
-                  // Get user's digit for this position
-                  const positionDigit = userNumerology
-                    ? getUserDigitForPosition(userNumerology, slug)
-                    : null;
-
-                  return (
-                    <StaggerItem key={slug}>
-                      <NumerologyPositionCard
-                        slug={slug}
-                        userDigit={positionDigit}
-                      />
-                    </StaggerItem>
-                  );
-                })}
-              </StaggerChildren>
-            </section>
+            {/* Category jump nav */}
+            <SectionNav sections={sectionNavItems} />
 
             {/* Angel Patterns - Featured */}
-            <section className="mb-12 lg:mb-16">
+            <section id="featured" className="mb-12 scroll-mt-32 lg:mb-16">
               <AnimateOnScroll className="mb-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -304,7 +195,7 @@ export function NumbersPageClient({
               if (!patterns || patterns.length === 0) return null;
 
               return (
-                <section key={category.id} className="mb-12 lg:mb-16">
+                <section key={category.id} id={category.id} className="mb-12 scroll-mt-32 lg:mb-16">
                   <AnimateOnScroll className="mb-6">
                     <div className="flex items-baseline gap-3">
                       <Heading
@@ -335,7 +226,7 @@ export function NumbersPageClient({
           </>
         )}
 
-{/* Signal CTA - only shown when Signal feature is enabled */}
+        {/* Signal CTA - only shown when Signal feature is enabled */}
         {signalEnabled && (
           <AnimateOnScroll>
             <AnimatedCard className="mx-auto flex max-w-2xl flex-col items-center p-8 text-center">

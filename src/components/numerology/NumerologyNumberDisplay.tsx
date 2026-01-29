@@ -81,7 +81,7 @@ function getNumberPageUrl(
 ): string | null {
   const segment = TYPE_URL_SEGMENTS[type];
   if (!segment) return null;
-  return `/numbers/${segment}/${digit}`;
+  return `/numerology/${segment}/${digit}`;
 }
 
 /**

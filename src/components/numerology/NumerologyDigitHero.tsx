@@ -85,27 +85,25 @@ export function NumerologyDigitHero({
         <div className="mx-auto mb-8 h-px w-full max-w-md bg-gradient-to-r from-transparent via-[var(--color-gold)]/30 to-transparent" />
       </AnimateOnScroll>
 
-      {/* Brief meaning */}
+      {/* Brief meaning — blockquote treatment */}
       <AnimateOnScroll delay={0.25}>
-        <Text
-          size="4"
-          className="mx-auto mb-8 block max-w-2xl leading-relaxed text-muted-foreground italic"
-        >
-          &ldquo;{meaning.brief}&rdquo;
-        </Text>
+        <blockquote className="mx-auto mb-12 max-w-xl border-l-2 border-[var(--color-gold)]/40 py-2 pl-6 text-left">
+          <p className="text-lg italic leading-relaxed text-muted-foreground">
+            &ldquo;{meaning.brief}&rdquo;
+          </p>
+        </blockquote>
       </AnimateOnScroll>
 
       {/* Extended meaning */}
       <AnimateOnScroll delay={0.3}>
-        <div className="mx-auto max-w-2xl space-y-4 text-left">
+        <div className="mx-auto max-w-2xl space-y-6 text-left">
           {meaning.extended.split("\n\n").map((paragraph, i) => (
-            <Text
+            <p
               key={i}
-              size="3"
-              className="block leading-relaxed text-muted-foreground"
+              className="text-[15px] leading-relaxed text-muted-foreground"
             >
               {paragraph}
-            </Text>
+            </p>
           ))}
         </div>
       </AnimateOnScroll>

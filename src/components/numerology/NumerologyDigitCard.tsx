@@ -48,7 +48,7 @@ export function NumerologyDigitCard({
     : null;
 
   return (
-    <Link href={`/numbers/digit/${digit}`} className="block h-full">
+    <Link href={`/numerology/${digit}`} className="block h-full">
       <AnimatedCard
         className={cn(
           "relative flex h-full flex-col items-center justify-between p-4 sm:p-6 text-center overflow-hidden",

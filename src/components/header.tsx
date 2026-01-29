@@ -125,6 +125,10 @@ export function Header() {
       if (path === "/archetypes") {
         return pathname === "/archetypes" || pathname.startsWith("/archetypes/");
       }
+      // Numerology is active on hub and all sub-paths
+      if (path === "/numerology") {
+        return pathname === "/numerology" || pathname.startsWith("/numerology/");
+      }
       return pathname.startsWith(path);
     },
     [pathname]
@@ -154,6 +158,12 @@ export function Header() {
         path: ROUTES.numbers.path,
         desktopLabel: "Numbers",
         mobileLabel: "Numbers",
+      },
+      // Numerology
+      {
+        path: ROUTES.numerology.path,
+        desktopLabel: "Numerology",
+        mobileLabel: "Numerology",
       },
       // Sacred Geometry
       {
@@ -203,6 +213,12 @@ export function Header() {
         path: ROUTES.numbers.path,
         desktopLabel: "Numbers",
         mobileLabel: "Numbers",
+      },
+      // Numerology
+      {
+        path: ROUTES.numerology.path,
+        desktopLabel: "Numerology",
+        mobileLabel: "Numerology",
       },
       // Sacred Geometry
       {
