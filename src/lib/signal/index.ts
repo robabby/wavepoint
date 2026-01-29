@@ -12,6 +12,7 @@ export {
 // Cosmic context
 export {
   calculateCosmicContext,
+  buildDashboardContext,
   calculateDashboardCosmicContext,
   calculateMoonPhase,
   getMoonPhaseEmoji,
