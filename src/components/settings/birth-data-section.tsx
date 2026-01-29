@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Pencil, MapPin, Clock, Calendar, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BirthDataForm } from "@/components/profile";
@@ -21,8 +22,11 @@ interface BirthDataSectionProps {
   hasProfile: boolean;
 }
 
-export function BirthDataSection({ initialData, birthName, hasProfile }: BirthDataSectionProps) {
+export function BirthDataSection({ initialData, birthName, hasProfile: initialHasProfile }: BirthDataSectionProps) {
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [profileCreated, setProfileCreated] = useState(false);
+  const hasProfile = initialHasProfile || profileCreated;
 
   if (!hasProfile) {
     return (
@@ -31,7 +35,7 @@ export function BirthDataSection({ initialData, birthName, hasProfile }: BirthDa
           <p className="mb-4 text-sm text-muted-foreground">
             Add your birth data to unlock personalized transits, chart calculations, and numerology insights.
           </p>
-          <BirthDataForm onSuccess={() => setIsEditing(false)} />
+          <BirthDataForm onSuccess={() => setProfileCreated(true)} />
         </div>
         <div className="relative">
           <div className="pointer-events-none opacity-50">
@@ -52,21 +56,27 @@ export function BirthDataSection({ initialData, birthName, hasProfile }: BirthDa
     );
   }
 
-  if (isEditing) {
+  if (isEditing || profileCreated) {
     return (
       <div className="space-y-6">
-        <BirthDataForm
-          initialData={initialData}
-          onSuccess={() => setIsEditing(false)}
-        />
-        {hasProfile && (
-          <BirthNameForm initialBirthName={birthName ?? null} />
+        {!profileCreated && (
+          <BirthDataForm
+            initialData={initialData}
+            onSuccess={() => setIsEditing(false)}
+          />
         )}
+        <BirthNameForm initialBirthName={birthName ?? null} />
         <button
-          onClick={() => setIsEditing(false)}
+          onClick={() => {
+            if (profileCreated) {
+              router.refresh();
+            }
+            setIsEditing(false);
+            setProfileCreated(false);
+          }}
           className="text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          Cancel
+          {profileCreated ? "Done" : "Cancel"}
         </button>
       </div>
     );
