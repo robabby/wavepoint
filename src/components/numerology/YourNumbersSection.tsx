@@ -119,7 +119,7 @@ export function YourNumbersSection({
           {/* Life Path Hero */}
           {lifePath && lifePathMeaning && (
             <Link
-              href={`/numbers/life-path/${lifePath}`}
+              href={`/numerology/life-path/${lifePath}`}
               className="block mb-6 pb-6 border-b border-border/50 hover:opacity-90 transition-opacity"
             >
               <div className="flex items-center gap-6">
@@ -158,7 +158,7 @@ export function YourNumbersSection({
                 return (
                   <Link
                     key={slug}
-                    href={`/numbers/${slug}/${digit}`}
+                    href={`/numerology/${slug}/${digit}`}
                     className="text-center p-3 rounded-lg border border-border/50 hover:border-[var(--color-gold)]/30 hover:bg-[var(--color-gold)]/5 transition-colors"
                   >
                     <div

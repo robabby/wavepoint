@@ -134,7 +134,7 @@ export default async function DigitArchetypePage({
     "@type": "Article",
     headline: `${digit} - ${meaning.name}`,
     description: meaning.brief,
-    url: `${baseUrl}/numbers/digit/${digit}`,
+    url: `${baseUrl}/numerology/${digit}`,
     keywords: meaning.keywords.join(", "),
     publisher: {
       "@type": "Organization",
@@ -143,7 +143,7 @@ export default async function DigitArchetypePage({
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${baseUrl}/numbers/digit/${digit}`,
+      "@id": `${baseUrl}/numerology/${digit}`,
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
@@ -151,14 +151,14 @@ export default async function DigitArchetypePage({
         {
           "@type": "ListItem",
           position: 1,
-          name: "Numbers",
-          item: `${baseUrl}/numbers`,
+          name: "Numerology",
+          item: `${baseUrl}/numerology`,
         },
         {
           "@type": "ListItem",
           position: 2,
           name: `${digit}`,
-          item: `${baseUrl}/numbers/digit/${digit}`,
+          item: `${baseUrl}/numerology/${digit}`,
         },
       ],
     },
@@ -177,10 +177,10 @@ export default async function DigitArchetypePage({
           {/* Back link */}
           <AnimateOnScroll className="mb-8 text-center">
             <Link
-              href="/numbers"
+              href="/numerology"
               className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
-              ← All numbers
+              ← Numerology
             </Link>
           </AnimateOnScroll>
 
@@ -215,7 +215,7 @@ export default async function DigitArchetypePage({
               {positionTypes.map((position) => (
                 <StaggerItem key={position.slug}>
                   <Link
-                    href={`/numbers/${position.slug}/${digit}`}
+                    href={`/numerology/${position.slug}/${digit}`}
                     className="block"
                   >
                     <div className="p-4 rounded-lg border border-border/50 hover:border-[var(--color-gold)]/30 hover:bg-[var(--color-gold)]/5 transition-colors">
@@ -260,10 +260,10 @@ export default async function DigitArchetypePage({
           {/* Browse link */}
           <AnimateOnScroll delay={0.6} className="text-center">
             <Link
-              href="/numbers"
+              href="/numerology"
               className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
-              Browse all number meanings →
+              Browse all numerology →
             </Link>
           </AnimateOnScroll>
         </div>

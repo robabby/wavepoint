@@ -37,7 +37,7 @@ interface PositionDigitPageProps {
 }
 
 /**
- * Shared component for position + digit pages (e.g., /numbers/life-path/7).
+ * Shared component for position + digit pages (e.g., /numerology/life-path/7).
  * Shows position-specific meaning, base archetype, related patterns, and cross-links.
  */
 export async function PositionDigitPage({
@@ -104,7 +104,7 @@ export async function PositionDigitPage({
     headline: positionMeaning?.title ?? `${position.name} ${digit}`,
     description:
       positionMeaning?.description ?? `${position.name} ${digit} meaning`,
-    url: `${baseUrl}/numbers/${positionSlug}/${digit}`,
+    url: `${baseUrl}/numerology/${positionSlug}/${digit}`,
     keywords: [
       `${position.name.toLowerCase()} ${digit}`,
       `${position.name.toLowerCase()} number ${digit}`,
@@ -118,7 +118,7 @@ export async function PositionDigitPage({
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${baseUrl}/numbers/${positionSlug}/${digit}`,
+      "@id": `${baseUrl}/numerology/${positionSlug}/${digit}`,
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
@@ -126,20 +126,20 @@ export async function PositionDigitPage({
         {
           "@type": "ListItem",
           position: 1,
-          name: "Numbers",
-          item: `${baseUrl}/numbers`,
+          name: "Numerology",
+          item: `${baseUrl}/numerology`,
         },
         {
           "@type": "ListItem",
           position: 2,
           name: position.name,
-          item: `${baseUrl}/numbers/${positionSlug}`,
+          item: `${baseUrl}/numerology/${positionSlug}`,
         },
         {
           "@type": "ListItem",
           position: 3,
           name: `${digit}`,
-          item: `${baseUrl}/numbers/${positionSlug}/${digit}`,
+          item: `${baseUrl}/numerology/${positionSlug}/${digit}`,
         },
       ],
     },
@@ -158,7 +158,7 @@ export async function PositionDigitPage({
           {/* Back link */}
           <AnimateOnScroll className="mb-8 text-center">
             <Link
-              href={`/numbers/${positionSlug}`}
+              href={`/numerology/${positionSlug}`}
               className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
               ← All {position.name} numbers
@@ -194,7 +194,7 @@ export async function PositionDigitPage({
                     Core archetype
                   </Text>
                   <Link
-                    href={`/numbers/digit/${digit}`}
+                    href={`/numerology/${digit}`}
                     className="text-[var(--color-gold)] hover:underline"
                   >
                     <Text size="4" weight="medium">
@@ -203,7 +203,7 @@ export async function PositionDigitPage({
                   </Link>
                 </div>
                 <Link
-                  href={`/numbers/digit/${digit}`}
+                  href={`/numerology/${digit}`}
                   className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
                 >
                   Learn more →
@@ -228,7 +228,7 @@ export async function PositionDigitPage({
               {otherPositions.map((pos) => (
                 <Link
                   key={pos.slug}
-                  href={`/numbers/${pos.slug}/${digit}`}
+                  href={`/numerology/${pos.slug}/${digit}`}
                   className="p-3 rounded-lg border border-border/50 hover:border-[var(--color-gold)]/30 hover:bg-[var(--color-gold)]/5 transition-colors text-center"
                 >
                   <Text size="2" weight="medium" className="text-foreground">
@@ -264,16 +264,16 @@ export async function PositionDigitPage({
           {/* Browse links */}
           <AnimateOnScroll delay={0.55} className="text-center space-y-2">
             <Link
-              href={`/numbers/${positionSlug}`}
+              href={`/numerology/${positionSlug}`}
               className="block text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
               View all {position.name} numbers →
             </Link>
             <Link
-              href="/numbers"
+              href="/numerology"
               className="block text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
-              Browse all number meanings →
+              Browse all numerology →
             </Link>
           </AnimateOnScroll>
         </div>

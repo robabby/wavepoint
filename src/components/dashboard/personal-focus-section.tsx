@@ -9,17 +9,18 @@ import { useTransits } from "@/hooks/calendar";
 import { usePatterns } from "@/hooks/patterns";
 import { ProfilePromptCard } from "@/components/signal";
 import { PLANET_META, ASPECT_META } from "@/lib/astrology/constants";
+import { getNumberMeaning } from "@/lib/numerology";
 import type { Transit } from "@/lib/transits";
 
 /**
  * Section 2: Personal Focus
  *
- * - If profile exists: Top 2 transits affecting user today
+ * - If profile exists: Top 2 transits affecting user today + numerology cycles
  * - If no profile: Prompt to add birth info
  * - Pattern-based guidance when patterns exist
  */
 export function PersonalFocusSection() {
-  const { hasProfile, isLoading: profileLoading } = useProfile();
+  const { hasProfile, numerology, isLoading: profileLoading } = useProfile();
   const today = useMemo(() => {
     const d = new Date();
     return d.toISOString().split("T")[0] ?? "";
@@ -126,6 +127,16 @@ export function PersonalFocusSection() {
         </div>
       ) : null}
 
+      {/* Numerology Cycles */}
+      {numerology?.personalDay != null && (
+        <NumerologyCyclesCard
+          personalDay={numerology.personalDay}
+          personalMonth={numerology.personalMonth}
+          personalYear={numerology.personalYear}
+          lifePath={numerology.lifePath}
+        />
+      )}
+
       {/* Pattern-based guidance */}
       {patternGuidance && (
         <div className="rounded-xl border border-[var(--color-gold)]/20 bg-[var(--color-gold)]/5 p-4">
@@ -141,6 +152,87 @@ export function PersonalFocusSection() {
         </div>
       )}
     </section>
+  );
+}
+
+function NumerologyCyclesCard({
+  personalDay,
+  personalMonth,
+  personalYear,
+  lifePath,
+}: {
+  personalDay: number;
+  personalMonth: number;
+  personalYear: number;
+  lifePath: number | null;
+}) {
+  const dayMeaning = getNumberMeaning(personalDay);
+  const monthMeaning = getNumberMeaning(personalMonth);
+  const yearMeaning = getNumberMeaning(personalYear);
+
+  return (
+    <div className="rounded-xl border border-[var(--border-gold)]/20 bg-card/30 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-xs uppercase tracking-wider text-muted-foreground">
+          Today&apos;s Cycles
+        </p>
+        {lifePath != null && (
+          <Link
+            href="/numerology"
+            className="text-xs text-[var(--color-gold)] hover:underline"
+          >
+            LP {lifePath} →
+          </Link>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        {/* Personal Day - primary */}
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-[var(--color-gold)]" />
+          <span className="font-display text-lg text-foreground">{personalDay}</span>
+          <span className="text-sm text-foreground">
+            {dayMeaning?.name ?? `Digit ${personalDay}`}
+          </span>
+        </div>
+        {dayMeaning && (
+          <p className="ml-4 text-xs text-muted-foreground">
+            {dayMeaning.keywords.slice(0, 3).join(" · ")}
+          </p>
+        )}
+
+        {/* Personal Month */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
+            <span className="text-sm text-foreground">{personalMonth}</span>
+            <span className="text-sm text-foreground">
+              {monthMeaning?.name ?? `Digit ${personalMonth}`}
+            </span>
+          </div>
+          <span className="text-xs text-muted-foreground">Month</span>
+        </div>
+
+        {/* Personal Year */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
+            <span className="text-sm text-foreground">{personalYear}</span>
+            <span className="text-sm text-foreground">
+              {yearMeaning?.name ?? `Digit ${personalYear}`}
+            </span>
+          </div>
+          <span className="text-xs text-muted-foreground">Year</span>
+        </div>
+      </div>
+
+      <Link
+        href="/numerology"
+        className="mt-3 inline-block text-xs text-muted-foreground hover:text-[var(--color-gold)]"
+      >
+        View full numerology →
+      </Link>
+    </div>
   );
 }
 

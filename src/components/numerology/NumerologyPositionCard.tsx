@@ -31,7 +31,7 @@ export function NumerologyPositionCard({
   if (!position) return null;
 
   return (
-    <Link href={`/numbers/${slug}`} className="block">
+    <Link href={`/numerology/${slug}`} className="block">
       <AnimatedCard
         className={cn(
           "relative p-4 sm:p-6 border-l-2 border-l-[var(--color-gold)]/40 hover:border-l-[var(--color-gold)]/80 transition-colors",

@@ -84,7 +84,7 @@ export function NumerologyPositionHero({
       {/* Archetype name with link to digit page */}
       <AnimateOnScroll delay={0.1}>
         <Link
-          href={`/numbers/digit/${digit}`}
+          href={`/numerology/${digit}`}
           className="inline-block transition-opacity hover:opacity-80"
         >
           <Heading

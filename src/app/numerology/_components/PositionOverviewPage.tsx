@@ -77,7 +77,7 @@ export async function PositionOverviewPage({ slug }: PositionOverviewPageProps) 
     "@type": "Article",
     headline: `${position.name} Number Meanings`,
     description: position.description,
-    url: `${baseUrl}/numbers/${slug}`,
+    url: `${baseUrl}/numerology/${slug}`,
     keywords: position.seoKeywords.join(", "),
     publisher: {
       "@type": "Organization",
@@ -86,7 +86,7 @@ export async function PositionOverviewPage({ slug }: PositionOverviewPageProps) 
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${baseUrl}/numbers/${slug}`,
+      "@id": `${baseUrl}/numerology/${slug}`,
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
@@ -94,14 +94,14 @@ export async function PositionOverviewPage({ slug }: PositionOverviewPageProps) 
         {
           "@type": "ListItem",
           position: 1,
-          name: "Numbers",
-          item: `${baseUrl}/numbers`,
+          name: "Numerology",
+          item: `${baseUrl}/numerology`,
         },
         {
           "@type": "ListItem",
           position: 2,
           name: position.name,
-          item: `${baseUrl}/numbers/${slug}`,
+          item: `${baseUrl}/numerology/${slug}`,
         },
       ],
     },
@@ -120,10 +120,10 @@ export async function PositionOverviewPage({ slug }: PositionOverviewPageProps) 
           {/* Back link */}
           <AnimateOnScroll className="mb-8 text-center">
             <Link
-              href="/numbers"
+              href="/numerology"
               className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
-              ← All numbers
+              ← Numerology
             </Link>
           </AnimateOnScroll>
 
@@ -190,7 +190,7 @@ export async function PositionOverviewPage({ slug }: PositionOverviewPageProps) 
                   Your {position.name} Number
                 </Text>
                 <Link
-                  href={`/numbers/${slug}/${userDigit}`}
+                  href={`/numerology/${slug}/${userDigit}`}
                   className="inline-block"
                 >
                   <div
@@ -223,7 +223,7 @@ export async function PositionOverviewPage({ slug }: PositionOverviewPageProps) 
             >
               {ALL_DIGITS.filter((d) => d < 10).map((digit) => (
                 <StaggerItem key={digit}>
-                  <Link href={`/numbers/${slug}/${digit}`} className="block">
+                  <Link href={`/numerology/${slug}/${digit}`} className="block">
                     <DigitGridCard
                       digit={digit}
                       isUserDigit={userDigit === digit}
@@ -247,7 +247,7 @@ export async function PositionOverviewPage({ slug }: PositionOverviewPageProps) 
             >
               {ALL_DIGITS.filter((d) => d > 9).map((digit) => (
                 <StaggerItem key={digit}>
-                  <Link href={`/numbers/${slug}/${digit}`} className="block">
+                  <Link href={`/numerology/${slug}/${digit}`} className="block">
                     <DigitGridCard
                       digit={digit}
                       isUserDigit={userDigit === digit}
@@ -262,10 +262,10 @@ export async function PositionOverviewPage({ slug }: PositionOverviewPageProps) 
           {/* Browse link */}
           <AnimateOnScroll delay={0.3} className="mt-12 text-center">
             <Link
-              href="/numbers"
+              href="/numerology"
               className="text-sm text-muted-foreground hover:text-[var(--color-gold)] transition-colors"
             >
-              Browse all number meanings →
+              Browse all numerology →
             </Link>
           </AnimateOnScroll>
         </div>

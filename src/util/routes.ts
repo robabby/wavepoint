@@ -77,6 +77,12 @@ export const ROUTES = {
     description: "The 22 Major Arcana as universal patterns of human experience",
     order: 1.6,
   },
+  numerology: {
+    name: "Numerology",
+    path: "/numerology",
+    description: "Explore numerology positions and digit archetypes",
+    order: 1.7,
+  },
   sacredPatterns: {
     name: "Sacred Patterns",
     path: "/sacred-patterns",
