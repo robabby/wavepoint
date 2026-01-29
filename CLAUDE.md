@@ -57,15 +57,32 @@ Authenticated users capture angel number sightings with AI-powered interpretatio
 
 ### Numbers (Angel Number Content Hub)
 
-Public content pages for 90 angel number patterns with meanings and statistics.
+Public content pages for 90 angel number patterns with meanings and statistics. Pure angel number reference — numerology content lives at `/numerology`.
 
 | Entry Point | Purpose |
 |-------------|---------|
 | `src/lib/numbers/` | Pattern data, stats queries |
 | `src/hooks/numbers/index.ts` | React Query hooks |
-| `src/app/numbers/` | Pages: index, pattern detail |
+| `src/app/numbers/` | Pages: index (with category nav + cross-link to /numerology), pattern detail |
 
 **Hooks**: `usePatterns`, `usePattern`, `useNumberStats`, `useNumberStat`
+
+### Numerology (Digit Archetypes & Positions)
+
+Public content pages for numerology digit archetypes (1-9, 11, 22, 33), six numerological positions, and personalized "Your Numbers" section.
+
+| Entry Point | Purpose |
+|-------------|---------|
+| `src/lib/numerology/` | Calculations, meanings, position types, personalization |
+| `src/app/numerology/` | Hub page with digit grid, position cards, SectionNav |
+| `src/app/numerology/[digit]/` | Digit archetype pages (e.g., `/numerology/7`) |
+| `src/app/numerology/[position]/` | Position overview (e.g., `/numerology/life-path`) |
+| `src/app/numerology/[position]/[digit]/` | Position+digit (e.g., `/numerology/life-path/9`) |
+| `src/components/numerology/` | Shared UI: digit cards, position cards, heroes, number display |
+
+**Positions**: life-path, birthday, expression, soul-urge, personality, maturity
+
+**Dashboard integration**: "Today's Cycles" card in `/home` Personal Focus section shows personal day/month/year
 
 ### Auth (Authentication)
 
@@ -395,7 +412,8 @@ src/app/                    # App Router pages
   calendar/                 # Calendar pages (month view, day/[date])
   contact/                  # Contact form
   geometries/               # Sacred geometry content ([category]/[slug])
-  numbers/                  # Angel number content hub
+  numbers/                  # Angel number content hub (patterns only)
+  numerology/               # Numerology hub, digit archetypes, positions
   capture/                  # Capture wizard (top-level)
   home/                     # Authenticated dashboard
   profile/                  # User profile page
@@ -408,6 +426,7 @@ src/components/
   dashboard/                # Modular dashboard sections
   geometry/                 # Geometry-specific components
   home/                     # Home dashboard content
+  numerology/               # Numerology UI (digit cards, position cards, heroes)
   profile/                  # Profile components (Fingerprint section)
   settings/                 # Settings page components (theme, birth data, subscription, etc.)
   sidebar/                  # Authenticated user sidebar
@@ -424,6 +443,7 @@ src/lib/
   geometry/                 # Geometry affinity types/schemas
   invites/                  # Invite code system
   numbers/                  # Angel number patterns
+  numerology/               # Numerology: calculations, meanings, positions, personalization
   patterns/                 # Pattern computation for fingerprint
   resonance/                # Resonance feedback types/schemas
   rate-limit/               # Upstash Redis rate limiting
