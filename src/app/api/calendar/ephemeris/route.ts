@@ -18,47 +18,18 @@ import {
   calculateDashboardCosmicContext,
   calculateNextSignTransition,
 } from "@/lib/signal";
+import { calculateBatchEphemeris, getNoonInTimezone } from "@/lib/signal/ephemeris-batch";
 import {
   dateStringSchema,
   type EphemerisDay,
   type EphemerisRange,
 } from "@/lib/calendar";
+import {
+  getCachedEphemeris,
+  setCachedEphemeris,
+  makeEphemerisKey,
+} from "@/lib/calendar/ephemeris-cache";
 import { checkRateLimit } from "@/lib/rate-limit";
-
-/**
- * Get a Date object representing noon on a given date in a specific timezone.
- * This ensures "January 3" means noon on January 3 in the user's local time.
- */
-function getNoonInTimezone(dateStr: string, timezone: string): Date {
-  // Parse the date components
-  const [year, month, day] = dateStr.split("-").map(Number);
-  if (!year || !month || !day) {
-    return new Date(`${dateStr}T12:00:00Z`);
-  }
-
-  // Create a date at noon UTC as starting point
-  const noonUtc = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
-
-  // Get the timezone offset at this moment
-  // We use Intl.DateTimeFormat to find what hour it is in the target timezone
-  const formatter = new Intl.DateTimeFormat("en-US", {
-    timeZone: timezone,
-    hour: "numeric",
-    hour12: false,
-  });
-
-  try {
-    const hourInTz = parseInt(formatter.format(noonUtc), 10);
-    // If it's showing 12, we're at noon in that timezone (offset = 0 from our goal)
-    // If it's showing 4, we need to add 8 hours (noon - 4 = 8)
-    // If it's showing 20, we need to subtract 8 hours (noon - 20 = -8)
-    const offsetHours = 12 - hourInTz;
-    return new Date(noonUtc.getTime() + offsetHours * 60 * 60 * 1000);
-  } catch {
-    // Invalid timezone, fall back to UTC noon
-    return noonUtc;
-  }
-}
 
 export async function GET(request: NextRequest) {
   try {
@@ -98,12 +69,17 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      // Calculate at noon in the user's timezone for accurate day attribution
-      const dateObj = getNoonInTimezone(date, tz);
-      const cosmicContext = calculateDashboardCosmicContext(
-        dateObj,
-        calculateNextSignTransition
-      );
+      // Check cache first, then compute
+      const cacheKey = makeEphemerisKey(date, tz);
+      let cosmicContext = getCachedEphemeris(cacheKey);
+      if (!cosmicContext) {
+        const dateObj = getNoonInTimezone(date, tz);
+        cosmicContext = calculateDashboardCosmicContext(
+          dateObj,
+          calculateNextSignTransition
+        );
+        setCachedEphemeris(cacheKey, cosmicContext);
+      }
 
       return NextResponse.json(
         { date, data: cosmicContext },
@@ -147,19 +123,30 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      // Calculate cosmic context for each day at noon in the user's timezone
-      // This ensures lunar events are attributed to the correct calendar day
+      // Build list of date keys, checking cache for each
+      const dateKeys: string[] = [];
       const days: Record<string, EphemerisDay> = {};
       const current = new Date(startDate);
 
       while (current <= endDate) {
         const dateKey = current.toISOString().split("T")[0]!;
-        const noonLocal = getNoonInTimezone(dateKey, tz);
-        days[dateKey] = calculateDashboardCosmicContext(
-          noonLocal,
-          calculateNextSignTransition
-        );
+        const cacheKey = makeEphemerisKey(dateKey, tz);
+        const cached = getCachedEphemeris(cacheKey);
+        if (cached) {
+          days[dateKey] = cached;
+        } else {
+          dateKeys.push(dateKey);
+        }
         current.setDate(current.getDate() + 1);
+      }
+
+      // Batch-compute uncached days
+      if (dateKeys.length > 0) {
+        const batchResults = calculateBatchEphemeris(dateKeys, tz);
+        for (const [dateKey, context] of Object.entries(batchResults)) {
+          days[dateKey] = context;
+          setCachedEphemeris(makeEphemerisKey(dateKey, tz), context);
+        }
       }
 
       const rangeData: EphemerisRange = {

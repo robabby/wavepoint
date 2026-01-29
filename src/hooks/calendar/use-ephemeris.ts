@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { calendarKeys } from "./query-keys";
 import type { EphemerisDay, EphemerisRange } from "@/lib/calendar";
 
@@ -80,6 +80,8 @@ export function useEphemerisRange(start: string, end: string) {
     queryKey: calendarKeys.ephemerisRange(start, end, tz),
     queryFn: () => fetchEphemerisRange(start, end, tz),
     staleTime: 60 * 60 * 1000, // 1 hour
+    gcTime: 30 * 60 * 1000, // Keep adjacent months in cache longer
+    placeholderData: keepPreviousData, // Show previous month while next loads
     enabled: !!start && !!end,
   });
 

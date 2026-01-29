@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DayCell } from "./day-cell";
-import { useEphemerisRange, useJournalEntries, createJournalEntriesMap } from "@/hooks/calendar";
+import { MonthViewSkeleton } from "./month-view-skeleton";
+import { useEphemerisRange, useJournalEntries, createJournalEntriesMap, usePrefetchAdjacentMonths } from "@/hooks/calendar";
 import { useHeatmap } from "@/hooks/signal";
 import { getMonthEclipseContext } from "@/lib/eclipses";
 import type { MoonPhase } from "@/lib/signal/cosmic-context";
@@ -199,6 +200,9 @@ export function MonthView({ initialMonth, className }: MonthViewProps) {
 
   // Fetch heatmap data for sighting indicators
   const { dailyCounts } = useHeatmap();
+
+  // Prefetch adjacent months for instant navigation
+  usePrefetchAdjacentMonths(year, month);
 
   // Fetch journal entries for the month range
   const { entries: journalEntries } = useJournalEntries(
@@ -552,10 +556,10 @@ export function MonthView({ initialMonth, className }: MonthViewProps) {
         </motion.div>
       </AnimatePresence>
 
-      {/* Loading overlay */}
-      {ephemerisLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-gold)]/30 border-t-[var(--color-gold)]" />
+      {/* Skeleton on initial cold load (keepPreviousData handles subsequent navigations) */}
+      {ephemerisLoading && !ephemeris && (
+        <div className="mt-4">
+          <MonthViewSkeleton />
         </div>
       )}
     </div>

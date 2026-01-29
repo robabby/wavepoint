@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { calendarKeys } from "./query-keys";
 import type {
   CalendarJournalEntry,
@@ -105,6 +105,8 @@ export function useJournalEntries(start: string, end: string) {
     queryKey: calendarKeys.journalRange(start, end),
     queryFn: () => fetchJournalEntries(start, end),
     staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 30 * 60 * 1000, // Keep adjacent months in cache longer
+    placeholderData: keepPreviousData,
     enabled: !!start && !!end,
   });
 

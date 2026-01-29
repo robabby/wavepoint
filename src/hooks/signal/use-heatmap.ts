@@ -37,6 +37,8 @@ export function useHeatmap() {
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: signalKeys.heatmap(),
     queryFn: fetchHeatmap,
+    staleTime: 10 * 60 * 1000, // 10 minutes — heatmap data changes infrequently
+    gcTime: 30 * 60 * 1000,
   });
 
   return {

@@ -330,30 +330,18 @@ export function getMoonPhaseGlow(phase: MoonPhase): string {
 }
 
 /**
- * Calculate extended cosmic context for dashboard display.
+ * Build dashboard cosmic context from a pre-computed chart and transitions.
  *
- * Includes generational planets (Uranus, Neptune, Pluto) and
- * sign transitions for Moon and Sun.
- *
- * @param timestamp - The moment to calculate for (defaults to now)
- * @param calculateTransitions - Function to calculate sign transitions (injected for testability)
- * @returns The dashboard cosmic context with all planets and transitions
+ * Pure function — takes chart results and pre-computed transitions,
+ * returns the dashboard context. Used by both the single-day path
+ * and the batch computation path.
  */
-export function calculateDashboardCosmicContext(
-  timestamp: Date = new Date(),
-  calculateTransitions?: (body: "sun" | "moon", longitude: number, fromDate: Date) => SignTransition | null
+export function buildDashboardContext(
+  chart: ReturnType<typeof calculateChart>,
+  timestamp: Date,
+  moonTransition: SignTransition | null,
+  sunTransition: SignTransition | null,
 ): DashboardCosmicContext {
-  // Calculate chart for Greenwich at the given timestamp
-  const chart = calculateChart({
-    year: timestamp.getUTCFullYear(),
-    month: timestamp.getUTCMonth() + 1, // 1-indexed
-    day: timestamp.getUTCDate(),
-    hour: timestamp.getUTCHours(),
-    minute: timestamp.getUTCMinutes(),
-    second: timestamp.getUTCSeconds(),
-    location: GREENWICH,
-  });
-
   // Extract planet positions
   const sunPos = chart.planets.sun;
   const moonPos = chart.planets.moon;
@@ -370,7 +358,6 @@ export function calculateDashboardCosmicContext(
   const sunLon = sunPos?.position.longitude ?? 0;
   const moonLon = moonPos?.position.longitude ?? 0;
   const moonPhase = calculateMoonPhase(sunLon, moonLon);
-  // Lunar elongation: 0° = New Moon peak, 180° = Full Moon peak
   const lunarElongation = ((moonLon - sunLon + 360) % 360);
 
   // Filter for tight aspects (orb <= 2°) between planets
@@ -391,15 +378,6 @@ export function calculateDashboardCosmicContext(
       type: aspect.type,
       orb: Math.round(aspect.orb * 10) / 10,
     }));
-
-  // Calculate sign transitions if function provided
-  let moonTransition: SignTransition | null = null;
-  let sunTransition: SignTransition | null = null;
-
-  if (calculateTransitions) {
-    moonTransition = calculateTransitions("moon", moonLon, timestamp);
-    sunTransition = calculateTransitions("sun", sunLon, timestamp);
-  }
 
   return {
     sun: {
@@ -453,4 +431,41 @@ export function calculateDashboardCosmicContext(
     aspects: tightAspects,
     calculatedAt: timestamp.toISOString(),
   };
+}
+
+/**
+ * Calculate extended cosmic context for dashboard display.
+ *
+ * Includes generational planets (Uranus, Neptune, Pluto) and
+ * sign transitions for Moon and Sun.
+ *
+ * @param timestamp - The moment to calculate for (defaults to now)
+ * @param calculateTransitions - Function to calculate sign transitions (injected for testability)
+ * @returns The dashboard cosmic context with all planets and transitions
+ */
+export function calculateDashboardCosmicContext(
+  timestamp: Date = new Date(),
+  calculateTransitions?: (body: "sun" | "moon", longitude: number, fromDate: Date) => SignTransition | null
+): DashboardCosmicContext {
+  const chart = calculateChart({
+    year: timestamp.getUTCFullYear(),
+    month: timestamp.getUTCMonth() + 1,
+    day: timestamp.getUTCDate(),
+    hour: timestamp.getUTCHours(),
+    minute: timestamp.getUTCMinutes(),
+    second: timestamp.getUTCSeconds(),
+    location: GREENWICH,
+  });
+
+  let moonTransition: SignTransition | null = null;
+  let sunTransition: SignTransition | null = null;
+
+  if (calculateTransitions) {
+    const moonLon = chart.planets.moon?.position.longitude ?? 0;
+    const sunLon = chart.planets.sun?.position.longitude ?? 0;
+    moonTransition = calculateTransitions("moon", moonLon, timestamp);
+    sunTransition = calculateTransitions("sun", sunLon, timestamp);
+  }
+
+  return buildDashboardContext(chart, timestamp, moonTransition, sunTransition);
 }
