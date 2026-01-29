@@ -129,15 +129,14 @@ export function NumerologyPositionHero({
       {/* Extended contextual meaning */}
       {positionMeaning?.extended && (
         <AnimateOnScroll delay={0.3}>
-          <div className="mx-auto max-w-2xl space-y-4 text-left">
+          <div className="mx-auto max-w-2xl space-y-6 text-left">
             {positionMeaning.extended.split("\n\n").map((paragraph, i) => (
-              <Text
+              <p
                 key={i}
-                size="3"
-                className="block leading-relaxed text-muted-foreground"
+                className="text-[15px] leading-relaxed text-muted-foreground"
               >
                 {paragraph}
-              </Text>
+              </p>
             ))}
           </div>
         </AnimateOnScroll>
