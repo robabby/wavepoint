@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { Heading, Text } from "@radix-ui/themes";
 import { getAllArchetypes } from "@/lib/archetypes";
 import { getAllMajorArcana } from "@/lib/tarot";
-import { ArchetypeCard } from "@/components/archetypes";
-import { TarotCard, TarotSectionHeader } from "@/components/tarot";
+import { TarotSectionHeader } from "@/components/tarot";
 import { SectionNav } from "@/components/section-nav";
 import { AnimateOnScroll } from "@/components/animate-on-scroll";
-import { StaggerChildren, StaggerItem } from "@/components/stagger-children";
 import { TAROT_STYLES } from "@/lib/theme/tarot-styles";
+import {
+  ConstellationArchetypeGrid,
+  ConstellationTarotGrid,
+} from "./constellation-context";
 
 const baseUrl = process.env.APP_URL ?? "https://wavepoint.space";
 
@@ -124,17 +126,8 @@ export default function ArchetypesPage() {
             </Text>
           </AnimateOnScroll>
 
-          {/* 3x4 Grid of Archetypes */}
-          <StaggerChildren
-            className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6"
-            staggerDelay={0.04}
-          >
-            {allArchetypes.map((archetype) => (
-              <StaggerItem key={archetype.slug}>
-                <ArchetypeCard archetype={archetype} />
-              </StaggerItem>
-            ))}
-          </StaggerChildren>
+          {/* 3x4 Grid of Archetypes (constellation-aware) */}
+          <ConstellationArchetypeGrid archetypes={allArchetypes} />
 
           <AnimateOnScroll className="mt-8 text-center">
             <Text size="2" className="text-muted-foreground">
@@ -147,17 +140,8 @@ export default function ArchetypesPage() {
         <section id="major-arcana" className="scroll-mt-32">
           <TarotSectionHeader className="mb-10" />
 
-          {/* Grid of Tarot Cards with "dealt" animation */}
-          <StaggerChildren
-            className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
-            staggerDelay={TAROT_STYLES.animation.staggerDelay}
-          >
-            {allTarotCards.map((card) => (
-              <StaggerItem key={card.slug}>
-                <TarotCard card={card} />
-              </StaggerItem>
-            ))}
-          </StaggerChildren>
+          {/* Grid of Tarot Cards with "dealt" animation (constellation-aware) */}
+          <ConstellationTarotGrid cards={allTarotCards} />
 
           <AnimateOnScroll className="mt-10 text-center">
             <Text
