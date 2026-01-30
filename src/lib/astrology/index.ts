@@ -57,3 +57,6 @@ export * from "./signs";
 
 // Astrological house content pages
 export * from "./houses";
+
+// Chart rendering adapter
+export { toAstroChartData, type AstroChartData } from "./astrochart-adapter";

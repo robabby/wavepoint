@@ -5,16 +5,19 @@ import { Heading, Text } from "@radix-ui/themes";
 import { Pencil } from "lucide-react";
 import { ZODIAC_META } from "@/lib/astrology";
 import type { BigThree } from "@/lib/profile";
+import type { StoredChartData } from "@/lib/profile/types";
 import { AnimatedCard } from "@/components/animated-card";
+import { NatalChart } from "./natal-chart";
 
 interface ProfileHeroProps {
   bigThree: BigThree;
+  chartData?: StoredChartData | null;
 }
 
 /**
  * Hero section displaying the Big Three placements.
  */
-export function ProfileHero({ bigThree }: ProfileHeroProps) {
+export function ProfileHero({ bigThree, chartData }: ProfileHeroProps) {
   const sunMeta = ZODIAC_META[bigThree.sun.sign];
   const moonMeta = ZODIAC_META[bigThree.moon.sign];
   const risingMeta = bigThree.rising ? ZODIAC_META[bigThree.rising.sign] : null;
@@ -34,19 +37,23 @@ export function ProfileHero({ bigThree }: ProfileHeroProps) {
         </Link>
       </div>
 
-      {/* Chart placeholder - will be replaced with SVG wheel in Phase 2 */}
-      <div className="mb-8 flex justify-center">
-        <div className="flex h-48 w-48 items-center justify-center rounded-full border border-[var(--color-gold)]/20 bg-card/30">
-          <div className="text-center">
-            <div className="mb-2 text-4xl">
-              {sunMeta.glyph}
+      {/* Natal chart wheel or placeholder */}
+      {chartData ? (
+        <NatalChart chartData={chartData} />
+      ) : (
+        <div className="mb-8 flex justify-center">
+          <div className="flex h-48 w-48 items-center justify-center rounded-full border border-[var(--color-gold)]/20 bg-card/30">
+            <div className="text-center">
+              <div className="mb-2 text-4xl">
+                {sunMeta.glyph}
+              </div>
+              <Text size="1" className="text-muted-foreground">
+                Add birth time for full chart
+              </Text>
             </div>
-            <Text size="1" className="text-muted-foreground">
-              Chart visualization coming soon
-            </Text>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Big Three cards */}
       <div className="grid gap-4 sm:grid-cols-3">
