@@ -130,7 +130,7 @@ export default async function ProfilePage() {
         <div className="mx-auto max-w-3xl">
           {/* Hero with Big Three */}
           <AnimateOnScroll>
-            <ProfileHero bigThree={bigThree} />
+            <ProfileHero bigThree={bigThree} chartData={profile.chartData} />
           </AnimateOnScroll>
 
           {/* Element Balance */}

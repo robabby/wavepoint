@@ -15,6 +15,9 @@ importers:
       '@anthropic-ai/sdk':
         specifier: ^0.71.2
         version: 0.71.2(zod@3.25.76)
+      '@astrodraw/astrochart':
+        specifier: ^3.0.2
+        version: 3.0.2
       '@auth/drizzle-adapter':
         specifier: ^1.11.1
         version: 1.11.1
@@ -272,6 +275,9 @@ packages:
     peerDependenciesMeta:
       zod:
         optional: true
+
+  '@astrodraw/astrochart@3.0.2':
+    resolution: {integrity: sha512-LopHZSXjL4FZm5xLeti6kp9z+x08vte8yA+imstZu5c1XpGyU0YR7cdML56FY594AWvNfafN8fkt2YNtwo2pzQ==}
 
   '@auth/core@0.41.0':
     resolution: {integrity: sha512-Wd7mHPQ/8zy6Qj7f4T46vg3aoor8fskJm6g2Zyj064oQ3+p0xNZXAV60ww0hY+MbTesfu29kK14Zk5d5JTazXQ==}
@@ -5817,6 +5823,8 @@ snapshots:
       json-schema-to-ts: 3.1.1
     optionalDependencies:
       zod: 3.25.76
+
+  '@astrodraw/astrochart@3.0.2': {}
 
   '@auth/core@0.41.0':
     dependencies:
