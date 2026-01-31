@@ -297,14 +297,14 @@ function JungianItem({
           : "border-[var(--border-gold)]/20"
       )}
     >
-      <div className="flex items-start gap-3">
-        <ArchetypeGlyph glyph={planetSymbol} element={archetype.element} size="sm" />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between">
-            <h4 className="font-display text-sm tracking-wide text-foreground">
-              {archetype.name.toUpperCase()}
-            </h4>
-            {isEditing && (
+      {isEditing ? (
+        <div className="flex items-start gap-3">
+          <ArchetypeGlyph glyph={planetSymbol} element={archetype.element} size="sm" />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center justify-between">
+              <h4 className="font-display text-sm tracking-wide text-foreground">
+                {archetype.name.toUpperCase()}
+              </h4>
               <button
                 onClick={isDismissed ? onRestore : onDismiss}
                 aria-label={
@@ -320,18 +320,35 @@ function JungianItem({
                   <X className="h-3.5 w-3.5" />
                 )}
               </button>
+            </div>
+            {provenance && (
+              <p className="font-heading text-xs text-muted-foreground">
+                {provenance}
+              </p>
             )}
-          </div>
-          {provenance && (
-            <p className="font-heading text-xs text-muted-foreground">
-              {provenance}
+            <p className="text-xs text-[var(--color-gold-bright)]/80">
+              {archetype.keywords.slice(0, 3).join(" · ")}
             </p>
-          )}
-          <p className="text-xs text-[var(--color-gold-bright)]/80">
-            {archetype.keywords.slice(0, 3).join(" · ")}
-          </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <Link href={`/archetypes/${archetype.slug}`} className="flex items-start gap-3">
+          <ArchetypeGlyph glyph={planetSymbol} element={archetype.element} size="sm" />
+          <div className="min-w-0 flex-1">
+            <h4 className="font-display text-sm tracking-wide text-foreground">
+              {archetype.name.toUpperCase()}
+            </h4>
+            {provenance && (
+              <p className="font-heading text-xs text-muted-foreground">
+                {provenance}
+              </p>
+            )}
+            <p className="text-xs text-[var(--color-gold-bright)]/80">
+              {archetype.keywords.slice(0, 3).join(" · ")}
+            </p>
+          </div>
+        </Link>
+      )}
 
       {/* Hover glow */}
       {!isDismissed && (
@@ -386,31 +403,29 @@ function TarotItem({
           : "border-[var(--border-gold)]/20 bg-gradient-to-br from-[#1a1408] to-[#0d0a04]"
       )}
     >
-      <div className="flex items-start gap-3">
-        {/* Miniature tarot card thumbnail */}
-        <div className="shrink-0">
-          <TarotCardFrame className="w-12 rounded-md">
-            <div
-              className="relative overflow-hidden rounded"
-              style={{ aspectRatio: "2 / 3" }}
-            >
-              <Image
-                src={card.imagePath}
-                alt={`${card.name} tarot card`}
-                fill
-                sizes="48px"
-                className="object-cover object-top"
-              />
-            </div>
-          </TarotCardFrame>
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between">
-            <h4 className="font-display text-sm tracking-wide" style={{ color: TAROT_STYLES.colors.goldBright }}>
-              {card.romanNumeral} {card.name.toUpperCase()}
-            </h4>
-            {isEditing && (
+      {isEditing ? (
+        <div className="flex items-start gap-3">
+          <div className="shrink-0">
+            <TarotCardFrame className="w-12 rounded-md">
+              <div
+                className="relative overflow-hidden rounded"
+                style={{ aspectRatio: "2 / 3" }}
+              >
+                <Image
+                  src={card.imagePath}
+                  alt={`${card.name} tarot card`}
+                  fill
+                  sizes="48px"
+                  className="object-cover object-top"
+                />
+              </div>
+            </TarotCardFrame>
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center justify-between">
+              <h4 className="font-display text-sm tracking-wide" style={{ color: TAROT_STYLES.colors.goldBright }}>
+                {card.romanNumeral} {card.name.toUpperCase()}
+              </h4>
               <button
                 onClick={isDismissed ? onRestore : onDismiss}
                 aria-label={
@@ -426,21 +441,56 @@ function TarotItem({
                   <X className="h-3.5 w-3.5" />
                 )}
               </button>
+            </div>
+            {provenance && (
+              <p className="font-heading text-xs text-muted-foreground">
+                {provenance}
+              </p>
             )}
-          </div>
-          {provenance && (
-            <p className="font-heading text-xs text-muted-foreground">
-              {provenance}
+            <p
+              className="text-xs"
+              style={{ color: TAROT_STYLES.colors.gold, opacity: 0.8 }}
+            >
+              {card.keywords.slice(0, 3).join(" · ")}
             </p>
-          )}
-          <p
-            className="text-xs"
-            style={{ color: TAROT_STYLES.colors.gold, opacity: 0.8 }}
-          >
-            {card.keywords.slice(0, 3).join(" · ")}
-          </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <Link href={`/archetypes/tarot/${card.slug}`} className="flex items-start gap-3">
+          <div className="shrink-0">
+            <TarotCardFrame className="w-12 rounded-md">
+              <div
+                className="relative overflow-hidden rounded"
+                style={{ aspectRatio: "2 / 3" }}
+              >
+                <Image
+                  src={card.imagePath}
+                  alt={`${card.name} tarot card`}
+                  fill
+                  sizes="48px"
+                  className="object-cover object-top"
+                />
+              </div>
+            </TarotCardFrame>
+          </div>
+          <div className="min-w-0 flex-1">
+            <h4 className="font-display text-sm tracking-wide" style={{ color: TAROT_STYLES.colors.goldBright }}>
+              {card.romanNumeral} {card.name.toUpperCase()}
+            </h4>
+            {provenance && (
+              <p className="font-heading text-xs text-muted-foreground">
+                {provenance}
+              </p>
+            )}
+            <p
+              className="text-xs"
+              style={{ color: TAROT_STYLES.colors.gold, opacity: 0.8 }}
+            >
+              {card.keywords.slice(0, 3).join(" · ")}
+            </p>
+          </div>
+        </Link>
+      )}
 
       {/* Hover glow */}
       {!isDismissed && (
