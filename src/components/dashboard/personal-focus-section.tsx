@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { Sparkles } from "lucide-react";
+import { Info, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useProfile } from "@/hooks/profile";
 import { useTransits } from "@/hooks/calendar";
@@ -11,6 +11,7 @@ import { ProfilePromptCard } from "@/components/signal";
 import { ConstellationDashboardCard } from "@/components/constellation";
 import { PLANET_META, ASPECT_META } from "@/lib/astrology/constants";
 import { getNumberMeaning } from "@/lib/numerology";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import type { Transit } from "@/lib/transits";
 
 /**
@@ -177,9 +178,23 @@ function NumerologyCyclesCard({
   return (
     <div className="rounded-xl border border-[var(--border-gold)]/20 bg-card/30 p-4">
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">
-          Today&apos;s Cycles
-        </p>
+        <div className="flex items-center gap-1.5">
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">
+            Today&apos;s Cycles
+          </p>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="h-3.5 w-3.5 text-muted-foreground/50 hover:text-muted-foreground transition-colors cursor-help" />
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-72 space-y-1.5 py-2">
+              <p>Personal cycles are derived from your birth date using numerological reduction.</p>
+              <p className="font-medium">Year: reduce(birth month + birth day + current year)</p>
+              <p className="font-medium">Month: reduce(personal year + current month)</p>
+              <p className="font-medium">Day: reduce(personal month + current day)</p>
+              <p className="text-muted-foreground">Each sum is reduced to a single digit (1–9).</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
         {lifePath != null && (
           <Link
             href="/numerology"
@@ -192,42 +207,44 @@ function NumerologyCyclesCard({
 
       <div className="space-y-2">
         {/* Personal Day - primary */}
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-[var(--color-gold)]" />
-          <span className="font-display text-lg text-foreground">{personalDay}</span>
-          <span className="text-sm text-foreground">
-            {dayMeaning?.name ?? `Digit ${personalDay}`}
-          </span>
-        </div>
-        {dayMeaning && (
-          <p className="ml-4 text-xs text-muted-foreground">
-            {dayMeaning.keywords.slice(0, 3).join(" · ")}
-          </p>
-        )}
+        <Link href={`/numerology/${personalDay}`} className="group/cycle block">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-[var(--color-gold)]" />
+            <span className="font-display text-lg text-foreground">{personalDay}</span>
+            <span className="text-sm text-foreground group-hover/cycle:text-[var(--color-gold)] transition-colors">
+              {dayMeaning?.name ?? `Digit ${personalDay}`}
+            </span>
+          </div>
+          {dayMeaning && (
+            <p className="ml-4 text-xs text-muted-foreground">
+              {dayMeaning.keywords.slice(0, 3).join(" · ")}
+            </p>
+          )}
+        </Link>
 
         {/* Personal Month */}
-        <div className="flex items-center justify-between">
+        <Link href={`/numerology/${personalMonth}`} className="group/cycle flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
             <span className="text-sm text-foreground">{personalMonth}</span>
-            <span className="text-sm text-foreground">
+            <span className="text-sm text-foreground group-hover/cycle:text-[var(--color-gold)] transition-colors">
               {monthMeaning?.name ?? `Digit ${personalMonth}`}
             </span>
           </div>
           <span className="text-xs text-muted-foreground">Month</span>
-        </div>
+        </Link>
 
         {/* Personal Year */}
-        <div className="flex items-center justify-between">
+        <Link href={`/numerology/${personalYear}`} className="group/cycle flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-muted-foreground/30" />
             <span className="text-sm text-foreground">{personalYear}</span>
-            <span className="text-sm text-foreground">
+            <span className="text-sm text-foreground group-hover/cycle:text-[var(--color-gold)] transition-colors">
               {yearMeaning?.name ?? `Digit ${personalYear}`}
             </span>
           </div>
           <span className="text-xs text-muted-foreground">Year</span>
-        </div>
+        </Link>
       </div>
 
       <Link
