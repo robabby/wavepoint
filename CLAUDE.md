@@ -31,6 +31,18 @@ pnpm build        # Production build
 - **Env vars**: Define in `src/env.js`, prefix client vars with `NEXT_PUBLIC_`
 - **Feature flags**: Each feature has `isXEnabled()` in its `feature-flags.ts`
 
+### Sub-directory CLAUDE.md Files
+
+Contextual instructions load when working in these areas:
+
+- `src/lib/CLAUDE.md` — module structure, barrel exports, cross-module imports, feature flags
+- `src/lib/db/CLAUDE.md` — Drizzle + Neon conventions, schema patterns, query functions
+- `src/components/CLAUDE.md` — shadcn/ui usage, styling, design identity ("Modern Mystic")
+- `src/app/CLAUDE.md` — App Router conventions, auth guards, metadata, Suspense patterns
+- `src/app/api/CLAUDE.md` — API route pattern (auth → rate limit → validate → respond)
+- `src/hooks/CLAUDE.md` — React Query conventions, query key factories, hook naming
+- `docs/CLAUDE.md` — document taxonomy (PRDs, plans, ADRs, UX docs)
+
 ---
 
 ## Features
